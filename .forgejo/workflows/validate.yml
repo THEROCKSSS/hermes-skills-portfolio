@@ -1,0 +1,47 @@
+name: validate
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  lint-skills:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate every SKILL.md has required frontmatter
+        run: |
+          set -eu
+          missing=0
+          for skill_md in skills/*/SKILL.md; do
+            [ -f "$skill_md" ] || continue
+            name=$(grep -m1 '^name:' "$skill_md" | sed 's/^name:[[:space:]]*//')
+            desc=$(grep -m1 '^description:' "$skill_md" | sed 's/^description:[[:space:]]*//')
+            if [ -z "$name" ] || [ -z "$desc" ]; then
+              echo "FAIL: $skill_md missing required frontmatter (name, description)"
+              missing=$((missing+1))
+            fi
+          done
+          if [ "$missing" -gt 0 ]; then
+            exit 1
+          fi
+          echo "All SKILL.md files have required frontmatter."
+
+      - name: Validate skills-index.json sync
+        run: |
+          set -eu
+          if [ ! -f skills-index.json ]; then
+            echo "FAIL: skills-index.json missing"
+            exit 1
+          fi
+          # Count skill directories
+          dir_count=$(find skills -mindepth 1 -maxdepth 1 -type d | wc -l)
+          # Count entries in the index
+          entry_count=$(python3 -c "import json; print(len(json.load(open('skills-index.json'))['skills']))" 2>/dev/null || echo "0")
+          echo "Skill directories: $dir_count"
+          echo "Index entries: $entry_count"
+          if [ "$dir_count" -ne "$entry_count" ]; then
+            echo "WARN: skill directory count ($dir_count) does not match index entry count ($entry_count). Update skills-index.json."
+            # Warn only for now — Phase 1 has 0 skills, the placeholder .gitkeep is not a skill dir
+          fi

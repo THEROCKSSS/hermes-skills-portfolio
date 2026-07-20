@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-07-20T00:00:00Z",
+  "portfolio": {
+    "name": "Hermes Skills Portfolio",
+    "owner": "Monica Amano",
+    "tagline": "Empowering skills for the Hermes agent — install one, your agent can now do that for you.",
+    "total_skills": 0,
+    "github_url": "https://github.com/MonicaAmano/hermes-skills-portfolio",
+    "forgejo_url": "http://localhost:3000/agentsoul/hermes-skills-portfolio"
+  },
+  "categories": {
+    "devops": { "name": "DevOps & Infrastructure", "description": "Deploy, host, and operate services.", "skill_count": 0 },
+    "frontend": { "name": "Frontend", "description": "Build distinctive, non-generic UIs.", "skill_count": 0 },
+    "backend": { "name": "Backend", "description": "APIs, tests, and server-side architecture.", "skill_count": 0 },
+    "utility": { "name": "Utility", "description": "General-purpose capabilities for everyday workflows.", "skill_count": 0 },
+    "meta": { "name": "Meta", "description": "Skills about skills — portfolios, publishing, catalogs.", "skill_count": 0 },
+    "integrations": { "name": "Integrations", "description": "Connect agents to external platforms and services.", "skill_count": 0 }
+  },
+  "skills": []
+}

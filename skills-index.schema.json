@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Hermes Skills Portfolio Index",
+  "description": "Single source of truth for the portfolio. Agents parse this file in one read to recommend skills. The portfolio README and Pages site render from it so users and agents see the same truth.",
+  "type": "object",
+  "required": ["version", "generated_at", "skills"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Schema version, semver. Bump on breaking changes to the index shape.",
+      "const": "1.0.0"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of the last index rebuild."
+    },
+    "portfolio": {
+      "type": "object",
+      "description": "Top-level portfolio metadata rendered into the README hero.",
+      "properties": {
+        "name": { "type": "string" },
+        "owner": { "type": "string", "description": "Public attribution name." },
+        "tagline": { "type": "string", "description": "One sentence. No LLM filler." },
+        "total_skills": { "type": "integer" },
+        "github_url": { "type": "string", "format": "uri" },
+        "forgejo_url": { "type": "string", "format": "uri" }
+      }
+    },
+    "categories": {
+      "type": "object",
+      "description": "Category registry. Keys are slugs, values are display names + descriptions.",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "skill_count": { "type": "integer" }
+        }
+      }
+    },
+    "skills": {
+      "type": "array",
+      "description": "The skill list. Default sort: tier (core→featured→utility), then usage within tier.",
+      "items": {
+        "type": "object",
+        "required": ["name", "category", "tier", "description", "install_url", "path"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Skill directory name under skills/. Must match the directory."
+          },
+          "category": {
+            "type": "string",
+            "description": "Category slug from the categories registry."
+          },
+          "tier": {
+            "type": "string",
+            "enum": ["core", "featured", "utility"],
+            "description": "Usefulness tier assigned at publish time. Static until re-reviewed."
+          },
+          "description": {
+            "type": "string",
+            "description": "One-line. What the agent + skill delivers. No marketing fluff."
+          },
+          "install_url": {
+            "type": "string",
+            "description": "Direct URL to the SKILL.md file for `hermes skills install`."
+          },
+          "path": {
+            "type": "string",
+            "description": "Relative path to the skill directory from the repo root."
+          },
+          "usage": {
+            "type": "object",
+            "description": "Empirical adoption data. Starts at 0 for every skill on day one.",
+            "properties": {
+              "hub_installs": { "type": "integer", "default": 0 },
+              "github_clones": { "type": "integer", "default": 0 },
+              "stars": { "type": "integer", "default": 0 },
+              "self_reported_users": { "type": "integer", "default": 0 }
+            }
+          },
+          "recency": {
+            "type": "string",
+            "format": "date",
+            "description": "Date of the most recent meaningful commit to the skill directory."
+          },
+          "source": {
+            "type": "string",
+            "enum": ["generalized", "new", "adapted"],
+            "description": "Origin: generalized from personal-utility, newly authored, or adapted from a third-party skill with attribution."
+          },
+          "source_attribution": {
+            "type": "string",
+            "description": "Required when source=adapted. Original author + URL. Empty for generalized/new."
+          },
+          "frontmatter": {
+            "type": "object",
+            "description": "Verbatim required-frontmatter fields from the skill's SKILL.md for CI sync verification.",
+            "properties": {
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "version": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
