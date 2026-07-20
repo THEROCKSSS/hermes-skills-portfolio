@@ -169,11 +169,12 @@
   function renderSkillCard(skill, categories) {
     var catName = categories[skill.category] ? categories[skill.category].name : skill.category;
     var sourceLabel = SOURCE_LABELS[skill.source] || skill.source;
-    var div = document.createElement("div");
-    div.className = "skill-card";
-    div.setAttribute("data-skill", skill.name);
-    div.setAttribute("tabindex", "0");
-    div.innerHTML =
+    var a = document.createElement("a");
+    a.className = "skill-card";
+    a.setAttribute("data-skill", skill.name);
+    a.setAttribute("href", "#skill/" + skill.name);
+    a.setAttribute("role", "button");
+    a.innerHTML =
       '<div class="skill-card-header">' +
         '<span class="skill-name">' + escapeHtml(skill.name) + '</span>' +
         '<span class="tier-badge ' + skill.tier + '">' + TIER_LABELS[skill.tier] + '</span>' +
@@ -184,8 +185,8 @@
         '<span class="skill-source">' + escapeHtml(sourceLabel) + '</span>' +
         (skill.recency ? '<span class="skill-recency">' + escapeHtml(skill.recency) + '</span>' : '') +
       '</div>' +
-      '<div class="skill-card-footer-hint">Click for details →</div>';
-    return div;
+      '<div class="skill-card-footer-hint">Click for details \u2192</div>';
+    return a;
   }
 
   function render() {
@@ -352,19 +353,15 @@
     }
   }
 
-  // --- Card clicks → open detail ---
+  // --- Card clicks → open detail via hash change ---
   function setupCardClicks() {
+    // Cards are <a> tags with href="#skill/<name>" — clicking them changes the hash
+    // The hashchange listener calls readHashState which calls openDetail
+    // We just need to prevent clicks on inner links (SKILL.md links) from being intercepted
     document.getElementById("skill-grid").addEventListener("click", function (e) {
-      if (e.target.tagName === "A") return;
-      var card = e.target.closest(".skill-card");
-      if (!card) return;
-      openDetail(card.getAttribute("data-skill"));
-    });
-    document.getElementById("skill-grid").addEventListener("keydown", function (e) {
-      if (e.key === "Enter" || e.key === " ") {
-        var card = e.target.closest(".skill-card");
-        if (card && e.target === card) { e.preventDefault(); openDetail(card.getAttribute("data-skill")); }
-      }
+      // Let the <a> card's default href navigation happen (hash change)
+      // Only prevent clicks on inner elements from bubbling incorrectly
+      if (e.target.classList.contains("skill-install-link")) return;
     });
   }
 
