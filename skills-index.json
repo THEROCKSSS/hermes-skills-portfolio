@@ -1,11 +1,11 @@
 {
   "version": "1.0.0",
-  "generated_at": "2026-07-20T06:48:42Z",
+  "generated_at": "2026-07-20T08:00:54Z",
   "portfolio": {
     "name": "Hermes Skills Portfolio",
     "owner": "Monica Amano",
     "tagline": "Empowering skills for the Hermes agent \u2014 install one, your agent can now do that for you.",
-    "total_skills": 10,
+    "total_skills": 30,
     "github_url": "https://github.com/MonicaAmano/hermes-skills-portfolio",
     "forgejo_url": "http://localhost:3000/agentsoul/hermes-skills-portfolio"
   },
@@ -13,22 +13,22 @@
     "devops": {
       "name": "DevOps & Infrastructure",
       "description": "Deploy, host, and operate services.",
-      "skill_count": 3
+      "skill_count": 7
     },
     "frontend": {
       "name": "Frontend",
       "description": "Build distinctive, non-generic UIs.",
-      "skill_count": 1
+      "skill_count": 2
     },
     "backend": {
       "name": "Backend",
       "description": "APIs, tests, and server-side architecture.",
-      "skill_count": 2
+      "skill_count": 7
     },
     "utility": {
       "name": "Utility",
       "description": "General-purpose capabilities for everyday workflows.",
-      "skill_count": 1
+      "skill_count": 6
     },
     "meta": {
       "name": "Meta",
@@ -38,7 +38,7 @@
     "integrations": {
       "name": "Integrations",
       "description": "Connect agents to external platforms and services.",
-      "skill_count": 0
+      "skill_count": 5
     }
   },
   "skills": [
@@ -259,6 +259,446 @@
       "frontmatter": {
         "name": "skill-registry-catalog",
         "description": "Catalog third-party AI agent skills from public registries.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "mcp-server-build",
+      "category": "backend",
+      "tier": "featured",
+      "description": "Build a working MCP server that exposes your tools to AI agents.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/mcp-server-build/SKILL.md",
+      "path": "skills/mcp-server-build",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "mcp-server-build",
+        "description": "Build a working MCP server that exposes your tools to AI agents.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "webhook-receiver",
+      "category": "backend",
+      "tier": "featured",
+      "description": "Set up a webhook endpoint that receives and processes incoming webhooks with signature verification.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/webhook-receiver/SKILL.md",
+      "path": "skills/webhook-receiver",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "webhook-receiver",
+        "description": "Set up a webhook endpoint that receives and processes incoming webhooks with signature verification.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "cron-task",
+      "category": "utility",
+      "tier": "featured",
+      "description": "Set up scheduled agent tasks with delivery to messaging platforms.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/cron-task/SKILL.md",
+      "path": "skills/cron-task",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "cron-task",
+        "description": "Set up scheduled agent tasks with delivery to messaging platforms.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "discord-bot-build",
+      "category": "integrations",
+      "tier": "featured",
+      "description": "Build a working Discord bot with slash commands, events, and moderation.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/discord-bot-build/SKILL.md",
+      "path": "skills/discord-bot-build",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "discord-bot-build",
+        "description": "Build a working Discord bot with slash commands, events, and moderation.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "telegram-bot-build",
+      "category": "integrations",
+      "tier": "featured",
+      "description": "Build a working Telegram bot with commands and inline keyboards.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/telegram-bot-build/SKILL.md",
+      "path": "skills/telegram-bot-build",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "telegram-bot-build",
+        "description": "Build a working Telegram bot with commands and inline keyboards.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "ollama-local",
+      "category": "devops",
+      "tier": "featured",
+      "description": "Run local LLMs with Ollama \u2014 private, offline, no API costs.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/ollama-local/SKILL.md",
+      "path": "skills/ollama-local",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "ollama-local",
+        "description": "Run local LLMs with Ollama \u2014 private, offline, no API costs.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "searxng-self-host",
+      "category": "devops",
+      "tier": "featured",
+      "description": "Self-host a private SearXNG meta-search engine without tracking.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/searxng-self-host/SKILL.md",
+      "path": "skills/searxng-self-host",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "searxng-self-host",
+        "description": "Self-host a private SearXNG meta-search engine without tracking.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "uptime-kuma-self-host",
+      "category": "devops",
+      "tier": "featured",
+      "description": "Self-host an uptime monitoring dashboard with alerts.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/uptime-kuma-self-host/SKILL.md",
+      "path": "skills/uptime-kuma-self-host",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "uptime-kuma-self-host",
+        "description": "Self-host an uptime monitoring dashboard with alerts.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "ntfy-notifier",
+      "category": "integrations",
+      "tier": "featured",
+      "description": "Send push notifications to your phone and desktop via ntfy.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/ntfy-notifier/SKILL.md",
+      "path": "skills/ntfy-notifier",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "ntfy-notifier",
+        "description": "Send push notifications to your phone and desktop via ntfy.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "git-backup",
+      "category": "utility",
+      "tier": "featured",
+      "description": "Automate git backup of your repos to a remote.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/git-backup/SKILL.md",
+      "path": "skills/git-backup",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "git-backup",
+        "description": "Automate git backup of your repos to a remote.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "dotfiles-manage",
+      "category": "utility",
+      "tier": "featured",
+      "description": "Version and sync your dotfiles across machines.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/dotfiles-manage/SKILL.md",
+      "path": "skills/dotfiles-manage",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "dotfiles-manage",
+        "description": "Version and sync your dotfiles across machines.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "resume-builder",
+      "category": "utility",
+      "tier": "featured",
+      "description": "Generate a professional resume in HTML/PDF from structured data.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/resume-builder/SKILL.md",
+      "path": "skills/resume-builder",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "resume-builder",
+        "description": "Generate a professional resume in HTML/PDF from structured data.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "invoice-generator",
+      "category": "utility",
+      "tier": "featured",
+      "description": "Generate professional invoices in PDF from line items.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/invoice-generator/SKILL.md",
+      "path": "skills/invoice-generator",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "invoice-generator",
+        "description": "Generate professional invoices in PDF from line items.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "caddy-reverse-proxy",
+      "category": "devops",
+      "tier": "featured",
+      "description": "Set up a Caddy reverse proxy with automatic HTTPS.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/caddy-reverse-proxy/SKILL.md",
+      "path": "skills/caddy-reverse-proxy",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "caddy-reverse-proxy",
+        "description": "Set up a Caddy reverse proxy with automatic HTTPS.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "sqlite-dashboard",
+      "category": "backend",
+      "tier": "featured",
+      "description": "Browse SQLite databases with a web UI.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/sqlite-dashboard/SKILL.md",
+      "path": "skills/sqlite-dashboard",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "sqlite-dashboard",
+        "description": "Browse SQLite databases with a web UI.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "markdown-to-slides",
+      "category": "frontend",
+      "tier": "featured",
+      "description": "Create presentation slides from markdown.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/markdown-to-slides/SKILL.md",
+      "path": "skills/markdown-to-slides",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "markdown-to-slides",
+        "description": "Create presentation slides from markdown.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "github-actions-ci",
+      "category": "backend",
+      "tier": "featured",
+      "description": "Set up GitHub Actions CI/CD for your project.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/github-actions-ci/SKILL.md",
+      "path": "skills/github-actions-ci",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "github-actions-ci",
+        "description": "Set up GitHub Actions CI/CD for your project.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "openapi-generator",
+      "category": "backend",
+      "tier": "featured",
+      "description": "Generate client SDKs and server stubs from an OpenAPI spec.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/openapi-generator/SKILL.md",
+      "path": "skills/openapi-generator",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "openapi-generator",
+        "description": "Generate client SDKs and server stubs from an OpenAPI spec.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "email-send",
+      "category": "integrations",
+      "tier": "featured",
+      "description": "Send email programmatically via SMTP or API providers.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/email-send/SKILL.md",
+      "path": "skills/email-send",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "email-send",
+        "description": "Send email programmatically via SMTP or API providers.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "rss-monitor",
+      "category": "integrations",
+      "tier": "featured",
+      "description": "Monitor RSS and Atom feeds for new entries with notifications.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/rss-monitor/SKILL.md",
+      "path": "skills/rss-monitor",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "rss-monitor",
+        "description": "Monitor RSS and Atom feeds for new entries with notifications.",
         "version": "1.0.0"
       }
     }
