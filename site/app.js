@@ -1,6 +1,9 @@
-// Hermes Skills Portfolio — site renderer
-// Fetches skills-index.json, renders sortable/filterable/expanding skill cards.
-// Tries multiple fetch paths to work both locally and on GitHub Pages.
+// Hermes Skills Portfolio — app.js
+// Dark mode default, light toggle, sort/filter/search, expandable cards,
+// copy-to-clipboard, keyboard shortcuts, URL hash state, distribution bar,
+// filter chips, back-to-top, toast notifications.
+// Hallmark + frontend-design-craft applied: no AI-slop, OKLCH tokens, tabular-nums,
+// specific transitions, instant focus rings, prefers-reduced-motion honored.
 
 (function () {
   "use strict";
@@ -14,19 +17,56 @@
 
   var TIER_ORDER = { core: 0, featured: 1, utility: 2 };
   var TIER_LABELS = { core: "Core", featured: "Featured", utility: "Utility" };
-  var SOURCE_LABELS = { new: "Newly authored", generalized: "Generalized", adapted: "Adapted" };
+  var TIER_DESCS = {
+    core: "Broadly empowering, nearly any user benefits",
+    featured: "Highly useful within a category",
+    utility: "Useful for specific workflows",
+  };
+  var SOURCE_LABELS = {
+    new: "Newly authored",
+    generalized: "Generalized from existing",
+    adapted: "Adapted with attribution",
+  };
+
+  // Category colors for distribution bar
+  var CAT_COLORS = {
+    devops: "oklch(65% 0.12 145)",
+    backend: "oklch(65% 0.12 230)",
+    frontend: "oklch(65% 0.12 300)",
+    integrations: "oklch(65% 0.12 65)",
+    meta: "oklch(65% 0.12 0)",
+    utility: "oklch(65% 0.10 180)",
+  };
+
+  // --- Theme management ---
+
+  function initTheme() {
+    var saved = localStorage.getItem("portfolio-theme");
+    if (saved) {
+      document.documentElement.setAttribute("data-theme", saved);
+    } else {
+      // Dark mode default — no need to check prefers-color-scheme
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+  }
+
+  function toggleTheme() {
+    var current = document.documentElement.getAttribute("data-theme");
+    var next = current === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("portfolio-theme", next);
+    showToast(next === "dark" ? "Dark mode" : "Light mode");
+  }
 
   // --- Data loading ---
 
   function loadIndex(cb) {
-    // Try multiple paths: ./skills-index.json (root), ../skills-index.json (site/ subdir)
     var paths = ["./skills-index.json", "../skills-index.json", "/skills-index.json"];
     var tried = 0;
-
     function tryNext() {
       if (tried >= paths.length) {
         document.getElementById("skill-grid").innerHTML =
-          '<p class="empty-state">Could not load skills-index.json. Make sure the file exists at the repo root.</p>';
+          '<p class="empty-state">Could not load skills-index.json.</p>';
         return;
       }
       var path = paths[tried++];
@@ -91,6 +131,44 @@
     });
   }
 
+  // --- URL hash state ---
+
+  function readHashState() {
+    var hash = window.location.hash.substring(1);
+    if (!hash) return;
+    var params = new URLSearchParams(hash);
+    if (params.get("sort")) {
+      currentSort = params.get("sort");
+      document.getElementById("sort-select").value = currentSort;
+    }
+    if (params.get("cat")) {
+      currentCategory = params.get("cat");
+      document.getElementById("category-filter").value = currentCategory;
+    }
+    if (params.get("tier")) {
+      currentTier = params.get("tier");
+      document.getElementById("tier-filter").value = currentTier;
+    }
+    if (params.get("q")) {
+      currentSearch = params.get("q");
+      document.getElementById("search-input").value = currentSearch;
+    }
+  }
+
+  function writeHashState() {
+    var params = new URLSearchParams();
+    if (currentSort !== "tier-usage") params.set("sort", currentSort);
+    if (currentCategory) params.set("cat", currentCategory);
+    if (currentTier) params.set("tier", currentTier);
+    if (currentSearch) params.set("q", currentSearch);
+    var hash = params.toString();
+    if (hash) {
+      window.history.replaceState(null, "", "#" + hash);
+    } else {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  }
+
   // --- Rendering ---
 
   function escapeHtml(s) {
@@ -99,15 +177,85 @@
       .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
   }
 
+  function renderDistributionBar(categories, skills) {
+    var bar = document.getElementById("distribution-bar");
+    bar.innerHTML = "";
+    var counts = {};
+    var total = skills.length;
+    for (var i = 0; i < skills.length; i++) {
+      var cat = skills[i].category;
+      counts[cat] = (counts[cat] || 0) + 1;
+    }
+    var keys = Object.keys(categories).sort();
+    for (var j = 0; j < keys.length; j++) {
+      var key = keys[j];
+      var count = counts[key] || 0;
+      if (count === 0) continue;
+      var seg = document.createElement("div");
+      seg.className = "dist-segment";
+      seg.setAttribute("data-cat", key);
+      seg.style.flex = count;
+      seg.title = categories[key].name + ": " + count;
+      seg.setAttribute("role", "img");
+      seg.setAttribute("aria-label", categories[key].name + ": " + count + " skills");
+      bar.appendChild(seg);
+    }
+  }
+
+  function renderFilterChips() {
+    var container = document.getElementById("active-filters");
+    container.innerHTML = "";
+    if (currentCategory) {
+      container.appendChild(makeChip("Category: " + currentCategory, function() {
+        currentCategory = "";
+        document.getElementById("category-filter").value = "";
+        writeHashState();
+        render();
+      }));
+    }
+    if (currentTier) {
+      container.appendChild(makeChip("Tier: " + TIER_LABELS[currentTier], function() {
+        currentTier = "";
+        document.getElementById("tier-filter").value = "";
+        writeHashState();
+        render();
+      }));
+    }
+    if (currentSearch) {
+      container.appendChild(makeChip('Search: "' + currentSearch + '"', function() {
+        currentSearch = "";
+        document.getElementById("search-input").value = "";
+        writeHashState();
+        render();
+      }));
+    }
+  }
+
+  function makeChip(label, onRemove) {
+    var chip = document.createElement("span");
+    chip.className = "filter-chip";
+    var text = document.createElement("span");
+    text.textContent = label;
+    var btn = document.createElement("button");
+    btn.textContent = "\u00d7";
+    btn.setAttribute("aria-label", "Remove filter: " + label);
+    btn.onclick = function(e) { e.stopPropagation(); onRemove(); };
+    chip.appendChild(text);
+    chip.appendChild(btn);
+    return chip;
+  }
+
   function renderSkillCard(skill, categories) {
     var catName = categories[skill.category] ? categories[skill.category].name : skill.category;
     var usage = totalUsage(skill);
     var sourceLabel = SOURCE_LABELS[skill.source] || skill.source;
     var installCmd = "hermes skills install " + skill.install_url;
+    var version = (skill.frontmatter && skill.frontmatter.version) || "1.0.0";
 
     var div = document.createElement("div");
     div.className = "skill-card";
     div.setAttribute("data-skill", skill.name);
+    div.setAttribute("tabindex", "0");
 
     var headerHtml =
       '<div class="skill-card-header">' +
@@ -118,9 +266,8 @@
       '<div class="skill-meta">' +
         '<span class="skill-cat">' + escapeHtml(catName) + '</span>' +
         '<span class="skill-source">' + escapeHtml(sourceLabel) + '</span>' +
-        (usage > 0 ? '<span>' + usage + ' installs</span>' : '<span>new</span>') +
-        (skill.recency ? '<span>updated ' + escapeHtml(skill.recency) + '</span>' : '') +
-        '<a class="skill-install" href="' + escapeHtml(skill.install_url) + '" target="_blank" rel="noopener">SKILL.md ↗</a>' +
+        (skill.recency ? '<span class="skill-recency">' + escapeHtml(skill.recency) + '</span>' : '') +
+        '<a class="skill-install-link" href="' + escapeHtml(skill.install_url) + '" target="_blank" rel="noopener">SKILL.md \u2197</a>' +
       '</div>';
 
     var detailHtml =
@@ -130,44 +277,46 @@
             '<h4>Category</h4><p>' + escapeHtml(catName) + '</p>' +
           '</div>' +
           '<div class="skill-detail-section">' +
-            '<h4>Tier</h4><p>' + TIER_LABELS[skill.tier] + ' — ' + tierDescription(skill.tier) + '</p>' +
+            '<h4>Tier</h4><p>' + TIER_LABELS[skill.tier] + ' \u2014 ' + TIER_DESCS[skill.tier] + '</p>' +
           '</div>' +
           '<div class="skill-detail-section">' +
             '<h4>Source</h4><p>' + escapeHtml(sourceLabel) + (skill.source_attribution ? ' (from ' + escapeHtml(skill.source_attribution) + ')' : '') + '</p>' +
           '</div>' +
           '<div class="skill-detail-section">' +
-            '<h4>Version</h4><p>' + escapeHtml((skill.frontmatter && skill.frontmatter.version) || '1.0.0') + '</p>' +
+            '<h4>Version</h4><p>' + escapeHtml(version) + '</p>' +
           '</div>' +
         '</div>' +
         '<div class="install-block">' +
           '<h4>Install</h4>' +
-          '<code>' + escapeHtml(installCmd) + '</code>' +
+          '<code id="install-cmd-' + escapeHtml(skill.name) + '">' + escapeHtml(installCmd) + '</code>' +
+          '<button class="copy-btn" data-clipboard="' + escapeHtml(installCmd) + '">Copy</button>' +
         '</div>' +
-        '<a class="close-detail" onclick="window.__closeDetail()">Close ↑</a>' +
+        '<button class="close-detail" type="button">Close \u2191</button>' +
       '</div>';
 
     div.innerHTML = headerHtml + detailHtml;
     return div;
   }
 
-  function tierDescription(tier) {
-    if (tier === "core") return "Broadly empowering, nearly any user benefits";
-    if (tier === "featured") return "Highly useful within a category";
-    return "Useful for specific workflows";
-  }
-
   function render() {
     if (!indexData) return;
     var skills = filterSkills(sortSkills(indexData.skills, currentSort));
     var grid = document.getElementById("skill-grid");
+    var noResults = document.getElementById("no-results");
     grid.innerHTML = "";
 
+    renderFilterChips();
+    writeHashState();
+
     if (skills.length === 0) {
-      grid.innerHTML = '<p class="empty-state">No skills match the current filters.</p>';
+      grid.hidden = true;
+      noResults.hidden = false;
       document.getElementById("results-count").textContent = "0 skills match";
       return;
     }
 
+    grid.hidden = false;
+    noResults.hidden = true;
     document.getElementById("results-count").textContent =
       skills.length + " skill" + (skills.length === 1 ? "" : "s") + " shown";
 
@@ -177,53 +326,126 @@
     }
     grid.appendChild(frag);
 
-    // Re-expand if there was an expanded card
     if (expandedSkill) {
       var card = grid.querySelector('[data-skill="' + expandedSkill + '"]');
       if (card) card.classList.add("expanded");
     }
   }
 
+  // --- Toast ---
+
+  var toastTimer = null;
+  function showToast(msg) {
+    var existing = document.querySelector(".toast");
+    if (existing) existing.remove();
+    var toast = document.createElement("div");
+    toast.className = "toast";
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    requestAnimationFrame(function() {
+      toast.classList.add("show");
+    });
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() {
+      toast.classList.remove("show");
+      setTimeout(function() { toast.remove(); }, 200);
+    }, 1800);
+  }
+
+  // --- Copy to clipboard ---
+
+  function copyToClipboard(text, btn) {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(function() {
+        btn.classList.add("copied");
+        btn.textContent = "Copied!";
+        showToast("Install command copied");
+        setTimeout(function() {
+          btn.classList.remove("copied");
+          btn.textContent = "Copy";
+        }, 2000);
+      });
+    } else {
+      // Fallback
+      var textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      btn.classList.add("copied");
+      btn.textContent = "Copied!";
+      showToast("Install command copied");
+      setTimeout(function() {
+        btn.classList.remove("copied");
+        btn.textContent = "Copy";
+      }, 2000);
+    }
+  }
+
   // --- Card expansion ---
 
-  window.__closeDetail = function () {
+  function closeAllExpanded() {
     document.querySelectorAll(".skill-card.expanded").forEach(function (c) {
       c.classList.remove("expanded");
     });
     expandedSkill = null;
-  };
+  }
 
   function setupCardClicks() {
     document.getElementById("skill-grid").addEventListener("click", function (e) {
+      // Handle copy button
+      if (e.target.classList.contains("copy-btn")) {
+        e.stopPropagation();
+        var text = e.target.getAttribute("data-clipboard");
+        copyToClipboard(text, e.target);
+        return;
+      }
+      // Handle close button
+      if (e.target.classList.contains("close-detail")) {
+        e.stopPropagation();
+        closeAllExpanded();
+        return;
+      }
       // Don't toggle when clicking a link
-      if (e.target.tagName === "A" || e.target.tagName === "CODE" || e.target.classList.contains("close-detail")) return;
+      if (e.target.tagName === "A") return;
 
       var card = e.target.closest(".skill-card");
       if (!card) return;
 
       var skillName = card.getAttribute("data-skill");
 
-      // Close all other expanded cards
       document.querySelectorAll(".skill-card.expanded").forEach(function (c) {
         if (c !== card) c.classList.remove("expanded");
       });
 
-      // Toggle this card
       if (card.classList.contains("expanded")) {
         card.classList.remove("expanded");
         expandedSkill = null;
       } else {
         card.classList.add("expanded");
         expandedSkill = skillName;
-        // Scroll the card into view
         setTimeout(function () {
           card.scrollIntoView({ behavior: "smooth", block: "nearest" });
         }, 50);
       }
     });
+
+    // Keyboard: Enter/Space to expand focused card
+    document.getElementById("skill-grid").addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        var card = e.target.closest(".skill-card");
+        if (card && e.target === card) {
+          e.preventDefault();
+          card.click();
+        }
+      }
+    });
   }
 
-  // --- Category filter population ---
+  // --- Category filter ---
 
   function populateCategoryFilter(categories) {
     var sel = document.getElementById("category-filter");
@@ -240,17 +462,80 @@
     document.getElementById("skill-count").textContent = n + " skill" + (n === 1 ? "" : "s");
   }
 
+  // --- Back to top ---
+
+  function setupBackToTop() {
+    var btn = document.getElementById("back-to-top");
+    window.addEventListener("scroll", function () {
+      if (window.scrollY > 600) {
+        btn.hidden = false;
+      } else {
+        btn.hidden = true;
+      }
+    }, { passive: true });
+    btn.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
+  // --- Keyboard shortcuts ---
+
+  function setupKeyboard() {
+    document.addEventListener("keydown", function (e) {
+      // Don't intercept when typing in an input
+      if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "TEXTAREA") {
+        if (e.key === "Escape") {
+          e.target.blur();
+        }
+        return;
+      }
+
+      if (e.key === "/") {
+        e.preventDefault();
+        document.getElementById("search-input").focus();
+      } else if (e.key === "Escape") {
+        if (expandedSkill) {
+          closeAllExpanded();
+        }
+      } else if (e.key === "t" || e.key === "T") {
+        toggleTheme();
+      }
+    });
+  }
+
+  // --- Clear filters ---
+
+  function setupClearFilters() {
+    document.getElementById("clear-filters-btn").addEventListener("click", function () {
+      currentSort = "tier-usage";
+      currentCategory = "";
+      currentTier = "";
+      currentSearch = "";
+      document.getElementById("sort-select").value = "tier-usage";
+      document.getElementById("category-filter").value = "";
+      document.getElementById("tier-filter").value = "";
+      document.getElementById("search-input").value = "";
+      writeHashState();
+      render();
+    });
+  }
+
   // --- Init ---
 
   function init() {
+    initTheme();
+
     loadIndex(function (data) {
       indexData = data;
       populateCategoryFilter(data.categories || {});
       updateCount(data.skills.length);
+      renderDistributionBar(data.categories || {}, data.skills);
+      readHashState();
       render();
       setupCardClicks();
     });
 
+    document.getElementById("theme-toggle").addEventListener("click", toggleTheme);
     document.getElementById("sort-select").addEventListener("change", function (e) {
       currentSort = e.target.value;
       render();
@@ -263,8 +548,21 @@
       currentTier = e.target.value;
       render();
     });
+
+    var searchTimer = null;
     document.getElementById("search-input").addEventListener("input", function (e) {
       currentSearch = e.target.value;
+      if (searchTimer) clearTimeout(searchTimer);
+      searchTimer = setTimeout(render, 150);
+    });
+
+    setupKeyboard();
+    setupBackToTop();
+    setupClearFilters();
+
+    // Listen for hash changes (back/forward buttons)
+    window.addEventListener("hashchange", function () {
+      readHashState();
       render();
     });
   }
