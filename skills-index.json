@@ -1,11 +1,11 @@
 {
   "version": "1.0.0",
-  "generated_at": "2026-07-20T08:00:54Z",
+  "generated_at": "2026-07-20T08:54:32Z",
   "portfolio": {
     "name": "Hermes Skills Portfolio",
     "owner": "Monica Amano",
     "tagline": "Empowering skills for the Hermes agent \u2014 install one, your agent can now do that for you.",
-    "total_skills": 30,
+    "total_skills": 50,
     "github_url": "https://github.com/MonicaAmano/hermes-skills-portfolio",
     "forgejo_url": "http://localhost:3000/agentsoul/hermes-skills-portfolio"
   },
@@ -18,17 +18,17 @@
     "frontend": {
       "name": "Frontend",
       "description": "Build distinctive, non-generic UIs.",
-      "skill_count": 2
+      "skill_count": 4
     },
     "backend": {
       "name": "Backend",
       "description": "APIs, tests, and server-side architecture.",
-      "skill_count": 7
+      "skill_count": 8
     },
     "utility": {
       "name": "Utility",
       "description": "General-purpose capabilities for everyday workflows.",
-      "skill_count": 6
+      "skill_count": 23
     },
     "meta": {
       "name": "Meta",
@@ -699,6 +699,446 @@
       "frontmatter": {
         "name": "rss-monitor",
         "description": "Monitor RSS and Atom feeds for new entries with notifications.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "pdf-extract",
+      "category": "utility",
+      "tier": "utility",
+      "description": "Extract text, images, and tables from PDFs with OCR fallback.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/pdf-extract/SKILL.md",
+      "path": "skills/pdf-extract",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "pdf-extract",
+        "description": "Extract text, images, and tables from PDFs with OCR fallback.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "ocr-documents",
+      "category": "utility",
+      "tier": "utility",
+      "description": "Extract text from images and scanned documents using OCR.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/ocr-documents/SKILL.md",
+      "path": "skills/ocr-documents",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "ocr-documents",
+        "description": "Extract text from images and scanned documents using OCR.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "gif-search",
+      "category": "utility",
+      "tier": "utility",
+      "description": "Search and download GIFs from Tenor by keyword.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/gif-search/SKILL.md",
+      "path": "skills/gif-search",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "gif-search",
+        "description": "Search and download GIFs from Tenor by keyword.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "youtube-transcript",
+      "category": "utility",
+      "tier": "utility",
+      "description": "Extract transcripts from YouTube videos.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/youtube-transcript/SKILL.md",
+      "path": "skills/youtube-transcript",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "youtube-transcript",
+        "description": "Extract transcripts from YouTube videos.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "ascii-art",
+      "category": "utility",
+      "tier": "utility",
+      "description": "Generate ASCII art from text and images.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/ascii-art/SKILL.md",
+      "path": "skills/ascii-art",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "ascii-art",
+        "description": "Generate ASCII art from text and images.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "excalidraw-diagram",
+      "category": "frontend",
+      "tier": "utility",
+      "description": "Generate hand-drawn style diagrams as Excalidraw JSON.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/excalidraw-diagram/SKILL.md",
+      "path": "skills/excalidraw-diagram",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "excalidraw-diagram",
+        "description": "Generate hand-drawn style diagrams as Excalidraw JSON.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "markdown-to-pdf",
+      "category": "utility",
+      "tier": "utility",
+      "description": "Convert markdown to styled PDF with syntax highlighting.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/markdown-to-pdf/SKILL.md",
+      "path": "skills/markdown-to-pdf",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "markdown-to-pdf",
+        "description": "Convert markdown to styled PDF with syntax highlighting.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "env-config-manager",
+      "category": "utility",
+      "tier": "utility",
+      "description": "Manage environment variables \u2014 create .env.example, validate, document.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/env-config-manager/SKILL.md",
+      "path": "skills/env-config-manager",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "env-config-manager",
+        "description": "Manage environment variables \u2014 create .env.example, validate, document.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "http-api-tester",
+      "category": "backend",
+      "tier": "utility",
+      "description": "Test HTTP APIs from the command line without Postman.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/http-api-tester/SKILL.md",
+      "path": "skills/http-api-tester",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "http-api-tester",
+        "description": "Test HTTP APIs from the command line without Postman.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "csv-toolkit",
+      "category": "utility",
+      "tier": "utility",
+      "description": "Process CSV files \u2014 filter, transform, merge, and analyze.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/csv-toolkit/SKILL.md",
+      "path": "skills/csv-toolkit",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "csv-toolkit",
+        "description": "Process CSV files \u2014 filter, transform, merge, and analyze.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "qr-code-generator",
+      "category": "utility",
+      "tier": "utility",
+      "description": "Generate QR codes for URLs, WiFi, vCards, and text.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/qr-code-generator/SKILL.md",
+      "path": "skills/qr-code-generator",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "qr-code-generator",
+        "description": "Generate QR codes for URLs, WiFi, vCards, and text.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "log-analyzer",
+      "category": "utility",
+      "tier": "utility",
+      "description": "Analyze log files for errors, patterns, and anomalies.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/log-analyzer/SKILL.md",
+      "path": "skills/log-analyzer",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "log-analyzer",
+        "description": "Analyze log files for errors, patterns, and anomalies.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "password-generator",
+      "category": "utility",
+      "tier": "utility",
+      "description": "Generate secure passwords, passphrases, and API keys.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/password-generator/SKILL.md",
+      "path": "skills/password-generator",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "password-generator",
+        "description": "Generate secure passwords, passphrases, and API keys.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "json-formatter",
+      "category": "utility",
+      "tier": "utility",
+      "description": "Format, validate, minify, and transform JSON.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/json-formatter/SKILL.md",
+      "path": "skills/json-formatter",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "json-formatter",
+        "description": "Format, validate, minify, and transform JSON.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "regex-tester",
+      "category": "utility",
+      "tier": "utility",
+      "description": "Test and debug regular expressions with match highlighting.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/regex-tester/SKILL.md",
+      "path": "skills/regex-tester",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "regex-tester",
+        "description": "Test and debug regular expressions with match highlighting.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "file-organizer",
+      "category": "utility",
+      "tier": "utility",
+      "description": "Organize files by type, date, or content hash.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/file-organizer/SKILL.md",
+      "path": "skills/file-organizer",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "file-organizer",
+        "description": "Organize files by type, date, or content hash.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "changelog-generator",
+      "category": "utility",
+      "tier": "utility",
+      "description": "Generate a changelog from git commit history.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/changelog-generator/SKILL.md",
+      "path": "skills/changelog-generator",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "changelog-generator",
+        "description": "Generate a changelog from git commit history.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "color-palette-generator",
+      "category": "frontend",
+      "tier": "utility",
+      "description": "Generate color palettes from images or base colors.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/color-palette-generator/SKILL.md",
+      "path": "skills/color-palette-generator",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "color-palette-generator",
+        "description": "Generate color palettes from images or base colors.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "snippet-manager",
+      "category": "utility",
+      "tier": "utility",
+      "description": "Save and retrieve reusable code snippets.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/snippet-manager/SKILL.md",
+      "path": "skills/snippet-manager",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "snippet-manager",
+        "description": "Save and retrieve reusable code snippets.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "markdown-linter",
+      "category": "utility",
+      "tier": "utility",
+      "description": "Lint markdown files for consistency and common issues.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/markdown-linter/SKILL.md",
+      "path": "skills/markdown-linter",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "markdown-linter",
+        "description": "Lint markdown files for consistency and common issues.",
         "version": "1.0.0"
       }
     }
