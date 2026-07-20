@@ -38,9 +38,7 @@
     </div>
   </header>
 
-  <section class="distribution-bar" id="distribution-bar" aria-label="Category distribution">
-    <!-- Filled by JS -->
-  </section>
+  <section class="distribution-bar" id="distribution-bar" aria-label="Category distribution"></section>
 
   <nav class="controls" aria-label="Sort and filter">
     <div class="control-group">
@@ -93,11 +91,66 @@
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
   </button>
 
+  <!-- Detail page overlay -->
+  <div class="detail-overlay" id="detail-overlay" hidden>
+    <div class="detail-page">
+      <div class="detail-header">
+        <div class="detail-header-inner">
+          <div class="detail-header-top">
+            <div class="detail-titles">
+              <h2 id="detail-name">Skill Name</h2>
+              <span class="tier-badge" id="detail-tier">Core</span>
+            </div>
+            <button class="detail-close" id="detail-close" aria-label="Close skill detail page" title="Close (Esc)">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <p class="detail-desc" id="detail-desc"></p>
+          <div class="detail-meta-row" id="detail-meta"></div>
+        </div>
+      </div>
+      <div class="detail-body">
+        <div class="detail-body-inner">
+          <div class="detail-tabs">
+            <button class="detail-tab active" data-tab="overview">Overview</button>
+            <button class="detail-tab" data-tab="skillmd">SKILL.md</button>
+            <button class="detail-tab" data-tab="readme">README</button>
+          </div>
+
+          <div class="detail-tab-content active" id="tab-overview">
+            <section class="detail-section">
+              <h3>What it does</h3>
+              <p id="detail-user-use">—</p>
+            </section>
+            <section class="detail-section">
+              <h3>How an agent uses it</h3>
+              <div id="detail-agent-use">—</div>
+            </section>
+            <div class="install-block">
+              <h4>Install command</h4>
+              <code id="detail-install-cmd">—</code>
+              <button class="copy-btn" id="detail-copy-btn">Copy</button>
+            </div>
+            <a class="detail-skillmd-link" id="detail-skillmd-link" href="#" target="_blank" rel="noopener">View SKILL.md on GitHub ↗</a>
+          </div>
+
+          <div class="detail-tab-content" id="tab-skillmd">
+            <pre class="skillmd-viewer" id="detail-skillmd-content">Loading...</pre>
+          </div>
+
+          <div class="detail-tab-content" id="tab-readme">
+            <pre class="skillmd-viewer" id="detail-readme-content">Loading...</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer class="footer">
     <p>Each skill is self-contained. Install with <code>hermes skills install &lt;url&gt;</code> or clone the repo.</p>
     <p><strong>50 skills</strong> across 6 categories — DevOps, Frontend, Backend, Utility, Integrations, Meta. Ranked by usefulness tier (Core, Featured, Utility) and usage.</p>
     <p>Maintained by Monica Amano. MIT licensed. Skills adapted from third parties carry per-skill attribution.</p>
-    <p class="keyboard-hints">Keyboard: <kbd>/</kbd> search · <kbd>Esc</kbd> close card · <kbd>t</kbd> toggle theme</p>
+    <p class="keyboard-hints">Keyboard: <kbd>/</kbd> search · <kbd>Esc</kbd> close detail page · <kbd>t</kbd> toggle theme</p>
   </footer>
 
   <script src="app.js"></script>

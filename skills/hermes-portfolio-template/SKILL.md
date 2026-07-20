@@ -163,6 +163,37 @@ Every skill in the portfolio must have:
 | `README.md` | `skills/<name>/README.md` | What it does, install, how to use, example |
 | Index entry | `skills-index.json` | name, category, tier, description, install_url, path, source |
 
+## Site Features
+
+The portfolio static site includes:
+- Dark mode default with light toggle (localStorage persistence)
+- Sortable skill cards (by tier+usage, usage, recency, category, alphabetical)
+- Category and tier filters with filter chips
+- Search with keyboard shortcut (`/`)
+- **Detail page overlay**: clicking a skill opens a full page with:
+  - "What it does" (user-facing description)
+  - "How an agent uses it" (agent-facing use cases)
+  - SKILL.md tab (raw markdown rendered for reading)
+  - README tab (raw markdown rendered for reading)
+  - Install command with copy-to-clipboard
+  - Close button (X icon), Esc key, click-outside-to-close
+  - Shareable URL hash: `#skill/<name>`
+- Category distribution bar
+- Back-to-top button
+- Toast notifications
+- Keyboard: `/` search, `Esc` close detail, `t` toggle theme
+
+### GitHub Pages deployment
+
+GitHub Pages only serves from `/` or `/docs`. Deploy:
+1. Copy site files + skills-index.json into `docs/`
+2. Settings → Pages → Source → Deploy from branch → `main` → `/docs`
+3. Site live at `https://<username>.github.io/<repo-name>/`
+
+### skills-index.json enrichment
+
+Each skill entry should include `agent_use`, `user_use`, `skillmd_content`, and `readme_content` fields so the detail page can show all content without fetching individual files.
+
 ## Pitfalls
 
 - **Index drift** — If you add a skill directory but forget to add an entry to `skills-index.json`, the site won't show it and the CI should warn. Keep them in sync.
@@ -170,3 +201,5 @@ Every skill in the portfolio must have:
 - **Tier inflation** — Don't mark everything `core`. If all skills are core, the tier is meaningless. Reserve `core` for skills that nearly any user benefits from.
 - **No categories** — Every skill must belong to a category. Uncategorized skills break the filter UI and the agent-parseable index.
 - **Invented usage data** — Start all usage counts at 0. Don't fabricate install numbers — they'll be overwritten by real data once the portfolio has traffic, and fake numbers erode trust.
+- **skills-index.json too large** — Embedding full SKILL.md and README.md content in the index makes it large (500KB+ for 50 skills). This is acceptable for a static site — it loads once and enables instant detail page rendering without per-skill fetches.
+- **docs/ vs site/ drift** — When you update site files, always copy them to `docs/` too. The `docs/` directory is what GitHub Pages serves. Use a sync script or the portfolio-upkeep skill.
