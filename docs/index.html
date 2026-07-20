@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hermes Skills Portfolio — 50 Empowering Skills</title>
+  <meta name="description" content="A curated portfolio of 50 empowering skills for the Hermes agent. Install one, your agent can now do that for you.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <h1>Hermes Skills Portfolio</h1>
+        <a class="github-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+      <p class="tagline">Empowering skills for the Hermes agent — install one, your agent can now do that for you.</p>
+      <div class="meta-row">
+        <span class="meta-item" id="skill-count">— skills</span>
+        <span class="meta-sep">·</span>
+        <span class="meta-item">by Monica Amano</span>
+        <span class="meta-sep">·</span>
+        <span class="meta-item">MIT licensed</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="controls" aria-label="Sort and filter">
+    <div class="control-group">
+      <label for="sort-select">Sort by</label>
+      <select id="sort-select">
+        <option value="tier-usage">Usefulness, then usage</option>
+        <option value="usage">Usage only</option>
+        <option value="recency">Most recent</option>
+        <option value="category">Category</option>
+        <option value="alpha">Alphabetical</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label for="category-filter">Category</label>
+      <select id="category-filter">
+        <option value="">All categories</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label for="tier-filter">Tier</label>
+      <select id="tier-filter">
+        <option value="">All tiers</option>
+        <option value="core">Core</option>
+        <option value="featured">Featured</option>
+        <option value="utility">Utility</option>
+      </select>
+    </div>
+    <div class="control-group control-grow">
+      <label for="search-input">Search</label>
+      <input type="search" id="search-input" placeholder="Skill name, keyword, or capability...">
+    </div>
+  </nav>
+
+  <div class="stats-bar" id="stats-bar">
+    <span id="results-count">Loading...</span>
+  </div>
+
+  <main class="skill-grid" id="skill-grid" aria-live="polite">
+    <p class="empty-state">Loading skills...</p>
+  </main>
+
+  <footer class="footer">
+    <p>Each skill is self-contained. Install with <code>hermes skills install &lt;url&gt;</code> or clone the repo.</p>
+    <p><strong>50 skills</strong> across 6 categories — DevOps, Frontend, Backend, Utility, Integrations, Meta. Ranked by usefulness tier (Core → Featured → Utility) and usage.</p>
+    <p>Maintained by Monica Amano. MIT licensed. Skills adapted from third parties carry per-skill attribution.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
