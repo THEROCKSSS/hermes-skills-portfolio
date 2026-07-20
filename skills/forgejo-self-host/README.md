@@ -9,7 +9,7 @@ The agent deploys a Forgejo instance using Docker Compose, creates an admin acco
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/forgejo-self-host/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/forgejo-self-host/SKILL.md
 ```
 
 ## How to use

@@ -9,7 +9,7 @@ The agent reads your project and writes a README that follows anti-AI-slop rules
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/hallmark-readme/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/hallmark-readme/SKILL.md
 ```
 
 ## How to use

@@ -18,7 +18,7 @@ separate from your own so you can approve or reject them one at a time.
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/skill-registry-catalog/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/skill-registry-catalog/SKILL.md
 ```
 
 ## How to use

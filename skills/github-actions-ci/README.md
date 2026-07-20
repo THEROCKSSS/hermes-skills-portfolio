@@ -3,7 +3,7 @@
 > Ship a real GitHub Actions CI/CD pipeline for any project — tests, builds, and
 > deployments that actually pass, generated from a single conversation.
 
-Part of the [Hermes Skills Portfolio](https://github.com/MonicaAmano/hermes-skills-portfolio)
+Part of the [Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
 by **Monica Amano**.
 
 ---
@@ -35,7 +35,7 @@ Install the skill into your Hermes agent:
 
 ```bash
 hermes skills install \
-  https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/github-actions-ci/SKILL.md
+  https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/github-actions-ci/SKILL.md
 ```
 
 Or add it to your portfolio checkout and point Hermes at the directory.

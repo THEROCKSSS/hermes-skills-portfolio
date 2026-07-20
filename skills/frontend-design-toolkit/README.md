@@ -9,7 +9,7 @@ The agent uses design patterns from real, recognizable products (Stripe, Linear,
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/frontend-design-toolkit/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/frontend-design-toolkit/SKILL.md
 ```
 
 ## How to use

@@ -9,7 +9,7 @@ The agent extracts a single skill from a skills monorepo, generates a self-conta
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/skill-publish/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/skill-publish/SKILL.md
 ```
 
 ## How to use

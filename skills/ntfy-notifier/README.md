@@ -9,7 +9,7 @@ The agent sets up ntfy push notifications for your scripts, cron jobs, or agent 
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/ntfy-notifier/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ntfy-notifier/SKILL.md
 ```
 
 ## How to use

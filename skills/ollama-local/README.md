@@ -9,7 +9,7 @@ The agent installs Ollama, pulls a model that fits your hardware, and shows you 
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/ollama-local/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ollama-local/SKILL.md
 ```
 
 ## How to use

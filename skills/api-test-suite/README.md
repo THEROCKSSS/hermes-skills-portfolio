@@ -11,7 +11,7 @@ This is a generator, not a hosted runner. The output is real files in your repo 
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/api-test-suite/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/api-test-suite/SKILL.md
 ```
 
 ## Inputs
@@ -214,4 +214,4 @@ The agent generates at least one case per endpoint from each row:
 
 ## Part of
 
-[Hermes Skills Portfolio](https://github.com/MonicaAmano/hermes-skills-portfolio) — empowering skills for the Hermes agent.
+[Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio) — empowering skills for the Hermes agent.

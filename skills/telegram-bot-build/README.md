@@ -9,7 +9,7 @@ Builds a working Telegram bot in Python (`python-telegram-bot`) or Node (`telegr
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/telegram-bot-build/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/telegram-bot-build/SKILL.md
 ```
 
 ## How to use

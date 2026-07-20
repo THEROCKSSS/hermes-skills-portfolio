@@ -9,7 +9,7 @@ The agent creates ASCII art in three modes: text banners (pyfiglet, 500+ fonts),
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/ascii-art/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ascii-art/SKILL.md
 ```
 
 ## How to use

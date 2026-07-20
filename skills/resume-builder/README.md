@@ -75,7 +75,7 @@ npm install puppeteer && node export-pdf.js
 Install this skill into Hermes from the public portfolio:
 
 ```
-https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/resume-builder/SKILL.md
+https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/resume-builder/SKILL.md
 ```
 
 Then ask Hermes: *"Build my resume from resume.yaml using the modern template

@@ -9,7 +9,7 @@ The agent sets up a dotfiles management system using one of four strategies (git
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/dotfiles-manage/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/dotfiles-manage/SKILL.md
 ```
 
 ## How to use

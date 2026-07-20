@@ -9,7 +9,7 @@ The agent launches a web-based dashboard (sqlite-web) for any SQLite database fi
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/sqlite-dashboard/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/sqlite-dashboard/SKILL.md
 ```
 
 ## How to use

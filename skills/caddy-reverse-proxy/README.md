@@ -9,7 +9,7 @@ The agent installs Caddy, writes a Caddyfile for your services, and starts the p
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/caddy-reverse-proxy/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/caddy-reverse-proxy/SKILL.md
 ```
 
 ## How to use

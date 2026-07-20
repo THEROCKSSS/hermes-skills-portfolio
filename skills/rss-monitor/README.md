@@ -9,7 +9,7 @@ The agent sets up a feed monitoring script that checks your RSS/Atom feeds on a 
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/rss-monitor/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/rss-monitor/SKILL.md
 ```
 
 ## How to use

@@ -3,7 +3,7 @@
 > A Hermes skill that gives the agent everything it needs to set up **automatic,
 > verifiable, restorable backups** of your git repositories to an offsite remote.
 
-Part of the [Hermes Skills Portfolio](https://github.com/MonicaAmano/hermes-skills-portfolio)
+Part of the [Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
 by Monica Amano.
 
 ---
@@ -35,7 +35,7 @@ Backups are only real when they are **automatic**, **verified**, and
 Point Hermes at the skill file:
 
 ```
-https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/git-backup/SKILL.md
+https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/git-backup/SKILL.md
 ```
 
 Or copy the `git-backup` folder into your Hermes skills directory.

@@ -9,7 +9,7 @@ The agent converts a markdown file to PDF using weasyprint, puppeteer, or pandoc
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/markdown-to-pdf/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-to-pdf/SKILL.md
 ```
 
 ## How to use

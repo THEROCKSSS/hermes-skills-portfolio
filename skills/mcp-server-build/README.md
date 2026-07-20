@@ -9,7 +9,7 @@ The agent creates a Model Context Protocol (MCP) server that exposes your tools,
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/mcp-server-build/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/mcp-server-build/SKILL.md
 ```
 
 ## How to use

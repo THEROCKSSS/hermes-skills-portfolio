@@ -18,7 +18,7 @@ print-ready document every time.
 Point Hermes at the skill file:
 
 ```
-https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/invoice-generator/SKILL.md
+https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/invoice-generator/SKILL.md
 ```
 
 Or copy the `invoice-generator/` folder into your Hermes skills directory.
@@ -78,5 +78,5 @@ MIT — free to use, fork, and ship in your own portfolio.
 
 ---
 
-Part of the [hermes-skills-portfolio](https://github.com/MonicaAmano/hermes-skills-portfolio)
+Part of the [hermes-skills-portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
 by Monica Amano.

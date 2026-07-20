@@ -9,7 +9,7 @@ The agent reads a PDF and extracts its content as structured text. For normal PD
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/pdf-extract/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/pdf-extract/SKILL.md
 ```
 
 ## How to use

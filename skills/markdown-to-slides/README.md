@@ -3,7 +3,7 @@
 > Turn plain Markdown into polished presentation slides — then export to PDF or
 > PowerPoint in one command.
 
-Part of the [Hermes Skills Portfolio](https://github.com/MonicaAmano/hermes-skills-portfolio)
+Part of the [Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
 by **Monica Amano**.
 
 ## Why this skill exists
@@ -24,7 +24,7 @@ them with the three best open-source slide engines:
 In Hermes, install the skill from the portfolio:
 
 ```
-https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/markdown-to-slides/SKILL.md
+https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-to-slides/SKILL.md
 ```
 
 Or copy `skills/markdown-to-slides/` into your Hermes skills directory.
@@ -72,7 +72,7 @@ exports in full.
 
 ## Links
 
-- Install URL: <https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/markdown-to-slides/SKILL.md>
+- Install URL: <https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-to-slides/SKILL.md>
 - Full reference: see `SKILL.md` in this folder.
 
 ---

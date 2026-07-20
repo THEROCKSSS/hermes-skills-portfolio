@@ -9,7 +9,7 @@ The agent tests regex patterns against sample text and shows exactly what matche
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/regex-tester/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/regex-tester/SKILL.md
 ```
 
 ## How to use

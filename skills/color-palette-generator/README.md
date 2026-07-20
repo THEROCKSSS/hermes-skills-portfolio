@@ -9,7 +9,7 @@ The agent creates cohesive color palettes in three modes: extract dominant color
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/color-palette-generator/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/color-palette-generator/SKILL.md
 ```
 
 ## How to use

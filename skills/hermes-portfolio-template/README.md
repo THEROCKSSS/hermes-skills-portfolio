@@ -9,7 +9,7 @@ The agent creates a portfolio repo structure for your skills: a monorepo with on
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/hermes-portfolio-template/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/hermes-portfolio-template/SKILL.md
 ```
 
 ## How to use

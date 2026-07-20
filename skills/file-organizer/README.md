@@ -9,7 +9,7 @@ The agent scans a directory and organizes files into subdirectories by category 
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/file-organizer/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/file-organizer/SKILL.md
 ```
 
 ## How to use

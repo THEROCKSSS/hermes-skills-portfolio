@@ -247,4 +247,4 @@ The agent should:
 ## Install / Source
 
 Public portfolio (Monica Amano):
-https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/invoice-generator/SKILL.md
+https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/invoice-generator/SKILL.md

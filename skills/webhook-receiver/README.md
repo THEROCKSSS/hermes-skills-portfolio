@@ -32,7 +32,7 @@ respond pipeline that fixes all three by default.
 Point Hermes at the skill manifest:
 
 ```
-https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/webhook-receiver/SKILL.md
+https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/webhook-receiver/SKILL.md
 ```
 
 Or clone the portfolio and load `skills/webhook-receiver` locally.
@@ -63,5 +63,5 @@ verification checklist.
 
 ## Author
 
-Part of the public [Hermes Skills Portfolio](https://github.com/MonicaAmano/hermes-skills-portfolio)
+Part of the public [Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
 by **Monica Amano**.

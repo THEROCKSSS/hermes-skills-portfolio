@@ -9,7 +9,7 @@ The agent reads a log file and produces a structured analysis: total lines, erro
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/log-analyzer/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/log-analyzer/SKILL.md
 ```
 
 ## How to use

@@ -6,7 +6,7 @@
     "owner": "Monica Amano",
     "tagline": "Empowering skills for the Hermes agent \u2014 install one, your agent can now do that for you.",
     "total_skills": 50,
-    "github_url": "https://github.com/MonicaAmano/hermes-skills-portfolio",
+    "github_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio",
     "forgejo_url": "http://localhost:3000/agentsoul/hermes-skills-portfolio"
   },
   "categories": {
@@ -47,7 +47,7 @@
       "category": "devops",
       "tier": "core",
       "description": "Deploy a service on your Tailscale tailnet so it's privately accessible from any of your devices.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/tailscale-deploy/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/tailscale-deploy/SKILL.md",
       "path": "skills/tailscale-deploy",
       "usage": {
         "hub_installs": 0,
@@ -69,7 +69,7 @@
       "category": "utility",
       "tier": "core",
       "description": "Write a non-AI-slop README for any project \u2014 one that sounds like a human wrote it.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/hallmark-readme/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/hallmark-readme/SKILL.md",
       "path": "skills/hallmark-readme",
       "usage": {
         "hub_installs": 0,
@@ -91,7 +91,7 @@
       "category": "backend",
       "tier": "core",
       "description": "Generate an optimized multi-stage Dockerfile for your detected project stack.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/generate-dockerfile/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/generate-dockerfile/SKILL.md",
       "path": "skills/generate-dockerfile",
       "usage": {
         "hub_installs": 0,
@@ -113,7 +113,7 @@
       "category": "devops",
       "tier": "core",
       "description": "Set up a self-hosted Forgejo Git server with Docker \u2014 repos, issues, PRs, and CI in minutes.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/forgejo-self-host/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/forgejo-self-host/SKILL.md",
       "path": "skills/forgejo-self-host",
       "usage": {
         "hub_installs": 0,
@@ -135,7 +135,7 @@
       "category": "meta",
       "tier": "core",
       "description": "Publish one skill from a monorepo into its own dedicated GitHub repo with a standalone README.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/skill-publish/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/skill-publish/SKILL.md",
       "path": "skills/skill-publish",
       "usage": {
         "hub_installs": 0,
@@ -157,7 +157,7 @@
       "category": "frontend",
       "tier": "core",
       "description": "Build distinctive frontends using curated real-world design system patterns \u2014 no AI-generated look.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/frontend-design-toolkit/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/frontend-design-toolkit/SKILL.md",
       "path": "skills/frontend-design-toolkit",
       "usage": {
         "hub_installs": 0,
@@ -179,7 +179,7 @@
       "category": "meta",
       "tier": "core",
       "description": "Set up a skills portfolio repo with categorized, ranked, sortable skills \u2014 the meta-skill for publishing portfolios.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/hermes-portfolio-template/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/hermes-portfolio-template/SKILL.md",
       "path": "skills/hermes-portfolio-template",
       "usage": {
         "hub_installs": 0,
@@ -201,7 +201,7 @@
       "category": "devops",
       "tier": "core",
       "description": "Consolidate multiple services under a single Docker front-end with routing and a themed index page.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/docker-umbrella/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/docker-umbrella/SKILL.md",
       "path": "skills/docker-umbrella",
       "usage": {
         "hub_installs": 0,
@@ -223,7 +223,7 @@
       "category": "backend",
       "tier": "core",
       "description": "Generate a runnable API test suite \u2014 contract tests, integration tests, and CI config from an OpenAPI spec or existing API.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/api-test-suite/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/api-test-suite/SKILL.md",
       "path": "skills/api-test-suite",
       "usage": {
         "hub_installs": 0,
@@ -245,7 +245,7 @@
       "category": "meta",
       "tier": "core",
       "description": "Catalog third-party AI agent skills from public registries \u2014 a categorized, tracked catalog of skills worth evaluating.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/skill-registry-catalog/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/skill-registry-catalog/SKILL.md",
       "path": "skills/skill-registry-catalog",
       "usage": {
         "hub_installs": 0,
@@ -267,7 +267,7 @@
       "category": "backend",
       "tier": "featured",
       "description": "Build a working MCP server that exposes your tools to AI agents.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/mcp-server-build/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/mcp-server-build/SKILL.md",
       "path": "skills/mcp-server-build",
       "usage": {
         "hub_installs": 0,
@@ -289,7 +289,7 @@
       "category": "backend",
       "tier": "featured",
       "description": "Set up a webhook endpoint that receives and processes incoming webhooks with signature verification.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/webhook-receiver/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/webhook-receiver/SKILL.md",
       "path": "skills/webhook-receiver",
       "usage": {
         "hub_installs": 0,
@@ -311,7 +311,7 @@
       "category": "utility",
       "tier": "featured",
       "description": "Set up scheduled agent tasks with delivery to messaging platforms.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/cron-task/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/cron-task/SKILL.md",
       "path": "skills/cron-task",
       "usage": {
         "hub_installs": 0,
@@ -333,7 +333,7 @@
       "category": "integrations",
       "tier": "featured",
       "description": "Build a working Discord bot with slash commands, events, and moderation.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/discord-bot-build/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/discord-bot-build/SKILL.md",
       "path": "skills/discord-bot-build",
       "usage": {
         "hub_installs": 0,
@@ -355,7 +355,7 @@
       "category": "integrations",
       "tier": "featured",
       "description": "Build a working Telegram bot with commands and inline keyboards.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/telegram-bot-build/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/telegram-bot-build/SKILL.md",
       "path": "skills/telegram-bot-build",
       "usage": {
         "hub_installs": 0,
@@ -377,7 +377,7 @@
       "category": "devops",
       "tier": "featured",
       "description": "Run local LLMs with Ollama \u2014 private, offline, no API costs.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/ollama-local/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ollama-local/SKILL.md",
       "path": "skills/ollama-local",
       "usage": {
         "hub_installs": 0,
@@ -399,7 +399,7 @@
       "category": "devops",
       "tier": "featured",
       "description": "Self-host a private SearXNG meta-search engine without tracking.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/searxng-self-host/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/searxng-self-host/SKILL.md",
       "path": "skills/searxng-self-host",
       "usage": {
         "hub_installs": 0,
@@ -421,7 +421,7 @@
       "category": "devops",
       "tier": "featured",
       "description": "Self-host an uptime monitoring dashboard with alerts.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/uptime-kuma-self-host/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/uptime-kuma-self-host/SKILL.md",
       "path": "skills/uptime-kuma-self-host",
       "usage": {
         "hub_installs": 0,
@@ -443,7 +443,7 @@
       "category": "integrations",
       "tier": "featured",
       "description": "Send push notifications to your phone and desktop via ntfy.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/ntfy-notifier/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ntfy-notifier/SKILL.md",
       "path": "skills/ntfy-notifier",
       "usage": {
         "hub_installs": 0,
@@ -465,7 +465,7 @@
       "category": "utility",
       "tier": "featured",
       "description": "Automate git backup of your repos to a remote.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/git-backup/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/git-backup/SKILL.md",
       "path": "skills/git-backup",
       "usage": {
         "hub_installs": 0,
@@ -487,7 +487,7 @@
       "category": "utility",
       "tier": "featured",
       "description": "Version and sync your dotfiles across machines.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/dotfiles-manage/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/dotfiles-manage/SKILL.md",
       "path": "skills/dotfiles-manage",
       "usage": {
         "hub_installs": 0,
@@ -509,7 +509,7 @@
       "category": "utility",
       "tier": "featured",
       "description": "Generate a professional resume in HTML/PDF from structured data.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/resume-builder/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/resume-builder/SKILL.md",
       "path": "skills/resume-builder",
       "usage": {
         "hub_installs": 0,
@@ -531,7 +531,7 @@
       "category": "utility",
       "tier": "featured",
       "description": "Generate professional invoices in PDF from line items.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/invoice-generator/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/invoice-generator/SKILL.md",
       "path": "skills/invoice-generator",
       "usage": {
         "hub_installs": 0,
@@ -553,7 +553,7 @@
       "category": "devops",
       "tier": "featured",
       "description": "Set up a Caddy reverse proxy with automatic HTTPS.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/caddy-reverse-proxy/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/caddy-reverse-proxy/SKILL.md",
       "path": "skills/caddy-reverse-proxy",
       "usage": {
         "hub_installs": 0,
@@ -575,7 +575,7 @@
       "category": "backend",
       "tier": "featured",
       "description": "Browse SQLite databases with a web UI.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/sqlite-dashboard/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/sqlite-dashboard/SKILL.md",
       "path": "skills/sqlite-dashboard",
       "usage": {
         "hub_installs": 0,
@@ -597,7 +597,7 @@
       "category": "frontend",
       "tier": "featured",
       "description": "Create presentation slides from markdown.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/markdown-to-slides/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-to-slides/SKILL.md",
       "path": "skills/markdown-to-slides",
       "usage": {
         "hub_installs": 0,
@@ -619,7 +619,7 @@
       "category": "backend",
       "tier": "featured",
       "description": "Set up GitHub Actions CI/CD for your project.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/github-actions-ci/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/github-actions-ci/SKILL.md",
       "path": "skills/github-actions-ci",
       "usage": {
         "hub_installs": 0,
@@ -641,7 +641,7 @@
       "category": "backend",
       "tier": "featured",
       "description": "Generate client SDKs and server stubs from an OpenAPI spec.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/openapi-generator/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/openapi-generator/SKILL.md",
       "path": "skills/openapi-generator",
       "usage": {
         "hub_installs": 0,
@@ -663,7 +663,7 @@
       "category": "integrations",
       "tier": "featured",
       "description": "Send email programmatically via SMTP or API providers.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/email-send/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/email-send/SKILL.md",
       "path": "skills/email-send",
       "usage": {
         "hub_installs": 0,
@@ -685,7 +685,7 @@
       "category": "integrations",
       "tier": "featured",
       "description": "Monitor RSS and Atom feeds for new entries with notifications.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/rss-monitor/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/rss-monitor/SKILL.md",
       "path": "skills/rss-monitor",
       "usage": {
         "hub_installs": 0,
@@ -707,7 +707,7 @@
       "category": "utility",
       "tier": "utility",
       "description": "Extract text, images, and tables from PDFs with OCR fallback.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/pdf-extract/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/pdf-extract/SKILL.md",
       "path": "skills/pdf-extract",
       "usage": {
         "hub_installs": 0,
@@ -729,7 +729,7 @@
       "category": "utility",
       "tier": "utility",
       "description": "Extract text from images and scanned documents using OCR.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/ocr-documents/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ocr-documents/SKILL.md",
       "path": "skills/ocr-documents",
       "usage": {
         "hub_installs": 0,
@@ -751,7 +751,7 @@
       "category": "utility",
       "tier": "utility",
       "description": "Search and download GIFs from Tenor by keyword.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/gif-search/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/gif-search/SKILL.md",
       "path": "skills/gif-search",
       "usage": {
         "hub_installs": 0,
@@ -773,7 +773,7 @@
       "category": "utility",
       "tier": "utility",
       "description": "Extract transcripts from YouTube videos.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/youtube-transcript/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/youtube-transcript/SKILL.md",
       "path": "skills/youtube-transcript",
       "usage": {
         "hub_installs": 0,
@@ -795,7 +795,7 @@
       "category": "utility",
       "tier": "utility",
       "description": "Generate ASCII art from text and images.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/ascii-art/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ascii-art/SKILL.md",
       "path": "skills/ascii-art",
       "usage": {
         "hub_installs": 0,
@@ -817,7 +817,7 @@
       "category": "frontend",
       "tier": "utility",
       "description": "Generate hand-drawn style diagrams as Excalidraw JSON.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/excalidraw-diagram/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/excalidraw-diagram/SKILL.md",
       "path": "skills/excalidraw-diagram",
       "usage": {
         "hub_installs": 0,
@@ -839,7 +839,7 @@
       "category": "utility",
       "tier": "utility",
       "description": "Convert markdown to styled PDF with syntax highlighting.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/markdown-to-pdf/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-to-pdf/SKILL.md",
       "path": "skills/markdown-to-pdf",
       "usage": {
         "hub_installs": 0,
@@ -861,7 +861,7 @@
       "category": "utility",
       "tier": "utility",
       "description": "Manage environment variables \u2014 create .env.example, validate, document.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/env-config-manager/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/env-config-manager/SKILL.md",
       "path": "skills/env-config-manager",
       "usage": {
         "hub_installs": 0,
@@ -883,7 +883,7 @@
       "category": "backend",
       "tier": "utility",
       "description": "Test HTTP APIs from the command line without Postman.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/http-api-tester/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/http-api-tester/SKILL.md",
       "path": "skills/http-api-tester",
       "usage": {
         "hub_installs": 0,
@@ -905,7 +905,7 @@
       "category": "utility",
       "tier": "utility",
       "description": "Process CSV files \u2014 filter, transform, merge, and analyze.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/csv-toolkit/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/csv-toolkit/SKILL.md",
       "path": "skills/csv-toolkit",
       "usage": {
         "hub_installs": 0,
@@ -927,7 +927,7 @@
       "category": "utility",
       "tier": "utility",
       "description": "Generate QR codes for URLs, WiFi, vCards, and text.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/qr-code-generator/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/qr-code-generator/SKILL.md",
       "path": "skills/qr-code-generator",
       "usage": {
         "hub_installs": 0,
@@ -949,7 +949,7 @@
       "category": "utility",
       "tier": "utility",
       "description": "Analyze log files for errors, patterns, and anomalies.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/log-analyzer/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/log-analyzer/SKILL.md",
       "path": "skills/log-analyzer",
       "usage": {
         "hub_installs": 0,
@@ -971,7 +971,7 @@
       "category": "utility",
       "tier": "utility",
       "description": "Generate secure passwords, passphrases, and API keys.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/password-generator/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/password-generator/SKILL.md",
       "path": "skills/password-generator",
       "usage": {
         "hub_installs": 0,
@@ -993,7 +993,7 @@
       "category": "utility",
       "tier": "utility",
       "description": "Format, validate, minify, and transform JSON.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/json-formatter/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/json-formatter/SKILL.md",
       "path": "skills/json-formatter",
       "usage": {
         "hub_installs": 0,
@@ -1015,7 +1015,7 @@
       "category": "utility",
       "tier": "utility",
       "description": "Test and debug regular expressions with match highlighting.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/regex-tester/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/regex-tester/SKILL.md",
       "path": "skills/regex-tester",
       "usage": {
         "hub_installs": 0,
@@ -1037,7 +1037,7 @@
       "category": "utility",
       "tier": "utility",
       "description": "Organize files by type, date, or content hash.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/file-organizer/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/file-organizer/SKILL.md",
       "path": "skills/file-organizer",
       "usage": {
         "hub_installs": 0,
@@ -1059,7 +1059,7 @@
       "category": "utility",
       "tier": "utility",
       "description": "Generate a changelog from git commit history.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/changelog-generator/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/changelog-generator/SKILL.md",
       "path": "skills/changelog-generator",
       "usage": {
         "hub_installs": 0,
@@ -1081,7 +1081,7 @@
       "category": "frontend",
       "tier": "utility",
       "description": "Generate color palettes from images or base colors.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/color-palette-generator/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/color-palette-generator/SKILL.md",
       "path": "skills/color-palette-generator",
       "usage": {
         "hub_installs": 0,
@@ -1103,7 +1103,7 @@
       "category": "utility",
       "tier": "utility",
       "description": "Save and retrieve reusable code snippets.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/snippet-manager/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/snippet-manager/SKILL.md",
       "path": "skills/snippet-manager",
       "usage": {
         "hub_installs": 0,
@@ -1125,7 +1125,7 @@
       "category": "utility",
       "tier": "utility",
       "description": "Lint markdown files for consistency and common issues.",
-      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/markdown-linter/SKILL.md",
+      "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-linter/SKILL.md",
       "path": "skills/markdown-linter",
       "usage": {
         "hub_installs": 0,

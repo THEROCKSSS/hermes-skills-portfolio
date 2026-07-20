@@ -9,7 +9,7 @@ The agent creates Excalidraw-compatible JSON files containing boxes, arrows, cir
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/excalidraw-diagram/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/excalidraw-diagram/SKILL.md
 ```
 
 ## How to use

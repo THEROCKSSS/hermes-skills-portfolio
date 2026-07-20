@@ -9,7 +9,7 @@ The agent reads CSV files and performs data operations: filtering rows, transfor
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/csv-toolkit/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/csv-toolkit/SKILL.md
 ```
 
 ## How to use

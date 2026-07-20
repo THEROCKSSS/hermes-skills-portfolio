@@ -35,13 +35,13 @@ from the landing page, don't route through it.
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/docker-umbrella/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/docker-umbrella/SKILL.md
 ```
 
 Or clone and install from a local path:
 
 ```bash
-git clone https://github.com/MonicaAmano/hermes-skills-portfolio
+git clone https://github.com/THEROCKSSS/hermes-skills-portfolio
 hermes skills install ./hermes-skills-portfolio/skills/docker-umbrella/SKILL.md
 ```
 

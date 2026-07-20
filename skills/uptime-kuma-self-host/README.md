@@ -9,7 +9,7 @@ The agent deploys Uptime Kuma with Docker, creates an admin account, and helps y
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/uptime-kuma-self-host/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/uptime-kuma-self-host/SKILL.md
 ```
 
 ## How to use

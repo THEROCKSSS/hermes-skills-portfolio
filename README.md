@@ -15,13 +15,13 @@ Skills are categorized, ranked by usefulness and usage, and sortable. Browse the
 ## Install any skill
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/<skill-name>/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/<skill-name>/SKILL.md
 ```
 
 Or clone the repo and install from a local path:
 
 ```bash
-git clone https://github.com/MonicaAmano/hermes-skills-portfolio
+git clone https://github.com/THEROCKSSS/hermes-skills-portfolio
 hermes skills install ./hermes-skills-portfolio/skills/<skill-name>/SKILL.md
 ```
 

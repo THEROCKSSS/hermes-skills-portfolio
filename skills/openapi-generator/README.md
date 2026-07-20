@@ -2,7 +2,7 @@
 
 > Generate client SDKs, server stubs, API docs, and config from an OpenAPI spec — in 50+ languages, straight from the contract.
 
-Part of the [Hermes Skills Portfolio](https://github.com/MonicaAmano/hermes-skills-portfolio) by **Monica Amano**.
+Part of the [Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio) by **Monica Amano**.
 
 ---
 
@@ -59,7 +59,7 @@ Prefer npm or the JAR? The skill documents all three install paths
 Add this skill to your Hermes agent:
 
 ```
-https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/openapi-generator/SKILL.md
+https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/openapi-generator/SKILL.md
 ```
 
 Then ask your agent things like:

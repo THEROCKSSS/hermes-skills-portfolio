@@ -9,7 +9,7 @@ The agent scans your project for environment variable usage, creates a `.env.exa
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/env-config-manager/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/env-config-manager/SKILL.md
 ```
 
 ## How to use

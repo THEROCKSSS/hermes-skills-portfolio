@@ -9,7 +9,7 @@ The agent searches Tenor's GIF library by keyword, shows you the top results, an
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/gif-search/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/gif-search/SKILL.md
 ```
 
 ## How to use

@@ -9,7 +9,7 @@ The agent deploys SearXNG with Docker Compose, configures the search engines, an
 ## Install
 
 ```bash
-hermes skills install https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/searxng-self-host/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/searxng-self-host/SKILL.md
 ```
 
 ## How to use
