@@ -1,21 +1,266 @@
 {
   "version": "1.0.0",
-  "generated_at": "2026-07-20T00:00:00Z",
+  "generated_at": "2026-07-20T06:48:42Z",
   "portfolio": {
     "name": "Hermes Skills Portfolio",
     "owner": "Monica Amano",
-    "tagline": "Empowering skills for the Hermes agent — install one, your agent can now do that for you.",
-    "total_skills": 0,
+    "tagline": "Empowering skills for the Hermes agent \u2014 install one, your agent can now do that for you.",
+    "total_skills": 10,
     "github_url": "https://github.com/MonicaAmano/hermes-skills-portfolio",
     "forgejo_url": "http://localhost:3000/agentsoul/hermes-skills-portfolio"
   },
   "categories": {
-    "devops": { "name": "DevOps & Infrastructure", "description": "Deploy, host, and operate services.", "skill_count": 0 },
-    "frontend": { "name": "Frontend", "description": "Build distinctive, non-generic UIs.", "skill_count": 0 },
-    "backend": { "name": "Backend", "description": "APIs, tests, and server-side architecture.", "skill_count": 0 },
-    "utility": { "name": "Utility", "description": "General-purpose capabilities for everyday workflows.", "skill_count": 0 },
-    "meta": { "name": "Meta", "description": "Skills about skills — portfolios, publishing, catalogs.", "skill_count": 0 },
-    "integrations": { "name": "Integrations", "description": "Connect agents to external platforms and services.", "skill_count": 0 }
+    "devops": {
+      "name": "DevOps & Infrastructure",
+      "description": "Deploy, host, and operate services.",
+      "skill_count": 3
+    },
+    "frontend": {
+      "name": "Frontend",
+      "description": "Build distinctive, non-generic UIs.",
+      "skill_count": 1
+    },
+    "backend": {
+      "name": "Backend",
+      "description": "APIs, tests, and server-side architecture.",
+      "skill_count": 2
+    },
+    "utility": {
+      "name": "Utility",
+      "description": "General-purpose capabilities for everyday workflows.",
+      "skill_count": 1
+    },
+    "meta": {
+      "name": "Meta",
+      "description": "Skills about skills \u2014 portfolios, publishing, catalogs.",
+      "skill_count": 3
+    },
+    "integrations": {
+      "name": "Integrations",
+      "description": "Connect agents to external platforms and services.",
+      "skill_count": 0
+    }
   },
-  "skills": []
+  "skills": [
+    {
+      "name": "tailscale-deploy",
+      "category": "devops",
+      "tier": "core",
+      "description": "Deploy a service on your Tailscale tailnet so it's privately accessible from any of your devices.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/tailscale-deploy/SKILL.md",
+      "path": "skills/tailscale-deploy",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "tailscale-deploy",
+        "description": "Deploy a service on the user's Tailscale tailnet so it's privately accessible from any device.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "hallmark-readme",
+      "category": "utility",
+      "tier": "core",
+      "description": "Write a non-AI-slop README for any project \u2014 one that sounds like a human wrote it.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/hallmark-readme/SKILL.md",
+      "path": "skills/hallmark-readme",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "generalized",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "hallmark-readme",
+        "description": "Write a non-AI-slop README for any project.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "generate-dockerfile",
+      "category": "backend",
+      "tier": "core",
+      "description": "Generate an optimized multi-stage Dockerfile for your detected project stack.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/generate-dockerfile/SKILL.md",
+      "path": "skills/generate-dockerfile",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "generalized",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "generate-dockerfile",
+        "description": "Generate an optimized multi-stage Dockerfile for a detected project stack.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "forgejo-self-host",
+      "category": "devops",
+      "tier": "core",
+      "description": "Set up a self-hosted Forgejo Git server with Docker \u2014 repos, issues, PRs, and CI in minutes.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/forgejo-self-host/SKILL.md",
+      "path": "skills/forgejo-self-host",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "generalized",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "forgejo-self-host",
+        "description": "Set up a self-hosted Forgejo instance with Docker.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "skill-publish",
+      "category": "meta",
+      "tier": "core",
+      "description": "Publish one skill from a monorepo into its own dedicated GitHub repo with a standalone README.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/skill-publish/SKILL.md",
+      "path": "skills/skill-publish",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "skill-publish",
+        "description": "Publish one skill from a monorepo into its own dedicated GitHub repo.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "frontend-design-toolkit",
+      "category": "frontend",
+      "tier": "core",
+      "description": "Build distinctive frontends using curated real-world design system patterns \u2014 no AI-generated look.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/frontend-design-toolkit/SKILL.md",
+      "path": "skills/frontend-design-toolkit",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "generalized",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "frontend-design-toolkit",
+        "description": "Build distinctive frontends using curated real-world design system patterns.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "hermes-portfolio-template",
+      "category": "meta",
+      "tier": "core",
+      "description": "Set up a skills portfolio repo with categorized, ranked, sortable skills \u2014 the meta-skill for publishing portfolios.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/hermes-portfolio-template/SKILL.md",
+      "path": "skills/hermes-portfolio-template",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "new",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "hermes-portfolio-template",
+        "description": "Set up a skills portfolio repo with categorized, ranked, sortable skills.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "docker-umbrella",
+      "category": "devops",
+      "tier": "core",
+      "description": "Consolidate multiple services under a single Docker front-end with routing and a themed index page.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/docker-umbrella/SKILL.md",
+      "path": "skills/docker-umbrella",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "generalized",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "docker-umbrella",
+        "description": "Consolidate multiple services under a single Docker front-end.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "api-test-suite",
+      "category": "backend",
+      "tier": "core",
+      "description": "Generate a runnable API test suite \u2014 contract tests, integration tests, and CI config from an OpenAPI spec or existing API.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/api-test-suite/SKILL.md",
+      "path": "skills/api-test-suite",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "generalized",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "api-test-suite",
+        "description": "Generate a runnable API test suite from an OpenAPI spec or existing API.",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "skill-registry-catalog",
+      "category": "meta",
+      "tier": "core",
+      "description": "Catalog third-party AI agent skills from public registries \u2014 a categorized, tracked catalog of skills worth evaluating.",
+      "install_url": "https://github.com/MonicaAmano/hermes-skills-portfolio/blob/main/skills/skill-registry-catalog/SKILL.md",
+      "path": "skills/skill-registry-catalog",
+      "usage": {
+        "hub_installs": 0,
+        "github_clones": 0,
+        "stars": 0,
+        "self_reported_users": 0
+      },
+      "recency": "2026-07-20",
+      "source": "generalized",
+      "source_attribution": "",
+      "frontmatter": {
+        "name": "skill-registry-catalog",
+        "description": "Catalog third-party AI agent skills from public registries.",
+        "version": "1.0.0"
+      }
+    }
+  ]
 }
