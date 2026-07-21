@@ -64,4 +64,4 @@ verification checklist.
 ## Author
 
 Part of the public [Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
-by **Monica Amano**.
+by **Owen**.

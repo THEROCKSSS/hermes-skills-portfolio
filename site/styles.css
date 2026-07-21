@@ -120,7 +120,7 @@ body.detail-open { overflow: hidden; }
 .control-group label { font-size: 0.7rem; color: var(--ink-3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; display: flex; align-items: center; gap: 6px; }
 .control-group select, .control-group input { font-family: 'Inter', sans-serif; font-size: 0.9rem; padding: 7px 0.5rem; border: 1px solid var(--rule-2); border-radius: 6px; background: var(--bg-card); color: var(--ink); cursor: pointer; transition: border-color 150ms ease-out; }
 .control-group select:focus-visible, .control-group input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
-.control-group input { cursor: text; }
+.control-group input { cursor: text; max-width: 320px; }
 .kbd-hint { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; padding: 1px 4px; border: 1px solid var(--rule-2); border-radius: 3px; background: var(--bg-inset); color: var(--ink-3); }
 
 /* ============ ACTIVE FILTER CHIPS ============ */

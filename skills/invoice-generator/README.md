@@ -41,7 +41,7 @@ invoice:
   currency: USD
   tax_rate: 0.20
   sender:
-    name: Monica Amano
+    name: Owen
     company: Amano Studio LLC
     email: billing@amano.studio
   client:
@@ -79,4 +79,4 @@ MIT — free to use, fork, and ship in your own portfolio.
 ---
 
 Part of the [hermes-skills-portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
-by Monica Amano.
+by Owen.

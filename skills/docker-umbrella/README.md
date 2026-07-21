@@ -253,4 +253,4 @@ expose the same backend on both `80` and `443` without intending to.
 
 Generalized from the internal `personal-docker-umbrella` and `docker-pages-umbrella`
 patterns, with all host-specific ports, IPs, and infrastructure coupling removed.
-Public under the Hermes Skills Portfolio by Monica Amano.
+Public under the Hermes Skills Portfolio by Owen.

@@ -2,7 +2,7 @@
 
 Empowering skills for the Hermes agent — install one, your agent can now do that for you.
 
-by **Monica Amano**
+by **Owen**
 
 ---
 
