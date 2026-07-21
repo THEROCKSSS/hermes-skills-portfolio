@@ -134,21 +134,108 @@
     var bar = document.getElementById("distribution-bar");
     bar.innerHTML = "";
     var counts = {};
-    for (var i = 0; i < skills.length; i++) { var cat = skills[i].category; counts[cat] = (counts[cat] || 0) + 1; }
+    var tierCounts = {};
+    for (var i = 0; i < skills.length; i++) {
+      var cat = skills[i].category;
+      counts[cat] = (counts[cat] || 0) + 1;
+      if (!tierCounts[cat]) tierCounts[cat] = { core: 0, featured: 0, utility: 0 };
+      tierCounts[cat][skills[i].tier]++;
+    }
     var keys = Object.keys(categories).sort();
+    var total = skills.length;
     for (var j = 0; j < keys.length; j++) {
       var key = keys[j];
       var count = counts[key] || 0;
       if (count === 0) continue;
-      var seg = document.createElement("div");
+      var seg = document.createElement("button");
       seg.className = "dist-segment";
       seg.setAttribute("data-cat", key);
       seg.style.flex = count;
-      seg.title = categories[key].name + ": " + count;
-      seg.setAttribute("role", "img");
       seg.setAttribute("aria-label", categories[key].name + ": " + count + " skills");
+      seg.setAttribute("title", categories[key].name + " (" + count + " skills — click to filter)");
+      // Hover popup with tier breakdown
+      (function(k, c, tc) {
+        seg.addEventListener("mouseenter", function(e) { showDistPopup(e, k, c, tc); });
+        seg.addEventListener("mouseleave", function() { hideDistPopup(); });
+        seg.addEventListener("click", function() {
+          currentCategory = k;
+          document.getElementById("category-filter").value = k;
+          writeHashState();
+          render();
+        });
+      })(key, count, tierCounts[key]);
       bar.appendChild(seg);
     }
+    // Build index/legend
+    renderDistributionIndex(categories, counts, tierCounts, total);
+  }
+
+  function renderDistributionIndex(categories, counts, tierCounts, total) {
+    var index = document.getElementById("dist-index");
+    if (!index) return;
+    index.innerHTML = "";
+    var keys = Object.keys(categories).sort();
+    for (var i = 0; i < keys.length; i++) {
+      var key = keys[i];
+      var count = counts[key] || 0;
+      if (count === 0) continue;
+      var tc = tierCounts[key] || {};
+      var item = document.createElement("button");
+      item.className = "dist-index-item";
+      item.setAttribute("data-cat", key);
+      item.innerHTML =
+        '<span class="dist-index-dot" data-cat="' + key + '"></span>' +
+        '<span class="dist-index-label">' + escapeHtml(categories[key].name) + '</span>' +
+        '<span class="dist-index-count">' + count + '</span>' +
+        '<span class="dist-index-tiers">' +
+          (tc.core ? '<span class="dist-tier-mini core">' + tc.core + 'C</span>' : '') +
+          (tc.featured ? '<span class="dist-tier-mini featured">' + tc.featured + 'F</span>' : '') +
+          (tc.utility ? '<span class="dist-tier-mini utility">' + tc.utility + 'U</span>' : '') +
+        '</span>';
+      (function(k) {
+        item.addEventListener("click", function() {
+          currentCategory = k;
+          document.getElementById("category-filter").value = k;
+          writeHashState();
+          render();
+        });
+      })(key);
+      index.appendChild(item);
+    }
+  }
+
+  // --- Distribution bar hover popup ---
+  var distPopup = null;
+  function showDistPopup(e, catKey, count, tierCounts) {
+    hideDistPopup();
+    var catName = indexData.categories[catKey] ? indexData.categories[catKey].name : catKey;
+    var pct = Math.round((count / indexData.skills.length) * 100);
+    var popup = document.createElement("div");
+    popup.className = "dist-popup";
+    popup.innerHTML =
+      '<div class="dist-popup-name">' + escapeHtml(catName) + '</div>' +
+      '<div class="dist-popup-count">' + count + ' skills &middot; ' + pct + '%</div>' +
+      '<div class="dist-popup-tiers">' +
+        (tierCounts.core ? '<span class="dist-popup-tier core">Core: ' + tierCounts.core + '</span>' : '') +
+        (tierCounts.featured ? '<span class="dist-popup-tier featured">Featured: ' + tierCounts.featured + '</span>' : '') +
+        (tierCounts.utility ? '<span class="dist-popup-tier utility">Utility: ' + tierCounts.utility + '</span>' : '') +
+      '</div>' +
+      '<div class="dist-popup-hint">Click to filter</div>';
+    document.body.appendChild(popup);
+    distPopup = popup;
+    // Position near the segment
+    var rect = e.target.getBoundingClientRect();
+    var popupRect = popup.getBoundingClientRect();
+    var left = rect.left + rect.width / 2 - popupRect.width / 2;
+    var top = rect.bottom + 6;
+    // Keep within viewport
+    if (left < 8) left = 8;
+    if (left + popupRect.width > window.innerWidth - 8) left = window.innerWidth - popupRect.width - 8;
+    popup.style.left = left + "px";
+    popup.style.top = top + "px";
+  }
+  function hideDistPopup() {
+    if (distPopup) { distPopup.remove(); distPopup = null; }
   }
 
   function renderFilterChips() {

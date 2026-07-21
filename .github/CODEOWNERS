@@ -1,0 +1,18 @@
+# CODEOWNERS
+# Each section defines who is the default reviewer for files in that path.
+
+# Default owner for the entire repo
+* @THEROCKSSS
+
+# Skill files
+skills/ @THEROCKSSS
+
+# Static site
+site/ @THEROCKSSS
+docs/ @THEROCKSSS
+
+# CI and project meta
+.github/ @THEROCKSSS
+.forgejo/ @THEROCKSSS
+AGENTS.md @THEROCKSSS
+CONTEXT.md @THEROCKSSS

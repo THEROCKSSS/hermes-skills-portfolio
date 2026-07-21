@@ -104,14 +104,46 @@ body.detail-open { overflow: hidden; }
 
 /* ============ DISTRIBUTION BAR (inside masthead) ============ */
 .distribution-bar { margin: 1rem 0 0; display: flex; gap: 2px; height: 6px; border-radius: 3px; overflow: hidden; background: var(--dist-bar-bg); }
-.dist-segment { flex: 1; border-radius: 1px; transition: opacity 150ms ease-out; cursor: default; position: relative; }
+.dist-segment { flex: 1; border-radius: 1px; transition: opacity 150ms ease-out; cursor: pointer; position: relative; border: none; padding: 0; }
 .dist-segment:hover { opacity: 0.8; }
+.dist-segment:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .dist-segment[data-cat="devops"] { background: oklch(65% 0.12 145); }
 .dist-segment[data-cat="backend"] { background: oklch(65% 0.12 230); }
 .dist-segment[data-cat="frontend"] { background: oklch(65% 0.12 300); }
 .dist-segment[data-cat="integrations"] { background: oklch(65% 0.12 65); }
 .dist-segment[data-cat="meta"] { background: oklch(65% 0.12 0); }
 .dist-segment[data-cat="utility"] { background: oklch(65% 0.10 180); }
+
+/* ============ DISTRIBUTION INDEX (legend) ============ */
+.dist-index { margin: 0.75rem 0 0; display: flex; gap: 0.5rem 1rem; flex-wrap: wrap; }
+.dist-index-item { display: inline-flex; align-items: center; gap: 6px; background: none; border: 1px solid var(--rule); border-radius: 6px; padding: 4px 10px; cursor: pointer; transition: border-color 150ms ease-out, background-color 150ms ease-out; font-family: 'Inter', sans-serif; font-size: 0.75rem; color: var(--ink-2); }
+.dist-index-item:hover { border-color: var(--accent); background: var(--accent-soft); }
+.dist-index-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.dist-index-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+.dist-index-dot[data-cat="devops"] { background: oklch(65% 0.12 145); }
+.dist-index-dot[data-cat="backend"] { background: oklch(65% 0.12 230); }
+.dist-index-dot[data-cat="frontend"] { background: oklch(65% 0.12 300); }
+.dist-index-dot[data-cat="integrations"] { background: oklch(65% 0.12 65); }
+.dist-index-dot[data-cat="meta"] { background: oklch(65% 0.12 0); }
+.dist-index-dot[data-cat="utility"] { background: oklch(65% 0.10 180); }
+.dist-index-label { font-weight: 600; white-space: nowrap; }
+.dist-index-count { font-variant-numeric: tabular-nums; color: var(--ink-3); }
+.dist-index-tiers { display: inline-flex; gap: 3px; }
+.dist-tier-mini { font-size: 0.65rem; font-weight: 700; padding: 1px 4px; border-radius: 3px; font-variant-numeric: tabular-nums; }
+.dist-tier-mini.core { background: var(--tier-core-bg); color: var(--tier-core); }
+.dist-tier-mini.featured { background: var(--tier-featured-bg); color: var(--tier-featured); }
+.dist-tier-mini.utility { background: var(--tier-utility-bg); color: var(--tier-utility); }
+
+/* ============ DISTRIBUTION HOVER POPUP ============ */
+.dist-popup { position: fixed; z-index: 250; background: var(--bg-2); border: 1px solid var(--rule-2); border-radius: 8px; padding: 0.75rem 1rem; box-shadow: var(--shadow-lg); pointer-events: none; font-size: 0.8rem; min-width: 180px; }
+.dist-popup-name { font-weight: 700; font-size: 0.9rem; color: var(--ink); margin-bottom: 2px; }
+.dist-popup-count { color: var(--ink-2); font-variant-numeric: tabular-nums; margin-bottom: 6px; }
+.dist-popup-tiers { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 6px; }
+.dist-popup-tier { font-size: 0.72rem; font-weight: 600; }
+.dist-popup-tier.core { color: var(--tier-core); }
+.dist-popup-tier.featured { color: var(--tier-featured); }
+.dist-popup-tier.utility { color: var(--tier-utility); }
+.dist-popup-hint { font-size: 0.68rem; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.04em; }
 
 /* ============ CONTROLS (inside masthead) ============ */
 .controls { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-end; }

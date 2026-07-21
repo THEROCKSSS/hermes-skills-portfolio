@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate SKILL.md frontmatter
+        run: |
+          set -eu
+          missing=0
+          for skill_md in skills/*/SKILL.md; do
+            [ -f "$skill_md" ] || continue
+            name=$(grep -m1 '^name:' "$skill_md" | sed 's/^name:[[:space:]]*//')
+            desc=$(grep -m1 '^description:' "$skill_md" | sed 's/^description:[[:space:]]*//')
+            if [ -z "$name" ] || [ -z "$desc" ]; then
+              echo "FAIL: $skill_md missing required frontmatter (name, description)"
+              missing=$((missing+1))
+            fi
+          done
+          if [ "$missing" -gt 0 ]; then
+            exit 1
+          fi
+          echo "All SKILL.md files have required frontmatter."
+
+      - name: Validate skills-index.json sync
+        run: |
+          set -eu
+          if [ ! -f skills-index.json ]; then
+            echo "FAIL: skills-index.json missing"
+            exit 1
+          fi
+          dir_count=$(find skills -mindepth 1 -maxdepth 1 -type d | wc -l)
+          index_count=$(python3 -c "import json; print(len(json.load(open('skills-index.json'))['skills']))")
+          if [ "$dir_count" -ne "$index_count" ]; then
+            echo "FAIL: skills-index.json has $index_count entries but $dir_count skill directories exist"
+            exit 1
+          fi
+          echo "skills-index.json is in sync ($index_count entries, $dir_count directories)."
+
+      - name: Validate no forbidden references
+        run: |
+          set -eu
+          forbidden=0
+          for pattern in "agentsoul" "localhost:3000" "Owen"; do
+            matches=$(grep -rni "$pattern" skills/ docs/ site/ README.md CONTRIBUTING.md AGENTS.md 2>/dev/null || true)
+            if [ -n "$matches" ]; then
+              echo "FAIL: forbidden reference '$pattern' found:"
+              echo "$matches"
+              forbidden=$((forbidden+1))
+            fi
+          done
+          if [ "$forbidden" -gt 0 ]; then
+            exit 1
+          fi
+          echo "No forbidden references found."
+
+      - name: Check site/ and docs/ are in sync
+        run: |
+          set -eu
+          for f in index.html app.js styles.css; do
+            if ! diff -q "site/$f" "docs/$f" > /dev/null 2>&1; then
+              echo "FAIL: site/$f and docs/$f are out of sync. Run: cp site/* docs/"
+              exit 1
+            fi
+          done
+          echo "site/ and docs/ are in sync."
