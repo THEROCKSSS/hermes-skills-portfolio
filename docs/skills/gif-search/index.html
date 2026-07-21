@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>gif-search — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent searches Tenor&#x27;s GIF library by keyword, shows you the top results, and downloads the one you pick. Useful for finding reaction GIFs for messages, social media, or documentation. How the agent uses it: The user wants a GIF for a message or reaction.
+The user wants to find...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/gif-search/">
+  <meta property="og:title" content="gif-search — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent searches Tenor&#x27;s GIF library by keyword, shows you the top results, and downloads the one you pick. Useful for finding reaction GIFs for messages, social media, or documentation. How the agent uses it: The user wants a GIF for a message or reaction.
+The user wants to find...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/gif-search/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="gif-search — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent searches Tenor&#x27;s GIF library by keyword, shows you the top results, and downloads the one you pick. Useful for finding reaction GIFs for messages, social media, or documentation. How the agent uses it: The user wants a GIF for a message or reaction.
+The user wants to find...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>gif-search</h1>
+          <p class="tagline">Search and download GIFs from Tenor by keyword.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent searches Tenor&#x27;s GIF library by keyword, shows you the top results, and downloads the one you pick. Useful for finding reaction GIFs for messages, social media, or documentation.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants a GIF for a message or reaction.</li><li>The user wants to find a specific reaction GIF (facepalm, thumbs up, celebration).</li><li>The user says &quot;find me a GIF&quot;, &quot;search for a GIF&quot;, or &quot;I need a reaction GIF&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can search and download gifs from tenor by keyword. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/gif-search/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/gif-search/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: gif-search
+description: &quot;Search and download GIFs from Tenor — agent + this skill = user gets the right GIF for any reaction or message.&quot;
+version: 1.0.0
+---
+
+# gif-search
+
+Search and download animated GIFs from Tenor&#x27;s API. The agent finds GIFs by keyword, previews results, and downloads the selected GIF to a local file.
+
+## When to Use
+
+- The user wants a GIF for a message or reaction.
+- The user wants to find a specific reaction GIF (facepalm, thumbs up, celebration).
+- The user says &quot;find me a GIF&quot;, &quot;search for a GIF&quot;, or &quot;I need a reaction GIF&quot;.
+
+## Prerequisites
+
+A Tenor API key. Get one free at https://tenor.com/developer/keyregistration
+
+```bash
+# Store the key as an environment variable
+export TENOR_API_KEY=&quot;your_key_here&quot;
+```
+
+## Search for GIFs
+
+```python
+import requests
+import os
+
+def search_gifs(query: str, limit: int = 10, pos: str = &quot;&quot;) -&gt; list:
+    &quot;&quot;&quot;Search Tenor for GIFs matching the query.&quot;&quot;&quot;
+    api_key = os.environ.get(&quot;TENOR_API_KEY&quot;, &quot;&quot;)
+    params = {
+        &quot;q&quot;: query,
+        &quot;key&quot;: api_key,
+        &quot;limit&quot;: limit,
+        &quot;media_filter&quot;: &quot;gif&quot;,
+        &quot;contentfilter&quot;: &quot;medium&quot;,
+    }
+    if pos:
+        params[&quot;pos&quot;] = pos
+
+    resp = requests.get(&quot;https://tenor.googleapis.com/v2/search&quot;, params=params)
+    resp.raise_for_status()
+    data = resp.json()
+
+    results = []
+    for item in data.get(&quot;results&quot;, []):
+        gif_url = None
+        for media in item.get(&quot;media_formats&quot;, []):
+            if media.get(&quot;gif&quot;):
+                gif_url = media[&quot;gif&quot;][&quot;url&quot;]
+                break
+        if gif_url:
+            results.append({
+                &quot;id&quot;: item.get(&quot;id&quot;),
+                &quot;title&quot;: item.get(&quot;title&quot;, &quot;&quot;),
+                &quot;url&quot;: gif_url,
+                &quot;preview&quot;: item.get(&quot;media_formats&quot;, [{}])[0].get(&quot;tinygif&quot;, {}).get(&quot;url&quot;, &quot;&quot;),
+            })
+    return results
+```
+
+## Download a GIF
+
+```python
+def download_gif(url: str, output_path: str) -&gt; str:
+    &quot;&quot;&quot;Download a GIF to a local file.&quot;&quot;&quot;
+    resp = requests.get(url, stream=True)
+    resp.raise_for_status()
+    with open(output_path, &quot;wb&quot;) as f:
+        for chunk in resp.iter_content(chunk_size=8192):
+            f.write(chunk)
+    return output_path
+```
+
+## Full Workflow
+
+```python
+# 1. Search for GIFs
+results = search_gifs(&quot;facepalm&quot;, limit=5)
+
+# 2. Show options to the user
+for i, r in enumerate(results):
+    print(f&quot;{i}: {r[&#x27;title&#x27;]} — {r[&#x27;url&#x27;]}&quot;)
+
+# 3. User picks one
+choice = 2
+selected = results[choice]
+
+# 4. Download
+path = download_gif(selected[&quot;url&quot;], &quot;facepalm.gif&quot;)
+print(f&quot;Downloaded to {path}&quot;)
+```
+
+## Trending GIFs
+
+```python
+def trending_gifs(limit: int = 10) -&gt; list:
+    &quot;&quot;&quot;Get currently trending GIFs.&quot;&quot;&quot;
+    api_key = os.environ.get(&quot;TENOR_API_KEY&quot;, &quot;&quot;)
+    params = {&quot;key&quot;: api_key, &quot;limit&quot;: limit, &quot;media_filter&quot;: &quot;gif&quot;}
+    resp = requests.get(&quot;https://tenor.googleapis.com/v2/featured&quot;, params=params)
+    resp.raise_for_status()
+    # Same parsing as search_gifs
+    ...
+```
+
+## Categories
+
+```python
+def categories() -&gt; list:
+    &quot;&quot;&quot;Get available GIF categories.&quot;&quot;&quot;
+    api_key = os.environ.get(&quot;TENOR_API_KEY&quot;, &quot;&quot;)
+    params = {&quot;key&quot;: api_key, &quot;type&quot;: &quot;featured&quot;}
+    resp = requests.get(&quot;https://tenor.googleapis.com/v2/categories&quot;, params=params)
+    return resp.json().get(&quot;tags&quot;, [])
+```
+
+## Workflow
+
+1. Get the search query from the user
+2. Search Tenor with the query
+3. Present top 5-10 results (title + URL) to the user
+4. User picks one
+5. Download the selected GIF to a local file
+6. Return the file path
+
+## Pitfalls
+
+- **No API key** — Without a Tenor API key, all requests fail. Get one at https://tenor.com/developer/keyregistration (free).
+- **Content filter** — Tenor returns NSFW content by default if no filter is set. Use `contentfilter=medium` or `contentfilter=high` to keep results safe.
+- **Rate limits** — Tenor&#x27;s free tier allows ~100 requests per minute. For normal use this is plenty.
+- **GIF size** — Full GIFs can be 5-20 MB. If you need smaller files, use the `tinygif` or `nanogif` media format instead of `gif`.
+- **API version** — Tenor has v1 and v2 APIs. v2 is current. v1 is deprecated but still works. Always use `tenor.googleapis.com/v2/`.
+- **Attribution** — Tenor doesn&#x27;t require attribution, but linking back to the Tenor page is good practice.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># gif-search
+
+Search and download GIFs from Tenor by keyword.
+
+## What it does
+
+The agent searches Tenor&#x27;s GIF library by keyword, shows you the top results, and downloads the one you pick. Useful for finding reaction GIFs for messages, social media, or documentation.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/gif-search/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Find me a celebration GIF&quot;
+```
+
+The agent:
+1. Searches Tenor for &quot;celebration&quot;
+2. Shows you 5-10 results with titles and preview URLs
+3. You pick one
+4. Downloads it to a local file
+
+## Prerequisites
+
+- A free Tenor API key from https://tenor.com/developer/keyregistration
+- Set as `TENOR_API_KEY` environment variable
+
+## Example
+
+```
+User: &quot;I need a facepalm GIF&quot;
+
+Agent:
+  1. Searches Tenor: search_gifs(&quot;facepalm&quot;, limit=5)
+  2. Returns:
+     0: Facepalm Reaction — https://media.tenor.com/...
+     1: Picard Facepalm — https://media.tenor.com/...
+     2: Animated Facepalm — https://media.tenor.com/...
+  3. User picks: 1
+  4. Downloads to facepalm.gif
+  5. Returns: &quot;Saved to facepalm.gif&quot;
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/gif-search/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

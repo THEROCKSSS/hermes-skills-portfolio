@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>changelog-generator — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent reads git commits, categorizes them by conventional commit type (feat → Added, fix → Fixed, refactor → Changed), and produces a Keep a Changelog formatted document. Useful for release notes, project documentation, or seeing what changed between versions. How the agent...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/changelog-generator/">
+  <meta property="og:title" content="changelog-generator — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent reads git commits, categorizes them by conventional commit type (feat → Added, fix → Fixed, refactor → Changed), and produces a Keep a Changelog formatted document. Useful for release notes, project documentation, or seeing what changed between versions. How the agent...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/changelog-generator/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="changelog-generator — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent reads git commits, categorizes them by conventional commit type (feat → Added, fix → Fixed, refactor → Changed), and produces a Keep a Changelog formatted document. Useful for release notes, project documentation, or seeing what changed between versions. How the agent...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>changelog-generator</h1>
+          <p class="tagline">Generate a changelog from git commit history.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent reads git commits, categorizes them by conventional commit type (feat → Added, fix → Fixed, refactor → Changed), and produces a Keep a Changelog formatted document. Useful for release notes, project documentation, or seeing what changed between versions.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants a changelog for their project.</li><li>The user wants to generate release notes from commits.</li><li>The user says &quot;make a changelog&quot;, &quot;generate release notes&quot;, or &quot;what changed since v1.0&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can generate a changelog from git commit history. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/changelog-generator/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/changelog-generator/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: changelog-generator
+description: &quot;Generate a changelog from git commits — agent + this skill = user gets a formatted changelog from project history.&quot;
+version: 1.0.0
+---
+
+# changelog-generator
+
+Generate a formatted changelog from git commit history. The agent reads commits, categorizes them by type (feat, fix, refactor, docs), and produces a Keep a Changelog-format document.
+
+## When to Use
+
+- The user wants a changelog for their project.
+- The user wants to generate release notes from commits.
+- The user says &quot;make a changelog&quot;, &quot;generate release notes&quot;, or &quot;what changed since v1.0&quot;.
+
+## Prerequisites
+
+The project must be a git repository with conventional commit messages (feat:, fix:, refactor:, docs:, chore:).
+
+## Generate from Commits
+
+```python
+import subprocess
+import re
+from collections import defaultdict
+
+def get_commits(since: str = &quot;&quot;, repo_path: str = &quot;.&quot;) -&gt; list:
+    &quot;&quot;&quot;Get commits with hash, date, and message.&quot;&quot;&quot;
+    cmd = [&quot;git&quot;, &quot;log&quot;, &quot;--pretty=format:%H|%ai|%s&quot;]
+    if since:
+        cmd.insert(2, f&quot;{since}..HEAD&quot;)
+
+    result = subprocess.run(cmd, cwd=repo_path, capture_output=True, text=True)
+    commits = []
+    for line in result.stdout.strip().split(&quot;\n&quot;):
+        if &quot;|&quot; in line:
+            parts = line.split(&quot;|&quot;, 2)
+            commits.append({
+                &quot;hash&quot;: parts[0][:8],
+                &quot;date&quot;: parts[1][:10],
+                &quot;message&quot;: parts[2]
+            })
+    return commits
+
+def categorize_commits(commits: list) -&gt; dict:
+    &quot;&quot;&quot;Categorize commits by conventional commit type.&quot;&quot;&quot;
+    categories = defaultdict(list)
+    for commit in commits:
+        msg = commit[&quot;message&quot;]
+        match = re.match(r&#x27;(\w+)(\([^)]+\))?:\s*(.+)&#x27;, msg)
+        if match:
+            cat = match.group(1)
+            scope = match.group(2) or &quot;&quot;
+            desc = match.group(3)
+            categories[cat].append({
+                &quot;hash&quot;: commit[&quot;hash&quot;],
+                &quot;scope&quot;: scope.strip(&quot;()&quot;),
+                &quot;description&quot;: desc,
+            })
+        else:
+            categories[&quot;other&quot;].append({
+                &quot;hash&quot;: commit[&quot;hash&quot;],
+                &quot;scope&quot;: &quot;&quot;,
+                &quot;description&quot;: msg,
+            })
+    return dict(categories)
+
+def generate_changelog(since: str = &quot;&quot;, repo_path: str = &quot;.&quot;) -&gt; str:
+    &quot;&quot;&quot;Generate a Keep a Changelog formatted document.&quot;&quot;&quot;
+    commits = get_commits(since, repo_path)
+    categorized = categorize_commits(commits)
+
+    # Category display names and order
+    category_map = {
+        &quot;feat&quot;: &quot;Added&quot;,
+        &quot;fix&quot;: &quot;Fixed&quot;,
+        &quot;refactor&quot;: &quot;Changed&quot;,
+        &quot;docs&quot;: &quot;Documentation&quot;,
+        &quot;chore&quot;: &quot;Maintenance&quot;,
+        &quot;test&quot;: &quot;Testing&quot;,
+        &quot;perf&quot;: &quot;Performance&quot;,
+        &quot;other&quot;: &quot;Other&quot;,
+    }
+
+    changelog = &quot;# Changelog\n\n&quot;
+    for cat_key in [&quot;feat&quot;, &quot;fix&quot;, &quot;refactor&quot;, &quot;perf&quot;, &quot;docs&quot;, &quot;test&quot;, &quot;chore&quot;, &quot;other&quot;]:
+        if cat_key in categorized:
+            display = category_map.get(cat_key, cat_key)
+            changelog += f&quot;## {display}\n\n&quot;
+            for item in categorized[cat_key]:
+                scope = f&quot;**{item[&#x27;scope&#x27;]}**: &quot; if item[&quot;scope&quot;] else &quot;&quot;
+                changelog += f&quot;- {scope}{item[&#x27;description&#x27;]} ({item[&#x27;hash&#x27;]})\n&quot;
+            changelog += &quot;\n&quot;
+
+    return changangelog
+```
+
+## Conventional Commit Types
+
+| Type | Maps to | Description |
+|---|---|---|
+| `feat:` | Added | New features |
+| `fix:` | Fixed | Bug fixes |
+| `refactor:` | Changed | Code restructuring |
+| `perf:` | Performance | Performance improvements |
+| `docs:` | Documentation | Documentation changes |
+| `test:` | Testing | Test additions/changes |
+| `chore:` | Maintenance | Build, deps, config |
+
+## Workflow
+
+1. Determine the range (since last tag, since a date, or all history)
+2. Get commits with `git log`
+3. Categorize by conventional commit prefix
+4. Format as a Keep a Changelog document
+5. Write to `CHANGELOG.md` or return as string
+
+## Pitfalls
+
+- **Non-conventional commits** — Commits without `feat:`/`fix:` prefixes go into &quot;Other&quot;. Encourage the team to use conventional commits for better categorization.
+- **Merge commits** — Merge commits clutter the changelog. Filter them with `--no-merges` in the git log command.
+- **Squashed commits** — Squash commits lose individual messages. The changelog reflects the squash message, not the original commits.
+- **Date range** — `since` should be a tag name (`v1.0.0`), a commit hash, or a date. Using a tag is most common for release notes.
+- **Duplicate entries** — If commits are cherry-picked between branches, they may appear twice. Deduplicate by commit message.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># changelog-generator
+
+Generate a formatted changelog from git commit history.
+
+## What it does
+
+The agent reads git commits, categorizes them by conventional commit type (feat → Added, fix → Fixed, refactor → Changed), and produces a Keep a Changelog formatted document. Useful for release notes, project documentation, or seeing what changed between versions.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/changelog-generator/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Generate a changelog from v1.0.0 to now&quot;
+```
+
+The agent:
+1. Runs `git log v1.0.0..HEAD`
+2. Categorizes commits: feat → Added, fix → Fixed, etc.
+3. Formats as a changelog document
+4. Writes to CHANGELOG.md
+
+## Example
+
+```
+User: &quot;What changed since the last release?&quot;
+
+Agent:
+  1. Gets commits since last tag: git describe --tags
+  2. Categorizes: 3 feat, 5 fix, 2 refactor
+  3. Generates:
+
+  ## Added
+  - User profile page (a1b2c3d)
+  - Dark mode toggle (e4f5g6h)
+  - Export to CSV (i7j8k9l)
+
+  ## Fixed
+  - Login redirect loop (m1n2o3p)
+  - Date picker timezone bug (q4r5s6t)
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/changelog-generator/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

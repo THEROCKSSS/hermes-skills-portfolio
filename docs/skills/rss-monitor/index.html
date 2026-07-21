@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>rss-monitor — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent sets up a feed monitoring script that checks your RSS/Atom feeds on a schedule, detects new entries by tracking entry IDs, and sends you a notification (via ntfy, Discord, Telegram, or email) when new content appears. Silent when there&#x27;s nothing new — you only hear about...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/rss-monitor/">
+  <meta property="og:title" content="rss-monitor — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent sets up a feed monitoring script that checks your RSS/Atom feeds on a schedule, detects new entries by tracking entry IDs, and sends you a notification (via ntfy, Discord, Telegram, or email) when new content appears. Silent when there&#x27;s nothing new — you only hear about...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/rss-monitor/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="rss-monitor — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent sets up a feed monitoring script that checks your RSS/Atom feeds on a schedule, detects new entries by tracking entry IDs, and sends you a notification (via ntfy, Discord, Telegram, or email) when new content appears. Silent when there&#x27;s nothing new — you only hear about...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>rss-monitor</h1>
+          <p class="tagline">Monitor RSS and Atom feeds for new entries with notifications.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge featured">Featured</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Integrations</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Highly useful within a category</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent sets up a feed monitoring script that checks your RSS/Atom feeds on a schedule, detects new entries by tracking entry IDs, and sends you a notification (via ntfy, Discord, Telegram, or email) when new content appears. Silent when there&#x27;s nothing new — you only hear about it when there&#x27;s something to read.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants to know when a blog publishes a new post.</li><li>The user wants to monitor news feeds for specific topics.</li><li>The user wants to track updates from multiple sources in one place.</li><li>The user says &quot;monitor this RSS feed&quot;, &quot;notify me when this blog updates&quot;, or &quot;watch for new entries&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can monitor rss and atom feeds for new entries with notifications. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/rss-monitor/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/rss-monitor/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: rss-monitor
+description: &quot;Monitor RSS and Atom feeds for new entries — agent + this skill = user gets notified when new content appears on any feed.&quot;
+version: 1.0.0
+---
+
+# rss-monitor
+
+Monitor RSS and Atom feeds for new entries. The agent sets up a feed monitoring loop that checks feeds on a schedule, detects new entries, and delivers notifications via your preferred channel (Telegram, Discord, email, ntfy).
+
+## When to Use
+
+- The user wants to know when a blog publishes a new post.
+- The user wants to monitor news feeds for specific topics.
+- The user wants to track updates from multiple sources in one place.
+- The user says &quot;monitor this RSS feed&quot;, &quot;notify me when this blog updates&quot;, or &quot;watch for new entries&quot;.
+
+## Prerequisites
+
+- Python 3.8+ with `feedparser` installed: `pip install feedparser`
+- A notification channel (ntfy, Telegram, Discord, or email)
+
+## Feed Discovery
+
+### Find the RSS/Atom feed for a site
+
+```bash
+# Check for &lt;link rel=&quot;alternate&quot;&gt; in the HTML
+curl -s https://example.com | grep -oP &#x27;(?&lt;=href=&quot;)[^&quot;]*(rss|atom|feed)[^&quot;]*&#x27;
+
+# Common feed paths to try
+curl -s -o /dev/null -w &quot;%{http_code}&quot; https://example.com/feed/
+curl -s -o /dev/null -w &quot;%{http_code}&quot; https://example.com/rss/
+curl -s -o /dev/null -w &quot;%{http_code}&quot; https://example.com/atom.xml
+curl -s -o /dev/null -w &quot;%{http_code}&quot; https://example.com/feed.xml
+```
+
+### Verify a feed is valid
+
+```python
+import feedparser
+
+feed = feedparser.parse(&quot;https://example.com/feed/&quot;)
+print(f&quot;Feed: {feed.feed.get(&#x27;title&#x27;, &#x27;Unknown&#x27;)}&quot;)
+print(f&quot;Entries: {len(feed.entries)}&quot;)
+for entry in feed.entries[:3]:
+    print(f&quot;  - {entry.title}&quot;)
+```
+
+## Monitoring Loop
+
+### Simple monitor script
+
+```python
+#!/usr/bin/env python3
+&quot;&quot;&quot;Monitor RSS feeds for new entries. Notifies via ntfy on new content.&quot;&quot;&quot;
+import feedparser
+import requests
+import json
+import os
+import time
+from datetime import datetime, timezone
+
+FEEDS = [
+    &quot;https://blog.example.com/feed/&quot;,
+    &quot;https://news.ycombinator.com/rss&quot;,
+]
+
+STATE_FILE = os.path.expanduser(&quot;~/.rss-monitor-state.json&quot;)
+NTFY_TOPIC = &quot;rss-alerts-abc123&quot;
+
+def load_state():
+    if os.path.exists(STATE_FILE):
+        with open(STATE_FILE) as f:
+            return json.load(f)
+    return {}
+
+def save_state(state):
+    with open(STATE_FILE, &#x27;w&#x27;) as f:
+        json.dump(state, f, indent=2)
+
+def notify(title, body):
+    requests.post(
+        f&quot;https://ntfy.sh/{NTFY_TOPIC}&quot;,
+        data=body.encode(&#x27;utf-8&#x27;),
+        headers={&quot;Title&quot;: title, &quot;Tags&quot;: &quot;rss,new&quot;}
+    )
+
+def check_feeds():
+    state = load_state()
+    new_entries = []
+
+    for feed_url in FEEDS:
+        feed = feedparser.parse(feed_url)
+        seen_ids = state.get(feed_url, [])
+
+        for entry in feed.entries:
+            entry_id = entry.get(&#x27;id&#x27;, entry.get(&#x27;link&#x27;, &#x27;&#x27;))
+            if entry_id not in seen_ids:
+                new_entries.append({
+                    &#x27;feed&#x27;: feed.feed.get(&#x27;title&#x27;, feed_url),
+                    &#x27;title&#x27;: entry.title,
+                    &#x27;link&#x27;: entry.get(&#x27;link&#x27;, &#x27;&#x27;),
+                    &#x27;published&#x27;: entry.get(&#x27;published&#x27;, &#x27;&#x27;)
+                })
+
+        # Update seen IDs (keep last 100)
+        all_ids = [e.get(&#x27;id&#x27;, e.get(&#x27;link&#x27;, &#x27;&#x27;)) for e in feed.entries]
+        state[feed_url] = list(set(seen_ids + all_ids))[-100:]
+
+    save_state(state)
+
+    for entry in new_entries:
+        title = f&quot;New: {entry[&#x27;title&#x27;][:60]}&quot;
+        body = f&quot;{entry[&#x27;feed&#x27;]}\n{entry[&#x27;link&#x27;]}&quot;
+        notify(title, body)
+        print(f&quot;New entry: {entry[&#x27;feed&#x27;]} — {entry[&#x27;title&#x27;]}&quot;)
+
+    if not new_entries:
+        print(f&quot;No new entries ({datetime.now().isoformat()})&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    check_feeds()
+```
+
+### Schedule with cron
+
+```bash
+# Check every hour
+crontab -e
+# Add:
+0 * * * * /usr/bin/python3 /path/to/rss-monitor.py
+
+# Or with Hermes cron
+hermes cron create &quot;1h&quot; --prompt &quot;Run the RSS monitor script at scripts/rss-monitor.py and report any new entries&quot;
+```
+
+## Change Detection
+
+The monitor tracks seen entry IDs to detect what&#x27;s new. Two approaches:
+
+| Approach | How | Tradeoff |
+|---|---|---|
+| **Entry ID tracking** | Store entry IDs in a JSON state file | Reliable, but misses entries if IDs change |
+| **Timestamp threshold** | Notify on entries newer than last check | Simpler, but misses backdated entries |
+
+The script above uses entry ID tracking — more reliable for most feeds.
+
+## Filtering
+
+### Keyword filter
+
+```python
+KEYWORDS = [&quot;python&quot;, &quot;ai&quot;, &quot;agents&quot;, &quot;llm&quot;]
+
+def matches_keywords(entry):
+    text = (entry.title + &quot; &quot; + entry.get(&#x27;summary&#x27;, &#x27;&#x27;)).lower()
+    return any(kw in text for kw in KEYWORDS)
+
+# In check_feeds, before notifying:
+if matches_keywords(entry):
+    notify(title, body)
+```
+
+### Regex filter
+
+```python
+import re
+
+PATTERNS = [
+    re.compile(r&#x27;\b(funding|series [a-c])\b&#x27;, re.IGNORECASE),
+    re.compile(r&#x27;\b(security|vulnerability|cve)\b&#x27;, re.IGNORECASE),
+]
+
+def matches_patterns(entry):
+    text = entry.title + &quot; &quot; + entry.get(&#x27;summary&#x27;, &#x27;&#x27;)
+    return any(p.search(text) for p in PATTERNS)
+```
+
+## Notification Delivery
+
+| Channel | How |
+|---|---|
+| **ntfy** | `requests.post(f&quot;https://ntfy.sh/{topic}&quot;, data=body, headers={&quot;Title&quot;: title})` |
+| **Discord** | Webhook URL: `requests.post(discord_webhook_url, json={&quot;content&quot;: f&quot;**{title}**\n{body}&quot;})` |
+| **Telegram** | Bot API: `requests.post(f&quot;https://api.telegram.org/bot{token}/sendMessage&quot;, json={&quot;chat_id&quot;: chat_id, &quot;text&quot;: f&quot;{title}\n{body}&quot;})` |
+| **Email** | See the `email-send` skill |
+
+## Pitfalls
+
+- **Feed URL changes** — Sites sometimes change their feed URL without redirecting. If a feed starts returning 404, check the site for a new feed URL.
+- **Rate limiting** — Don&#x27;t check feeds too frequently. Most publishers don&#x27;t update more than a few times per day. Checking every 15-30 minutes is sufficient. Checking every minute may get your IP blocked.
+- **Entry ID instability** — Some feeds don&#x27;t provide stable entry IDs. If the `id` field changes between checks, you&#x27;ll get duplicate notifications. Fall back to using the entry link as the ID.
+- **Partial feeds** — Some feeds only include a summary, not the full content. If you need the full text, follow the entry link and scrape the page.
+- **Date parsing** — Feed date formats vary (`published`, `updated`, `created`). Use `feedparser`&#x27;s built-in parsing: `entry.published_parsed` returns a `time.struct_time`.
+- **State file corruption** — If the state JSON file gets corrupted, the monitor will re-notify for all entries. Handle JSON decode errors gracefully and start with a fresh state.
+- **Feed requires auth** — Some feeds (private Substack, paid newsletters) require authentication. Use `requests` with auth headers instead of `feedparser` for these, then pass the response text to `feedparser.parse()`.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># rss-monitor
+
+Monitor RSS and Atom feeds for new entries — get notified when new content appears on any feed you follow.
+
+## What it does
+
+The agent sets up a feed monitoring script that checks your RSS/Atom feeds on a schedule, detects new entries by tracking entry IDs, and sends you a notification (via ntfy, Discord, Telegram, or email) when new content appears. Silent when there&#x27;s nothing new — you only hear about it when there&#x27;s something to read.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/rss-monitor/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Monitor the Hacker News RSS feed and notify me on ntfy when new entries appear&quot;
+```
+
+The agent:
+1. Verifies the feed URL is valid
+2. Writes a monitoring script with entry ID tracking
+3. Schedules it with cron (every hour)
+4. Tests by running it once — you get a notification for current entries
+5. Future runs only notify on new entries
+
+## Prerequisites
+
+- Python 3.8+ with `feedparser` (`pip install feedparser`)
+- A notification channel (ntfy, Discord, Telegram, or email)
+
+## Example
+
+```
+User: &quot;Watch three tech blogs and text me when they post something about AI&quot;
+
+Agent:
+  1. Adds the three feed URLs
+  2. Adds keyword filter: [&quot;ai&quot;, &quot;llm&quot;, &quot;machine learning&quot;, &quot;gpt&quot;]
+  3. Writes monitor script with ntfy notification
+  4. Schedules: crontab 0 * * * * python3 rss-monitor.py
+  5. Returns: &quot;Monitoring started. You&#x27;ll get a push only when a matching post appears.&quot;
+```
+
+## Filtering options
+
+| Filter | Example |
+|---|---|
+| Keywords | Only notify if title/summary contains &quot;python&quot; or &quot;ai&quot; |
+| Regex | Notify on `\b(funding|series [a-c])\b` |
+| No filter | Notify on every new entry |
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/rss-monitor/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

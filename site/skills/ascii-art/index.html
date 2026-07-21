@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ascii-art — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent creates ASCII art in three modes: text banners (pyfiglet, 500+ fonts), image-to-ASCII conversion (photo to text art), and decorative boxes/cowsay for terminal output. Useful for CLI tool headers, README decorations, and fun terminal output. How the agent uses it: The user...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/ascii-art/">
+  <meta property="og:title" content="ascii-art — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent creates ASCII art in three modes: text banners (pyfiglet, 500+ fonts), image-to-ASCII conversion (photo to text art), and decorative boxes/cowsay for terminal output. Useful for CLI tool headers, README decorations, and fun terminal output. How the agent uses it: The user...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/ascii-art/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="ascii-art — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent creates ASCII art in three modes: text banners (pyfiglet, 500+ fonts), image-to-ASCII conversion (photo to text art), and decorative boxes/cowsay for terminal output. Useful for CLI tool headers, README decorations, and fun terminal output. How the agent uses it: The user...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>ascii-art</h1>
+          <p class="tagline">Generate ASCII art from text and images.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent creates ASCII art in three modes: text banners (pyfiglet, 500+ fonts), image-to-ASCII conversion (photo to text art), and decorative boxes/cowsay for terminal output. Useful for CLI tool headers, README decorations, and fun terminal output.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants a text banner or logo for a CLI tool or README.</li><li>The user wants to convert an image to ASCII art.</li><li>The user wants decorative ASCII for a terminal output or code comment.</li><li>The user says &quot;make ASCII art&quot;, &quot;generate a banner&quot;, or &quot;convert this image to ASCII&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can generate ascii art from text and images. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ascii-art/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ascii-art/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: ascii-art
+description: &quot;Generate ASCII art from text and images — agent + this skill = user gets text-based art for terminals, docs, and comments.&quot;
+version: 1.0.0
+---
+
+# ascii-art
+
+Generate ASCII art from text (banners, logos) and images (photo-to-ASCII conversion). The agent creates text banners, converts images to ASCII, and produces decorative art for terminals, documentation, and code comments.
+
+## When to Use
+
+- The user wants a text banner or logo for a CLI tool or README.
+- The user wants to convert an image to ASCII art.
+- The user wants decorative ASCII for a terminal output or code comment.
+- The user says &quot;make ASCII art&quot;, &quot;generate a banner&quot;, or &quot;convert this image to ASCII&quot;.
+
+## Prerequisites
+
+```bash
+pip install pyfiglet cowsay pillow
+```
+
+## Text Banners (pyfiglet)
+
+```python
+import pyfiglet
+
+def banner(text: str, font: str = &quot;standard&quot;) -&gt; str:
+    &quot;&quot;&quot;Generate an ASCII art banner from text.&quot;&quot;&quot;
+    return pyfiglet.figlet_format(text, font=font)
+```
+
+### Popular fonts
+
+```python
+fonts = [&quot;standard&quot;, &quot;big&quot;, &quot;slant&quot;, &quot;shadow&quot;, &quot;doom&quot;, &quot;small&quot;, &quot;banner3&quot;, &quot;colossal&quot;]
+
+for font in fonts:
+    print(f&quot;\n=== {font} ===&quot;)
+    print(pyfiglet.figlet_format(&quot;Hello&quot;, font=font))
+```
+
+### List all available fonts
+
+```python
+import pyfiglet
+print(len(pyfiglet.FigletFont.getFonts()))  # 500+ fonts
+```
+
+## Image to ASCII
+
+```python
+from PIL import Image
+
+def image_to_ascii(image_path: str, width: int = 80, ramp: str = &quot; .:-=+*#%@&quot;) -&gt; str:
+    &quot;&quot;&quot;Convert an image to ASCII art.&quot;&quot;&quot;
+    img = Image.open(image_path)
+    img = img.convert(&#x27;L&#x27;)  # grayscale
+
+    # Calculate height maintaining aspect ratio
+    aspect = img.height / img.width
+    # Terminal characters are taller than wide, so adjust
+    height = int(aspect * width * 0.5)
+    img = img.resize((width, height))
+
+    pixels = img.getdata()
+    ascii_str = &quot;&quot;
+    for i, pixel in enumerate(pixels):
+        idx = int(pixel / 255 * (len(ramp) - 1))
+        ascii_str += ramp[idx]
+        if (i + 1) % width == 0:
+            ascii_str += &quot;\n&quot;
+
+    return ascii_str
+```
+
+## Cowsay
+
+```python
+import cowsay
+
+def say(text: str, character: str = &quot;cow&quot;) -&gt; str:
+    &quot;&quot;&quot;Generate a cowsay message.&quot;&quot;&quot;
+    import io, sys
+    old = sys.stdout
+    sys.stdout = buffer = io.StringIO()
+    getattr(cowsay, character)(text)
+    sys.stdout = old
+    return buffer.getvalue()
+```
+
+## Boxed Text
+
+```python
+def box_text(text: str, style: str = &quot;single&quot;) -&gt; str:
+    &quot;&quot;&quot;Draw a box around text using Unicode box-drawing characters.&quot;&quot;&quot;
+    lines = text.split(&quot;\n&quot;)
+    max_len = max(len(line) for line in lines)
+
+    styles = {
+        &quot;single&quot;: (&quot;│&quot;, &quot;─&quot;, &quot;┌&quot;, &quot;┐&quot;, &quot;└&quot;, &quot;┘&quot;),
+        &quot;double&quot;: (&quot;║&quot;, &quot;═&quot;, &quot;╔&quot;, &quot;╗&quot;, &quot;╚&quot;, &quot;╝&quot;),
+        &quot;round&quot;:  (&quot;│&quot;, &quot;─&quot;, &quot;╭&quot;, &quot;╮&quot;, &quot;╰&quot;, &quot;╯&quot;),
+        &quot;ascii&quot;:  (&quot;|&quot;, &quot;-&quot;, &quot;+&quot;, &quot;+&quot;, &quot;+&quot;, &quot;+&quot;),
+    }
+
+    v, h, tl, tr, bl, br = styles.get(style, styles[&quot;single&quot;])
+
+    result = f&quot;{tl}{h * (max_len + 2)}{tr}\n&quot;
+    for line in lines:
+        result += f&quot;{v} {line.ljust(max_len)} {v}\n&quot;
+    result += f&quot;{bl}{h * (max_len + 2)}{br}&quot;
+    return result
+```
+
+## Workflow
+
+1. Determine what the user wants: a text banner, image-to-ASCII, or decorative art
+2. For banners: pick a font that matches the mood (big for impact, small for compact)
+3. For images: resize to terminal width, convert to grayscale, map to ASCII ramp
+4. Return the ASCII art as a string
+
+## Pitfalls
+
+- **Banners too wide** — pyfiglet banners can be 100+ chars wide. Check the terminal width and pick a narrower font (small, mini, thin) for narrow terminals.
+- **Image ASCII looks wrong** — Terminal characters are ~2x taller than wide. Adjust the aspect ratio with `height = int(aspect * width * 0.5)`.
+- **Font not found** — Not all pyfiglet fonts are installed by default. Check `pyfiglet.FigletFont.getFonts()` for available fonts.
+- **Color** — ASCII art in a terminal can use ANSI color codes. Add color with `\033[91m` (red) etc., but it won&#x27;t render in plain text files.
+- **Very large images** — Don&#x27;t try to convert a 4000px image. Resize to 80-120 chars wide first. Larger widths produce unreadable ASCII.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># ascii-art
+
+Generate ASCII art from text and images — banners, image conversions, and decorative text for terminals and docs.
+
+## What it does
+
+The agent creates ASCII art in three modes: text banners (pyfiglet, 500+ fonts), image-to-ASCII conversion (photo to text art), and decorative boxes/cowsay for terminal output. Useful for CLI tool headers, README decorations, and fun terminal output.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ascii-art/SKILL.md
+```
+
+## How to use
+
+**Text banner:**
+```
+&quot;Make an ASCII banner that says MY TOOL&quot;
+```
+
+**Image to ASCII:**
+```
+&quot;Convert logo.png to ASCII art&quot;
+```
+
+The agent generates the ASCII art and returns it as text.
+
+## Example
+
+```
+User: &quot;Make a banner for my CLI tool called DEPLOY&quot;
+
+Agent (using pyfiglet with &#x27;slant&#x27; font):
+    ___       __           ___     ___
+   /   | ____/ /________  /   |   /   |
+  / /| |/ __  / ___/ __ \/ /| |  / /| |
+ / ___ / /_/ / /  / /_/ / ___ | / ___ |
+/_/  |_\__,_/_/   \____/_/  |_|/_/  |_|
+
+Returns the ASCII banner as text.
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ascii-art/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

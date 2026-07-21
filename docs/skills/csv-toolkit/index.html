@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>csv-toolkit — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent reads CSV files and performs data operations: filtering rows, transforming columns, merging multiple files, computing group-by aggregates, sorting, and deduplicating. Uses pandas for heavy operations and the built-in csv module for simple ones. You get structured data...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/csv-toolkit/">
+  <meta property="og:title" content="csv-toolkit — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent reads CSV files and performs data operations: filtering rows, transforming columns, merging multiple files, computing group-by aggregates, sorting, and deduplicating. Uses pandas for heavy operations and the built-in csv module for simple ones. You get structured data...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/csv-toolkit/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="csv-toolkit — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent reads CSV files and performs data operations: filtering rows, transforming columns, merging multiple files, computing group-by aggregates, sorting, and deduplicating. Uses pandas for heavy operations and the built-in csv module for simple ones. You get structured data...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>csv-toolkit</h1>
+          <p class="tagline">Process CSV files — filter, transform, merge, and analyze.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent reads CSV files and performs data operations: filtering rows, transforming columns, merging multiple files, computing group-by aggregates, sorting, and deduplicating. Uses pandas for heavy operations and the built-in csv module for simple ones. You get structured data processing without opening Excel.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants to filter or transform a CSV file.</li><li>The user wants to merge multiple CSVs.</li><li>The user wants to compute summary statistics from CSV data.</li><li>The user says &quot;process this CSV&quot;, &quot;filter this data&quot;, or &quot;merge these CSVs&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can process csv files — filter, transform, merge, and analyze. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/csv-toolkit/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/csv-toolkit/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: csv-toolkit
+description: &quot;Process CSV files — filter, transform, merge, and analyze — agent + this skill = user gets structured data operations without Excel.&quot;
+version: 1.0.0
+---
+
+# csv-toolkit
+
+Process CSV files with Python. Filter rows, transform columns, merge files, compute aggregates, and export results. The agent handles CSV reading, manipulation, and writing without needing Excel or a database.
+
+## When to Use
+
+- The user wants to filter or transform a CSV file.
+- The user wants to merge multiple CSVs.
+- The user wants to compute summary statistics from CSV data.
+- The user says &quot;process this CSV&quot;, &quot;filter this data&quot;, or &quot;merge these CSVs&quot;.
+
+## Prerequisites
+
+```bash
+pip install pandas
+# Or for simple operations, just use the csv module (built-in)
+```
+
+## Read and Inspect
+
+```python
+import pandas as pd
+
+def inspect_csv(path: str) -&gt; dict:
+    &quot;&quot;&quot;Quick overview of a CSV file.&quot;&quot;&quot;
+    df = pd.read_csv(path)
+    return {
+        &quot;rows&quot;: len(df),
+        &quot;columns&quot;: list(df.columns),
+        &quot;dtypes&quot;: df.dtypes.to_dict(),
+        &quot;head&quot;: df.head(5).to_dict(&quot;records&quot;),
+        &quot;null_counts&quot;: df.isnull().sum().to_dict(),
+    }
+```
+
+## Filter Rows
+
+```python
+def filter_csv(path: str, output: str, condition: str):
+    &quot;&quot;&quot;Filter rows using a pandas query expression.&quot;&quot;&quot;
+    df = pd.read_csv(path)
+    filtered = df.query(condition)
+    filtered.to_csv(output, index=False)
+    return {&quot;input_rows&quot;: len(df), &quot;output_rows&quot;: len(filtered), &quot;output&quot;: output}
+
+# Examples:
+# filter_csv(&quot;data.csv&quot;, &quot;filtered.csv&quot;, &quot;age &gt; 25&quot;)
+# filter_csv(&quot;data.csv&quot;, &quot;filtered.csv&quot;, &quot;status == &#x27;active&#x27; and revenue &gt; 1000&quot;)
+```
+
+## Transform Columns
+
+```python
+def transform_csv(path: str, output: str, transforms: dict):
+    &quot;&quot;&quot;Apply transformations to columns.
+    transforms = {&quot;column_name&quot;: &quot;new_value_expression&quot;}
+    &quot;&quot;&quot;
+    df = pd.read_csv(path)
+    for col, expr in transforms.items():
+        df[col] = df.eval(expr)
+    df.to_csv(output, index=False)
+    return output
+
+# Example:
+# transform_csv(&quot;data.csv&quot;, &quot;out.csv&quot;, {
+#     &quot;price_usd&quot;: &quot;price_eur * 1.08&quot;,
+#     &quot;name&quot;: &quot;name.str.upper()&quot;
+# })
+```
+
+## Merge CSVs
+
+```python
+def merge_csvs(files: list, output: str, on: str = None, how: str = &quot;outer&quot;):
+    &quot;&quot;&quot;Merge multiple CSV files.
+    If &#x27;on&#x27; is None, concatenate vertically (stack rows).
+    If &#x27;on&#x27; is a column name, merge on that column (join).
+    &quot;&quot;&quot;
+    if on is None:
+        # Vertical concatenation
+        dfs = [pd.read_csv(f) for f in files]
+        combined = pd.concat(dfs, ignore_index=True)
+    else:
+        # Horizontal join
+        dfs = [pd.read_csv(f) for f in files]
+        combined = dfs[0]
+        for df in dfs[1:]:
+            combined = combined.merge(df, on=on, how=how)
+    combined.to_csv(output, index=False)
+    return {&quot;output&quot;: output, &quot;rows&quot;: len(combined), &quot;columns&quot;: len(combined.columns)}
+```
+
+## Aggregate / Group By
+
+```python
+def aggregate_csv(path: str, output: str, group_by: str, agg: dict):
+    &quot;&quot;&quot;Group by a column and compute aggregates.
+    agg = {&quot;column&quot;: &quot;function&quot;, ...}
+    &quot;&quot;&quot;
+    df = pd.read_csv(path)
+    grouped = df.groupby(group_by).agg(agg).reset_index()
+    grouped.to_csv(output, index=False)
+    return grouped.to_dict(&quot;records&quot;)
+
+# Example:
+# aggregate_csv(&quot;sales.csv&quot;, &quot;summary.csv&quot;, &quot;region&quot;, {&quot;revenue&quot;: &quot;sum&quot;, &quot;orders&quot;: &quot;count&quot;})
+```
+
+## Sort and Deduplicate
+
+```python
+def sort_csv(path: str, output: str, by: list, ascending: bool = True):
+    df = pd.read_csv(path)
+    df = df.sort_values(by=by, ascending=ascending)
+    df.to_csv(output, index=False)
+    return output
+
+def deduplicate_csv(path: str, output: str, subset: list = None):
+    df = pd.read_csv(path)
+    before = len(df)
+    df = df.drop_duplicates(subset=subset)
+    df.to_csv(output, index=False)
+    return {&quot;before&quot;: before, &quot;after&quot;: len(df), &quot;removed&quot;: before - len(df)}
+```
+
+## Using the csv module (no pandas)
+
+For simple operations without pandas:
+
+```python
+import csv
+
+def simple_filter(path: str, output: str, column: str, value: str):
+    &quot;&quot;&quot;Filter rows where a column equals a value. No pandas needed.&quot;&quot;&quot;
+    with open(path, &#x27;r&#x27;) as infile, open(output, &#x27;w&#x27;, newline=&#x27;&#x27;) as outfile:
+        reader = csv.DictReader(infile)
+        writer = csv.DictWriter(outfile, fieldnames=reader.fieldnames)
+        writer.writeheader()
+        for row in reader:
+            if row[column] == value:
+                writer.writerow(row)
+```
+
+## Pitfalls
+
+- **Encoding issues** — CSVs from Excel may use Windows-1252 encoding. Use `pd.read_csv(path, encoding=&#x27;latin1&#x27;)` if UTF-8 fails.
+- **Large CSVs** — pandas loads the entire file into memory. For files over 1GB, use `chunksize` parameter or `polars` instead.
+- **Delimiter detection** — Some CSVs use semicolons or tabs. Use `pd.read_csv(path, sep=&#x27;;&#x27;)` or `engine=&#x27;python&#x27;` for auto-detection.
+- **Quoting** — Fields with commas should be quoted. pandas handles this, but the `csv` module needs `quoting=csv.QUOTE_MINIMAL`.
+- **Date parsing** — Date columns are read as strings by default. Use `pd.read_csv(path, parse_dates=[&#x27;date_column&#x27;])`.
+- **NaN vs empty** — Empty cells become NaN in pandas, not empty strings. Use `df.fillna(&#x27;&#x27;)` to convert back.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># csv-toolkit
+
+Process CSV files — filter, transform, merge, and analyze without Excel.
+
+## What it does
+
+The agent reads CSV files and performs data operations: filtering rows, transforming columns, merging multiple files, computing group-by aggregates, sorting, and deduplicating. Uses pandas for heavy operations and the built-in csv module for simple ones. You get structured data processing without opening Excel.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/csv-toolkit/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Filter sales.csv to only show rows where revenue &gt; 1000&quot;
+```
+
+The agent:
+1. Reads the CSV with pandas
+2. Applies the filter: `df.query(&quot;revenue &gt; 1000&quot;)`
+3. Writes the result to a new CSV
+4. Returns the row counts
+
+## Example
+
+```
+User: &quot;Merge customer.csv and orders.csv on customer_id&quot;
+
+Agent:
+  1. Reads both CSVs
+  2. Merges: pd.merge(customers, orders, on=&quot;customer_id&quot;)
+  3. Writes merged.csv (2,500 rows, 12 columns)
+  4. Returns: &quot;Merged to merged.csv — 2,500 rows&quot;
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/csv-toolkit/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

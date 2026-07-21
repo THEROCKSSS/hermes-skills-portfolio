@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dotfiles-manage — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent sets up a dotfiles management system using one of four strategies (git bare repo, GNU Stow, chezmoi, or yadm). Your config files get versioned in a git repo, and you can deploy them to any new machine by cloning and running one command. No more manually copying `.bashrc`...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/dotfiles-manage/">
+  <meta property="og:title" content="dotfiles-manage — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent sets up a dotfiles management system using one of four strategies (git bare repo, GNU Stow, chezmoi, or yadm). Your config files get versioned in a git repo, and you can deploy them to any new machine by cloning and running one command. No more manually copying `.bashrc`...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/dotfiles-manage/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="dotfiles-manage — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent sets up a dotfiles management system using one of four strategies (git bare repo, GNU Stow, chezmoi, or yadm). Your config files get versioned in a git repo, and you can deploy them to any new machine by cloning and running one command. No more manually copying `.bashrc`...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>dotfiles-manage</h1>
+          <p class="tagline">Version and sync your dotfiles across machines.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge featured">Featured</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Highly useful within a category</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent sets up a dotfiles management system using one of four strategies (git bare repo, GNU Stow, chezmoi, or yadm). Your config files get versioned in a git repo, and you can deploy them to any new machine by cloning and running one command. No more manually copying `.bashrc` to a new laptop.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants their config files versioned and backed up.</li><li>The user is setting up a new machine and wants their configs deployed automatically.</li><li>The user wants to sync configs across multiple machines.</li><li>The user says &quot;set up dotfiles&quot;, &quot;version my configs&quot;, or &quot;I want my settings on my new laptop&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can version and sync your dotfiles across machines. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/dotfiles-manage/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/dotfiles-manage/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: dotfiles-manage
+description: &quot;Version and sync your dotfiles across machines — agent + this skill = user gets their config files in git and deployable to any new machine.&quot;
+version: 1.0.0
+---
+
+# dotfiles-manage
+
+Set up dotfiles management — version control for your configuration files (shell config, editor config, git config, etc.) with the ability to deploy them to any new machine in one command.
+
+## When to Use
+
+- The user wants their config files versioned and backed up.
+- The user is setting up a new machine and wants their configs deployed automatically.
+- The user wants to sync configs across multiple machines.
+- The user says &quot;set up dotfiles&quot;, &quot;version my configs&quot;, or &quot;I want my settings on my new laptop&quot;.
+
+## Strategies
+
+Four approaches, ranked by simplicity:
+
+| Strategy | How it works | Best for |
+|---|---|---|
+| **Git bare repo** | A bare git repo stores dotfiles; alias manages add/commit | Minimalists, no extra tools |
+| **GNU Stow** | Symlinks from a directory to your home dir | Organized by package, standard tool |
+| **chezmoi** | Templated dotfiles with encryption and machine-specific values | Multiple machines with different needs |
+| **yadm** | Yet Another Dotfiles Manager — git wrapper for home dir | Git-familiar users who want extras |
+
+## Strategy 1: Git Bare Repo (simplest)
+
+No extra software needed — just git.
+
+### Setup
+
+```bash
+# Create a bare repo
+git init --bare $HOME/.cfg
+
+# Add an alias to your shell config
+echo &quot;alias config=&#x27;/usr/bin/git --git-dir=\$HOME/.cfg/ --work-tree=\$HOME&#x27;&quot; &gt;&gt; ~/.bashrc
+source ~/.bashrc
+
+# Ignore untracked files in your home dir
+config config --local status.showUntrackedFiles no
+```
+
+### Add files
+
+```bash
+config add .bashrc .vimrc .gitconfig .tmux.conf
+config commit -m &quot;Initial dotfiles&quot;
+config remote add origin git@github.com:youruser/dotfiles.git
+config push -u origin main
+```
+
+### Deploy on a new machine
+
+```bash
+# Clone as bare repo
+git clone --bare git@github.com:youruser/dotfiles.git $HOME/.cfg
+
+# Add the alias
+echo &quot;alias config=&#x27;/usr/bin/git --git-dir=\$HOME/.cfg/ --work-tree=\$HOME&#x27;&quot; &gt;&gt; ~/.bashrc
+source ~/.bashrc
+
+# Checkout the files
+config checkout
+
+# If it fails because files already exist, back them up first:
+mkdir -p .config-backup
+config checkout 2&gt;&amp;1 | grep &quot;\t&quot; | awk {&#x27;print $1&#x27;} | xargs -I{} mv {} .config-backup/{}
+config checkout
+
+# Set ignore
+config config --local status.showUntrackedFiles no
+```
+
+## Strategy 2: GNU Stow
+
+Organizes dotfiles into &quot;packages&quot; and symlinks them into your home directory.
+
+### Setup
+
+```bash
+# Install stow
+# Linux: apt install stow / pacman -S stow
+# macOS: brew install stow
+
+# Create a dotfiles directory
+mkdir ~/dotfiles
+cd ~/dotfiles
+
+# Organize by package (each package is a directory)
+mkdir -p bash vim git tmux
+
+# Move configs into the package directories
+mv ~/.bashrc ~/dotfiles/bash/.bashrc
+mv ~/.vimrc ~/dotfiles/vim/.vimrc
+mv ~/.gitconfig ~/dotfiles/git/.gitconfig
+
+# Stow (create symlinks)
+stow bash vim git
+
+# Verify
+ls -la ~/.bashrc  # → ~/dotfiles/bash/.bashrc
+```
+
+### Deploy on a new machine
+
+```bash
+git clone git@github.com:youruser/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+stow bash vim git tmux
+```
+
+### Remove a package
+
+```bash
+stow -D vim  # removes the symlinks for the vim package
+```
+
+## Strategy 3: chezmoi (for multiple machines with differences)
+
+chezmoi handles machine-specific values, templating, and secrets.
+
+### Setup
+
+```bash
+# Install
+# Linux: snap install chezmoi --classic / or download
+# macOS: brew install chezmoi
+
+# Initialize
+chezmoi init
+
+# Add a file
+chezmoi add ~/.bashrc
+chezmoi add ~/.gitconfig
+
+# Edit managed files
+chezmoi edit ~/.bashrc
+
+# Apply changes to your home dir
+chezmoi apply
+
+# Push to git
+chezmoi cd
+git add -A
+git commit -m &quot;Initial dotfiles&quot;
+git remote add origin git@github.com:youruser/dotfiles.git
+git push -u origin main
+```
+
+### Deploy on a new machine
+
+```bash
+chezmoi init git@github.com:youruser/dotfiles.git
+chezmoi apply
+```
+
+### Machine-specific values
+
+```bash
+# Template file (chezmoi edit ~/.gitconfig)
+[user]
+    name = {{ .name }}
+    email = {{ .email }}
+
+# Set values per machine
+chezmoi data --format json  # see current values
+# Edit config:
+chezmoi edit-config
+# Add:
+# data:
+#   name: &quot;Your Name&quot;
+#   email: &quot;your@email.com&quot;
+```
+
+## Managing Different OSes
+
+For configs that differ between Linux and macOS:
+
+**chezmoi:**
+```bash
+# OS-specific files are named with .linux_ or .darwin_ prefix
+# chezmoi automatically picks the right one
+```
+
+**Git bare repo / Stow:**
+```bash
+# Use conditionals in your shell config:
+if [ &quot;$(uname)&quot; = &quot;Darwin&quot; ]; then
+    # macOS-specific settings
+elif [ &quot;$(uname)&quot; = &quot;Linux&quot; ]; then
+    # Linux-specific settings
+fi
+```
+
+## Secrets in Dotfiles
+
+Never commit plaintext secrets (API keys, tokens, passwords).
+
+| Method | How |
+|---|---|
+| **chezmoi encryption** | `chezmoi add --encrypt ~/.config/secrets` — encrypts with age or gpg |
+| **Env vars** | Store secrets in a file that&#x27;s gitignored, load via shell config |
+| **Password manager** | Reference secrets from `pass`, `1password-cli`, or `bitwarden-cli` in config |
+
+```bash
+# Example: load API key from password manager in .bashrc
+export OPENAI_API_KEY=$(pass openai/api-key)
+```
+
+## Pitfalls
+
+- **Committing secrets** — Before pushing, check for API keys, tokens, and passwords in your dotfiles. Use `git log -p` to review history. If secrets are already pushed, rotate them immediately — git history is forever.
+- **Symlink loops with Stow** — If you stow a directory that contains a symlink pointing back to your home dir, you&#x27;ll create a loop. Stow will warn you, but check manually.
+- **Bare repo checkout fails** — If files already exist in your home dir, `config checkout` fails. Back up the conflicting files first (the deploy script above handles this).
+- **Different paths on different OSes** — A config that works on Linux (`~/.config/`) may need a different path on macOS (`~/Library/Application Support/`). Use chezmoi for cross-OS setups, or conditional logic in shell configs.
+- **Forgetting to stow/restow** — After adding a new file to a Stow package, you need to re-run `stow &lt;package&gt;` to create the symlink. It&#x27;s not automatic.
+- **Machine-specific values in git** — If you hardcode a machine-specific value (hostname, IP, path) in a dotfile, it breaks on other machines. Use templates (chezmoi) or conditionals.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># dotfiles-manage
+
+Version and sync your configuration files across machines with git — deploy to any new machine in one command.
+
+## What it does
+
+The agent sets up a dotfiles management system using one of four strategies (git bare repo, GNU Stow, chezmoi, or yadm). Your config files get versioned in a git repo, and you can deploy them to any new machine by cloning and running one command. No more manually copying `.bashrc` to a new laptop.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/dotfiles-manage/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Set up dotfiles management for my shell, vim, and git configs&quot;
+```
+
+The agent:
+1. Recommends a strategy based on your needs (bare repo for simplicity, chezmoi for multiple machines)
+2. Sets up the repo structure
+3. Adds your config files
+4. Pushes to a git remote
+5. Shows you the one-command deploy for new machines
+
+## Strategies
+
+| Strategy | Needs | Best for |
+|---|---|---|
+| Git bare repo | Just git | Minimalists |
+| GNU Stow | stow installed | Organized by package |
+| chezmoi | chezmoi installed | Multiple machines, templated configs |
+| yadm | yadm installed | Git-familiar, wants extras |
+
+## Example
+
+```
+User: &quot;I just got a new laptop. I want my configs from my old machine.&quot;
+
+Agent:
+  1. On old machine: sets up git bare repo at ~/.cfg
+  2. Adds: .bashrc, .vimrc, .gitconfig, .tmux.conf
+  3. Pushes to github.com/youruser/dotfiles
+  4. On new machine: git clone --bare ... ~/.cfg
+  5. Runs: config checkout
+  6. Returns: &quot;Your configs are now on the new machine.&quot;
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/dotfiles-manage/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

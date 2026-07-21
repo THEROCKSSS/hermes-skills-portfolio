@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>color-palette-generator — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent creates cohesive color palettes in three modes: extract dominant colors from an image, generate a scheme (analogous, complementary, triadic, monochrome) from a base color, or produce a palette from a mood keyword. Output as hex values or ready-to-use CSS custom...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/color-palette-generator/">
+  <meta property="og:title" content="color-palette-generator — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent creates cohesive color palettes in three modes: extract dominant colors from an image, generate a scheme (analogous, complementary, triadic, monochrome) from a base color, or produce a palette from a mood keyword. Output as hex values or ready-to-use CSS custom...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/color-palette-generator/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="color-palette-generator — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent creates cohesive color palettes in three modes: extract dominant colors from an image, generate a scheme (analogous, complementary, triadic, monochrome) from a base color, or produce a palette from a mood keyword. Output as hex values or ready-to-use CSS custom...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>color-palette-generator</h1>
+          <p class="tagline">Generate color palettes from images or base colors.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Frontend</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent creates cohesive color palettes in three modes: extract dominant colors from an image, generate a scheme (analogous, complementary, triadic, monochrome) from a base color, or produce a palette from a mood keyword. Output as hex values or ready-to-use CSS custom properties.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants a color palette for a web project.</li><li>The user wants to extract colors from an image or screenshot.</li><li>The user wants a palette based on a mood or keyword.</li><li>The user says &quot;generate a color palette&quot;, &quot;extract colors from this image&quot;, or &quot;give me a color scheme&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can generate color palettes from images or base colors. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/color-palette-generator/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/color-palette-generator/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: color-palette-generator
+description: &quot;Generate color palettes from images or keywords — agent + this skill = user gets a cohesive color scheme for any project.&quot;
+version: 1.0.0
+---
+
+# color-palette-generator
+
+Generate color palettes from images, keywords, or base colors. The agent extracts dominant colors from images, generates complementary palettes from a seed color, and produces CSS custom properties ready to use.
+
+## When to Use
+
+- The user wants a color palette for a web project.
+- The user wants to extract colors from an image or screenshot.
+- The user wants a palette based on a mood or keyword.
+- The user says &quot;generate a color palette&quot;, &quot;extract colors from this image&quot;, or &quot;give me a color scheme&quot;.
+
+## Extract Colors from Image
+
+```python
+from PIL import Image
+from collections import Counter
+
+def extract_palette(image_path: str, num_colors: int = 6) -&gt; list:
+    &quot;&quot;&quot;Extract dominant colors from an image.&quot;&quot;&quot;
+    img = Image.open(image_path)
+    img = img.convert(&quot;RGB&quot;)
+    img = img.resize((150, 150))  # downsize for speed
+
+    pixels = list(img.getdata())
+    counter = Counter(pixels)
+
+    palette = []
+    for color, count in counter.most_common(num_colors * 3):
+        # Skip colors too similar to already-selected ones
+        too_close = False
+        for existing in palette:
+            if sum(abs(a - b) for a, b in zip(color, existing)) &lt; 50:
+                too_close = True
+                break
+        if not too_close:
+            palette.append(color)
+        if len(palette) &gt;= num_colors:
+            break
+
+    return [{&quot;hex&quot;: rgb_to_hex(c), &quot;rgb&quot;: c} for c in palette]
+
+def rgb_to_hex(rgb: tuple) -&gt; str:
+    return f&quot;#{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}&quot;
+```
+
+## Generate from Base Color
+
+```python
+import colorsys
+
+def generate_palette(base_hex: str, scheme: str = &quot;analogous&quot;) -&gt; list:
+    &quot;&quot;&quot;Generate a palette from a base color.&quot;&quot;&quot;
+    r, g, b = int(base_hex[1:3], 16), int(base_hex[3:5], 16), int(base_hex[5:7], 16)
+    h, s, v = colorsys.rgb_to_hsv(r/255, g/255, b/255)
+
+    colors = []
+    if scheme == &quot;analogous&quot;:
+        offsets = [-30, -15, 0, 15, 30]
+        for offset in offsets:
+            new_h = (h + offset/360) % 1.0
+            rgb = colorsys.hsv_to_rgb(new_h, s, v)
+            colors.append(rgb_to_hex((int(rgb[0]*255), int(rgb[1]*255), int(rgb[2]*255))))
+
+    elif scheme == &quot;complementary&quot;:
+        new_h = (h + 0.5) % 1.0
+        for sat in [s, s*0.7, s*0.5]:
+            rgb = colorsys.hsv_to_rgb(h, sat, v)
+            colors.append(rgb_to_hex((int(rgb[0]*255), int(rgb[1]*255), int(rgb[2]*255))))
+            rgb = colorsys.hsv_to_rgb(new_h, sat, v)
+            colors.append(rgb_to_hex((int(rgb[0]*255), int(rgb[1]*255), int(rgb[2]*255))))
+
+    elif scheme == &quot;triadic&quot;:
+        for offset in [0, 120, 240]:
+            new_h = (h + offset/360) % 1.0
+            rgb = colorsys.hsv_to_rgb(new_h, s, v)
+            colors.append(rgb_to_hex((int(rgb[0]*255), int(rgb[1]*255), int(rgb[2]*255))))
+
+    elif scheme == &quot;monochrome&quot;:
+        for val in [0.3, 0.5, 0.7, 0.85, 1.0]:
+            rgb = colorsys.hsv_to_rgb(h, s, val)
+            colors.append(rgb_to_hex((int(rgb[0]*255), int(rgb[1]*255), int(rgb[2]*255))))
+
+    return colors
+```
+
+## CSS Custom Properties Output
+
+```python
+def palette_to_css(palette: list, name: str = &quot;palette&quot;) -&gt; str:
+    &quot;&quot;&quot;Generate CSS custom properties from a palette.&quot;&quot;&quot;
+    css = &quot;:root {\n&quot;
+    for i, color in enumerate(palette, 1):
+        hex_val = color[&quot;hex&quot;] if isinstance(color, dict) else color
+        css += f&quot;  --color-{name}-{i}: {hex_val};\n&quot;
+    css += &quot;}&quot;
+    return css
+```
+
+## Workflow
+
+1. Determine the source: image, base color, or keyword
+2. For images: extract dominant colors with deduplication
+3. For base colors: generate analogous/complementary/triadic/monochrome scheme
+4. Convert to hex
+5. Optionally output as CSS custom properties
+6. Return the palette
+
+## Pitfalls
+
+- **Similar colors** — Raw color extraction returns near-identical shades. The deduplication threshold (distance &lt; 50) filters these, but may be too aggressive or too loose for some images.
+- **Image too large** — Extracting from a 5000x5000 image is slow. Downsize first (the code resizes to 150x150).
+- **Transparency** — RGBA images have an alpha channel. Convert to RGB first to avoid transparent pixels skewing the palette.
+- **Scheme choice** — &quot;Analogous&quot; is safe for most projects. &quot;Complementary&quot; can be jarring. &quot;Monochrome&quot; is elegant but low contrast.
+- **Hex vs OKLCH** — This skill generates hex colors. For perceptually uniform palettes, convert to OKLCH. The `hallmark-readme` and `frontend-design-toolkit` skills recommend OKLCH.
+- **Dark mode** — The generated palette is for light mode. For dark mode, invert the lightness of each color while keeping the hue.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># color-palette-generator
+
+Generate color palettes from images, base colors, or keywords — output as hex or CSS custom properties.
+
+## What it does
+
+The agent creates cohesive color palettes in three modes: extract dominant colors from an image, generate a scheme (analogous, complementary, triadic, monochrome) from a base color, or produce a palette from a mood keyword. Output as hex values or ready-to-use CSS custom properties.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/color-palette-generator/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Extract a color palette from this screenshot&quot;
+```
+
+The agent extracts the 6 most dominant colors and returns them as hex values plus CSS custom properties.
+
+## Palette types
+
+| Type | How it works |
+|---|---|
+| Image extraction | Finds dominant colors in an image |
+| Analogous | Colors adjacent on the color wheel |
+| Complementary | Base color + its opposite |
+| Triadic | Three evenly-spaced colors |
+| Monochrome | Variations of a single hue |
+
+## Example
+
+```
+User: &quot;Generate a palette from #3b82f6&quot;
+
+Agent:
+  1. Generates analogous palette:
+     #1d4ed8, #2563eb, #3b82f6, #60a5fa, #93c5fd
+  2. As CSS:
+     :root {
+       --color-palette-1: #1d4ed8;
+       --color-palette-2: #2563eb;
+       --color-palette-3: #3b82f6;
+       --color-palette-4: #60a5fa;
+       --color-palette-5: #93c5fd;
+     }
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/color-palette-generator/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

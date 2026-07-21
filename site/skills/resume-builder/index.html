@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>resume-builder — Hermes Skill</title>
+  <meta name="description" content="What it does: Give the agent your work history, education, skills, and contact details as
+structured YAML or JSON. `resume-builder` renders a clean, ATS-friendly resume
+in three visual styles and exports it to PDF with a single command.
+
+No copy-pasting into Word. No fighting with margins. You...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/resume-builder/">
+  <meta property="og:title" content="resume-builder — Hermes Skill">
+  <meta property="og:description" content="What it does: Give the agent your work history, education, skills, and contact details as
+structured YAML or JSON. `resume-builder` renders a clean, ATS-friendly resume
+in three visual styles and exports it to PDF with a single command.
+
+No copy-pasting into Word. No fighting with margins. You...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/resume-builder/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="resume-builder — Hermes Skill">
+  <meta name="twitter:description" content="What it does: Give the agent your work history, education, skills, and contact details as
+structured YAML or JSON. `resume-builder` renders a clean, ATS-friendly resume
+in three visual styles and exports it to PDF with a single command.
+
+No copy-pasting into Word. No fighting with margins. You...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>resume-builder</h1>
+          <p class="tagline">Generate a professional resume in HTML/PDF from structured data.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge featured">Featured</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Highly useful within a category</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>Give the agent your work history, education, skills, and contact details as
+structured YAML or JSON. `resume-builder` renders a clean, ATS-friendly resume
+in three visual styles and exports it to PDF with a single command.
+
+No copy-pasting into Word. No fighting with margins. You describe the facts; the
+skill handles the typography, pagination, and print fidelity.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user supplies (or asks the agent to draft) a resume from facts: jobs,</li></ul>
+<p>education, skills, projects, certifications, contact info.</p>
+<ul><li>The user has a YAML/JSON resume and wants a styled HTML page or a PDF.</li><li>The user wants to re-theme an existing resume (minimal / modern / classic)</li></ul>
+<p>without re-typing content.</p>
+<ul><li>The user needs a portable, ATS-friendly document for job applications.</li></ul>
+<p>Do **not** use this skill for:</p>
+<ul><li>Cover letters (single narrative prose) — that is a different artifact.</li><li>Full CVs with publications/grants requiring a two-column academic layout</li></ul>
+<p>(the classic template can approximate it, but flag the limitation).</p>
+<ul><li>Free-form un-structured prompts with no data — first collect data (see</li></ul>
+<p>Input Format), then render.</p>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can generate a professional resume in html/pdf from structured data. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/resume-builder/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/resume-builder/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: resume-builder
+description: Generate a professional, print-ready resume in HTML and PDF from structured YAML/JSON data. Use when a user wants to turn their CV, work history, skills, and education into a polished single-page or multi-page resume with selectable templates and reliable PDF export.
+version: 1.0.0
+---
+
+# resume-builder
+
+Turn structured career data into a clean, professional resume rendered as HTML
+and exported to PDF. The skill owns the data model, three visual templates, and
+two PDF backends so the agent produces a consistent artifact regardless of the
+user&#x27;s environment.
+
+## When to Use
+
+- The user supplies (or asks the agent to draft) a resume from facts: jobs,
+  education, skills, projects, certifications, contact info.
+- The user has a YAML/JSON resume and wants a styled HTML page or a PDF.
+- The user wants to re-theme an existing resume (minimal / modern / classic)
+  without re-typing content.
+- The user needs a portable, ATS-friendly document for job applications.
+
+Do **not** use this skill for:
+- Cover letters (single narrative prose) — that is a different artifact.
+- Full CVs with publications/grants requiring a two-column academic layout
+  (the classic template can approximate it, but flag the limitation).
+- Free-form un-structured prompts with no data — first collect data (see
+  Input Format), then render.
+
+## Input Format
+
+The skill consumes one structured document. Prefer YAML for hand-authoring;
+accept JSON interchangeably. The canonical schema:
+
+```yaml
+basics:
+  name: &quot;Owen&quot;
+  label: &quot;Senior Software Engineer&quot;
+  email: &quot;monica@example.com&quot;
+  phone: &quot;+1 555 0100&quot;
+  url: &quot;https://monica.example.com&quot;
+  location: &quot;Berlin, Germany&quot;
+  summary: &quot;Engineer focused on distributed systems and developer tooling.&quot;
+sections:
+  work:
+    - company: &quot;Acme Corp&quot;
+      position: &quot;Staff Engineer&quot;
+      start: &quot;2021-03&quot;
+      end: &quot;2024-06&quot;
+      location: &quot;Remote&quot;
+      highlights:
+        - &quot;Led migration of the billing service to event-driven architecture.&quot;
+        - &quot;Cut p99 latency 40% by introducing a read-through cache.&quot;
+  education:
+    - institution: &quot;TU Berlin&quot;
+      area: &quot;Computer Science&quot;
+      degree: &quot;M.Sc.&quot;
+      start: &quot;2016&quot;
+      end: &quot;2018&quot;
+  skills:
+    - &quot;Go&quot;
+    - &quot;Kubernetes&quot;
+    - &quot;Distributed Systems&quot;
+  projects:
+    - name: &quot;openmetrics-cli&quot;
+      description: &quot;A tiny Prometheus exporter toolkit.&quot;
+      url: &quot;https://github.com/monica/openmetrics-cli&quot;
+  certifications:
+    - name: &quot;CKA&quot;
+      issuer: &quot;CNCF&quot;
+      date: &quot;2022&quot;
+```
+
+Rules the agent must enforce:
+- `basics.name` and at least one `sections.work` or `sections.education` entry
+  are required; everything else is optional and omitted if absent.
+- Dates use ISO `YYYY` or `YYYY-MM`. Render ranges as `2021-03 – 2024-06`;
+  an open-ended role uses `Present` for a missing `end`.
+- `highlights` are bullet points; keep each to one line, action-verb led.
+- Unknown top-level keys are ignored, not erroring.
+
+## Template Options
+
+Three bundled, dependency-light CSS templates. The agent picks based on the
+user&#x27;s stated preference or defaults to `modern`.
+
+- **minimal** — single column, generous whitespace, hairline rules, neutral
+  sans-serif. Best for engineering and design roles; fastest to scan.
+- **modern** — accent color header band, two-tone palette, subtle typographic
+  scale. Good general-purpose default.
+- **classic** — serif body, ruled section headers, traditional chronology.
+  Best for finance, law, academia-adjacent roles.
+
+Each template is a self-contained `&lt;style&gt;` block plus semantic HTML, so the
+rendered page works offline and prints predictably. The agent sets the accent
+color and font stack via CSS custom properties (see Customization).
+
+## PDF Generation
+
+Two backends; pick whichever the user&#x27;s machine can run.
+
+### weasyprint (recommended, headless-friendly)
+```bash
+pip install weasyprint
+weasyprint resume.html resume.pdf
+```
+WeasyPrint renders HTML/CSS directly — no browser needed. It honors `@page`
+size, margins, and `print-color-adjust: exact`, so colors survive to PDF.
+Best when Chromium is unavailable.
+
+### puppeteer (best fidelity to screen CSS)
+```bash
+npm install puppeteer
+node -e &quot;const p=require(&#x27;puppeteer&#x27;);(async()=&gt;{const b=await p.launch();const pg=await b.newPage();await pg.goto(&#x27;file://&#x27;+process.cwd()+&#x27;/resume.html&#x27;,{waitUntil:&#x27;networkidle0&#x27;});await pg.pdf({path:&#x27;resume.pdf&#x27;,format:&#x27;A4&#x27;,printBackground:true});await b.close();})()&quot;
+```
+Puppeteer gives pixel-accurate output and supports web fonts. Slower to install
+and needs a Chromium download. Use when the user already has Node tooling.
+
+Always generate the PDF from the final HTML with `printBackground: true`
+(puppeteer) or `print-color-adjust: exact` (weasyprint) so the template&#x27;s
+background colors and rules appear.
+
+## HTML Output
+
+The agent writes a single `resume.html`:
+- One root `&lt;article class=&quot;resume template-&lt;name&gt;&quot;&gt;`.
+- `lang` attribute set from `basics` locale or default `en`.
+- Inline `&lt;style&gt;` in `&lt;head&gt;`; no external requests (fonts fall back to
+  system stacks) so the file is portable.
+- Contact links use `mailto:`/`tel:` and `rel=&quot;noopener&quot;` on external `url`.
+- Section order: summary → work → education → projects → skills → certifications.
+  Sections with no data are dropped; the order is fixed for ATS consistency.
+
+## Customization
+
+Drive appearance through CSS custom properties at `:root` so users restyle
+without touching markup:
+
+```css
+:root{
+  --accent:#2563eb;
+  --ink:#111827;
+  --paper:#ffffff;
+  --font-sans: &quot;Inter&quot;, system-ui, sans-serif;
+  --font-serif: &quot;Georgia&quot;, serif;
+  --space: 0.75rem;
+}
+```
+
+- Recolor: set `--accent`. For classic, also set `--font-body: var(--font-serif)`.
+- Page size: override `@page { size: A4; margin: 14mm; }` (Letter for US users).
+- Multi-page: templates are fluid; long resumes paginate automatically. Add
+  `break-inside: avoid` on `.entry` to keep a role&#x27;s block together.
+- One-page coercion: if the user demands one page, shrink `--space` and font
+  sizes, trim `summary`, and cap `highlights` to 3–4 per role rather than
+  dropping sections.
+
+## Pitfalls
+
+- **Missing `end` date** → render `Present`, never leave a blank range.
+- **WeasyPrint missing system libs** (Pango/cairo) on minimal Linux images →
+  install `libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0` first, or
+  fall back to puppeteer.
+- **Fonts not embedded in PDF** → use system font stacks; web fonts loaded via
+  `&lt;link&gt;` may not print. Inline `@font-face` only if the user supplies files.
+- **Print background stripped** → without `printBackground:true` /
+  `print-color-adjust:exact`, accent bands disappear. This is the #1 &quot;my PDF
+  looks blank&quot; bug.
+- **ATS parsing** → keep real text (no text-in-images, no columns-splitting
+  names). The minimal/modern templates are ATS-safe; heavy two-column sidebars
+  can confuse parsers.
+- **Non-ISO dates** → normalize `Mar 2021` → `2021-03` before rendering.
+- **Long URLs in `highlights`** → wrap or shorten; raw URLs break line layout.
+- **Over-styling for one page** → don&#x27;t shrink below 9pt; prefer content edits.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># resume-builder
+
+&gt; A Hermes skill that turns structured career data into a professional,
+&gt; print-ready resume — HTML and PDF, no design work required.
+
+**Category:** utility · **Tier:** featured · **Version:** 1.0.0
+
+---
+
+## What it does
+
+Give the agent your work history, education, skills, and contact details as
+structured YAML or JSON. `resume-builder` renders a clean, ATS-friendly resume
+in three visual styles and exports it to PDF with a single command.
+
+No copy-pasting into Word. No fighting with margins. You describe the facts; the
+skill handles the typography, pagination, and print fidelity.
+
+## Templates
+
+| Template  | Look                                    | Best for                  |
+|-----------|-----------------------------------------|---------------------------|
+| `minimal` | Single column, hairline rules, calm     | Engineering, design       |
+| `modern`  | Accent header band, two-tone palette    | General-purpose default   |
+| `classic` | Serif body, ruled headers, traditional  | Finance, law, academia    |
+
+## Quick start
+
+```yaml
+# resume.yaml
+basics:
+  name: &quot;Owen&quot;
+  label: &quot;Senior Software Engineer&quot;
+  email: &quot;monica@example.com&quot;
+  summary: &quot;Engineer focused on distributed systems.&quot;
+sections:
+  work:
+    - company: &quot;Acme Corp&quot;
+      position: &quot;Staff Engineer&quot;
+      start: &quot;2021-03&quot;
+      end: &quot;2024-06&quot;
+      highlights:
+        - &quot;Led a billing-service migration to event-driven architecture.&quot;
+  education:
+    - institution: &quot;TU Berlin&quot;
+      area: &quot;Computer Science&quot;
+      degree: &quot;M.Sc.&quot;
+      end: &quot;2018&quot;
+  skills: [&quot;Go&quot;, &quot;Kubernetes&quot;, &quot;Distributed Systems&quot;]
+```
+
+Render and export:
+
+```bash
+# HTML (agent writes resume.html)
+# PDF via WeasyPrint (no browser needed):
+pip install weasyprint &amp;&amp; weasyprint resume.html resume.pdf
+
+# or PDF via Puppeteer (pixel-accurate):
+npm install puppeteer &amp;&amp; node export-pdf.js
+```
+
+## Why it&#x27;s reliable
+
+- **Print-safe by default** — background colors and rules survive to PDF via
+  `printBackground: true` / `print-color-adjust: exact`.
+- **ATS-friendly** — real text, predictable section order, no image-bound text.
+- **Portable** — single self-contained HTML file, system font stacks, no
+  external requests.
+- **Customizable** — recolor and re-space through CSS custom properties; switch
+  page size (A4 / Letter) with one `@page` rule.
+
+## Install
+
+Install this skill into Hermes from the public portfolio:
+
+```
+https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/resume-builder/SKILL.md
+```
+
+Then ask Hermes: *&quot;Build my resume from resume.yaml using the modern template
+and export a PDF.&quot;*
+
+## License
+
+MIT — use it, fork it, ship your own portfolio version.
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/resume-builder/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

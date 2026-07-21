@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>json-formatter — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent takes messy or minified JSON and makes it clean: pretty-prints with indentation, validates and reports errors with line/column numbers, fixes common issues (trailing commas, single quotes, comments), extracts specific fields using dot notation, and converts JSON arrays to...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/json-formatter/">
+  <meta property="og:title" content="json-formatter — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent takes messy or minified JSON and makes it clean: pretty-prints with indentation, validates and reports errors with line/column numbers, fixes common issues (trailing commas, single quotes, comments), extracts specific fields using dot notation, and converts JSON arrays to...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/json-formatter/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="json-formatter — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent takes messy or minified JSON and makes it clean: pretty-prints with indentation, validates and reports errors with line/column numbers, fixes common issues (trailing commas, single quotes, comments), extracts specific fields using dot notation, and converts JSON arrays to...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>json-formatter</h1>
+          <p class="tagline">Format, validate, minify, and transform JSON.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent takes messy or minified JSON and makes it clean: pretty-prints with indentation, validates and reports errors with line/column numbers, fixes common issues (trailing commas, single quotes, comments), extracts specific fields using dot notation, and converts JSON arrays to CSV.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user has messy or minified JSON that needs formatting.</li><li>The user wants to validate a JSON file.</li><li>The user wants to extract specific fields from a large JSON.</li><li>The user says &quot;format this JSON&quot;, &quot;pretty print this&quot;, or &quot;validate my JSON&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can format, validate, minify, and transform json. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/json-formatter/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/json-formatter/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: json-formatter
+description: &quot;Format, validate, and transform JSON — agent + this skill = user gets clean, readable, valid JSON.&quot;
+version: 1.0.0
+---
+
+# json-formatter
+
+Format, validate, minify, and transform JSON. The agent handles malformed JSON, pretty-prints messy output, extracts specific fields with JSONPath, and converts between JSON and other formats.
+
+## When to Use
+
+- The user has messy or minified JSON that needs formatting.
+- The user wants to validate a JSON file.
+- The user wants to extract specific fields from a large JSON.
+- The user says &quot;format this JSON&quot;, &quot;pretty print this&quot;, or &quot;validate my JSON&quot;.
+
+## Pretty Print
+
+```python
+import json
+
+def pretty_print(json_str: str, indent: int = 2) -&gt; str:
+    &quot;&quot;&quot;Format JSON with indentation.&quot;&quot;&quot;
+    data = json.loads(json_str)
+    return json.dumps(data, indent=indent, ensure_ascii=False)
+
+def pretty_print_file(input_path: str, output_path: str = None, indent: int = 2):
+    &quot;&quot;&quot;Format a JSON file in place or to a new file.&quot;&quot;&quot;
+    with open(input_path, &#x27;r&#x27;) as f:
+        data = json.load(f)
+    out = output_path or input_path
+    with open(out, &#x27;w&#x27;) as f:
+        json.dump(data, f, indent=indent, ensure_ascii=False)
+    return out
+```
+
+## Minify
+
+```python
+def minify_json(json_str: str) -&gt; str:
+    &quot;&quot;&quot;Remove all whitespace from JSON.&quot;&quot;&quot;
+    data = json.loads(json_str)
+    return json.dumps(data, separators=(&#x27;,&#x27;, &#x27;:&#x27;), ensure_ascii=False)
+```
+
+## Validate
+
+```python
+def validate_json(json_str: str) -&gt; dict:
+    &quot;&quot;&quot;Validate JSON and return error details if invalid.&quot;&quot;&quot;
+    try:
+        json.loads(json_str)
+        return {&quot;valid&quot;: True}
+    except json.JSONDecodeError as e:
+        return {
+            &quot;valid&quot;: False,
+            &quot;error&quot;: str(e),
+            &quot;line&quot;: e.lineno,
+            &quot;column&quot;: e.colno,
+            &quot;position&quot;: e.pos,
+            &quot;context&quot;: json_str[max(0, e.pos-20):e.pos+20] if e.pos else &quot;&quot;
+        }
+```
+
+## Extract Fields
+
+```python
+def extract_fields(data, paths: list):
+    &quot;&quot;&quot;Extract specific fields from nested JSON using dot notation.
+    paths = [&quot;user.name&quot;, &quot;user.email&quot;, &quot;items.0.title&quot;]
+    &quot;&quot;&quot;
+    def get_nested(obj, path):
+        keys = path.split(&#x27;.&#x27;)
+        current = obj
+        for key in keys:
+            if isinstance(current, list):
+                try:
+                    current = current[int(key)]
+                except (ValueError, IndexError):
+                    return None
+            elif isinstance(current, dict):
+                current = current.get(key)
+            else:
+                return None
+            if current is None:
+                return None
+        return current
+
+    if isinstance(data, str):
+        data = json.loads(data)
+
+    return {path: get_nested(data, path) for path in paths}
+```
+
+## JSON to CSV
+
+```python
+import csv
+
+def json_to_csv(json_path: str, csv_path: str, record_path: str = None):
+    &quot;&quot;&quot;Convert a JSON array of objects to CSV.&quot;&quot;&quot;
+    with open(json_path, &#x27;r&#x27;) as f:
+        data = json.load(f)
+
+    if record_path:
+        # Navigate to the array
+        for key in record_path.split(&#x27;.&#x27;):
+            data = data[key]
+
+    if not isinstance(data, list):
+        raise ValueError(&quot;JSON must be an array of objects&quot;)
+
+    # Collect all field names
+    fieldnames = set()
+    for record in data:
+        fieldnames.update(record.keys())
+    fieldnames = sorted(fieldnames)
+
+    with open(csv_path, &#x27;w&#x27;, newline=&#x27;&#x27;) as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        for record in data:
+            writer.writerow({k: record.get(k, &#x27;&#x27;) for k in fieldnames})
+    return csv_path
+```
+
+## Fix Common JSON Errors
+
+```python
+def fix_json(json_str: str) -&gt; str:
+    &quot;&quot;&quot;Attempt to fix common JSON formatting errors.&quot;&quot;&quot;
+    # Remove trailing commas
+    json_str = re.sub(r&#x27;,\s*([}\]])&#x27;, r&#x27;\1&#x27;, json_str)
+    # Replace single quotes with double quotes
+    json_str = json_str.replace(&quot;&#x27;&quot;, &#x27;&quot;&#x27;)
+    # Remove comments (// and /* */)
+    json_str = re.sub(r&#x27;//.*?$&#x27;, &#x27;&#x27;, json_str, flags=re.MULTILINE)
+    json_str = re.sub(r&#x27;/\*.*?\*/&#x27;, &#x27;&#x27;, json_str, flags=re.DOTALL)
+    return json_str
+
+import re
+```
+
+## Workflow
+
+1. Read the JSON (string or file)
+2. If validation fails, try `fix_json` to fix common errors
+3. Pretty-print with 2-space indent
+4. If extracting fields, use dot-notation paths
+5. If converting to CSV, flatten the array
+6. Return the formatted/validated/extracted result
+
+## Pitfalls
+
+- **Trailing commas** — Standard JSON doesn&#x27;t allow trailing commas. `fix_json` removes them, but validate first to know if there&#x27;s an issue.
+- **Single quotes** — JSON requires double quotes. JSON5 allows single quotes, but standard parsers reject them.
+- **Comments in JSON** — Standard JSON doesn&#x27;t allow comments. JSONC and JSON5 do. `fix_json` strips comments for standard compatibility.
+- **Large JSON files** — `json.load()` loads the entire file into memory. For files over 100MB, use `ijson` for streaming parsing.
+- **Unicode** — Use `ensure_ascii=False` to keep Unicode characters readable. With `ensure_ascii=True` (default), they become `\uXXXX` escapes.
+- **Nested arrays** — `json_to_csv` only flattens one level. Deeply nested objects need manual flattening before CSV conversion.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># json-formatter
+
+Format, validate, minify, and transform JSON — pretty-print, fix errors, extract fields, convert to CSV.
+
+## What it does
+
+The agent takes messy or minified JSON and makes it clean: pretty-prints with indentation, validates and reports errors with line/column numbers, fixes common issues (trailing commas, single quotes, comments), extracts specific fields using dot notation, and converts JSON arrays to CSV.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/json-formatter/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Format this JSON file&quot;
+```
+
+The agent:
+1. Reads the JSON
+2. Validates it — reports any errors with position
+3. Pretty-prints with 2-space indentation
+4. Writes the formatted output
+
+## Example
+
+```
+User: &quot;This API response is minified. Make it readable.&quot;
+
+Agent:
+  1. Reads the minified JSON
+  2. Pretty-prints: json.dumps(data, indent=2)
+  3. Returns formatted JSON with proper indentation and line breaks
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/json-formatter/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

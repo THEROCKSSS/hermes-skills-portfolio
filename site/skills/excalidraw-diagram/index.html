@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>excalidraw-diagram — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent creates Excalidraw-compatible JSON files containing boxes, arrows, circles, and labels arranged as architecture diagrams, flow charts, or sequence diagrams. Open the file in the Excalidraw editor (excalidraw.com) to view, edit, or export as PNG/SVG. The hand-drawn...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/excalidraw-diagram/">
+  <meta property="og:title" content="excalidraw-diagram — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent creates Excalidraw-compatible JSON files containing boxes, arrows, circles, and labels arranged as architecture diagrams, flow charts, or sequence diagrams. Open the file in the Excalidraw editor (excalidraw.com) to view, edit, or export as PNG/SVG. The hand-drawn...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/excalidraw-diagram/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="excalidraw-diagram — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent creates Excalidraw-compatible JSON files containing boxes, arrows, circles, and labels arranged as architecture diagrams, flow charts, or sequence diagrams. Open the file in the Excalidraw editor (excalidraw.com) to view, edit, or export as PNG/SVG. The hand-drawn...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>excalidraw-diagram</h1>
+          <p class="tagline">Generate hand-drawn style diagrams as Excalidraw JSON.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Frontend</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent creates Excalidraw-compatible JSON files containing boxes, arrows, circles, and labels arranged as architecture diagrams, flow charts, or sequence diagrams. Open the file in the Excalidraw editor (excalidraw.com) to view, edit, or export as PNG/SVG. The hand-drawn aesthetic makes diagrams look approachable, not corporate.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants a diagram for documentation or a presentation.</li><li>The user wants a hand-drawn style diagram (not polished/corporate).</li><li>The user wants an architecture, flow, or sequence diagram.</li><li>The user says &quot;draw a diagram&quot;, &quot;make an architecture diagram&quot;, or &quot;visualize this flow&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can generate hand-drawn style diagrams as excalidraw json. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/excalidraw-diagram/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/excalidraw-diagram/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: excalidraw-diagram
+description: &quot;Generate hand-drawn style diagrams as Excalidraw JSON — agent + this skill = user gets architecture and flow diagrams that look hand-drawn.&quot;
+version: 1.0.0
+---
+
+# excalidraw-diagram
+
+Generate Excalidraw-compatible JSON diagrams in a hand-drawn style. The agent creates architecture diagrams, flow charts, sequence diagrams, and mind maps as Excalidraw files that can be opened in the Excalidraw editor or exported as PNG/SVG.
+
+## When to Use
+
+- The user wants a diagram for documentation or a presentation.
+- The user wants a hand-drawn style diagram (not polished/corporate).
+- The user wants an architecture, flow, or sequence diagram.
+- The user says &quot;draw a diagram&quot;, &quot;make an architecture diagram&quot;, or &quot;visualize this flow&quot;.
+
+## Excalidraw JSON Format
+
+Excalidraw files are JSON with an `elements` array. Each element is a shape (rectangle, ellipse, arrow, line, text).
+
+```json
+{
+  &quot;type&quot;: &quot;excalidraw&quot;,
+  &quot;version&quot;: 2,
+  &quot;source&quot;: &quot;hermes&quot;,
+  &quot;elements&quot;: [
+    {
+      &quot;type&quot;: &quot;rectangle&quot;,
+      &quot;x&quot;: 100, &quot;y&quot;: 100,
+      &quot;width&quot;: 200, &quot;height&quot;: 80,
+      &quot;strokeColor&quot;: &quot;#1e88e5&quot;,
+      &quot;backgroundColor&quot;: &quot;transparent&quot;,
+      &quot;fillStyle&quot;: &quot;hachure&quot;,
+      &quot;strokeWidth&quot;: 2,
+      &quot;roughness&quot;: 1,
+      &quot;id&quot;: &quot;rect-1&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;x&quot;: 120, &quot;y&quot;: 130,
+      &quot;text&quot;: &quot;API Server&quot;,
+      &quot;fontSize&quot;: 20,
+      &quot;fontFamily&quot;: 1,
+      &quot;id&quot;: &quot;text-1&quot;
+    }
+  ],
+  &quot;appState&quot;: { &quot;viewBackgroundColor&quot;: &quot;#ffffff&quot; }
+}
+```
+
+## Helper Functions
+
+### Rectangle with label
+
+```python
+import json, uuid
+
+def box(x, y, w, h, label, color=&quot;#1e88e5&quot;):
+    &quot;&quot;&quot;Create a labeled rectangle element.&quot;&quot;&quot;
+    rect_id = str(uuid.uuid4())
+    text_id = str(uuid.uuid4())
+    return [
+        {
+            &quot;type&quot;: &quot;rectangle&quot;, &quot;x&quot;: x, &quot;y&quot;: y, &quot;width&quot;: w, &quot;height&quot;: h,
+            &quot;strokeColor&quot;: color, &quot;backgroundColor&quot;: &quot;transparent&quot;,
+            &quot;fillStyle&quot;: &quot;hachure&quot;, &quot;strokeWidth&quot;: 2, &quot;roughness&quot;: 1,
+            &quot;id&quot;: rect_id, &quot;seed&quot;: 1
+        },
+        {
+            &quot;type&quot;: &quot;text&quot;, &quot;x&quot;: x + 10, &quot;y&quot;: y + h/2 - 10,
+            &quot;text&quot;: label, &quot;fontSize&quot;: 20, &quot;fontFamily&quot;: 1,
+            &quot;textAlign&quot;: &quot;center&quot;, &quot;id&quot;: text_id, &quot;seed&quot;: 2
+        }
+    ]
+
+def arrow(x1, y1, x2, y2, label=&quot;&quot;, color=&quot;#1e88e5&quot;):
+    &quot;&quot;&quot;Create an arrow element between two points.&quot;&quot;&quot;
+    elements = [{
+        &quot;type&quot;: &quot;arrow&quot;, &quot;x&quot;: x1, &quot;y&quot;: y1,
+        &quot;width&quot;: x2 - x1, &quot;height&quot;: y2 - y1,
+        &quot;points&quot;: [[0, 0], [x2 - x1, y2 - y1]],
+        &quot;strokeColor&quot;: color, &quot;strokeWidth&quot;: 2, &quot;roughness&quot;: 1,
+        &quot;id&quot;: str(uuid.uuid4()), &quot;seed&quot;: 3
+    }]
+    if label:
+        elements.append({
+            &quot;type&quot;: &quot;text&quot;,
+            &quot;x&quot;: (x1 + x2) / 2, &quot;y&quot;: (y1 + y2) / 2 - 15,
+            &quot;text&quot;: label, &quot;fontSize&quot;: 16, &quot;fontFamily&quot;: 1,
+            &quot;id&quot;: str(uuid.uuid4()), &quot;seed&quot;: 4
+        })
+    return elements
+
+def circle(x, y, r, label, color=&quot;#e91e63&quot;):
+    &quot;&quot;&quot;Create a labeled circle.&quot;&quot;&quot;
+    return [
+        {&quot;type&quot;: &quot;ellipse&quot;, &quot;x&quot;: x, &quot;y&quot;: y, &quot;width&quot;: r*2, &quot;height&quot;: r*2,
+         &quot;strokeColor&quot;: color, &quot;backgroundColor&quot;: &quot;transparent&quot;,
+         &quot;fillStyle&quot;: &quot;hachure&quot;, &quot;strokeWidth&quot;: 2, &quot;roughness&quot;: 1,
+         &quot;id&quot;: str(uuid.uuid4()), &quot;seed&quot;: 5},
+        {&quot;type&quot;: &quot;text&quot;, &quot;x&quot;: x + r - len(label)*5, &quot;y&quot;: y + r - 10,
+         &quot;text&quot;: label, &quot;fontSize&quot;: 18, &quot;fontFamily&quot;: 1,
+         &quot;id&quot;: str(uuid.uuid4()), &quot;seed&quot;: 6}
+    ]
+
+def build_diagram(elements_list, filepath=&quot;diagram.excalidraw&quot;):
+    &quot;&quot;&quot;Assemble elements into an Excalidraw file.&quot;&quot;&quot;
+    elements = []
+    for el_list in elements_list:
+        elements.extend(el_list)
+    diagram = {
+        &quot;type&quot;: &quot;excalidraw&quot;, &quot;version&quot;: 2, &quot;source&quot;: &quot;hermes&quot;,
+        &quot;elements&quot;: elements,
+        &quot;appState&quot;: {&quot;viewBackgroundColor&quot;: &quot;#ffffff&quot;}
+    }
+    with open(filepath, &quot;w&quot;) as f:
+        json.dump(diagram, f, indent=2)
+    return filepath
+```
+
+## Architecture Diagram Example
+
+```python
+# Client → API → Database
+elements = [
+    box(100, 100, 200, 80, &quot;Web Client&quot;),
+    box(400, 100, 200, 80, &quot;API Server&quot;),
+    box(700, 100, 200, 80, &quot;PostgreSQL&quot;),
+    arrow(300, 140, 400, 140, &quot;HTTP&quot;),
+    arrow(600, 140, 700, 140, &quot;SQL&quot;),
+]
+
+build_diagram(elements, &quot;architecture.excalidraw&quot;)
+```
+
+## Flow Chart Example
+
+```python
+# Start → Decision → (Yes: Action, No: End)
+elements = [
+    circle(200, 50, 40, &quot;Start&quot;),
+    box(150, 150, 200, 80, &quot;Process Data&quot;),
+    box(150, 300, 200, 80, &quot;Valid?&quot;),
+    box(400, 300, 200, 80, &quot;Save Result&quot;),
+    circle(200, 450, 40, &quot;End&quot;),
+    arrow(200, 90, 200, 150, &quot;&quot;),
+    arrow(200, 230, 200, 300, &quot;&quot;),
+    arrow(350, 340, 400, 340, &quot;Yes&quot;),
+    arrow(200, 380, 200, 450, &quot;No&quot;),
+    arrow(500, 300, 500, 200, &quot;&quot;),  # loop back
+]
+
+build_diagram(elements, &quot;flowchart.excalidraw&quot;)
+```
+
+## Opening the Diagram
+
+- Open `https://excalidraw.com` in a browser
+- File → Open → select the `.excalidraw` file
+- Or drag and drop the file onto the Excalidraw window
+
+## Pitfalls
+
+- **Coordinate system** — Excalidraw uses a top-left origin, y increases downward. Plan your layout before generating elements.
+- **Text positioning** — Text elements need manual x/y positioning. Center text by offsetting from the box: `x + width/2 - len(label) * fontSize/4`.
+- **Arrow endpoints** — Arrows use `points` relative to the start position `x, y`. `points: [[0, 0], [dx, dy]]` draws from (x, y) to (x+dx, y+dy).
+- **Roughness** — `roughness: 0` = clean, `roughness: 1` = hand-drawn, `roughness: 2.5` = very sketchy. Default to 1 for the hand-drawn aesthetic.
+- **Font family** — `1` = Virgil (hand-drawn), `2` = Helvetica, `3` = Cascadia (mono). Use 1 for the Excalidraw look.
+- **File size** — Large diagrams with many elements produce large JSON. Keep diagrams to under 50 elements for readability.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># excalidraw-diagram
+
+Generate hand-drawn style diagrams as Excalidraw JSON — architecture, flow, and sequence diagrams.
+
+## What it does
+
+The agent creates Excalidraw-compatible JSON files containing boxes, arrows, circles, and labels arranged as architecture diagrams, flow charts, or sequence diagrams. Open the file in the Excalidraw editor (excalidraw.com) to view, edit, or export as PNG/SVG. The hand-drawn aesthetic makes diagrams look approachable, not corporate.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/excalidraw-diagram/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Draw an architecture diagram: Client → API → Database → Cache&quot;
+```
+
+The agent:
+1. Plans the layout (positions, sizes)
+2. Generates Excalidraw JSON with boxes and arrows
+3. Saves as a `.excalidraw` file
+4. You open it at excalidraw.com
+
+## Example
+
+```
+User: &quot;Make a flow chart for user registration: Sign up → Validate → Create account → Send email&quot;
+
+Agent:
+  1. Plans 4 boxes in a vertical flow with arrows
+  2. Generates diagram.excalidraw
+  3. Returns: &quot;Open diagram.excalidraw at https://excalidraw.com&quot;
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/excalidraw-diagram/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

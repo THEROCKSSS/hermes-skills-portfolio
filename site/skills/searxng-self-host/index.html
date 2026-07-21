@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>searxng-self-host — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent deploys SearXNG with Docker Compose, configures the search engines, and exposes a web UI plus a JSON API. Searches are proxied — the search engines see the server&#x27;s IP, not yours. No tracking, no ads, no query logging. How the agent uses it: The user wants a private...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/searxng-self-host/">
+  <meta property="og:title" content="searxng-self-host — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent deploys SearXNG with Docker Compose, configures the search engines, and exposes a web UI plus a JSON API. Searches are proxied — the search engines see the server&#x27;s IP, not yours. No tracking, no ads, no query logging. How the agent uses it: The user wants a private...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/searxng-self-host/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="searxng-self-host — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent deploys SearXNG with Docker Compose, configures the search engines, and exposes a web UI plus a JSON API. Searches are proxied — the search engines see the server&#x27;s IP, not yours. No tracking, no ads, no query logging. How the agent uses it: The user wants a private...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>searxng-self-host</h1>
+          <p class="tagline">Self-host a private SearXNG meta-search engine without tracking.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge featured">Featured</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> DevOps &amp; Infrastructure</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Highly useful within a category</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent deploys SearXNG with Docker Compose, configures the search engines, and exposes a web UI plus a JSON API. Searches are proxied — the search engines see the server&#x27;s IP, not yours. No tracking, no ads, no query logging.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants a private search engine that doesn&#x27;t track them.</li><li>The user wants to self-host search for their team or family.</li><li>The user says &quot;set up SearXNG&quot;, &quot;self-host my search&quot;, or &quot;I want private search&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can self-host a private searxng meta-search engine without tracking. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/searxng-self-host/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/searxng-self-host/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: searxng-self-host
+description: &quot;Self-host a private SearXNG meta-search engine — agent + this skill = user gets their own search engine that queries Google, Bing, DuckDuckGo without tracking.&quot;
+version: 1.0.0
+---
+
+# searxng-self-host
+
+Deploy a self-hosted SearXNG instance with Docker. SearXNG is a privacy-focused meta-search engine that aggregates results from multiple search engines (Google, Bing, DuckDuckGo, Wikipedia, etc.) without tracking users or sharing search queries.
+
+## When to Use
+
+- The user wants a private search engine that doesn&#x27;t track them.
+- The user wants to self-host search for their team or family.
+- The user says &quot;set up SearXNG&quot;, &quot;self-host my search&quot;, or &quot;I want private search&quot;.
+
+## Prerequisites
+
+- Docker and Docker Compose installed
+- A free port (default: 8080)
+
+## Docker Deployment
+
+### Step 1: Create the deployment
+
+```yaml
+# docker-compose.yml
+version: &quot;3&quot;
+services:
+  searxng:
+    image: searxng/searxng:latest
+    container_name: searxng
+    restart: unless-stopped
+    ports:
+      - &quot;8080:8080&quot;
+    volumes:
+      - ./searxng:/etc/searxng:rw
+    environment:
+      - SEARXNG_BASE_URL=http://localhost:8080/
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+```
+
+### Step 2: Create the settings file
+
+```bash
+mkdir -p searxng
+cat &gt; searxng/settings.yml &lt;&lt; &#x27;EOF&#x27;
+use_default_settings: true
+
+general:
+  instance_name: &quot;My Search&quot;
+  debug: false
+
+search:
+  safe_search: 0
+  autocomplete: &quot;google&quot;
+  default_lang: &quot;en&quot;
+  formats:
+    - html
+    - json
+
+server:
+  secret_key: &quot;CHANGE_ME_TO_A_RANDOM_STRING&quot;
+  bind_address: &quot;0.0.0.0&quot;
+  port: 8080
+
+engines:
+  - name: google
+    engine: google
+    shortcut: g
+    disabled: false
+  - name: bing
+    engine: bing
+    shortcut: b
+    disabled: false
+  - name: duckduckgo
+    engine: duckduckgo
+    shortcut: ddg
+    disabled: false
+  - name: wikipedia
+    engine: wikipedia
+    shortcut: wp
+    disabled: false
+  - name: github
+    engine: github
+    shortcut: gh
+    disabled: false
+
+outgoing:
+  request_timeout: 3.0
+  max_request_timeout: 10.0
+  useragent_suffix: &quot;&quot;
+EOF
+```
+
+### Step 3: Start
+
+```bash
+docker compose up -d
+```
+
+### Step 4: Verify
+
+```bash
+curl -s http://localhost:8080/search?q=test\&amp;format=json | python -m json.tool | head -20
+```
+
+Open `http://localhost:8080` in a browser to see the search interface.
+
+## Configuration
+
+### Search engines
+
+Enable or disable individual engines in `settings.yml`:
+
+```yaml
+engines:
+  - name: google
+    engine: google
+    shortcut: g
+    disabled: false     # enabled
+  - name: brave
+    engine: brave
+    shortcut: br
+    disabled: false
+  - name: yahoo
+    engine: yahoo
+    shortcut: y
+    disabled: true      # disabled
+```
+
+Popular engines: Google, Bing, DuckDuckGo, Brave, Yahoo, Wikipedia, GitHub, Stack Overflow, Reddit, YouTube.
+
+### Privacy settings
+
+```yaml
+# In settings.yml
+server:
+  method: &quot;POST&quot;          # POST instead of GET (hides query from URL/logs)
+  image_proxy: true       # Proxy images so the search engine doesn&#x27;t see the user&#x27;s IP
+  
+outgoing:
+  request_timeout: 3.0
+  # Use a proxy for all outgoing requests
+  proxies:
+    all://: &quot;socks5h://127.0.0.1:9050&quot;   # via Tor (optional)
+```
+
+### Reverse proxy setup
+
+For HTTPS and custom domains, put SearXNG behind Caddy or nginx:
+
+**Caddy (automatic HTTPS):**
+```
+search.mydomain.com {
+    reverse_proxy localhost:8080
+}
+```
+
+**nginx:**
+```nginx
+server {
+    listen 80;
+    server_name search.mydomain.com;
+    location / {
+        proxy_pass http://localhost:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+## API Usage
+
+SearXNG has a JSON API (must be enabled in settings):
+
+```bash
+# Search
+curl &quot;http://localhost:8080/search?q=python+async+guide&amp;format=json&quot;
+
+# Search specific categories
+curl &quot;http://localhost:8080/search?q=python+async&amp;categories=it&amp;format=json&quot;
+
+# Search specific engines
+curl &quot;http://localhost:8080/search?q=python+async&amp;engines=google,bing&amp;format=json&quot;
+```
+
+```python
+import requests
+
+results = requests.get(&#x27;http://localhost:8080/search&#x27;, params={
+    &#x27;q&#x27;: &#x27;python async guide&#x27;,
+    &#x27;format&#x27;: &#x27;json&#x27;,
+    &#x27;categories&#x27;: &#x27;it&#x27;
+}).json()
+
+for result in results[&#x27;results&#x27;][:5]:
+    print(f&quot;{result[&#x27;title&#x27;]} — {result[&#x27;url&#x27;]}&quot;)
+```
+
+## Pitfalls
+
+- **Secret key not set** — The `secret_key` in settings.yml must be changed from the default. Generate a random one: `openssl rand -hex 32`.
+- **JSON API disabled by default** — The `json` format must be listed under `search.formats` in settings.yml for the API to work.
+- **Google rate limiting** — Google will rate-limit or block your instance if you search too frequently. SearXNG rotates engines, but heavy use from one IP will get noticed. Use multiple engines to distribute load.
+- **No HTTPS by default** — SearXNG serves HTTP by default. Use a reverse proxy (Caddy/nginx) for HTTPS. Without HTTPS, search queries are visible on the network.
+- **Bot detection** — Some search engines (Google especially) may show CAPTCHAs if they detect automated queries. SearXNG has built-in anti-bot measures, but aggressive use can still trigger blocks.
+- **Container permissions** — The SearXNG container needs `CHOWN`, `SETGID`, `SETUID` capabilities to write to the settings directory. Don&#x27;t run with `--privileged` — the specific caps in the compose file are sufficient.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># searxng-self-host
+
+Self-host a private SearXNG meta-search engine that queries Google, Bing, and DuckDuckGo without tracking you.
+
+## What it does
+
+The agent deploys SearXNG with Docker Compose, configures the search engines, and exposes a web UI plus a JSON API. Searches are proxied — the search engines see the server&#x27;s IP, not yours. No tracking, no ads, no query logging.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/searxng-self-host/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Set up a private search engine on my server&quot;
+```
+
+The agent:
+1. Creates a docker-compose.yml with SearXNG
+2. Generates a settings.yml with Google, Bing, DuckDuckGo, Wikipedia enabled
+3. Starts the container
+4. Verifies the JSON API works
+5. Returns: &quot;Search UI at http://localhost:8080, API at http://localhost:8080/search?q=...&amp;format=json&quot;
+
+## Prerequisites
+
+- Docker and Docker Compose
+- A free port (default: 8080)
+
+## What you get
+
+| Component | URL | Notes |
+|---|---|---|
+| Web UI | `http://localhost:8080` | Search interface |
+| JSON API | `http://localhost:8080/search?q=...&amp;format=json` | For programmatic use |
+| Settings | `searxng/settings.yml` | Configure engines, privacy, proxy |
+
+## Example
+
+```
+User: &quot;I want my agent to search the web privately&quot;
+
+Agent:
+  1. Deploys SearXNG with Docker
+  2. Enables JSON API in settings
+  3. Tests: curl http://localhost:8080/search?q=test&amp;format=json → results
+  4. Returns: &quot;Your agent can now search via http://localhost:8080/search?q=...&amp;format=json&quot;
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/searxng-self-host/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

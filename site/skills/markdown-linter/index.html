@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>markdown-linter — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent scans a markdown file and checks for 8 common issues: heading level skips, multiple h1s, trailing whitespace, missing image alt text, empty link text, mixed list markers, code blocks without language, and lines over 120 chars. Reports a sorted punch list with line...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/markdown-linter/">
+  <meta property="og:title" content="markdown-linter — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent scans a markdown file and checks for 8 common issues: heading level skips, multiple h1s, trailing whitespace, missing image alt text, empty link text, mixed list markers, code blocks without language, and lines over 120 chars. Reports a sorted punch list with line...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/markdown-linter/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="markdown-linter — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent scans a markdown file and checks for 8 common issues: heading level skips, multiple h1s, trailing whitespace, missing image alt text, empty link text, mixed list markers, code blocks without language, and lines over 120 chars. Reports a sorted punch list with line...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>markdown-linter</h1>
+          <p class="tagline">Lint markdown files for consistency and common issues.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent scans a markdown file and checks for 8 common issues: heading level skips, multiple h1s, trailing whitespace, missing image alt text, empty link text, mixed list markers, code blocks without language, and lines over 120 chars. Reports a sorted punch list with line numbers. Can auto-fix trailing whitespace and normalize list markers.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants to check their markdown for issues.</li><li>The user is preparing documentation for publication.</li><li>The user wants consistent markdown across a project.</li><li>The user says &quot;check my markdown&quot;, &quot;lint this doc&quot;, or &quot;fix markdown issues&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can lint markdown files for consistency and common issues. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-linter/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-linter/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: markdown-linter
+description: &quot;Lint markdown files for consistency and common issues — agent + this skill = user gets clean, consistent documentation.&quot;
+version: 1.0.0
+---
+
+# markdown-linter
+
+Check markdown files for common issues: inconsistent heading levels, broken links, missing alt text, trailing whitespace, and formatting inconsistencies. The agent scans markdown files and reports a fixable punch list.
+
+## When to Use
+
+- The user wants to check their markdown for issues.
+- The user is preparing documentation for publication.
+- The user wants consistent markdown across a project.
+- The user says &quot;check my markdown&quot;, &quot;lint this doc&quot;, or &quot;fix markdown issues&quot;.
+
+## Checks
+
+```python
+import re
+from pathlib import Path
+
+def lint_markdown(filepath: str) -&gt; list:
+    &quot;&quot;&quot;Run all markdown linting checks and return issues.&quot;&quot;&quot;
+    with open(filepath, &#x27;r&#x27;) as f:
+        lines = f.readlines()
+        content = &quot;&quot;.join(lines)
+
+    issues = []
+
+    # 1. Heading levels should not skip (h1 → h3 is bad)
+    heading_levels = []
+    for i, line in enumerate(lines, 1):
+        match = re.match(r&#x27;^(#{1,6})\s&#x27;, line)
+        if match:
+            level = len(match.group(1))
+            heading_levels.append((i, level))
+
+    for j, (line_num, level) in enumerate(heading_levels):
+        if j &gt; 0:
+            prev_level = heading_levels[j-1][1]
+            if level &gt; prev_level + 1:
+                issues.append({
+                    &quot;line&quot;: line_num,
+                    &quot;rule&quot;: &quot;heading-skip&quot;,
+                    &quot;message&quot;: f&quot;Heading level {level} skips from h{prev_level} — should be h{prev_level+1} max&quot;
+                })
+
+    # 2. Multiple h1 headings
+    h1_count = sum(1 for _, level in heading_levels if level == 1)
+    if h1_count &gt; 1:
+        issues.append({
+            &quot;line&quot;: 0,
+            &quot;rule&quot;: &quot;multiple-h1&quot;,
+            &quot;message&quot;: f&quot;Found {h1_count} h1 headings — should have only one&quot;
+        })
+
+    # 3. Trailing whitespace
+    for i, line in enumerate(lines, 1):
+        if line.rstrip() != line and line.strip():
+            issues.append({
+                &quot;line&quot;: i,
+                &quot;rule&quot;: &quot;trailing-whitespace&quot;,
+                &quot;message&quot;: &quot;Trailing whitespace at end of line&quot;
+            })
+
+    # 4. Images without alt text
+    for i, line in enumerate(lines, 1):
+        for match in re.finditer(r&#x27;!\[([^\]]*)\]\([^\)]+\)&#x27;, line):
+            alt = match.group(1)
+            if not alt.strip():
+                issues.append({
+                    &quot;line&quot;: i,
+                    &quot;rule&quot;: &quot;missing-alt-text&quot;,
+                    &quot;message&quot;: &quot;Image has no alt text&quot;
+                })
+
+    # 5. Links without text
+    for i, line in enumerate(lines, 1):
+        for match in re.finditer(r&#x27;\[([^\]]*)\]\([^\)]+\)&#x27;, line):
+            text = match.group(1)
+            if not text.strip() and not line.startswith(&#x27;!&#x27;):
+                issues.append({
+                    &quot;line&quot;: i,
+                    &quot;rule&quot;: &quot;empty-link-text&quot;,
+                    &quot;message&quot;: &quot;Link has no display text&quot;
+                })
+
+    # 6. Inconsistent list markers (mixing - and *)
+    dash_lists = sum(1 for line in lines if re.match(r&#x27;^\s*-\s&#x27;, line))
+    star_lists = sum(1 for line in lines if re.match(r&#x27;^\s*\*\s&#x27;, line))
+    if dash_lists &gt; 0 and star_lists &gt; 0:
+        issues.append({
+            &quot;line&quot;: 0,
+            &quot;rule&quot;: &quot;mixed-list-markers&quot;,
+            &quot;message&quot;: f&quot;Mixed list markers: {dash_lists} dash, {star_lists} asterisk — pick one&quot;
+        })
+
+    # 7. Code blocks without language
+    in_code_block = False
+    for i, line in enumerate(lines, 1):
+        stripped = line.strip()
+        if stripped.startswith(&quot;```&quot;):
+            if in_code_block:
+                in_code_block = False
+            else:
+                lang = stripped[3:].strip()
+                if not lang:
+                    issues.append({
+                        &quot;line&quot;: i,
+                        &quot;rule&quot;: &quot;missing-code-language&quot;,
+                        &quot;message&quot;: &quot;Code block has no language specified&quot;
+                    })
+                in_code_block = True
+
+    # 8. Lines too long (over 120 chars, excluding URLs and tables)
+    for i, line in enumerate(lines, 1):
+        if len(line.rstrip()) &gt; 120 and not line.strip().startswith(&quot;|&quot;) and &quot;http&quot; not in line:
+            issues.append({
+                &quot;line&quot;: i,
+                &quot;rule&quot;: &quot;line-too-long&quot;,
+                &quot;message&quot;: f&quot;Line is {len(line.rstrip())} chars (max 120 recommended)&quot;
+            })
+
+    return sorted(issues, key=lambda x: x[&quot;line&quot;])
+```
+
+## Auto-fix
+
+```python
+def fix_markdown(filepath: str) -&gt; dict:
+    &quot;&quot;&quot;Auto-fix simple markdown issues.&quot;&quot;&quot;
+    with open(filepath, &#x27;r&#x27;) as f:
+        content = f.read()
+
+    fixes = 0
+
+    # Fix trailing whitespace
+    lines = content.split(&quot;\n&quot;)
+    fixed_lines = []
+    for line in lines:
+        fixed = line.rstrip()
+        if fixed != line:
+            fixes += 1
+        fixed_lines.append(fixed)
+
+    # Normalize list markers (use - consistently)
+    for i, line in enumerate(fixed_lines):
+        if re.match(r&#x27;^(\s*)\*\s&#x27;, line):
+            fixed_lines[i] = re.sub(r&#x27;^(\s*)\*\s&#x27;, r&#x27;\1- &#x27;, line)
+            fixes += 1
+
+    with open(filepath, &#x27;w&#x27;) as f:
+        f.write(&quot;\n&quot;.join(fixed_lines))
+
+    return {&quot;fixes&quot;: fixes, &quot;file&quot;: filepath}
+```
+
+## Workflow
+
+1. Run `lint_markdown` to get all issues
+2. Present issues sorted by line number
+3. Offer to auto-fix trailing whitespace and list markers
+4. For other issues, show the line and suggested fix
+5. Let the user decide which to fix
+
+## Pitfalls
+
+- **Frontmatter** — YAML frontmatter (between `---` lines) is not markdown. Skip it during linting.
+- **Tables** — Table rows can be long. The line-length check skips lines starting with `|`.
+- **URLs** — Long URLs make lines long. The check skips lines containing `http`.
+- **Nested code blocks** — Code blocks inside code blocks (quarto, mdx) can confuse the parser. The `in_code_block` toggle handles simple cases.
+- **Auto-fix is conservative** — Only fixes whitespace and list markers. Heading levels, alt text, and link text require manual judgment.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># markdown-linter
+
+Check markdown files for consistency, broken links, missing alt text, and common formatting issues.
+
+## What it does
+
+The agent scans a markdown file and checks for 8 common issues: heading level skips, multiple h1s, trailing whitespace, missing image alt text, empty link text, mixed list markers, code blocks without language, and lines over 120 chars. Reports a sorted punch list with line numbers. Can auto-fix trailing whitespace and normalize list markers.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-linter/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Lint my README.md&quot;
+```
+
+The agent:
+1. Runs all 8 checks
+2. Reports issues sorted by line number
+3. Offers to auto-fix trailing whitespace and list markers
+
+## Checks
+
+| Rule | What it catches |
+|---|---|
+| heading-skip | h1 → h3 (skipping h2) |
+| multiple-h1 | More than one # heading |
+| trailing-whitespace | Spaces at end of lines |
+| missing-alt-text | Images without alt text |
+| empty-link-text | Links with no display text |
+| mixed-list-markers | Mixing - and * for lists |
+| missing-code-language | Code blocks without a language |
+| line-too-long | Lines over 120 characters |
+
+## Example
+
+```
+User: &quot;Check my docs for markdown issues&quot;
+
+Agent:
+  1. Lints docs.md
+  2. Finds:
+     Line 12: trailing-whitespace
+     Line 34: missing-alt-text (image)
+     Line 45: mixed-list-markers (mixing - and *)
+     Line 67: missing-code-language
+  3. Offers: &quot;Auto-fix 2 issues (whitespace, list markers)?&quot;
+  4. User approves → fixes applied
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-linter/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

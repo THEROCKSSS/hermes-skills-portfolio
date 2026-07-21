@@ -3,7 +3,7 @@
   "generated_at": "2026-07-20T08:54:32Z",
   "portfolio": {
     "name": "Hermes Skills Portfolio",
-    "owner": "Alex",
+    "owner": "Owen",
     "tagline": "Empowering skills for the Hermes agent — install one, your agent can now do that for you.",
     "total_skills": 51,
     "github_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio"
@@ -56,7 +56,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "tailscale-deploy",
         "description": "Deploy a service on the user's Tailscale tailnet so it's privately accessible from any device.",
@@ -82,7 +90,15 @@
       },
       "recency": "2026-07-20",
       "source": "generalized",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Generalized from the internal hallmark frontend skill's README anti-slop rules.",
+        "license": "MIT",
+        "derived": true
+      },
       "frontmatter": {
         "name": "hallmark-readme",
         "description": "Write a non-AI-slop README for any project.",
@@ -108,7 +124,15 @@
       },
       "recency": "2026-07-20",
       "source": "generalized",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Generalized from the internal generate-dockerfile skill used in the agentsoul profile.",
+        "license": "MIT",
+        "derived": true
+      },
       "frontmatter": {
         "name": "generate-dockerfile",
         "description": "Generate an optimized multi-stage Dockerfile for a detected project stack.",
@@ -134,7 +158,15 @@
       },
       "recency": "2026-07-20",
       "source": "generalized",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Generalized from the internal soul-forgejo-access and forgejo skills used in the agentsoul profile.",
+        "license": "MIT",
+        "derived": true
+      },
       "frontmatter": {
         "name": "forgejo-self-host",
         "description": "Set up a self-hosted Forgejo instance with Docker.",
@@ -160,7 +192,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "skill-publish",
         "description": "Publish one skill from a monorepo into its own dedicated GitHub repo.",
@@ -186,7 +226,15 @@
       },
       "recency": "2026-07-20",
       "source": "generalized",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Generalized from the internal frontend-design-library, hallmark, and frontend-design-craft skills.",
+        "license": "MIT",
+        "derived": true
+      },
       "frontmatter": {
         "name": "frontend-design-toolkit",
         "description": "Build distinctive frontends using curated real-world design system patterns.",
@@ -212,7 +260,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "hermes-portfolio-template",
         "description": "Set up a skills portfolio repo with categorized, ranked, sortable skills.",
@@ -238,7 +294,15 @@
       },
       "recency": "2026-07-20",
       "source": "generalized",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Generalized from the internal personal-docker-umbrella and docker-pages-umbrella skills.",
+        "license": "MIT",
+        "derived": true
+      },
       "frontmatter": {
         "name": "docker-umbrella",
         "description": "Consolidate multiple services under a single Docker front-end.",
@@ -264,7 +328,15 @@
       },
       "recency": "2026-07-20",
       "source": "generalized",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Generalized from the internal api-test-suite skill used in the agentsoul profile.",
+        "license": "MIT",
+        "derived": true
+      },
       "frontmatter": {
         "name": "api-test-suite",
         "description": "Generate a runnable API test suite from an OpenAPI spec or existing API.",
@@ -290,7 +362,15 @@
       },
       "recency": "2026-07-20",
       "source": "generalized",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Generalized from the internal skill-registry-catalog skill used in the agentsoul profile.",
+        "license": "MIT",
+        "derived": true
+      },
       "frontmatter": {
         "name": "skill-registry-catalog",
         "description": "Catalog third-party AI agent skills from public registries.",
@@ -316,7 +396,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "mcp-server-build",
         "description": "Build a working MCP server that exposes your tools to AI agents.",
@@ -342,7 +430,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "webhook-receiver",
         "description": "Set up a webhook endpoint that receives and processes incoming webhooks with signature verification.",
@@ -368,7 +464,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "cron-task",
         "description": "Set up scheduled agent tasks with delivery to messaging platforms.",
@@ -394,7 +498,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "discord-bot-build",
         "description": "Build a working Discord bot with slash commands, events, and moderation.",
@@ -420,7 +532,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "telegram-bot-build",
         "description": "Build a working Telegram bot with commands and inline keyboards.",
@@ -446,7 +566,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "ollama-local",
         "description": "Run local LLMs with Ollama — private, offline, no API costs.",
@@ -472,7 +600,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "searxng-self-host",
         "description": "Self-host a private SearXNG meta-search engine without tracking.",
@@ -498,7 +634,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "uptime-kuma-self-host",
         "description": "Self-host an uptime monitoring dashboard with alerts.",
@@ -524,7 +668,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "ntfy-notifier",
         "description": "Send push notifications to your phone and desktop via ntfy.",
@@ -550,7 +702,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "git-backup",
         "description": "Automate git backup of your repos to a remote.",
@@ -576,7 +736,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "dotfiles-manage",
         "description": "Version and sync your dotfiles across machines.",
@@ -602,7 +770,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "resume-builder",
         "description": "Generate a professional resume in HTML/PDF from structured data.",
@@ -628,7 +804,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "invoice-generator",
         "description": "Generate professional invoices in PDF from line items.",
@@ -654,7 +838,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "caddy-reverse-proxy",
         "description": "Set up a Caddy reverse proxy with automatic HTTPS.",
@@ -680,7 +872,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "sqlite-dashboard",
         "description": "Browse SQLite databases with a web UI.",
@@ -706,7 +906,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "markdown-to-slides",
         "description": "Create presentation slides from markdown.",
@@ -732,7 +940,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "github-actions-ci",
         "description": "Set up GitHub Actions CI/CD for your project.",
@@ -758,7 +974,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "openapi-generator",
         "description": "Generate client SDKs and server stubs from an OpenAPI spec.",
@@ -784,7 +1008,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "email-send",
         "description": "Send email programmatically via SMTP or API providers.",
@@ -810,7 +1042,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "rss-monitor",
         "description": "Monitor RSS and Atom feeds for new entries with notifications.",
@@ -836,7 +1076,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "pdf-extract",
         "description": "Extract text, images, and tables from PDFs with OCR fallback.",
@@ -862,7 +1110,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "ocr-documents",
         "description": "Extract text from images and scanned documents using OCR.",
@@ -888,7 +1144,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "gif-search",
         "description": "Search and download GIFs from Tenor by keyword.",
@@ -914,7 +1178,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "youtube-transcript",
         "description": "Extract transcripts from YouTube videos.",
@@ -940,7 +1212,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "ascii-art",
         "description": "Generate ASCII art from text and images.",
@@ -966,7 +1246,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "excalidraw-diagram",
         "description": "Generate hand-drawn style diagrams as Excalidraw JSON.",
@@ -992,7 +1280,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "markdown-to-pdf",
         "description": "Convert markdown to styled PDF with syntax highlighting.",
@@ -1018,7 +1314,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "env-config-manager",
         "description": "Manage environment variables — create .env.example, validate, document.",
@@ -1044,7 +1348,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "http-api-tester",
         "description": "Test HTTP APIs from the command line without Postman.",
@@ -1070,7 +1382,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "csv-toolkit",
         "description": "Process CSV files — filter, transform, merge, and analyze.",
@@ -1096,7 +1416,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "qr-code-generator",
         "description": "Generate QR codes for URLs, WiFi, vCards, and text.",
@@ -1122,7 +1450,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "log-analyzer",
         "description": "Analyze log files for errors, patterns, and anomalies.",
@@ -1148,7 +1484,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "password-generator",
         "description": "Generate secure passwords, passphrases, and API keys.",
@@ -1174,7 +1518,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "json-formatter",
         "description": "Format, validate, minify, and transform JSON.",
@@ -1200,7 +1552,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "regex-tester",
         "description": "Test and debug regular expressions with match highlighting.",
@@ -1226,7 +1586,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "file-organizer",
         "description": "Organize files by type, date, or content hash.",
@@ -1252,7 +1620,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "changelog-generator",
         "description": "Generate a changelog from git commit history.",
@@ -1278,7 +1654,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "color-palette-generator",
         "description": "Generate color palettes from images or base colors.",
@@ -1304,7 +1688,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "snippet-manager",
         "description": "Save and retrieve reusable code snippets.",
@@ -1330,7 +1722,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "markdown-linter",
         "description": "Lint markdown files for consistency and common issues.",
@@ -1356,7 +1756,15 @@
       },
       "recency": "2026-07-20",
       "source": "new",
-      "source_attribution": "",
+      "source_attribution": {
+        "author": "Owen",
+        "origin_type": "internal",
+        "origin_repo": "",
+        "origin_url": "",
+        "origin_note": "Originally authored for the Hermes Skills Portfolio.",
+        "license": "MIT",
+        "derived": false
+      },
       "frontmatter": {
         "name": "portfolio-upkeep",
         "description": "Maintain and update a Hermes skills portfolio.",

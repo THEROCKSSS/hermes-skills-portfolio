@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>forgejo-self-host — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent deploys a Forgejo instance using Docker Compose, creates an admin account, sets up an access token, and shows you how to push code. Forgejo is a lightweight self-hosted Git server (soft fork of Gitea) with a web UI, issues, pull requests, wiki, and Actions CI. It runs on...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/forgejo-self-host/">
+  <meta property="og:title" content="forgejo-self-host — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent deploys a Forgejo instance using Docker Compose, creates an admin account, sets up an access token, and shows you how to push code. Forgejo is a lightweight self-hosted Git server (soft fork of Gitea) with a web UI, issues, pull requests, wiki, and Actions CI. It runs on...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/forgejo-self-host/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="forgejo-self-host — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent deploys a Forgejo instance using Docker Compose, creates an admin account, sets up an access token, and shows you how to push code. Forgejo is a lightweight self-hosted Git server (soft fork of Gitea) with a web UI, issues, pull requests, wiki, and Actions CI. It runs on...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>forgejo-self-host</h1>
+          <p class="tagline">Set up a self-hosted Forgejo Git server with Docker — repos, issues, PRs, and CI in minutes.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge core">Core</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> DevOps &amp; Infrastructure</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Broadly empowering, nearly any user benefits</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Generalized from existing</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent deploys a Forgejo instance using Docker Compose, creates an admin account, sets up an access token, and shows you how to push code. Forgejo is a lightweight self-hosted Git server (soft fork of Gitea) with a web UI, issues, pull requests, wiki, and Actions CI. It runs on your machine and holds your repos privately.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants their own private Git server instead of GitHub/GitLab.</li><li>The user wants to host repos locally for development or backup.</li><li>The user wants CI/CD without relying on external services.</li><li>The user says &quot;set up Forgejo&quot;, &quot;self-host my git&quot;, or &quot;I want a local GitHub&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can set up a self-hosted forgejo git server with docker — repos, issues, prs, and ci in minutes. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/forgejo-self-host/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/forgejo-self-host/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: forgejo-self-host
+description: &quot;Set up a self-hosted Forgejo instance with repos, issues, and CI — agent + this skill = user gets their own private Git server running locally.&quot;
+version: 1.0.0
+---
+
+# forgejo-self-host
+
+Deploy a self-hosted Forgejo instance using Docker. Forgejo is a lightweight, self-hosted Git server (a soft fork of Gitea) with repos, issues, pull requests, Actions CI, and a wiki. This skill gets it running on the user&#x27;s machine in minutes.
+
+## When to Use
+
+- The user wants their own private Git server instead of GitHub/GitLab.
+- The user wants to host repos locally for development or backup.
+- The user wants CI/CD without relying on external services.
+- The user says &quot;set up Forgejo&quot;, &quot;self-host my git&quot;, or &quot;I want a local GitHub&quot;.
+
+## Prerequisites
+
+- **Docker** and **Docker Compose** installed. Check with `docker --version` and `docker compose version`.
+- A free port (default: 3000 for web, 2222 for SSH git).
+
+## Workflow
+
+### Step 1: Create the Forgejo deployment
+
+Create a directory and a `docker-compose.yml`:
+
+```yaml
+version: &quot;3&quot;
+services:
+  forgejo:
+    image: codeberg.org/forgejo/forgejo:latest
+    container_name: forgejo
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - FORGEJO__database__DB_TYPE=sqlite3
+    restart: always
+    volumes:
+      - forgejo-data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - &quot;3000:3000&quot;
+      - &quot;2222:22&quot;
+
+volumes:
+  forgejo-data:
+```
+
+### Step 2: Start Forgejo
+
+```bash
+docker compose up -d
+```
+
+Wait 10-20 seconds for first boot, then verify:
+
+```bash
+curl -s http://localhost:3000/api/v1/version
+# Should return: {&quot;version&quot;:&quot;1.22.0&quot;} or similar
+```
+
+### Step 3: Initial admin setup
+
+Open `http://localhost:3000` in a browser. The first user registered becomes the site admin.
+
+For headless/automated setup, use the API:
+
+```bash
+# Create admin user via CLI (inside the container)
+docker exec -u git forgejo forgejo admin user create \
+  --username &lt;admin-name&gt; \
+  --email &lt;admin-email&gt; \
+  --password &lt;password&gt; \
+  --admin \
+  --must-change-password=false
+```
+
+### Step 4: Create an access token
+
+Log in as the admin, go to Settings → Applications → Generate New Token.
+
+Or via API:
+
+```bash
+curl -s -X POST &quot;http://localhost:3000/api/v1/users/&lt;admin-name&gt;/tokens&quot; \
+  -u &quot;&lt;admin-name&gt;:&lt;password&gt;&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#x27;{&quot;name&quot;:&quot;api-access&quot;,&quot;scopes&quot;:[&quot;write:repository&quot;,&quot;write:issue&quot;,&quot;read:user&quot;]}&#x27;
+```
+
+Store the returned `sha1` token — it won&#x27;t be shown again.
+
+### Step 5: Create your first repo
+
+Via web UI: click &quot;+&quot; → New Repository.
+
+Via API:
+
+```bash
+curl -s -X POST &quot;http://localhost:3000/api/v1/user/repos&quot; \
+  -H &quot;Authorization: token &lt;token&gt;&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#x27;{&quot;name&quot;:&quot;my-project&quot;,&quot;description&quot;:&quot;My project&quot;,&quot;private&quot;:false}&#x27;
+```
+
+### Step 6: Push code to Forgejo
+
+```bash
+cd my-project
+git init
+git add -A
+git commit -m &quot;Initial commit&quot;
+
+# Using HTTPS with token
+git remote add forgejo http://&lt;admin-name&gt;:&lt;token&gt;@localhost:3000/&lt;admin-name&gt;/my-project.git
+git push -u forgejo main
+```
+
+### Step 7: (Optional) Set up CI with Forgejo Actions
+
+Forgejo Actions provides CI/CD similar to GitHub Actions.
+
+1. **Add a runner:**
+
+```bash
+# Download the runner
+docker run -d --name forgejo-runner \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v forgejo-runner-data:/data \
+  codeberg.org/forgejo/runner:latest \
+  forgejo-runner register --no-interactive \
+    --instance http://host.docker.internal:3000 \
+    --token &lt;runner-registration-token&gt; \
+    --name local-runner
+
+# Start the runner
+docker start forgejo-runner
+```
+
+Get the registration token from: Site Administration → Actions → Runners → Register New Runner.
+
+2. **Add a workflow to a repo:**
+
+Create `.forgejo/workflows/ci.yml`:
+
+```yaml
+name: CI
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo &quot;CI is running&quot;
+```
+
+## SSH Git Access
+
+Forgejo exposes SSH on port 2222 by default. To use SSH instead of HTTPS:
+
+```bash
+git remote add forgejo ssh://git@localhost:2222/&lt;admin-name&gt;/my-project.git
+```
+
+Add to `~/.ssh/config` for cleaner URLs:
+
+```
+Host localhost
+  HostName localhost
+  Port 2222
+  User git
+```
+
+## Backup
+
+The Forgejo data volume contains all repos, users, and config. Back it up with:
+
+```bash
+docker run --rm -v forgejo-data:/data -v $(pwd):/backup ubuntu \
+  tar czf /backup/forgejo-backup-$(date +%Y%m%d).tar.gz /data
+```
+
+## Pitfalls
+
+- **Port 3000 in use** — If another service uses port 3000, change the port mapping in docker-compose.yml (e.g., `&quot;3001:3000&quot;`) and access Forgejo at `http://localhost:3001`.
+- **Default branch is `main` for new repos** — Created via the web UI or API, new repos default to `main` (not `master`). Push to `main`.
+- **Admin password via CLI sets must_change_password** — On some Forgejo builds, creating a user via CLI sets a &quot;must change password&quot; flag that locks the user out of admin APIs. If this happens, change the password once via the web UI to clear the flag.
+- **Runner can&#x27;t connect** — The runner needs to reach Forgejo. If running in Docker, use `http://host.docker.internal:3000` (not `localhost:3000` — that&#x27;s the runner&#x27;s own localhost).
+- **SQLite is fine for small setups** — For single-user or small-team use, SQLite is sufficient. Switch to PostgreSQL only if you have many concurrent users.
+- **HTTPS/TLS** — Forgejo serves HTTP by default. For HTTPS, put it behind a reverse proxy (Caddy, nginx, Traefik) with TLS termination.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># forgejo-self-host
+
+Set up a self-hosted Forgejo Git server with Docker — repos, issues, pull requests, and CI in minutes.
+
+## What it does
+
+The agent deploys a Forgejo instance using Docker Compose, creates an admin account, sets up an access token, and shows you how to push code. Forgejo is a lightweight self-hosted Git server (soft fork of Gitea) with a web UI, issues, pull requests, wiki, and Actions CI. It runs on your machine and holds your repos privately.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/forgejo-self-host/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Set up Forgejo on my machine&quot;
+```
+
+The agent:
+1. Generates a `docker-compose.yml` for Forgejo + SQLite
+2. Runs `docker compose up -d`
+3. Verifies the instance is reachable at `http://localhost:3000`
+4. Creates an admin user and access token
+5. Shows you how to create repos and push code
+
+## Prerequisites
+
+- Docker and Docker Compose
+- A free port (default: 3000 for web, 2222 for SSH git)
+
+## What you get
+
+| Component | Default | Notes |
+|---|---|---|
+| Web UI | `http://localhost:3000` | Repos, issues, PRs, wiki, settings |
+| SSH git | `localhost:2222` | Clone/push via SSH |
+| API | `http://localhost:3000/api/v1` | REST API, token-authenticated |
+| CI | Forgejo Actions | Optional, needs a runner container |
+| Storage | Docker volume `forgejo-data` | SQLite by default, PostgreSQL for scale |
+
+## Example
+
+```
+User: &quot;I want a local Git server for my projects.&quot;
+
+Agent:
+  1. Creates docker-compose.yml with Forgejo + SQLite
+  2. docker compose up -d → Forgejo starts on port 3000
+  3. Creates admin user via CLI
+  4. Generates access token via API
+  5. Creates first repo: curl POST /api/v1/user/repos
+  6. Returns: &quot;Forgejo is running at http://localhost:3000. Your first repo is at http://localhost:3000/your-user/my-project&quot;
+
+User pushes code:
+  git remote add forgejo http://your-user:token@localhost:3000/your-user/my-project.git
+  git push -u forgejo main
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/forgejo-self-host/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

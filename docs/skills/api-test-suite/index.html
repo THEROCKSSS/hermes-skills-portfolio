@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>api-test-suite — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent reads your API&#x27;s source of truth (a spec file or the route code itself) and writes a test package you can run locally and wire into CI. It covers the happy path, the obvious error cases (auth, validation, not-found), and the edge cases people forget (empty bodies,...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/api-test-suite/">
+  <meta property="og:title" content="api-test-suite — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent reads your API&#x27;s source of truth (a spec file or the route code itself) and writes a test package you can run locally and wire into CI. It covers the happy path, the obvious error cases (auth, validation, not-found), and the edge cases people forget (empty bodies,...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/api-test-suite/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="api-test-suite — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent reads your API&#x27;s source of truth (a spec file or the route code itself) and writes a test package you can run locally and wire into CI. It covers the happy path, the obvious error cases (auth, validation, not-found), and the edge cases people forget (empty bodies,...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>api-test-suite</h1>
+          <p class="tagline">Generate a runnable API test suite — contract tests, integration tests, and CI config from an OpenAPI spec or existing API.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge core">Core</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Backend</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Broadly empowering, nearly any user benefits</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Generalized from existing</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent reads your API&#x27;s source of truth (a spec file or the route code itself) and writes a test package you can run locally and wire into CI. It covers the happy path, the obvious error cases (auth, validation, not-found), and the edge cases people forget (empty bodies, malformed input, rate limits). Then it runs the suite and tells you what passed, what failed, and whether the failure is a bug in your API or a wrong expectation in the test.
+
+This is a generator, not a hosted runner. The output is real files in your repo that you own and can edit.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>A new API project needs test coverage before it ships.</li><li>The user says &quot;write tests for these endpoints&quot;, &quot;add contract tests&quot;, or &quot;test my API&quot;.</li><li>Pre-release or pre-merge verification of an HTTP API.</li><li>You have an OpenAPI/Postman artifact and want it turned into executable tests.</li><li>You are onboarding to an API codebase and want a safety net first.</li></ul>
+<p>Do not use it for browser UI flows (use a browser-test skill) or for pure unit tests of non-API logic (those belong in a unit test file, not the API suite).</p>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can generate a runnable api test suite — contract tests, integration tests, and ci config from an openapi spec or existing api. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/api-test-suite/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/api-test-suite/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: api-test-suite
+description: &quot;Generate a runnable API test suite — contract tests, integration tests, and CI config — from an OpenAPI spec or existing API. Agent + this skill = user gets tests that actually run.&quot;
+version: 1.0.0
+---
+
+# api-test-suite
+
+Generate a runnable API test package from an OpenAPI spec, a Postman collection, or by scanning an existing API codebase. The agent produces real, locally-runnable test files — not a hosted-run stub — covering happy path, error cases, and edge cases, then runs the suite and reports pass/fail.
+
+## When to Use
+
+- A new API project needs test coverage before it ships.
+- The user says &quot;write tests for these endpoints&quot;, &quot;add contract tests&quot;, or &quot;test my API&quot;.
+- Pre-release or pre-merge verification of an HTTP API.
+- You have an OpenAPI/Postman artifact and want it turned into executable tests.
+- You are onboarding to an API codebase and want a safety net first.
+
+Do not use it for browser UI flows (use a browser-test skill) or for pure unit tests of non-API logic (those belong in a unit test file, not the API suite).
+
+## Workflow
+
+1. **Pick the input.** One of:
+   - An OpenAPI/Swagger spec (`openapi.yaml`, `swagger.json`).
+   - A Postman collection (`collection.json`).
+   - An API codebase (FastAPI/Express/Flask/Nest/etc.) — scan route definitions.
+2. **Enumerate endpoints** with method, path, auth scheme, request shape, and response codes.
+3. **Derive test cases per endpoint:**
+   - Happy path — 2xx, response shape matches spec.
+   - Auth missing/invalid — 401/403.
+   - Validation failure — 400, with the documented error shape.
+   - Not found — 404 for unknown IDs.
+   - Edge cases — empty body, oversized input, malformed JSON, pagination bounds, rate limiting.
+4. **Choose a runner by stack:**
+   - Node/TS → `vitest` + `supertest` (in-process) or `axios` (live server).
+   - Python → `pytest` + `httpx` (live server) or `fastapi.testclient` (in-process).
+5. **Emit the file tree** (see Test Runner Setup).
+6. **Run the suite.** Report pass/fail per file. If a test fails, decide whether it is a real bug in the API or a wrong expectation in the test — fix the API when the expectation is correct, fix the test when it is not. Never delete or weaken an assertion just to turn it green.
+
+## Contract Tests
+
+Contract tests assert that the live API&#x27;s responses conform to the published schema. They catch drift between spec and implementation.
+
+**From an OpenAPI spec — Python with schemathesis (property-based, hits the running server):**
+
+```python
+# tests/contract/test_contract.py
+import schemathesis
+
+schema = schemathesis.from_uri(&quot;http://localhost:8000/openapi.json&quot;)
+
+@schema.parametrize()
+def test_api_contract(case, base_url):
+    # `case` is generated from the spec; this verifies the server honors it
+    response = case.call(base_url)
+    case.validate_response(response)
+```
+
+If schemathesis is too heavy, validate responses against a JSON Schema extracted from the spec:
+
+```python
+# tests/contract/test_shapes.py
+import json
+import httpx
+from jsonschema import Draft202012Validator
+
+spec = json.load(open(&quot;openapi.json&quot;))
+# pull the response schema for GET /markets -&gt; 200
+schema = spec[&quot;paths&quot;][&quot;/markets&quot;][&quot;get&quot;][&quot;responses&quot;][&quot;200&quot;][&quot;content&quot;][
+    &quot;application/json&quot;
+][&quot;schema&quot;]
+
+def test_markets_shape(base_url):
+    r = httpx.get(f&quot;{base_url}/markets?limit=10&quot;)
+    assert r.status_code == 200
+    Draft202012Validator(schema).validate(r.json())
+```
+
+**From an OpenAPI spec — Node with a lightweight assertion:**
+
+```ts
+// tests/contract/markets.spec.ts
+import { expect } from &#x27;vitest&#x27;
+import { client } from &#x27;../helpers/http&#x27;
+
+it(&#x27;GET /markets 200 matches spec shape&#x27;, async () =&gt; {
+  const r = await client.get(&#x27;/markets?limit=10&#x27;)
+  expect(r.status).toBe(200)
+  expect(Array.isArray(r.data.data)).toBe(true)
+  expect(r.data).toHaveProperty(&#x27;total&#x27;)
+})
+```
+
+Rule: contract tests must read the schema from the artifact, not hardcode a copy that can silently rot.
+
+## Integration Tests
+
+Integration tests exercise real HTTP behavior against a running server (or an in-process app) with auth, test data, and cleanup.
+
+**Python — fixtures for auth, data, cleanup (pytest):**
+
+```python
+# tests/integration/test_orders.py
+import pytest, httpx
+
+@pytest.fixture
+def auth_headers():
+    # mint a short-lived test token; never use a real user&#x27;s credentials
+    token = mint_test_token(scopes=[&quot;orders:write&quot;])
+    return {&quot;Authorization&quot;: f&quot;Bearer {token}&quot;}
+
+@pytest.fixture
+def created_order(base_url, auth_headers):
+    r = httpx.post(f&quot;{base_url}/orders&quot;, json={&quot;item&quot;: &quot;widget&quot;, &quot;qty&quot;: 1},
+                   headers=auth_headers)
+    assert r.status_code == 201
+    yield r.json()[&quot;id&quot;]
+    # cleanup runs even if the test fails
+    httpx.delete(f&quot;{base_url}/orders/{r.json()[&#x27;id&#x27;]}&quot;, headers=auth_headers)
+
+def test_create_order_happy(base_url, auth_headers, created_order):
+    assert isinstance(created_order, str)
+
+def test_create_order_requires_auth(base_url):
+    r = httpx.post(f&quot;{base_url}/orders&quot;, json={&quot;item&quot;: &quot;widget&quot;})
+    assert r.status_code == 401
+
+def test_create_order_bad_payload(base_url, auth_headers):
+    r = httpx.post(f&quot;{base_url}/orders&quot;, json={}, headers=auth_headers)
+    assert r.status_code == 400
+```
+
+**Node — vitest + supertest (in-process, no separate server):**
+
+```ts
+// tests/integration/orders.test.ts
+import request from &#x27;supertest&#x27;
+import { app } from &#x27;../../src/app&#x27;
+import { testToken } from &#x27;../helpers/auth&#x27;
+
+describe(&#x27;POST /orders&#x27;, () =&gt; {
+  it(&#x27;creates an order with valid auth&#x27;, async () =&gt; {
+    const r = await request(app)
+      .post(&#x27;/orders&#x27;)
+      .set(&#x27;Authorization&#x27;, `Bearer ${testToken()}`)
+      .send({ item: &#x27;widget&#x27;, qty: 1 })
+    expect(r.status).toBe(201)
+  })
+
+  it(&#x27;rejects missing auth&#x27;, async () =&gt; {
+    const r = await request(app).post(&#x27;/orders&#x27;).send({ item: &#x27;widget&#x27; })
+    expect(r.status).toBe(401)
+  })
+
+  it(&#x27;rejects empty body&#x27;, async () =&gt; {
+    const r = await request(app)
+      .post(&#x27;/orders&#x27;)
+      .set(&#x27;Authorization&#x27;, `Bearer ${testToken()}`)
+      .send({})
+    expect(r.status).toBe(400)
+  })
+})
+```
+
+## Test Runner Setup
+
+Emit this layout so the suite is reproducible:
+
+```
+tests/
+  conftest.py            # pytest fixtures: base_url, auth_headers, data, cleanup
+  contract/
+    test_contract.py     # schema-conformance checks
+    test_shapes.py
+  integration/
+    test_orders.py       # real HTTP happy/error/edge cases
+helpers/
+  http.ts / http.py      # shared client, base URL from env
+  auth.ts / auth.py      # test-token minting
+openapi.json             # spec under test (if available)
+pytest.ini / vitest.config.ts
+```
+
+**Python — `pytest.ini`:**
+
+```ini
+[pytest]
+testpaths = tests
+addopts = -q --tb=short
+env =
+  BASE_URL=http://localhost:8000
+```
+
+Install: `pip install pytest httpx schemathesis`
+
+**Node — `vitest.config.ts`:**
+
+```ts
+import { defineConfig } from &#x27;vitest/config&#x27;
+export default defineConfig({
+  test: {
+    globals: true,
+    environment: &#x27;node&#x27;,
+    include: [&#x27;tests/**/*.test.ts&#x27;, &#x27;tests/**/*.spec.ts&#x27;],
+  },
+})
+```
+
+Install: `npm i -D vitest supertest`
+
+## CI Integration
+
+Run contract + integration tests against a service spun up in the pipeline. GitHub Actions / Forgejo Actions share the same YAML:
+
+```yaml
+name: api-tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      api:
+        image: ghcr.io/your-org/your-api:ci
+        ports: [&quot;8000:8000&quot;]
+        options: &gt;-
+          --health-cmd &quot;curl -f http://localhost:8000/health&quot;
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      BASE_URL: http://localhost:8000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: &quot;3.12&quot; }
+      - run: pip install pytest httpx schemathesis
+      - run: pytest tests/ --junitxml=report.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: api-test-report, path: report.xml }
+```
+
+For Node, swap the setup step for `actions/setup-node` and the run step for `npx vitest run`.
+
+## Pitfalls
+
+- **Mocking the database so tests lie.** Use a real test database or per-test transaction rollback. A test that mocks storage at the wrong boundary passes while the API is broken.
+- **Hardcoding the response shape instead of reading the spec.** Contract tests must derive expectations from the OpenAPI/Postman artifact, or they drift and become noise.
+- **Shared mutable state across tests.** Each test must create and clean up its own data. Seeds that depend on order will flake in CI.
+- **Using a real user&#x27;s token for auth.** Mint short-lived test tokens scoped to the test tenant; rotate secrets from env, never commit them.
+- **Rate limiting breaking CI.** Hit the API serially in contract runs, or raise the limit for the test tenant. A 429 is a test-harness problem, not an API bug, until proven otherwise.
+- **Treating generated tests as a substitute for reading the spec.** The suite documents behavior; the agent should still confirm the API&#x27;s intent with the user for ambiguous endpoints.
+- **Flaky network timing.** Add bounded retries only on connection errors, never on assertion failures.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># api-test-suite
+
+Turn an API into a runnable test suite — contract tests, integration tests, and CI config — generated from an OpenAPI spec, a Postman collection, or an existing API codebase.
+
+## What it does
+
+The agent reads your API&#x27;s source of truth (a spec file or the route code itself) and writes a test package you can run locally and wire into CI. It covers the happy path, the obvious error cases (auth, validation, not-found), and the edge cases people forget (empty bodies, malformed input, rate limits). Then it runs the suite and tells you what passed, what failed, and whether the failure is a bug in your API or a wrong expectation in the test.
+
+This is a generator, not a hosted runner. The output is real files in your repo that you own and can edit.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/api-test-suite/SKILL.md
+```
+
+## Inputs
+
+The skill accepts any one of these as the source of truth:
+
+| Input | Example | What it drives |
+|---|---|---|
+| OpenAPI / Swagger spec | `openapi.yaml`, `swagger.json` | Endpoint list, shapes, response codes |
+| Postman collection | `collection.json` | Endpoint list, example requests |
+| API codebase | FastAPI, Express, Flask, Nest | Route scans, auth schemes |
+
+If you have a spec, that wins — it is the contract. If you only have code, the agent scans route definitions and infers auth and shapes, then asks you to confirm anything ambiguous.
+
+## What you get
+
+```
+tests/
+  conftest.py            # pytest fixtures: base_url, auth_headers, cleanup
+  contract/
+    test_contract.py     # schema-conformance checks (spec-driven)
+    test_shapes.py
+  integration/
+    test_orders.py       # real HTTP happy / error / edge cases
+helpers/
+  http.py                # shared client, base URL from env
+  auth.py                # test-token minting
+openapi.json             # spec under test (if you provided one)
+pytest.ini
+```
+
+Node/TS projects get the same shape with `vitest.config.ts` and `*.test.ts` / `*.spec.ts` files, plus a `helpers/http.ts` and `helpers/auth.ts`.
+
+## Contract tests
+
+Contract tests assert the live API&#x27;s responses conform to the published schema. They catch drift between what you documented and what you shipped.
+
+```python
+# tests/contract/test_shapes.py
+import json
+import httpx
+from jsonschema import Draft202012Validator
+
+spec = json.load(open(&quot;openapi.json&quot;))
+schema = (
+    spec[&quot;paths&quot;][&quot;/markets&quot;][&quot;get&quot;][&quot;responses&quot;][&quot;200&quot;][&quot;content&quot;]
+    [&quot;application/json&quot;][&quot;schema&quot;]
+)
+
+def test_markets_shape(base_url):
+    r = httpx.get(f&quot;{base_url}/markets?limit=10&quot;)
+    assert r.status_code == 200
+    Draft202012Validator(schema).validate(r.json())
+```
+
+The rule that makes this worth having: the expectation is read from the spec, not copied into the test. A hardcoded copy silently rots; a spec-derived check fails the moment the API and the contract disagree, which is the whole point.
+
+For deeper coverage, `schemathesis` generates requests from the spec and validates every response against it automatically:
+
+```python
+import schemathesis
+schema = schemathesis.from_uri(&quot;http://localhost:8000/openapi.json&quot;)
+
+@schema.parametrize()
+def test_api_contract(case, base_url):
+    response = case.call(base_url)
+    case.validate_response(response)
+```
+
+## Integration tests
+
+Integration tests exercise real HTTP behavior against a running server (or an in-process app) with auth, test data, and cleanup. Fixtures create their own data and tear it down, so tests stay isolated.
+
+```python
+# tests/integration/test_orders.py
+import pytest, httpx
+
+@pytest.fixture
+def auth_headers():
+    return {&quot;Authorization&quot;: f&quot;Bearer {mint_test_token(scopes=[&#x27;orders:write&#x27;])}&quot;}
+
+@pytest.fixture
+def created_order(base_url, auth_headers):
+    r = httpx.post(f&quot;{base_url}/orders&quot;, json={&quot;item&quot;: &quot;widget&quot;, &quot;qty&quot;: 1},
+                   headers=auth_headers)
+    assert r.status_code == 201
+    yield r.json()[&quot;id&quot;]
+    httpx.delete(f&quot;{base_url}/orders/{r.json()[&#x27;id&#x27;]}&quot;, headers=auth_headers)
+
+def test_create_order_happy(base_url, auth_headers, created_order):
+    assert isinstance(created_order, str)
+
+def test_create_order_requires_auth(base_url):
+    r = httpx.post(f&quot;{base_url}/orders&quot;, json={&quot;item&quot;: &quot;widget&quot;})
+    assert r.status_code == 401
+
+def test_create_order_empty_body(base_url, auth_headers):
+    r = httpx.post(f&quot;{base_url}/orders&quot;, json={}, headers=auth_headers)
+    assert r.status_code == 400
+```
+
+Node/TS, in-process with `supertest`:
+
+```ts
+// tests/integration/orders.test.ts
+import request from &#x27;supertest&#x27;
+import { app } from &#x27;../../src/app&#x27;
+import { testToken } from &#x27;../helpers/auth&#x27;
+
+describe(&#x27;POST /orders&#x27;, () =&gt; {
+  it(&#x27;creates an order with valid auth&#x27;, async () =&gt; {
+    const r = await request(app)
+      .post(&#x27;/orders&#x27;)
+      .set(&#x27;Authorization&#x27;, `Bearer ${testToken()}`)
+      .send({ item: &#x27;widget&#x27;, qty: 1 })
+    expect(r.status).toBe(201)
+  })
+
+  it(&#x27;rejects missing auth&#x27;, async () =&gt; {
+    const r = await request(app).post(&#x27;/orders&#x27;).send({ item: &#x27;widget&#x27; })
+    expect(r.status).toBe(401)
+  })
+})
+```
+
+## Test runner setup
+
+**Python** — `pip install pytest httpx schemathesis`, then `pytest.ini`:
+
+```ini
+[pytest]
+testpaths = tests
+addopts = -q --tb=short
+env =
+  BASE_URL=http://localhost:8000
+```
+
+**Node/TS** — `npm i -D vitest supertest`, then `vitest.config.ts`:
+
+```ts
+import { defineConfig } from &#x27;vitest/config&#x27;
+export default defineConfig({
+  test: { globals: true, environment: &#x27;node&#x27;,
+          include: [&#x27;tests/**/*.test.ts&#x27;, &#x27;tests/**/*.spec.ts&#x27;] },
+})
+```
+
+## CI integration
+
+Run the suite against a service the pipeline spins up. This YAML works in both GitHub Actions and Forgejo Actions:
+
+```yaml
+name: api-tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      api:
+        image: ghcr.io/your-org/your-api:ci
+        ports: [&quot;8000:8000&quot;]
+        options: &gt;-
+          --health-cmd &quot;curl -f http://localhost:8000/health&quot;
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      BASE_URL: http://localhost:8000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: &quot;3.12&quot; }
+      - run: pip install pytest httpx schemathesis
+      - run: pytest tests/ --junitxml=report.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: api-test-report, path: report.xml }
+```
+
+Swap the setup/run steps for `actions/setup-node` and `npx vitest run` on a Node project.
+
+## Coverage matrix
+
+The agent generates at least one case per endpoint from each row:
+
+| Category | Case | Expected |
+|---|---|---|
+| Happy path | Valid request, valid auth | 2xx, shape matches spec |
+| Auth | Missing / invalid token | 401 / 403 |
+| Validation | Missing required field, bad type | 400, documented error shape |
+| Not found | Unknown ID | 404 |
+| Edge | Empty body, malformed JSON, oversized input | 400 / 413 |
+| Edge | Pagination bounds (`limit=0`, `limit=1000`) | 200 or 422, sane clamping |
+| Edge | Rate limit (burst) | 429 with retry header |
+
+## Honest limitations
+
+- The suite documents observed behavior. For ambiguous endpoints the agent confirms intent with you rather than guessing the &quot;right&quot; contract.
+- Contract tests check shape and codes; they do not prove business logic correctness. Pair them with a few hand-written behavior tests for your critical paths.
+- Generated fixtures use a test tenant and short-lived tokens. You must wire real secret injection (`BASE_URL`, token minting) for your environment — the skill scaffolds it, it does not know your auth system.
+- Rate-limited APIs will 429 under load; the skill serializes contract runs and raises the limit for the test tenant instead of masking failures.
+
+## Part of
+
+[Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio) — empowering skills for the Hermes agent.
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/api-test-suite/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

@@ -145,6 +145,13 @@ body.detail-open { overflow: hidden; }
 .dist-popup-tier.utility { color: var(--tier-utility); }
 .dist-popup-hint { font-size: 0.68rem; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.04em; }
 
+/* Distribution popup skill examples (issue #8) */
+.dist-popup-skills { display: flex; flex-direction: column; gap: 2px; margin-bottom: 6px; }
+.dist-popup-skill { font-size: 0.72rem; color: var(--ink-2); font-family: 'JetBrains Mono', monospace; }
+
+/* Star count badge (issue #7) */
+.star-count-badge { font-size: 0.8rem; font-weight: 600; color: var(--ink-2); padding: 4px 10px; border: 1px solid var(--rule-2); border-radius: 6px; background: var(--bg-2); font-variant-numeric: tabular-nums; align-items: center; gap: 4px; }
+
 /* ============ CONTROLS (inside masthead) ============ */
 .controls { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-end; }
 .control-group { display: flex; flex-direction: column; gap: 4px; }
@@ -203,6 +210,14 @@ body.detail-open { overflow: hidden; }
   transition: opacity 200ms ease-out;
 }
 .detail-overlay:not([hidden]) { display: flex; opacity: 1; }
+
+/* ============ PER-SKILL DETAIL PAGE (standalone) ============ */
+.detail-back-link { font-size: 0.85rem; margin-bottom: 0.5rem; }
+.detail-back-link a { color: var(--accent-text); text-decoration: none; font-weight: 600; }
+.detail-back-link a:hover { text-decoration: underline; }
+.skill-detail-main { max-width: 900px; margin: 0 auto; padding: 0 1.5rem 2rem; }
+.skill-detail-inner { max-width: 100%; }
+.detail-links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
 
 .detail-page {
   width: 100%;

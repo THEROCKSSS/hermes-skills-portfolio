@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mcp-server-build — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent creates a Model Context Protocol (MCP) server that exposes your tools, resources, and prompts to AI assistants. MCP is an open protocol — any agent that supports it (Hermes, Claude Desktop, etc.) can call your tools through a standardized interface. You define the tools,...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/mcp-server-build/">
+  <meta property="og:title" content="mcp-server-build — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent creates a Model Context Protocol (MCP) server that exposes your tools, resources, and prompts to AI assistants. MCP is an open protocol — any agent that supports it (Hermes, Claude Desktop, etc.) can call your tools through a standardized interface. You define the tools,...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/mcp-server-build/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="mcp-server-build — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent creates a Model Context Protocol (MCP) server that exposes your tools, resources, and prompts to AI assistants. MCP is an open protocol — any agent that supports it (Hermes, Claude Desktop, etc.) can call your tools through a standardized interface. You define the tools,...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>mcp-server-build</h1>
+          <p class="tagline">Build a working MCP server that exposes your tools to AI agents.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge featured">Featured</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Backend</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Highly useful within a category</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent creates a Model Context Protocol (MCP) server that exposes your tools, resources, and prompts to AI assistants. MCP is an open protocol — any agent that supports it (Hermes, Claude Desktop, etc.) can call your tools through a standardized interface. You define the tools, implement the handlers, and the agent handles the rest.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants to expose their tools or APIs to an AI agent via MCP.</li><li>The user wants to build an MCP server for a custom service.</li><li>The user says &quot;build an MCP server&quot;, &quot;make my tool work with MCP&quot;, or &quot;I want my agent to call my API&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can build a working mcp server that exposes your tools to ai agents. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/mcp-server-build/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/mcp-server-build/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: mcp-server-build
+description: &quot;Build a working MCP server that exposes your tools to AI agents — agent + this skill = user gets a functional Model Context Protocol server.&quot;
+version: 1.0.0
+---
+
+# mcp-server-build
+
+Build a Model Context Protocol (MCP) server that exposes your tools, resources, and prompts to AI agents. MCP is an open protocol that lets AI assistants interact with external systems through a standardized interface.
+
+## When to Use
+
+- The user wants to expose their tools or APIs to an AI agent via MCP.
+- The user wants to build an MCP server for a custom service.
+- The user says &quot;build an MCP server&quot;, &quot;make my tool work with MCP&quot;, or &quot;I want my agent to call my API&quot;.
+
+## MCP Protocol Basics
+
+MCP servers expose three types of capabilities:
+
+| Capability | What it does |
+|---|---|
+| **Tools** | Functions the agent can call (e.g., `search_database`, `send_email`) |
+| **Resources** | Data the agent can read (e.g., `file://config.json`, `db://schema`) |
+| **Prompts** | Pre-built prompt templates the agent can use |
+
+Servers communicate via JSON-RPC over one of two transports:
+
+| Transport | Use case |
+|---|---|
+| **stdio** | Local servers, launched by the agent process |
+| **HTTP** | Remote servers, accessible over the network |
+
+## Workflow
+
+### Step 1: Choose your language and SDK
+
+| Language | SDK | Install |
+|---|---|---|
+| Python | `mcp` | `pip install mcp` |
+| TypeScript | `@modelcontextprotocol/sdk` | `npm install @modelcontextprotocol/sdk` |
+
+### Step 2: Define your tools
+
+Each tool has a name, description, and JSON Schema for its parameters:
+
+```python
+from mcp import Server, Tool
+from mcp.types import ToolSchema
+
+server = Server(&quot;my-server&quot;)
+
+@server.tool()
+async def search_database(query: str, limit: int = 10) -&gt; str:
+    &quot;&quot;&quot;Search the database for matching records.
+
+    Args:
+        query: The search query string
+        limit: Maximum number of results to return
+    &quot;&quot;&quot;
+    # Your search logic here
+    results = await db.search(query, limit=limit)
+    return json.dumps(results)
+```
+
+### Step 3: Implement handlers
+
+The handler is the function that runs when the agent calls the tool. It receives the arguments as a dict and returns a string (or structured content).
+
+```python
+@server.tool()
+async def get_file(path: str) -&gt; str:
+    &quot;&quot;&quot;Read a file from the local filesystem.&quot;&quot;&quot;
+    try:
+        with open(path, &#x27;r&#x27;) as f:
+            return f.read()
+    except FileNotFoundError:
+        return f&quot;Error: File not found at {path}&quot;
+    except PermissionError:
+        return f&quot;Error: Permission denied for {path}&quot;
+```
+
+### Step 4: Register resources (optional)
+
+Resources are URIs the agent can read:
+
+```python
+@server.resource(&quot;config://app&quot;)
+async def get_config() -&gt; str:
+    &quot;&quot;&quot;Return the application configuration.&quot;&quot;&quot;
+    return json.dumps({&quot;version&quot;: &quot;1.0&quot;, &quot;debug&quot;: False})
+```
+
+### Step 5: Choose transport and run
+
+**stdio (local):**
+```python
+import asyncio
+from mcp.server.stdio import stdio_server
+
+async def main():
+    async with stdio_server() as (read_stream, write_stream):
+        await server.run(read_stream, write_stream)
+
+asyncio.run(main())
+```
+
+**HTTP (remote):**
+```python
+from mcp.server.sse import sse_server
+
+async def main():
+    async with sse_server(&quot;0.0.0.0&quot;, 8080) as (read_stream, write_stream):
+        await server.run(read_stream, write_stream)
+
+asyncio.run(main())
+```
+
+### Step 6: Test with an MCP client
+
+```bash
+# Using the MCP inspector (comes with the SDK)
+mcp inspect python my_server.py
+
+# Or connect from an agent that supports MCP
+# Hermes: hermes mcp add my-server --command &quot;python my_server.py&quot;
+# Claude Desktop: add to claude_desktop_config.json
+```
+
+## Tool Schema
+
+Every tool needs a clear JSON Schema so the agent knows what arguments to pass:
+
+```python
+TOOL_SCHEMA = {
+    &quot;name&quot;: &quot;search_database&quot;,
+    &quot;description&quot;: &quot;Search the database for matching records.&quot;,
+    &quot;inputSchema&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+            &quot;query&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;The search query string&quot;
+            },
+            &quot;limit&quot;: {
+                &quot;type&quot;: &quot;integer&quot;,
+                &quot;description&quot;: &quot;Maximum results to return&quot;,
+                &quot;default&quot;: 10
+            }
+        },
+        &quot;required&quot;: [&quot;query&quot;]
+    }
+}
+```
+
+Good descriptions are critical — the agent uses them to decide when to call the tool.
+
+## Full Example: File Search Server
+
+```python
+#!/usr/bin/env python3
+import asyncio
+import json
+import os
+from mcp import Server
+from mcp.server.stdio import stdio_server
+
+server = Server(&quot;file-search&quot;)
+
+@server.tool()
+async def search_files(directory: str, pattern: str) -&gt; str:
+    &quot;&quot;&quot;Search for files matching a pattern in a directory.
+
+    Args:
+        directory: The root directory to search in
+        pattern: Filename pattern (e.g., &#x27;*.py&#x27;, &#x27;*.json&#x27;)
+    &quot;&quot;&quot;
+    import fnmatch
+    matches = []
+    for root, dirs, files in os.walk(directory):
+        for filename in fnmatch.filter(files, pattern):
+            matches.append(os.path.join(root, filename))
+    return json.dumps(matches[:50], indent=2)
+
+@server.tool()
+async def read_file(path: str) -&gt; str:
+    &quot;&quot;&quot;Read the contents of a file.&quot;&quot;&quot;
+    try:
+        with open(path, &#x27;r&#x27;) as f:
+            return f.read()[:10000]  # cap at 10k chars
+    except Exception as e:
+        return f&quot;Error: {e}&quot;
+
+@server.resource(&quot;stats://file-search&quot;)
+async def get_stats() -&gt; str:
+    &quot;&quot;&quot;Return search statistics.&quot;&quot;&quot;
+    return json.dumps({&quot;server&quot;: &quot;file-search&quot;, &quot;version&quot;: &quot;1.0&quot;})
+
+async def main():
+    async with stdio_server() as (read_stream, write_stream):
+        await server.run(read_stream, write_stream)
+
+if __name__ == &quot;__main__&quot;:
+    asyncio.run(main())
+```
+
+## Connecting to Hermes
+
+```bash
+# Add as a stdio server
+hermes mcp add file-search --command &quot;python /path/to/file_search_server.py&quot;
+
+# Add as an HTTP server
+hermes mcp add file-search --url http://localhost:8080
+
+# Test the connection
+hermes mcp test file-search
+
+# List available tools from the server
+hermes mcp list
+```
+
+## Pitfalls
+
+- **Vague tool descriptions** — The agent decides whether to call a tool based on its description. &quot;Searches stuff&quot; won&#x27;t be called. &quot;Searches the database for records matching a query string, returns up to N results as JSON&quot; will.
+- **No error handling** — Tools that crash on bad input will break the agent&#x27;s workflow. Always return error messages as strings, never raise unhandled exceptions.
+- **Returning too much data** — Agents have context limits. Cap returns at a reasonable size (10k chars, 50 results) and let the agent ask for more if needed.
+- **No input validation** — Validate paths, queries, and parameters before processing. Don&#x27;t trust the agent to send valid input.
+- **Blocking operations** — MCP handlers should be async. If you have blocking I/O (file reads, database queries), run them in a thread executor.
+- **Transport mismatch** — stdio servers are launched by the agent process. HTTP servers need to be running independently. Don&#x27;t try to serve HTTP over stdio or vice versa.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># mcp-server-build
+
+Build a working MCP server that exposes your tools to AI agents.
+
+## What it does
+
+The agent creates a Model Context Protocol (MCP) server that exposes your tools, resources, and prompts to AI assistants. MCP is an open protocol — any agent that supports it (Hermes, Claude Desktop, etc.) can call your tools through a standardized interface. You define the tools, implement the handlers, and the agent handles the rest.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/mcp-server-build/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Build an MCP server that lets my agent search my codebase&quot;
+```
+
+The agent:
+1. Defines the tool (name, description, parameter schema)
+2. Implements the handler (the function that runs when the agent calls it)
+3. Chooses a transport (stdio for local, HTTP for remote)
+4. Tests the connection
+5. Shows you how to wire it into Hermes or Claude Desktop
+
+## Example
+
+```
+User: &quot;I want my agent to query my Postgres database via MCP&quot;
+
+Agent:
+  1. Defines tool: query_database(sql: str, limit: int) -&gt; str
+  2. Implements handler with psycopg2, caps results at 100 rows
+  3. Runs as a stdio server
+  4. Connects: hermes mcp add pg-server --command &quot;python pg_server.py&quot;
+  5. Tests: hermes mcp test pg-server → &quot;Connected, 1 tool available&quot;
+```
+
+## Transports
+
+| Transport | When to use |
+|---|---|
+| stdio | Local servers, launched by the agent |
+| HTTP | Remote servers, accessible over network |
+
+## Connecting to Hermes
+
+```bash
+hermes mcp add my-server --command &quot;python my_server.py&quot;   # stdio
+hermes mcp add my-server --url http://localhost:8080        # HTTP
+hermes mcp test my-server                                    # verify
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/mcp-server-build/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

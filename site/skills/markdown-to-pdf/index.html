@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>markdown-to-pdf — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent converts a markdown file to PDF using weasyprint, puppeteer, or pandoc. It applies CSS styling (default, dark, or print-friendly), renders code blocks with syntax highlighting, and handles tables, images, and blockquotes. You get a professional PDF from any markdown...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/markdown-to-pdf/">
+  <meta property="og:title" content="markdown-to-pdf — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent converts a markdown file to PDF using weasyprint, puppeteer, or pandoc. It applies CSS styling (default, dark, or print-friendly), renders code blocks with syntax highlighting, and handles tables, images, and blockquotes. You get a professional PDF from any markdown...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/markdown-to-pdf/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="markdown-to-pdf — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent converts a markdown file to PDF using weasyprint, puppeteer, or pandoc. It applies CSS styling (default, dark, or print-friendly), renders code blocks with syntax highlighting, and handles tables, images, and blockquotes. You get a professional PDF from any markdown...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>markdown-to-pdf</h1>
+          <p class="tagline">Convert markdown to styled PDF with syntax highlighting.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent converts a markdown file to PDF using weasyprint, puppeteer, or pandoc. It applies CSS styling (default, dark, or print-friendly), renders code blocks with syntax highlighting, and handles tables, images, and blockquotes. You get a professional PDF from any markdown document.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants to convert a markdown document to PDF.</li><li>The user wants a styled PDF report from markdown.</li><li>The user says &quot;convert this to PDF&quot;, &quot;make a PDF from markdown&quot;, or &quot;export as PDF&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can convert markdown to styled pdf with syntax highlighting. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-to-pdf/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-to-pdf/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: markdown-to-pdf
+description: &quot;Convert markdown to PDF with styling — agent + this skill = user gets a styled PDF from any markdown file.&quot;
+version: 1.0.0
+---
+
+# markdown-to-pdf
+
+Convert markdown files to PDF with customizable styling. The agent handles markdown parsing, CSS styling, and PDF generation with options for themes, page size, and syntax highlighting.
+
+## When to Use
+
+- The user wants to convert a markdown document to PDF.
+- The user wants a styled PDF report from markdown.
+- The user says &quot;convert this to PDF&quot;, &quot;make a PDF from markdown&quot;, or &quot;export as PDF&quot;.
+
+## Prerequisites
+
+```bash
+# Option 1: weasyprint (recommended, pure Python)
+pip install weasyprint markdown
+
+# Option 2: puppeteer (Node.js, better rendering)
+npm install puppeteer markdown-it
+
+# Option 3: pandoc (system package)
+# Linux: apt install pandoc
+# macOS: brew install pandoc
+```
+
+## Using weasyprint (Python)
+
+```python
+import markdown
+from weasyprint import HTML
+
+def md_to_pdf(md_path: str, pdf_path: str, css: str = &quot;&quot;):
+    &quot;&quot;&quot;Convert markdown to PDF with optional CSS styling.&quot;&quot;&quot;
+    with open(md_path, &#x27;r&#x27;) as f:
+        md_content = f.read()
+
+    html_body = markdown.markdown(md_content, extensions=[&#x27;codehilite&#x27;, &#x27;tables&#x27;, &#x27;fenced_code&#x27;])
+
+    default_css = &quot;&quot;&quot;
+    body { font-family: &#x27;Inter&#x27;, sans-serif; max-width: 800px; margin: 40px auto; line-height: 1.6; color: #333; }
+    h1 { font-size: 2em; border-bottom: 2px solid #eee; padding-bottom: 0.3em; }
+    h2 { font-size: 1.5em; border-bottom: 1px solid #eee; padding-bottom: 0.3em; }
+    code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: &#x27;Fira Code&#x27;, monospace; font-size: 0.9em; }
+    pre { background: #f8f8f8; padding: 16px; border-radius: 5px; overflow-x: auto; }
+    pre code { background: none; padding: 0; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+    th { background: #f4f4f4; font-weight: bold; }
+    blockquote { border-left: 4px solid #ddd; margin-left: 0; padding-left: 16px; color: #666; }
+    &quot;&quot;&quot;
+
+    html = f&quot;&quot;&quot;
+    &lt;html&gt;&lt;head&gt;&lt;style&gt;{css or default_css}&lt;/style&gt;&lt;/head&gt;
+    &lt;body&gt;{html_body}&lt;/body&gt;&lt;/html&gt;
+    &quot;&quot;&quot;
+
+    HTML(string=html).write_pdf(pdf_path)
+    return pdf_path
+```
+
+## Using pandoc (simplest)
+
+```bash
+# Basic conversion
+pandoc input.md -o output.pdf
+
+# With a template and table of contents
+pandoc input.md -o output.pdf --toc --template=eisvogel
+
+# With syntax highlighting
+pandoc input.md -o output.pdf --highlight-style=tango
+```
+
+## Using puppeteer (best rendering)
+
+```javascript
+const markdownIt = require(&#x27;markdown-it&#x27;);
+const puppeteer = require(&#x27;puppeteer&#x27;);
+const fs = require(&#x27;fs&#x27;);
+
+async function mdToPdf(mdPath, pdfPath) {
+    const md = fs.readFileSync(mdPath, &#x27;utf-8&#x27;);
+    const htmlBody = markdownIt({ html: true, highlight: true }).render(md);
+
+    const html = `
+    &lt;html&gt;&lt;head&gt;
+    &lt;style&gt;
+        body { font-family: system-ui; max-width: 800px; margin: 40px auto; padding: 20px; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; }
+        pre { background: #f8f8f8; padding: 16px; border-radius: 5px; overflow-x: auto; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+    &lt;/style&gt;
+    &lt;/head&gt;&lt;body&gt;${htmlBody}&lt;/body&gt;&lt;/html&gt;
+    `;
+
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.setContent(html, { waitUntil: &#x27;networkidle0&#x27; });
+    await page.pdf({ path: pdfPath, format: &#x27;A4&#x27;, margin: { top: &#x27;1in&#x27;, bottom: &#x27;1in&#x27; } });
+    await browser.close();
+    return pdfPath;
+}
+```
+
+## Custom Themes
+
+### Dark theme
+
+```python
+DARK_CSS = &quot;&quot;&quot;
+body { background: #1a1a2e; color: #e0e0e0; font-family: &#x27;Inter&#x27;, sans-serif; max-width: 800px; margin: 40px auto; }
+h1, h2, h3 { color: #fff; border-bottom-color: #333; }
+code { background: #16213e; color: #e94560; }
+pre { background: #16213e; border: 1px solid #333; }
+a { color: #e94560; }
+table th { background: #16213e; }
+table th, table td { border-color: #333; }
+&quot;&quot;&quot;
+```
+
+### Print-friendly
+
+```python
+PRINT_CSS = &quot;&quot;&quot;
+body { font-family: &#x27;Georgia&#x27;, serif; max-width: none; margin: 0; font-size: 12pt; line-height: 1.5; }
+h1 { font-size: 20pt; page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-size: 16pt; }
+pre, code { font-family: &#x27;Courier New&#x27;, monospace; font-size: 10pt; }
+table { font-size: 10pt; }
+@page { margin: 1in; }
+&quot;&quot;&quot;
+```
+
+## Workflow
+
+1. Read the markdown file
+2. Choose the conversion method (weasyprint for Python, puppeteer for best rendering, pandoc for simplicity)
+3. Apply CSS styling (default, dark, or print-friendly)
+4. Generate the PDF
+5. Return the file path
+
+## Pitfalls
+
+- **Missing system dependencies** — weasyprint needs cairo, pango, and gdk-pixbuf system libraries. On Ubuntu: `apt install libpango-1.0-0 libpangoft2-1.0-0`. On macOS: `brew install pango`.
+- **Code blocks not highlighted** — Without the `codehilite` extension (Python) or a highlight.js include (JS), code blocks are plain text. Install `pygments` for Python highlighting.
+- **Images not rendering** — Local image paths must be absolute or relative to the HTML file. Use `file://` URLs or embed images as base64.
+- **Page breaks in bad places** — Use CSS `page-break-before: always` on h1 elements to force chapter breaks. Add `page-break-inside: avoid` on tables and code blocks.
+- **Emoji rendering** — weasyprint may not render emoji. Install a color emoji font (Noto Color Emoji) or replace emoji with text.
+- **Large PDFs** — PDFs with many images can be large. Optimize images before embedding (resize to max 1000px width, use JPEG for photos).
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># markdown-to-pdf
+
+Convert markdown to a styled PDF with syntax highlighting, tables, and custom themes.
+
+## What it does
+
+The agent converts a markdown file to PDF using weasyprint, puppeteer, or pandoc. It applies CSS styling (default, dark, or print-friendly), renders code blocks with syntax highlighting, and handles tables, images, and blockquotes. You get a professional PDF from any markdown document.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-to-pdf/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Convert README.md to PDF&quot;
+```
+
+The agent:
+1. Reads the markdown
+2. Renders to HTML with syntax highlighting
+3. Applies CSS styling
+4. Generates the PDF
+5. Returns the file path
+
+## Conversion methods
+
+| Method | Language | Best for |
+|---|---|---|
+| weasyprint | Python | Pure Python, no browser needed |
+| puppeteer | Node.js | Best rendering, handles CSS/JS |
+| pandoc | System | Simplest, many format options |
+
+## Example
+
+```
+User: &quot;Convert my documentation to a dark-themed PDF&quot;
+
+Agent:
+  1. Reads docs.md
+  2. Applies DARK_CSS theme
+  3. Runs: md_to_pdf(&quot;docs.md&quot;, &quot;docs.pdf&quot;, css=DARK_CSS)
+  4. Returns: &quot;PDF saved to docs.pdf&quot;
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-to-pdf/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

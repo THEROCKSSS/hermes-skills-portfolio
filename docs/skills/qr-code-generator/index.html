@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>qr-code-generator — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent creates QR codes from any data: URLs, WiFi credentials, vCards, or plain text. Customizable colors, size, error correction, and optional logo overlay. Output as PNG for images or SVG for scalable print. How the agent uses it: The user wants a QR code for a URL.
+The user...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/qr-code-generator/">
+  <meta property="og:title" content="qr-code-generator — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent creates QR codes from any data: URLs, WiFi credentials, vCards, or plain text. Customizable colors, size, error correction, and optional logo overlay. Output as PNG for images or SVG for scalable print. How the agent uses it: The user wants a QR code for a URL.
+The user...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/qr-code-generator/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="qr-code-generator — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent creates QR codes from any data: URLs, WiFi credentials, vCards, or plain text. Customizable colors, size, error correction, and optional logo overlay. Output as PNG for images or SVG for scalable print. How the agent uses it: The user wants a QR code for a URL.
+The user...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>qr-code-generator</h1>
+          <p class="tagline">Generate QR codes for URLs, WiFi, vCards, and text.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent creates QR codes from any data: URLs, WiFi credentials, vCards, or plain text. Customizable colors, size, error correction, and optional logo overlay. Output as PNG for images or SVG for scalable print.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants a QR code for a URL.</li><li>The user wants to share WiFi credentials via QR.</li><li>The user wants a QR code for contact info (vCard).</li><li>The user says &quot;make a QR code&quot;, &quot;generate a QR&quot;, or &quot;create a scannable code&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can generate qr codes for urls, wifi, vcards, and text. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/qr-code-generator/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/qr-code-generator/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: qr-code-generator
+description: &quot;Generate QR codes for URLs, text, WiFi, and more — agent + this skill = user gets a scannable QR code for any content.&quot;
+version: 1.0.0
+---
+
+# qr-code-generator
+
+Generate QR codes as PNG or SVG images. The agent creates QR codes for URLs, plain text, WiFi credentials, vCards, and custom content with customizable size, color, and error correction.
+
+## When to Use
+
+- The user wants a QR code for a URL.
+- The user wants to share WiFi credentials via QR.
+- The user wants a QR code for contact info (vCard).
+- The user says &quot;make a QR code&quot;, &quot;generate a QR&quot;, or &quot;create a scannable code&quot;.
+
+## Prerequisites
+
+```bash
+pip install qrcode[pil]
+```
+
+## Basic QR Code
+
+```python
+import qrcode
+
+def make_qr(data: str, output: str = &quot;qr.png&quot;, size: int = 10, border: int = 4):
+    &quot;&quot;&quot;Generate a QR code PNG from any string data.&quot;&quot;&quot;
+    qr = qrcode.QRCode(
+        version=None,  # auto-detect minimum size
+        error_correction=qrcode.constants.ERROR_CORRECT_M,
+        box_size=size,
+        border=border,
+    )
+    qr.add_data(data)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color=&quot;black&quot;, back_color=&quot;white&quot;)
+    img.save(output)
+    return output
+```
+
+## Custom Colors
+
+```python
+def make_colored_qr(data: str, output: str, fill: str = &quot;#1a1a2e&quot;, back: str = &quot;#ffffff&quot;):
+    qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_H)
+    qr.add_data(data)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color=fill, back_color=back)
+    img.save(output)
+    return output
+```
+
+## SVG Output
+
+```python
+import qrcode.svg
+
+def make_svg_qr(data: str, output: str = &quot;qr.svg&quot;):
+    factory = qrcode.svg.SvgPathImage
+    qr = qrcode.QRCode(image_factory=factory)
+    qr.add_data(data)
+    qr.make(fit=True)
+    img = qr.make_image()
+    img.save(output)
+    return output
+```
+
+## WiFi QR Code
+
+```python
+def wifi_qr(ssid: str, password: str, security: str = &quot;WPA&quot;, hidden: bool = False, output: str = &quot;wifi.png&quot;):
+    &quot;&quot;&quot;Generate a QR code that auto-configures WiFi on phones.&quot;&quot;&quot;
+    data = f&quot;WIFI:T:{security};S:{ssid};P:{password};H:{&#x27;true&#x27; if hidden else &#x27;false&#x27;};;&quot;
+    return make_qr(data, output)
+```
+
+## vCard QR Code
+
+```python
+def vcard_qr(name: str, phone: str, email: str, org: str = &quot;&quot;, output: str = &quot;contact.png&quot;):
+    &quot;&quot;&quot;Generate a QR code with contact info.&quot;&quot;&quot;
+    data = f&quot;BEGIN:VCARD\nVERSION:3.0\nFN:{name}\nTEL:{phone}\nEMAIL:{email}\nORG:{org}\nEND:VCARD&quot;
+    return make_qr(data, output)
+```
+
+## URL QR Code
+
+```python
+def url_qr(url: str, output: str = &quot;url.png&quot;):
+    &quot;&quot;&quot;Generate a QR code for a URL.&quot;&quot;&quot;
+    return make_qr(url, output)
+```
+
+## Error Correction Levels
+
+| Level | Recovery | Use case |
+|---|---|---|
+| L | 7% | High-density, clean environment |
+| M | 15% | Default, general use |
+| Q | 25% | Some risk of damage |
+| H | 30% | Logos overlay, dirty environments |
+
+```python
+# High error correction (allows logo overlay in center)
+qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_H)
+```
+
+## With Logo Overlay
+
+```python
+from PIL import Image
+
+def qr_with_logo(data: str, logo_path: str, output: str = &quot;qr_logo.png&quot;):
+    &quot;&quot;&quot;Generate a QR code with a logo in the center.&quot;&quot;&quot;
+    qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_H)
+    qr.add_data(data)
+    qr.make(fit=True)
+    qr_img = qr.make_image(fill_color=&quot;black&quot;, back_color=&quot;white&quot;).convert(&quot;RGBA&quot;)
+
+    logo = Image.open(logo_path).convert(&quot;RGBA&quot;)
+    # Scale logo to ~20% of QR size
+    qr_size = qr_img.size[0]
+    logo_size = int(qr_size * 0.2)
+    logo = logo.resize((logo_size, logo_size), Image.LANCZOS)
+
+    pos = ((qr_size - logo_size) // 2, (qr_size - logo_size) // 2)
+    qr_img.paste(logo, pos, logo)
+    qr_img.save(output)
+    return output
+```
+
+## Workflow
+
+1. Determine the content type (URL, text, WiFi, vCard)
+2. Choose format (PNG for images, SVG for print/web)
+3. Pick error correction level (M default, H for logos)
+4. Generate the QR code
+5. Return the file path
+
+## Pitfalls
+
+- **Too much data** — QR codes have capacity limits. A v1 QR holds 17 alphanumeric chars; v40 holds 4,296. Long URLs produce large, dense codes that are hard to scan. Use a URL shortener first.
+- **Dark on dark** — QR codes need high contrast. Dark fill on dark background won&#x27;t scan. Always use dark fill on light background.
+- **Logo too large** — A logo covering more than 30% of the QR code will make it unscannable. Keep logos to 20% max and use error correction H.
+- **PNG vs SVG** — PNG is for screen and print at fixed size. SVG is scalable (good for large prints). Use SVG for billboards or large displays.
+- **WiFi QR format** — The format must be exactly `WIFI:T:WPA;S:SSID;P:PASSWORD;;` — note the double semicolon at the end. Missing it breaks the QR.
+- **Special characters** — Escape semicolons and colons in WiFi SSIDs/passwords: `\\:` and `\\;`.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># qr-code-generator
+
+Generate QR codes for URLs, WiFi, contact info, and any text — as PNG or SVG.
+
+## What it does
+
+The agent creates QR codes from any data: URLs, WiFi credentials, vCards, or plain text. Customizable colors, size, error correction, and optional logo overlay. Output as PNG for images or SVG for scalable print.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/qr-code-generator/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Make a QR code for https://example.com&quot;
+```
+
+The agent generates a PNG QR code and returns the file path.
+
+## QR types
+
+| Type | Example |
+|---|---|
+| URL | `make_qr(&quot;https://example.com&quot;)` |
+| WiFi | `wifi_qr(ssid=&quot;MyNet&quot;, password=&quot;pass123&quot;)` |
+| vCard | `vcard_qr(name=&quot;Jane&quot;, phone=&quot;+1234&quot;, email=&quot;jane@x.com&quot;)` |
+| Text | `make_qr(&quot;Any text content&quot;)` |
+
+## Example
+
+```
+User: &quot;Create a WiFi QR for my guest network&quot;
+
+Agent:
+  1. Generates: WIFI:T:WPA;S:GuestNet;P:welcome2026;;
+  2. Creates wifi_qr.png
+  3. Returns: &quot;Scan wifi_qr.png to auto-connect to GuestNet&quot;
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/qr-code-generator/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

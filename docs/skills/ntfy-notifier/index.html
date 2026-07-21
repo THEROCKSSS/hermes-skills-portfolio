@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ntfy-notifier — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent sets up ntfy push notifications for your scripts, cron jobs, or agent tasks. You install the ntfy app on your phone, subscribe to a topic, and then any HTTP POST to that topic URL appears as a push notification. No mobile SDK integration, no certificate management, no...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/ntfy-notifier/">
+  <meta property="og:title" content="ntfy-notifier — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent sets up ntfy push notifications for your scripts, cron jobs, or agent tasks. You install the ntfy app on your phone, subscribe to a topic, and then any HTTP POST to that topic URL appears as a push notification. No mobile SDK integration, no certificate management, no...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/ntfy-notifier/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="ntfy-notifier — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent sets up ntfy push notifications for your scripts, cron jobs, or agent tasks. You install the ntfy app on your phone, subscribe to a topic, and then any HTTP POST to that topic URL appears as a push notification. No mobile SDK integration, no certificate management, no...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>ntfy-notifier</h1>
+          <p class="tagline">Send push notifications to your phone and desktop via ntfy.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge featured">Featured</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Integrations</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Highly useful within a category</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent sets up ntfy push notifications for your scripts, cron jobs, or agent tasks. You install the ntfy app on your phone, subscribe to a topic, and then any HTTP POST to that topic URL appears as a push notification. No mobile SDK integration, no certificate management, no per-platform setup.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants push notifications for their scripts or agent tasks.</li><li>The user wants alerts on their phone when a cron job fails or a deploy completes.</li><li>The user wants a simple notification channel without setting up Firebase, APNS, or email.</li><li>The user says &quot;send me a notification&quot;, &quot;alert my phone&quot;, or &quot;I want push notifications from my scripts&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can send push notifications to your phone and desktop via ntfy. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ntfy-notifier/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ntfy-notifier/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: ntfy-notifier
+description: &quot;Send push notifications to your phone and desktop via ntfy — agent + this skill = user gets instant alerts without a mobile app SDK.&quot;
+version: 1.0.0
+---
+
+# ntfy-notifier
+
+Send push notifications to any device using ntfy — a simple HTTP-based pub/sub notification service. No SDK, no mobile app integration, no APNS/FCM setup. Just HTTP POST to a topic URL and the notification appears on any subscribed device.
+
+## When to Use
+
+- The user wants push notifications for their scripts or agent tasks.
+- The user wants alerts on their phone when a cron job fails or a deploy completes.
+- The user wants a simple notification channel without setting up Firebase, APNS, or email.
+- The user says &quot;send me a notification&quot;, &quot;alert my phone&quot;, or &quot;I want push notifications from my scripts&quot;.
+
+## Setup
+
+### Option A: Public server (fastest)
+
+Use the public ntfy server at `https://ntfy.sh`. No setup needed — just pick a topic name and start sending.
+
+1. Install the ntfy app on your phone:
+   - **iOS**: App Store → &quot;ntfy&quot;
+   - **Android**: Play Store → &quot;ntfy&quot; or F-Droid
+2. Open the app, tap &quot;+&quot;, subscribe to a topic (e.g., `my-alerts-abc123`)
+3. Send a notification to that topic from any device
+
+### Option B: Self-hosted (private)
+
+```yaml
+# docker-compose.yml
+version: &quot;3&quot;
+services:
+  ntfy:
+    image: binwiederhier/ntfy:latest
+    container_name: ntfy
+    restart: unless-stopped
+    ports:
+      - &quot;8090:80&quot;
+    volumes:
+      - ntfy-data:/var/lib/ntfy
+    command: serve
+
+volumes:
+  ntfy-data:
+```
+
+```bash
+docker compose up -d
+```
+
+In the phone app, set the server URL to `http://your-server:8090` and subscribe to a topic.
+
+## Sending Notifications
+
+### curl (simplest)
+
+```bash
+# Basic notification
+curl -d &quot;Deploy complete&quot; ntfy.sh/my-alerts-abc123
+
+# With title and priority
+curl \
+  -H &quot;Title: Server Alert&quot; \
+  -H &quot;Priority: high&quot; \
+  -H &quot;Tags: warning,server&quot; \
+  -d &quot;CPU usage at 95%&quot; \
+  ntfy.sh/my-alerts-abc123
+```
+
+### Python
+
+```python
+import requests
+
+# Basic
+requests.post(&quot;https://ntfy.sh/my-alerts-abc123&quot;, data=&quot;Build complete&quot;)
+
+# With options
+requests.post(&quot;https://ntfy.sh/my-alerts-abc123&quot;,
+    data=&quot;Disk space critical: 2% remaining&quot;,
+    headers={
+        &quot;Title&quot;: &quot;Disk Alert&quot;,
+        &quot;Priority&quot;: &quot;urgent&quot;,
+        &quot;Tags&quot;: &quot;warning,disk&quot;,
+        &quot;Actions&quot;: &quot;view, Open Dashboard, https://grafana.example.com&quot;
+    }
+)
+```
+
+### With actions (buttons in the notification)
+
+```bash
+curl \
+  -H &quot;Title: Deploy Ready&quot; \
+  -H &quot;Actions: view, Open PR, https://github.com/me/repo/pull/42; http, Approve, https://api.example.com/approve&quot; \
+  -d &quot;PR #42 is ready for review&quot; \
+  ntfy.sh/my-alerts-abc123
+```
+
+The notification shows buttons: &quot;Open PR&quot; (opens URL) and &quot;Approve&quot; (sends HTTP request).
+
+## Topics and Subscriptions
+
+Topics are pub/sub channels identified by a name. No registration — anyone with the topic name can publish or subscribe.
+
+- **Pick a unique topic name** — `my-alerts-abc123` is better than `alerts` (which anyone could read)
+- **Subscribe on your phone** — open the ntfy app, add the topic
+- **Subscribe via CLI** — `ntfy subscribe my-alerts-abc123`
+- **Subscribe via curl** — `curl -s ntfy.sh/my-alerts-abc123/sse` (Server-Sent Events stream)
+
+## Priority Levels
+
+| Priority | Behavior |
+|---|---|
+| `default` | Normal notification, no sound |
+| `high` | Notification sound, may bypass Do Not Disturb |
+| `urgent` | Notification sound, bypasses Do Not Disturb, may repeat |
+
+```bash
+curl -H &quot;Priority: urgent&quot; -d &quot;Server is DOWN&quot; ntfy.sh/my-alerts-abc123
+```
+
+## Common Patterns
+
+| Pattern | Command |
+|---|---|
+| Script success | `curl -d &quot;Backup complete&quot; ntfy.sh/my-topic` |
+| Script failure | `curl -H &quot;Priority: high&quot; -d &quot;Backup FAILED&quot; ntfy.sh/my-topic` |
+| Cron job heartbeat | `curl -d &quot;Job ran OK&quot; ntfy.sh/my-topic` (send after each run) |
+| Deploy notification | `curl -H &quot;Title: Deploy&quot; -d &quot;v1.2.3 live&quot; ntfy.sh/my-topic` |
+| With action button | `curl -H &quot;Actions: view, Logs, https://...&quot; -d &quot;Build failed&quot; ntfy.sh/my-topic` |
+
+## Pitfalls
+
+- **Public topics are public** — Anyone who guesses your topic name can read your notifications. Use a long, random topic name (e.g., `alerts-k7m3x9p2q4`). For sensitive notifications, self-host.
+- **No authentication on public server** — The public ntfy.sh server doesn&#x27;t require auth. Anyone can publish to any topic. If you need auth, self-host and configure access control.
+- **Rate limiting on public server** — The public server rate-limits to ~60 requests/hour per IP. For higher volume, self-host.
+- **Topic name collisions** — If two people use the topic &quot;test&quot;, they&#x27;ll see each other&#x27;s notifications. Always use unique topic names.
+- **No delivery guarantees** — ntfy is fire-and-forget. If no client is subscribed when you send, the notification is lost (unless you enable message caching on a self-hosted server).
+- **Self-hosted needs HTTPS for iOS** — iOS push notifications require HTTPS. If self-hosting, put ntfy behind Caddy or nginx with TLS for iOS clients to receive push in the background.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># ntfy-notifier
+
+Send push notifications to your phone and desktop via simple HTTP requests — no SDK, no Firebase, no APNS.
+
+## What it does
+
+The agent sets up ntfy push notifications for your scripts, cron jobs, or agent tasks. You install the ntfy app on your phone, subscribe to a topic, and then any HTTP POST to that topic URL appears as a push notification. No mobile SDK integration, no certificate management, no per-platform setup.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ntfy-notifier/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Send me a notification when my build finishes&quot;
+```
+
+The agent:
+1. Picks a unique topic name (or uses one you specify)
+2. Tells you to install the ntfy app and subscribe to the topic
+3. Adds a curl call to your script: `curl -d &quot;Build complete&quot; ntfy.sh/your-topic`
+4. Tests it — you get a notification on your phone
+
+## Example
+
+```
+User: &quot;Alert my phone if the backup script fails&quot;
+
+Agent:
+  1. Topic: backup-alerts-x7k2m9
+  2. Instructs: install ntfy app, subscribe to &quot;backup-alerts-x7k2m9&quot;
+  3. Adds to backup script:
+     curl -H &quot;Priority: high&quot; -H &quot;Title: Backup Failed&quot; \
+       -d &quot;Backup failed at $(date)&quot; ntfy.sh/backup-alerts-x7k2m9
+  4. Tests: curl -d &quot;Test alert&quot; ntfy.sh/backup-alerts-x7k2m9
+  5. Returns: &quot;You should see a test notification on your phone.&quot;
+```
+
+## Sending a notification
+
+```bash
+# Basic
+curl -d &quot;Hello&quot; ntfy.sh/your-topic
+
+# With title and priority
+curl -H &quot;Title: Alert&quot; -H &quot;Priority: high&quot; -d &quot;Server down&quot; ntfy.sh/your-topic
+```
+
+The notification appears instantly on any device subscribed to the topic.
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ntfy-notifier/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

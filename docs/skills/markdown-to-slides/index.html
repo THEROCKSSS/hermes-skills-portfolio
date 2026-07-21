@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>markdown-to-slides — Hermes Skill</title>
+  <meta name="description" content="What it does: Create presentation slides from markdown. How the agent uses it: Reach for this skill whenever the user asks to:
+Build a slide deck, talk, keynote, or lecture from Markdown or notes.
+Convert an existing Markdown document into slides.
+Theme, brand, or restyle a presentation...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/markdown-to-slides/">
+  <meta property="og:title" content="markdown-to-slides — Hermes Skill">
+  <meta property="og:description" content="What it does: Create presentation slides from markdown. How the agent uses it: Reach for this skill whenever the user asks to:
+Build a slide deck, talk, keynote, or lecture from Markdown or notes.
+Convert an existing Markdown document into slides.
+Theme, brand, or restyle a presentation...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/markdown-to-slides/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="markdown-to-slides — Hermes Skill">
+  <meta name="twitter:description" content="What it does: Create presentation slides from markdown. How the agent uses it: Reach for this skill whenever the user asks to:
+Build a slide deck, talk, keynote, or lecture from Markdown or notes.
+Convert an existing Markdown document into slides.
+Theme, brand, or restyle a presentation...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>markdown-to-slides</h1>
+          <p class="tagline">Create presentation slides from markdown.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge featured">Featured</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Frontend</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Highly useful within a category</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>Create presentation slides from markdown.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <p>Reach for this skill whenever the user asks to:</p>
+<ul><li>Build a slide deck, talk, keynote, or lecture from Markdown or notes.</li><li>Convert an existing Markdown document into slides.</li><li>Theme, brand, or restyle a presentation quickly.</li><li>Export slides to PDF (for sharing/handouts) or PPTX (for collaborators).</li><li>Set up a live-reloading preview while writing a talk.</li></ul>
+<p>Do **not** use it for static documents (use a doc/reports skill), posters, or</p>
+<p>infographics where a single fixed canvas is the deliverable.</p>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can create presentation slides from markdown. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-to-slides/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-to-slides/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: markdown-to-slides
+description: Turn Markdown into polished presentation slides using reveal.js, Marp, or Slidev. Use when a user wants to author talks, decks, or lectures from plain text and export them to PDF/PPTX.
+version: 1.0.0
+---
+
+# markdown-to-slides
+
+Author beautiful presentations from plain Markdown — no drag-and-drop editors, no
+locked-in proprietary formats. This skill covers three best-in-class engines
+(reveal.js, Marp, Slidev), their slide-delimiter syntax, theming, live preview,
+and one-command export to PDF or PowerPoint.
+
+## When to Use
+
+Reach for this skill whenever the user asks to:
+
+- Build a slide deck, talk, keynote, or lecture from Markdown or notes.
+- Convert an existing Markdown document into slides.
+- Theme, brand, or restyle a presentation quickly.
+- Export slides to PDF (for sharing/handouts) or PPTX (for collaborators).
+- Set up a live-reloading preview while writing a talk.
+
+Do **not** use it for static documents (use a doc/reports skill), posters, or
+infographics where a single fixed canvas is the deliverable.
+
+## Tools
+
+Pick an engine based on the job. All three consume Markdown; they differ in
+philosophy and export strength.
+
+### reveal.js
+- **Best for:** rich, interactive, animated decks; speaker notes; embedded code
+  execution; vertical/nested slides.
+- **Authoring:** raw HTML + Markdown, or the `reveal-md` CLI which wraps
+  Markdown in a reveal.js scaffold.
+- **Install:** `npm install -g reveal-md` (CLI) or `npm create reveal@latest`.
+- **Run:** `reveal-md deck.md` → serves at `http://localhost:5655`.
+- **Strengths:** largest plugin ecosystem (math, charts, audio, PDF export).
+
+### Marp
+- **Best for:** minimal, opinionated Markdown→slides with zero fuss. Great for
+  docs teams that already write Markdown.
+- **Authoring:** standard Markdown with a `---` slide separator and YAML front
+  matter for theming.
+- **Install:** `npm install -g @marp-team/marp-cli`.
+- **Run:** `marp deck.md -w` (watch mode) or `marp deck.md --pdf`.
+- **Strengths:** fastest path to a clean deck; first-class PDF/PPTX/HTML export;
+  official VSCode extension with live preview.
+
+### Slidev
+- **Best for:** developer talks — code highlighting, live demos, Vue components
+  inside slides, drawing on slides.
+- **Authoring:** Markdown with `---` separators and `&lt;style&gt;` / `&lt;script&gt;`
+  blocks; slide-level `&lt;v-clicks&gt;` for step animations.
+- **Install:** `npm init slidev` then `npm install`.
+- **Run:** `npm run dev` → serves at `http://localhost:3030`.
+- **Strengths:** built on Vite (HMR), draws on slide, records presentations,
+  exports to PDF/PPTX via `@slidev/cli` build.
+
+## Markdown Syntax for Slides
+
+All three use `---` on its own line as the default slide separator.
+
+```markdown
+---
+# Title Slide
+A subtitle here
+
+---
+
+## Slide Two
+- Bullet one
+- Bullet two
+
+&gt; A blockquote for emphasis
+
+---
+
+## Slide Three
+\`\`\`js
+console.log(&quot;code is highlighted&quot;);
+\`\`\`
+```
+
+### reveal.js (via reveal-md)
+Use `---` for horizontal slides and `--` for vertical (nested) slides:
+
+```markdown
+# Horizontal A
+---
+
+# Horizontal B
+--
+
+## Nested under B
+```
+
+Add speaker notes with HTML comments: `&lt;!-- .slide: data-notes=&quot;Talk about X&quot; --&gt;`
+or a `Notes:` block when using `reveal-md` note syntax.
+
+### Marp
+Front matter controls the deck globally:
+
+```markdown
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# First slide
+```
+
+- `&lt;!-- _class: lead --&gt;` applies a CSS class to one slide.
+- `&lt;!-- _backgroundColor: #0b3d91 --&gt;` sets a slide background.
+- `&lt;!-- _paginate: false --&gt;` hides the page number on that slide.
+
+### Slidev
+- `---` separates slides; `---layout: center` switches layout for the next slide.
+- `&lt;v-click&gt;` and `&lt;v-clicks&gt;` reveal list items step by step.
+- A slide&#x27;s first comment block (`&lt;!-- ... --&gt;`) becomes speaker notes.
+
+## Themes
+
+### reveal.js
+Themes are CSS files in `css/theme/` (e.g. `black`, `white`, `league`,
+`beige`, `sky`, `night`). Switch via front matter or the `theme` flag:
+`reveal-md deck.md --theme night`. Custom themes are plain CSS overriding
+`--r-background-color`, `--r-main-font`, etc.
+
+### Marp
+Ships with `default`, `gaia`, and `uncover`. Apply via front matter
+`theme: gaia`. Custom themes are defined in a CSS file and registered with
+`@theme mytheme` directives (see Marp core docs). Brand decks by overriding
+CSS custom properties:
+
+```css
+:root {
+  --color-background: #0b3d91;
+  --color-foreground: #ffffff;
+  --color-primary: #ffb000;
+}
+```
+
+### Slidev
+Themes are npm packages (e.g. `@slidev/theme-default`, `@slidev/theme-seriph`,
+`@slidev/theme-apple-basic`). Install and set in front matter:
+`theme: seriph`. Unstyled local `style` blocks override per-deck.
+
+## Export to PDF/PPTX
+
+### Marp (simplest, recommended default)
+```bash
+marp deck.md --pdf deck.pdf
+marp deck.md --pptx deck.pptx
+marp deck.md --html deck.html
+```
+For pixel-perfect PDF, enable Chromium in Marp: `marp --pdf --allow-local-files`.
+
+### reveal.js
+Use the print-to-PDF query param in a headless browser, or:
+```bash
+reveal-md deck.md --print deck.pdf        # chromium required
+```
+PPTX export is not native; convert the PDF, or render HTML and use a
+PDF→PPTX converter (e.g. `unoconv` / LibreOffice headless).
+
+### Slidev
+```bash
+slidev build --pdf        # requires playwright/chromium
+slidev build --pptx       # exports .pptx
+slidev export deck.md     # interactive export wizard
+```
+Ensure `npx playwright install chromium` is available for PDF/PPTX builds.
+
+## Live Preview
+
+- **Marp:** `marp deck.md -w` plus the Marp VSCode extension (side-by-side
+  preview). Or `npx @marp-team/marp-cli deck.md -w -s` for a server.
+- **reveal.js:** `reveal-md deck.md` opens a live server; edits hot-reload.
+- **Slidev:** `npm run dev` gives Vite HMR — edits appear instantly, plus a
+  presenter mode at `/presenter/0` and a drawing layer.
+
+Always preview before exporting; fonts, backgrounds, and code blocks often
+shift between preview and print.
+
+## Pitfalls
+
+- **`---` ambiguity:** YAML front matter and slide separators both use `---`.
+  Keep front matter at the very top and ensure a blank line around separators.
+- **Chromium missing:** PDF/PPTX export in Marp and Slidev needs a headless
+  browser. Install it (`npx @marp-team/marp-cli --version` then
+  `npx playwright install chromium`) or exports silently fail.
+- **Absolute image paths:** Use relative paths; pass `--allow-local-files`
+  (Marp) or run from the deck&#x27;s directory so assets resolve in export.
+- **Fonts not embedded:** Some PDF converters drop web fonts. Prefer system
+  fonts or bundle `@font-face` files alongside the deck.
+- **Speaker notes leak:** Notes render in HTML export by default; strip them
+  for public PDFs (`marp --pdf` excludes notes; reveal needs a flag).
+- **Engine mismatch:** reveal.js uses `--` for vertical slides; Marp/Slidev
+  treat `--` as a thematic break. Don&#x27;t mix syntaxes across engines.
+- **Watch-mode port clash:** If a preview server won&#x27;t start, the port is
+  likely busy — kill the stray process or pass an explicit port flag.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># markdown-to-slides
+
+&gt; Turn plain Markdown into polished presentation slides — then export to PDF or
+&gt; PowerPoint in one command.
+
+Part of the [Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
+by **Owen**.
+
+## Why this skill exists
+
+Most people write faster in Markdown than in Keynote or PowerPoint, but turning
+notes into a real deck is usually a copy-paste chore. This skill lets an agent
+(or a human) author talks, lectures, and investor updates as Markdown and render
+them with the three best open-source slide engines:
+
+| Engine | Best for | Export strength |
+| --- | --- | --- |
+| **reveal.js** | Rich, interactive, animated decks | PDF (HTML → PPTX via conversion) |
+| **Marp** | Minimal Markdown, docs teams | PDF + PPTX + HTML (native) |
+| **Slidev** | Developer talks, live code | PDF + PPTX (native) |
+
+## Install
+
+In Hermes, install the skill from the portfolio:
+
+```
+https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-to-slides/SKILL.md
+```
+
+Or copy `skills/markdown-to-slides/` into your Hermes skills directory.
+
+## Quick start
+
+Create `deck.md`:
+
+```markdown
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# Hello, slides
+Authored in Markdown
+
+---
+
+## Slide two
+- Write bullets
+- Separate slides with `---`
+- Export when ready
+```
+
+Render and export with Marp:
+
+```bash
+npm install -g @marp-team/marp-cli
+marp deck.md -w            # live preview
+marp deck.md --pdf deck.pdf
+marp deck.md --pptx deck.pptx
+```
+
+Prefer reveal.js or Slidev? The SKILL.md covers their syntax, theming, and
+exports in full.
+
+## What you get
+
+- **One source of truth** — your deck is a diffable text file, not a binary.
+- **Themeable in minutes** — swap or brand a deck by overriding CSS variables.
+- **Portable output** — hand out PDFs, hand decks to collaborators as PPTX.
+- **Live preview** — watch mode hot-reloads as you write.
+
+## Links
+
+- Install URL: &lt;https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-to-slides/SKILL.md&gt;
+- Full reference: see `SKILL.md` in this folder.
+
+---
+
+© Owen — released for the Hermes community.
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-to-slides/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

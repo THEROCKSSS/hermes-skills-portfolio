@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>uptime-kuma-self-host — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent deploys Uptime Kuma with Docker, creates an admin account, and helps you add monitors for your services. You get a web UI showing real-time status, historical uptime, and response times. Alerts go to Discord, Slack, email, Telegram, or a webhook when a service goes down...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/uptime-kuma-self-host/">
+  <meta property="og:title" content="uptime-kuma-self-host — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent deploys Uptime Kuma with Docker, creates an admin account, and helps you add monitors for your services. You get a web UI showing real-time status, historical uptime, and response times. Alerts go to Discord, Slack, email, Telegram, or a webhook when a service goes down...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/uptime-kuma-self-host/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="uptime-kuma-self-host — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent deploys Uptime Kuma with Docker, creates an admin account, and helps you add monitors for your services. You get a web UI showing real-time status, historical uptime, and response times. Alerts go to Discord, Slack, email, Telegram, or a webhook when a service goes down...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>uptime-kuma-self-host</h1>
+          <p class="tagline">Self-host an uptime monitoring dashboard with alerts.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge featured">Featured</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> DevOps &amp; Infrastructure</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Highly useful within a category</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent deploys Uptime Kuma with Docker, creates an admin account, and helps you add monitors for your services. You get a web UI showing real-time status, historical uptime, and response times. Alerts go to Discord, Slack, email, Telegram, or a webhook when a service goes down or comes back up.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants to monitor their self-hosted services.</li><li>The user wants uptime alerts sent to Discord, Slack, email, or webhook.</li><li>The user wants a public status page for their services.</li><li>The user says &quot;set up uptime monitoring&quot;, &quot;I want to know when my site goes down&quot;, or &quot;monitor my services&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can self-host an uptime monitoring dashboard with alerts. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/uptime-kuma-self-host/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/uptime-kuma-self-host/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: uptime-kuma-self-host
+description: &quot;Self-host an uptime monitoring dashboard — agent + this skill = user gets a visual monitoring panel for their services.&quot;
+version: 1.0.0
+---
+
+# uptime-kuma-self-host
+
+Deploy Uptime Kuma — a self-hosted monitoring tool that tracks the uptime of your services (HTTP, TCP, DNS, ping) and sends alerts when something goes down. It runs as a Docker container with a web UI for managing monitors and viewing status pages.
+
+## When to Use
+
+- The user wants to monitor their self-hosted services.
+- The user wants uptime alerts sent to Discord, Slack, email, or webhook.
+- The user wants a public status page for their services.
+- The user says &quot;set up uptime monitoring&quot;, &quot;I want to know when my site goes down&quot;, or &quot;monitor my services&quot;.
+
+## Prerequisites
+
+- Docker and Docker Compose installed
+- A free port (default: 3001)
+
+## Docker Deployment
+
+### Step 1: Create the deployment
+
+```yaml
+# docker-compose.yml
+version: &quot;3&quot;
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    restart: unless-stopped
+    ports:
+      - &quot;3001:3001&quot;
+    volumes:
+      - uptime-kuma-data:/app/data
+
+volumes:
+  uptime-kuma-data:
+```
+
+### Step 2: Start
+
+```bash
+docker compose up -d
+```
+
+### Step 3: Initial setup
+
+Open `http://localhost:3001` in a browser. Create an admin account (username + password). This is a one-time setup.
+
+### Step 4: Add monitors via the UI
+
+1. Click &quot;Add New Monitor&quot;
+2. Choose a monitor type
+3. Enter the target URL/host
+4. Set the check interval
+5. Save
+
+### Step 5: Add notifications
+
+1. Go to Settings → Notifications
+2. Add a notification channel (Discord webhook, Slack webhook, email, etc.)
+3. Test the notification
+4. Assign the notification to monitors
+
+## Monitor Types
+
+| Type | What it checks | Example |
+|---|---|---|
+| HTTP(s) | Is a URL responding with 2xx? | `https://mysite.com` |
+| HTTP(s) - Keyword | Does the response contain a keyword? | `https://mysite.com` looking for &quot;OK&quot; |
+| TCP Port | Is a TCP port open? | `mysite.com:5432` |
+| DNS | Does a domain resolve? | `mysite.com` → A record |
+| Ping | Does a host respond to ICMP? | `192.168.1.1` |
+| Push | Wait for a push (passive monitor) | `https://kuma:3001/api/push/STATUS?msg=OK&amp;ping=100` |
+| Docker Container | Is a Docker container running? | Container name via Docker socket |
+
+## Notification Channels
+
+| Channel | Setup |
+|---|---|
+| Discord | Webhook URL from Discord channel settings |
+| Slack | Webhook URL from Slack app config |
+| Email | SMTP server + credentials |
+| Webhook | Custom HTTP POST on status change |
+| Telegram | Bot token + chat ID |
+| ntfy | ntfy.sh topic URL |
+| Signal | via signal-cli-rest-api |
+| Pushover | User key + app key |
+
+## Status Pages
+
+Uptime Kuma can generate public status pages showing the uptime of your services:
+
+1. Go to Status Pages → Add Status Page
+2. Name it (e.g., &quot;My Services&quot;)
+3. Add monitors to display
+4. Set a custom domain (optional)
+5. Share the URL: `http://localhost:3001/status/my-services`
+
+## API (Push Monitors)
+
+Push monitors are passive — they wait for your service to &quot;check in&quot;:
+
+```bash
+# Your service calls this URL on a schedule
+# If Kuma doesn&#x27;t hear from it within the interval, it&#x27;s marked down
+curl &quot;http://localhost:3001/api/push/ABCD1234?msg=OK&amp;ping=42&quot;
+```
+
+Use this for services behind firewalls that Kuma can&#x27;t reach directly.
+
+## Monitoring a Docker Host
+
+To monitor Docker containers on the host, bind-mount the Docker socket:
+
+```yaml
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    volumes:
+      - uptime-kuma-data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock  # for container monitoring
+```
+
+Then add a &quot;Docker Container&quot; monitor type pointing to the container name.
+
+## Pitfalls
+
+- **Port 3001 conflicts** — If another service uses 3001 (like Forgejo on some setups), change the port mapping in docker-compose.yml.
+- **Data volume is the backup** — All monitor configs, history, and settings are in the `uptime-kuma-data` volume. Back it up regularly.
+- **No built-in HTTPS** — Uptime Kuma serves HTTP. For HTTPS, put it behind Caddy or a reverse proxy.
+- **False positives on HTTP monitors** — A 3xx redirect is not a failure by default, but a 5xx is. Configure the &quot;Accepted Status Codes&quot; field if you need custom thresholds.
+- **Notification spam on flapping** — If a service goes up and down rapidly, you&#x27;ll get many notifications. Set a &quot;Retry&quot; count (e.g., retry 2 times before sending a down notification) to reduce flapping alerts.
+- **Push monitor interval** — If your service stops pushing, Kuma waits for the full interval before marking it down. Set the interval to match how often your service checks in.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># uptime-kuma-self-host
+
+Self-host an uptime monitoring dashboard that tracks your services and alerts you when they go down.
+
+## What it does
+
+The agent deploys Uptime Kuma with Docker, creates an admin account, and helps you add monitors for your services. You get a web UI showing real-time status, historical uptime, and response times. Alerts go to Discord, Slack, email, Telegram, or a webhook when a service goes down or comes back up.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/uptime-kuma-self-host/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Set up uptime monitoring for my three web services with Discord alerts&quot;
+```
+
+The agent:
+1. Creates a docker-compose.yml with Uptime Kuma
+2. Starts the container on port 3001
+3. Opens the setup page for your admin account
+4. Adds HTTP monitors for your services
+5. Configures Discord webhook notifications
+
+## Prerequisites
+
+- Docker and Docker Compose
+- A free port (default: 3001)
+
+## What you get
+
+| Component | URL | Notes |
+|---|---|---|
+| Dashboard | `http://localhost:3001` | Web UI for all monitors |
+| Status page | `http://localhost:3001/status/&lt;name&gt;` | Public uptime page |
+| Push API | `http://localhost:3001/api/push/&lt;id&gt;` | For passive monitors |
+
+## Monitor types
+
+| Type | Example |
+|---|---|
+| HTTP(s) | `https://mysite.com` — checks for 2xx response |
+| TCP Port | `mysite.com:5432` — checks port is open |
+| Ping | `192.168.1.1` — ICMP echo |
+| DNS | `mysite.com` — checks resolution |
+| Push | Passive — your service calls Kuma&#x27;s API |
+| Docker | Container running check via Docker socket |
+
+## Example
+
+```
+User: &quot;Monitor my blog and API, alert me on Discord if either goes down&quot;
+
+Agent:
+  1. Deploys Uptime Kuma on port 3001
+  2. Adds HTTP monitor: https://myblog.com (check every 60s)
+  3. Adds HTTP monitor: https://api.myblog.com/health (check every 30s)
+  4. Adds Discord notification webhook
+  5. Returns: &quot;Monitoring started. Dashboard at http://localhost:3001&quot;
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/uptime-kuma-self-host/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

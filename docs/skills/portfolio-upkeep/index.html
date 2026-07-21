@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>portfolio-upkeep — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent syncs site files from `site/` to `docs/` for GitHub Pages, enriches `skills-index.json` with `agent_use`, `user_use`, `skillmd_content`, and `readme_content` fields extracted from each skill&#x27;s files, validates that all skill directories have proper frontmatter and index...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/portfolio-upkeep/">
+  <meta property="og:title" content="portfolio-upkeep — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent syncs site files from `site/` to `docs/` for GitHub Pages, enriches `skills-index.json` with `agent_use`, `user_use`, `skillmd_content`, and `readme_content` fields extracted from each skill&#x27;s files, validates that all skill directories have proper frontmatter and index...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/portfolio-upkeep/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="portfolio-upkeep — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent syncs site files from `site/` to `docs/` for GitHub Pages, enriches `skills-index.json` with `agent_use`, `user_use`, `skillmd_content`, and `readme_content` fields extracted from each skill&#x27;s files, validates that all skill directories have proper frontmatter and index...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>portfolio-upkeep</h1>
+          <p class="tagline">Maintain and update a Hermes skills portfolio — sync site files, enrich the index, validate skills, and push updates.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Meta</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent syncs site files from `site/` to `docs/` for GitHub Pages, enriches `skills-index.json` with `agent_use`, `user_use`, `skillmd_content`, and `readme_content` fields extracted from each skill&#x27;s files, validates that all skill directories have proper frontmatter and index entries, and pushes updates to both Forgejo and GitHub. Run this after adding, updating, or removing skills.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user added or updated a skill and wants the portfolio site updated.</li><li>The user wants to sync site/ files to docs/ for GitHub Pages.</li><li>The user wants to validate all skills have correct frontmatter and index entries.</li><li>The user says &quot;update the portfolio&quot;, &quot;sync the site&quot;, &quot;refresh the index&quot;, or &quot;publish changes&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can maintain and update a hermes skills portfolio — sync site files, enrich the index, validate skills, and push updates. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/portfolio-upkeep/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/portfolio-upkeep/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: portfolio-upkeep
+description: &quot;Maintain and update a Hermes skills portfolio — sync site files, enrich the index, validate skills, and push updates. Agent + this skill = user gets a maintained portfolio that stays in sync.&quot;
+version: 1.0.0
+---
+
+# portfolio-upkeep
+
+Maintain and update a Hermes skills portfolio. The agent syncs site files to the docs/ directory, enriches skills-index.json with agent_use/user_use/skillmd_content/readme_content fields, validates skill frontmatter, and pushes updates to Forgejo and GitHub Pages.
+
+## When to Use
+
+- The user added or updated a skill and wants the portfolio site updated.
+- The user wants to sync site/ files to docs/ for GitHub Pages.
+- The user wants to validate all skills have correct frontmatter and index entries.
+- The user says &quot;update the portfolio&quot;, &quot;sync the site&quot;, &quot;refresh the index&quot;, or &quot;publish changes&quot;.
+
+## Prerequisites
+
+- A portfolio repo with the structure described in `hermes-portfolio-template`
+- Git remotes for both Forgejo and GitHub
+- GitHub Pages enabled on the GitHub repo (serving from /docs)
+
+## Sync Site Files to docs/
+
+The site files live in `site/` but GitHub Pages serves from `docs/`. Sync them:
+
+```python
+import shutil, os
+
+REPO_PATH = &quot;path/to/hermes-skills-portfolio&quot;
+
+# Files to sync
+site_files = [&quot;index.html&quot;, &quot;styles.css&quot;, &quot;app.js&quot;]
+for filename in site_files:
+    src = os.path.join(REPO_PATH, &quot;site&quot;, filename)
+    dst = os.path.join(REPO_PATH, &quot;docs&quot;, filename)
+    if os.path.exists(src):
+        shutil.copy2(src, dst)
+        print(f&quot;Synced {filename}&quot;)
+
+# Also copy skills-index.json to docs/
+shutil.copy2(
+    os.path.join(REPO_PATH, &quot;skills-index.json&quot;),
+    os.path.join(REPO_PATH, &quot;docs&quot;, &quot;skills-index.json&quot;)
+)
+print(&quot;Synced skills-index.json&quot;)
+```
+
+## Enrich skills-index.json
+
+When skills are added or updated, the index needs enrichment fields:
+
+```python
+import json, os, re
+
+INDEX_PATH = os.path.join(REPO_PATH, &quot;skills-index.json&quot;)
+SKILLS_DIR = os.path.join(REPO_PATH, &quot;skills&quot;)
+
+with open(INDEX_PATH, &#x27;r&#x27;) as f:
+    index = json.load(f)
+
+for skill in index[&quot;skills&quot;]:
+    skill_path = os.path.join(SKILLS_DIR, skill[&quot;name&quot;], &quot;SKILL.md&quot;)
+    readme_path = os.path.join(SKILLS_DIR, skill[&quot;name&quot;], &quot;README.md&quot;)
+
+    # Read SKILL.md
+    skillmd_content = &quot;&quot;
+    if os.path.exists(skill_path):
+        with open(skill_path, &#x27;r&#x27;, encoding=&#x27;utf-8&#x27;) as f:
+            skillmd_content = f.read()
+
+    # Read README.md
+    readme_content = &quot;&quot;
+    if os.path.exists(readme_path):
+        with open(readme_path, &#x27;r&#x27;, encoding=&#x27;utf-8&#x27;) as f:
+            readme_content = f.read()
+
+    # Extract &quot;When to Use&quot; from SKILL.md as agent_use
+    agent_use = &quot;&quot;
+    when_match = re.search(r&#x27;## When to Use\s*\n(.*?)(?=\n## |\Z)&#x27;, skillmd_content, re.DOTALL)
+    if when_match:
+        agent_use = when_match.group(1).strip()
+
+    # Extract &quot;What it does&quot; from README.md as user_use
+    user_use = &quot;&quot;
+    what_match = re.search(r&#x27;## What it does\s*\n(.*?)(?=\n## |\Z)&#x27;, readme_content, re.DOTALL)
+    if what_match:
+        user_use = what_match.group(1).strip()
+
+    # Update fields
+    skill[&quot;agent_use&quot;] = agent_use
+    skill[&quot;user_use&quot;] = user_use
+    skill[&quot;skillmd_content&quot;] = skillmd_content
+    skill[&quot;readme_content&quot;] = readme_content
+
+# Write enriched index
+with open(INDEX_PATH, &#x27;w&#x27;, encoding=&#x27;utf-8&#x27;) as f:
+    json.dump(index, f, indent=2, ensure_ascii=False)
+
+# Also write to docs/
+shutil.copy2(INDEX_PATH, os.path.join(REPO_PATH, &quot;docs&quot;, &quot;skills-index.json&quot;))
+```
+
+## Validate Skills
+
+Check that every skill directory has the required files and the index is in sync:
+
+```python
+def validate_portfolio(repo_path):
+    skills_dir = os.path.join(repo_path, &quot;skills&quot;)
+    index_path = os.path.join(repo_path, &quot;skills-index.json&quot;)
+
+    with open(index_path, &#x27;r&#x27;) as f:
+        index = json.load(f)
+
+    index_names = {s[&quot;name&quot;] for s in index[&quot;skills&quot;]}
+    dir_names = {d for d in os.listdir(skills_dir) if os.path.isdir(os.path.join(skills_dir, d))}
+
+    issues = []
+
+    # Skills in directories but not in index
+    for name in dir_names - index_names:
+        issues.append(f&quot;Directory skills/{name}/ exists but not in skills-index.json&quot;)
+
+    # Skills in index but no directory
+    for name in index_names - dir_names:
+        issues.append(f&quot;skills-index.json has &#x27;{name}&#x27; but no directory exists&quot;)
+
+    # Check each skill has SKILL.md and README.md
+    for name in dir_names:
+        skill_path = os.path.join(skills_dir, name)
+        if not os.path.exists(os.path.join(skill_path, &quot;SKILL.md&quot;)):
+            issues.append(f&quot;skills/{name}/SKILL.md missing&quot;)
+        if not os.path.exists(os.path.join(skill_path, &quot;README.md&quot;)):
+            issues.append(f&quot;skills/{name}/README.md missing&quot;)
+
+    # Check frontmatter
+    for name in dir_names:
+        skill_md = os.path.join(skills_dir, name, &quot;SKILL.md&quot;)
+        if os.path.exists(skill_md):
+            with open(skill_md, &#x27;r&#x27;) as f:
+                content = f.read(200)
+            if not re.search(r&#x27;^name:\s*&#x27; + re.escape(name), content, re.MULTILINE):
+                issues.append(f&quot;skills/{name}/SKILL.md frontmatter name doesn&#x27;t match directory name&quot;)
+
+    return issues
+```
+
+## Full Upkeep Workflow
+
+1. **Validate** — run `validate_portfolio()` to check for missing files, index drift, or frontmatter issues
+2. **Enrich** — run the enrichment script to update agent_use, user_use, skillmd_content, readme_content in the index
+3. **Sync** — copy site files and skills-index.json to docs/
+4. **Commit** — `git add -A &amp;&amp; git commit -m &quot;Upkeep: sync site, enrich index, validate skills&quot;`
+5. **Push** — push to both Forgejo and GitHub:
+   ```bash
+   git push forgejo main
+   git push origin main
+   ```
+6. **Verify** — wait 60-90 seconds for GitHub Pages to rebuild, then check the live URL
+
+## Adding a New Skill
+
+When adding a new skill to the portfolio:
+
+1. Create `skills/&lt;skill-name&gt;/SKILL.md` with proper frontmatter (name, description, version)
+2. Create `skills/&lt;skill-name&gt;/README.md` with &quot;What it does&quot; section
+3. Add an entry to `skills-index.json` with: name, category, tier, description, install_url, path, source, usage (zeros), recency, source_attribution, frontmatter
+4. Run the enrichment script to add agent_use, user_use, skillmd_content, readme_content
+5. Sync to docs/
+6. Commit and push
+
+## Updating an Existing Skill
+
+1. Edit the SKILL.md and/or README.md in the skill directory
+2. Update the entry in `skills-index.json` if the description, tier, or category changed
+3. Run the enrichment script (it overwrites agent_use, user_use, skillmd_content, readme_content from the files)
+4. Sync to docs/
+5. Commit and push
+
+## Pitfalls
+
+- **docs/ drift** — The most common upkeep issue. You update site/ files but forget to copy them to docs/. GitHub Pages serves from docs/, so the live site shows stale content. Always run the sync step.
+- **Index bloat** — The skills-index.json with embedded content can reach 500KB+ for 50 skills. This is fine for a static site (loads once, cached by the browser), but be aware of it when committing.
+- **Frontmatter mismatch** — The `name` field in SKILL.md frontmatter must match the directory name. The validation script checks this, but it&#x27;s easy to forget when renaming a skill.
+- **GitHub Pages build time** — After pushing, GitHub Pages takes 60-90 seconds to rebuild. Don&#x27;t verify the live URL immediately — wait at least 60 seconds.
+- **Forgejo and GitHub out of sync** — Always push to both remotes. If only one is pushed, the local review surface (Forgejo) and the public site (GitHub) will diverge.
+- **Missing user_use field** — If a README doesn&#x27;t have a &quot;What it does&quot; section, the user_use field will be empty. The site falls back to the description, but it&#x27;s better to have a proper &quot;What it does&quot; section in every README.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># portfolio-upkeep
+
+Maintain and update a Hermes skills portfolio — sync site files, enrich the index, validate skills, and push.
+
+## What it does
+
+The agent syncs site files from `site/` to `docs/` for GitHub Pages, enriches `skills-index.json` with `agent_use`, `user_use`, `skillmd_content`, and `readme_content` fields extracted from each skill&#x27;s files, validates that all skill directories have proper frontmatter and index entries, and pushes updates to both Forgejo and GitHub. Run this after adding, updating, or removing skills.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/portfolio-upkeep/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Update the portfolio — I added a new skill&quot;
+```
+
+The agent:
+1. Validates all skill directories (SKILL.md, README.md, frontmatter)
+2. Enriches skills-index.json with agent_use, user_use, skillmd_content, readme_content
+3. Syncs site files to docs/
+4. Commits and pushes to Forgejo + GitHub
+5. Waits for GitHub Pages to rebuild
+6. Verifies the live site
+
+## Example
+
+```
+User: &quot;I updated the tailscale-deploy skill. Sync the portfolio.&quot;
+
+Agent:
+  1. Validates: all 50 skills OK
+  2. Enriches: updates tailscale-deploy&#x27;s skillmd_content + agent_use
+  3. Syncs: copies index.html, styles.css, app.js, skills-index.json to docs/
+  4. Commits: &quot;Upkeep: sync site, enrich index after tailscale-deploy update&quot;
+  5. Pushes to Forgejo + GitHub
+  6. Verifies: https://therocksss.github.io/hermes-skills-portfolio/ returns 200
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/portfolio-upkeep/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

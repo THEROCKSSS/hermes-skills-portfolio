@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>tailscale-deploy — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent deploys a web service — Docker container, local dev server, or anything running on a port — onto your Tailscale tailnet. The service becomes reachable from your laptop, phone, and any other device on your tailnet. No public internet exposure, no port forwarding, no cloud...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/tailscale-deploy/">
+  <meta property="og:title" content="tailscale-deploy — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent deploys a web service — Docker container, local dev server, or anything running on a port — onto your Tailscale tailnet. The service becomes reachable from your laptop, phone, and any other device on your tailnet. No public internet exposure, no port forwarding, no cloud...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/tailscale-deploy/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="tailscale-deploy — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent deploys a web service — Docker container, local dev server, or anything running on a port — onto your Tailscale tailnet. The service becomes reachable from your laptop, phone, and any other device on your tailnet. No public internet exposure, no port forwarding, no cloud...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>tailscale-deploy</h1>
+          <p class="tagline">Deploy a service on your Tailscale tailnet so it&#x27;s privately accessible from any of your devices.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge core">Core</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> DevOps &amp; Infrastructure</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Broadly empowering, nearly any user benefits</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent deploys a web service — Docker container, local dev server, or anything running on a port — onto your Tailscale tailnet. The service becomes reachable from your laptop, phone, and any other device on your tailnet. No public internet exposure, no port forwarding, no cloud relay.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants to run a web service and access it from their laptop, phone, or other machines without exposing it to the internet.</li><li>The user wants to share a local dev server with someone on their tailnet.</li><li>The user wants to deploy a Docker service with private network access.</li><li>The user says &quot;deploy this on my tailnet&quot;, &quot;make this accessible via Tailscale&quot;, or &quot;I want to access this from my phone&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can deploy a service on your tailscale tailnet so it&#x27;s privately accessible from any of your devices. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/tailscale-deploy/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/tailscale-deploy/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: tailscale-deploy
+description: &quot;Deploy a service on the user&#x27;s Tailscale tailnet so it&#x27;s privately accessible from any device — agent + this skill = user gets a running service only they can reach.&quot;
+version: 1.0.0
+---
+
+# tailscale-deploy
+
+Deploy a service on a Tailscale tailnet. The service becomes privately accessible from any device on the user&#x27;s tailnet — no public exposure, no port forwarding, no cloud relay.
+
+## When to Use
+
+- The user wants to run a web service and access it from their laptop, phone, or other machines without exposing it to the internet.
+- The user wants to share a local dev server with someone on their tailnet.
+- The user wants to deploy a Docker service with private network access.
+- The user says &quot;deploy this on my tailnet&quot;, &quot;make this accessible via Tailscale&quot;, or &quot;I want to access this from my phone&quot;.
+
+## Prerequisites
+
+1. **Tailscale installed** — check with `tailscale status`. If not installed:
+   - **Linux**: `curl -fsSL https://tailscale.com/install.sh | sh`
+   - **macOS**: `brew install tailscale` or install from the App Store
+   - **Windows**: download from https://tailscale.com/download
+
+2. **Tailscale authenticated** — `tailscale up` if not already authenticated. The user needs a Tailscale account (free for personal use, up to 100 devices).
+
+3. **Docker installed** — for container-based deployments. Check with `docker --version`.
+
+## Workflow
+
+### Step 1: Verify Tailscale is running
+
+```bash
+tailscale status
+```
+
+If the output shows the machine as `idle` or not connected, run:
+
+```bash
+sudo tailscale up
+```
+
+On Windows, run `tailscale up` in an elevated terminal.
+
+### Step 2: Choose a deployment method
+
+Two methods, depending on what the user is deploying:
+
+**Method A — Direct serve (existing local service):**
+The service is already running on a local port (e.g., `localhost:8080`). Use `tailscale serve` to expose it over the tailnet with HTTPS.
+
+```bash
+# Expose localhost:8080 over the tailnet with HTTPS
+tailscale serve --https 8080
+```
+
+The service is now accessible at `https://&lt;machine-name&gt;.&lt;tailnet-name&gt;.ts.net` from any device on the tailnet.
+
+To check what&#x27;s being served:
+```bash
+tailscale serve status
+```
+
+To stop serving:
+```bash
+tailscale serve --https off
+```
+
+**Method B — Docker with Tailscale sidecar:**
+Deploy a Docker container with a Tailscale sidecar that joins the tailnet and routes traffic to the service.
+
+Create a `docker-compose.yml`:
+
+```yaml
+version: &quot;3.8&quot;
+services:
+  app:
+    image: your-app-image
+    restart: unless-stopped
+    networks:
+      - tsnet
+
+  tailscale:
+    image: tailscale/tailscale:latest
+    restart: unless-stopped
+    hostname: my-service
+    environment:
+      - TS_AUTHKEY=tskey-auth-XXXXX  # generate at https://login.tailscale.com/admin/settings/keys
+    volumes:
+      - tailscale-state:/var/lib/tailscale
+    networks:
+      - tsnet
+
+networks:
+  tsnet:
+    driver: bridge
+
+volumes:
+  tailscale-state:
+```
+
+Then:
+```bash
+docker compose up -d
+```
+
+The service is accessible at `http://my-service.&lt;tailnet-name&gt;.ts.net:PORT` from any tailnet device.
+
+### Step 3: Verify accessibility
+
+From another device on the same tailnet:
+
+```bash
+# Method A
+curl https://&lt;machine-name&gt;.&lt;tailnet-name&gt;.ts.net
+
+# Method B
+curl http://my-service.&lt;tailnet-name&gt;.ts.net:PORT
+```
+
+Or just open the URL in a browser on any tailnet device.
+
+### Step 4: Clean up (when the user wants to stop)
+
+```bash
+# Method A
+tailscale serve --https off
+
+# Method B
+docker compose down
+```
+
+## Tailscale Serve Reference
+
+| Command | What it does |
+|---|---|
+| `tailscale serve --https PORT` | Expose localhost:PORT over HTTPS on the tailnet |
+| `tailscale serve --http PORT` | Expose localhost:PORT over HTTP on the tailnet |
+| `tailscale serve --https off` | Stop serving |
+| `tailscale serve status` | Show what&#x27;s being served |
+| `tailscale funnel PORT` | Expose to the PUBLIC internet (not tailnet-only) — use with caution |
+
+**Important:** `tailscale serve` is tailnet-only (private). `tailscale funnel` is public internet exposure. Most users want `serve`, not `funnel`. Always confirm with the user before using `funnel`.
+
+## Pitfalls
+
+- **Auth key expired** — Tailscale auth keys (for Docker sidecar) expire. Generate a new one at https://login.tailscale.com/admin/settings/keys. Ephemeral keys are best for containers.
+- **Firewall blocking Tailscale** — Some corporate networks block Tailscale&#x27;s WireGuard traffic. The user may need to enable UDP 41641 outbound, or use Tailscale&#x27;s DERP relay (automatic fallback).
+- **Machine not visible on tailnet** — Run `tailscale status` to check. If the machine isn&#x27;t listed, `tailscale up` may not have completed. Re-authenticate.
+- **Port conflicts** — `tailscale serve --https 8080` serves on port 443 of the tailnet interface, not on localhost:8080. The local service stays on its original port.
+- **Docker sidecar can&#x27;t reach the app** — The sidecar and the app must be on the same Docker network. Use a custom bridge network (as in the compose example above), not the default network.
+- **Funnel vs Serve** — `tailscale funnel` exposes the service to the entire internet. `tailscale serve` only exposes it to the tailnet. Always default to `serve` unless the user explicitly asks for public access.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># tailscale-deploy
+
+Deploy a service on your Tailscale tailnet so it&#x27;s privately accessible from any of your devices.
+
+## What it does
+
+The agent deploys a web service — Docker container, local dev server, or anything running on a port — onto your Tailscale tailnet. The service becomes reachable from your laptop, phone, and any other device on your tailnet. No public internet exposure, no port forwarding, no cloud relay.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/tailscale-deploy/SKILL.md
+```
+
+## How to use
+
+**You have a local service running on port 8080 and want to access it from your phone:**
+
+```
+&quot;Deploy localhost:8080 on my tailnet&quot;
+```
+
+The agent runs `tailscale serve --https 8080` and gives you a URL like `https://my-machine.tailnet.ts.net` that opens on any tailnet device.
+
+**You want to deploy a Docker container privately:**
+
+```
+&quot;Deploy this Docker image on my tailnet so only I can access it&quot;
+```
+
+The agent generates a `docker-compose.yml` with a Tailscale sidecar, brings it up, and verifies accessibility.
+
+## Prerequisites
+
+- [Tailscale](https://tailscale.com) installed and authenticated (`tailscale up`)
+- Docker (for container deployments)
+- A Tailscale account (free for personal use, up to 100 devices)
+
+## What you get
+
+| Method | Command | Result |
+|---|---|---|
+| Direct serve | `tailscale serve --https 8080` | HTTPS URL on your tailnet for an existing local service |
+| Docker sidecar | `docker compose up -d` with Tailscale sidecar | Private Docker service accessible by hostname on your tailnet |
+
+Both methods keep the service private to your tailnet. No public exposure unless you explicitly use `tailscale funnel`.
+
+## Example
+
+```
+User: &quot;I have a Flask app running on localhost:5000. I want to check it from my phone.&quot;
+
+Agent:
+  1. Verifies tailscale status → connected, machine is &quot;laptop&quot;
+  2. Runs: tailscale serve --https 5000
+  3. Returns: &quot;Your app is now at https://laptop.tailnet.ts.net — open it on your phone.&quot;
+
+User opens the URL on their phone (which is on the same tailnet) → the Flask app loads.
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/tailscale-deploy/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

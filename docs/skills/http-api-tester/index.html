@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>http-api-tester — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent makes HTTP requests to your API endpoints, checks the response status and body, and reports pass/fail with timing. Supports GET, POST, PUT, DELETE with auth headers, JSON bodies, and batch test suites. Useful for quick debugging, post-deploy verification, and API smoke...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/http-api-tester/">
+  <meta property="og:title" content="http-api-tester — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent makes HTTP requests to your API endpoints, checks the response status and body, and reports pass/fail with timing. Supports GET, POST, PUT, DELETE with auth headers, JSON bodies, and batch test suites. Useful for quick debugging, post-deploy verification, and API smoke...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/http-api-tester/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="http-api-tester — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent makes HTTP requests to your API endpoints, checks the response status and body, and reports pass/fail with timing. Supports GET, POST, PUT, DELETE with auth headers, JSON bodies, and batch test suites. Useful for quick debugging, post-deploy verification, and API smoke...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>http-api-tester</h1>
+          <p class="tagline">Test HTTP APIs from the command line without Postman.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Backend</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent makes HTTP requests to your API endpoints, checks the response status and body, and reports pass/fail with timing. Supports GET, POST, PUT, DELETE with auth headers, JSON bodies, and batch test suites. Useful for quick debugging, post-deploy verification, and API smoke testing.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants to test an API endpoint quickly.</li><li>The user is debugging an API and needs to make requests.</li><li>The user wants to verify an API is working after deployment.</li><li>The user says &quot;test this API&quot;, &quot;check this endpoint&quot;, or &quot;is my API working&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can test http apis from the command line without postman. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/http-api-tester/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/http-api-tester/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: http-api-tester
+description: &quot;Test HTTP APIs from the command line — agent + this skill = user gets quick API verification without Postman.&quot;
+version: 1.0.0
+---
+
+# http-api-tester
+
+Test HTTP APIs quickly from the command line or Python. The agent makes requests, checks responses, and reports results — no Postman or GUI needed.
+
+## When to Use
+
+- The user wants to test an API endpoint quickly.
+- The user is debugging an API and needs to make requests.
+- The user wants to verify an API is working after deployment.
+- The user says &quot;test this API&quot;, &quot;check this endpoint&quot;, or &quot;is my API working&quot;.
+
+## Quick Tests with curl
+
+```bash
+# GET request
+curl -s -w &quot;\n%{http_code}&quot; https://api.example.com/users
+
+# GET with headers
+curl -s -H &quot;Authorization: Bearer TOKEN&quot; https://api.example.com/users
+
+# POST with JSON body
+curl -s -X POST https://api.example.com/users \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#x27;{&quot;name&quot;: &quot;Test User&quot;, &quot;email&quot;: &quot;test@example.com&quot;}&#x27;
+
+# Check response time
+curl -s -o /dev/null -w &quot;%{time_total}s&quot; https://api.example.com/users
+
+# Check status code only
+curl -s -o /dev/null -w &quot;%{http_code}&quot; https://api.example.com/health
+```
+
+## Python Testing
+
+```python
+import requests
+import json
+from datetime import datetime
+
+def test_endpoint(method, url, headers=None, body=None, expected_status=200):
+    &quot;&quot;&quot;Test an API endpoint and return a structured result.&quot;&quot;&quot;
+    start = datetime.now()
+    try:
+        resp = requests.request(
+            method, url,
+            headers=headers or {},
+            json=body if body else None,
+            timeout=30
+        )
+        elapsed = (datetime.now() - start).total_seconds()
+
+        result = {
+            &quot;url&quot;: url,
+            &quot;method&quot;: method,
+            &quot;status&quot;: resp.status_code,
+            &quot;expected&quot;: expected_status,
+            &quot;passed&quot;: resp.status_code == expected_status,
+            &quot;time_ms&quot;: round(elapsed * 1000, 2),
+            &quot;headers&quot;: dict(resp.headers),
+        }
+
+        # Parse response body
+        try:
+            result[&quot;body&quot;] = resp.json()
+        except:
+            result[&quot;body&quot;] = resp.text[:500]
+
+        return result
+    except requests.exceptions.RequestException as e:
+        return {
+            &quot;url&quot;: url,
+            &quot;method&quot;: method,
+            &quot;error&quot;: str(e),
+            &quot;passed&quot;: False
+        }
+```
+
+## Batch Testing
+
+```python
+def run_test_suite(tests: list) -&gt; list:
+    &quot;&quot;&quot;Run a suite of API tests.&quot;&quot;&quot;
+    results = []
+    for test in tests:
+        result = test_endpoint(
+            method=test.get(&quot;method&quot;, &quot;GET&quot;),
+            url=test[&quot;url&quot;],
+            headers=test.get(&quot;headers&quot;),
+            body=test.get(&quot;body&quot;),
+            expected_status=test.get(&quot;expected_status&quot;, 200)
+        )
+        result[&quot;name&quot;] = test.get(&quot;name&quot;, test[&quot;url&quot;])
+        results.append(result)
+    return results
+
+# Example test suite
+tests = [
+    {&quot;name&quot;: &quot;Health check&quot;, &quot;url&quot;: &quot;https://api.example.com/health&quot;, &quot;expected_status&quot;: 200},
+    {&quot;name&quot;: &quot;Get users&quot;, &quot;url&quot;: &quot;https://api.example.com/users&quot;, &quot;expected_status&quot;: 200},
+    {&quot;name&quot;: &quot;Create user&quot;, &quot;method&quot;: &quot;POST&quot;, &quot;url&quot;: &quot;https://api.example.com/users&quot;,
+     &quot;body&quot;: {&quot;name&quot;: &quot;Test&quot;}, &quot;expected_status&quot;: 201},
+    {&quot;name&quot;: &quot;Unauthorized&quot;, &quot;url&quot;: &quot;https://api.example.com/admin&quot;, &quot;expected_status&quot;: 401},
+]
+
+results = run_test_suite(tests)
+for r in results:
+    status = &quot;PASS&quot; if r[&quot;passed&quot;] else &quot;FAIL&quot;
+    print(f&quot;{status}: {r[&#x27;name&#x27;]} — {r.get(&#x27;status&#x27;, &#x27;error&#x27;)}&quot;)
+```
+
+## Authentication Helpers
+
+```python
+def with_auth(token: str) -&gt; dict:
+    &quot;&quot;&quot;Generate Authorization header for Bearer token.&quot;&quot;&quot;
+    return {&quot;Authorization&quot;: f&quot;Bearer {token}&quot;}
+
+def with_basic_auth(user: str, password: str) -&gt; dict:
+    &quot;&quot;&quot;Generate Basic auth header.&quot;&quot;&quot;
+    import base64
+    cred = base64.b64encode(f&quot;{user}:{password}&quot;.encode()).decode()
+    return {&quot;Authorization&quot;: f&quot;Basic {cred}&quot;}
+
+def with_api_key(key: str, header: str = &quot;X-API-Key&quot;) -&gt; dict:
+    &quot;&quot;&quot;Generate API key header.&quot;&quot;&quot;
+    return {header: key}
+```
+
+## Response Inspection
+
+```python
+def inspect_response(url: str, method: str = &quot;GET&quot;, headers=None):
+    &quot;&quot;&quot;Detailed response inspection.&quot;&quot;&quot;
+    resp = requests.request(method, url, headers=headers or {}, timeout=30)
+
+    print(f&quot;Status: {resp.status_code} {resp.reason}&quot;)
+    print(f&quot;Time: {resp.elapsed.total_seconds() * 1000:.0f}ms&quot;)
+    print(f&quot;Content-Type: {resp.headers.get(&#x27;content-type&#x27;, &#x27;unknown&#x27;)}&quot;)
+    print(f&quot;Content-Length: {len(resp.content)} bytes&quot;)
+    print(f&quot;\nHeaders:&quot;)
+    for k, v in resp.headers.items():
+        print(f&quot;  {k}: {v}&quot;)
+
+    try:
+        json_body = resp.json()
+        print(f&quot;\nBody (JSON):&quot;)
+        print(json.dumps(json_body, indent=2)[:1000])
+    except:
+        print(f&quot;\nBody (text):&quot;)
+        print(resp.text[:500])
+```
+
+## Workflow
+
+1. Identify the endpoint to test
+2. Choose method (GET, POST, PUT, DELETE)
+3. Add auth headers if needed
+4. Make the request
+5. Check status code and response body
+6. Report pass/fail with timing
+
+## Pitfalls
+
+- **HTTPS certificate errors** — Self-signed certs fail by default. Use `verify=False` for testing (not production): `requests.get(url, verify=False)`.
+- **Timeout** — Default timeout is 30s. For slow APIs, increase it. For health checks, use 5s so you know quickly if something is wrong.
+- **Rate limiting** — Rapid requests may hit rate limits. Add `time.sleep(1)` between requests if testing the same endpoint repeatedly.
+- **Response parsing** — Not all APIs return JSON. Check `content-type` header before calling `.json()`. Fall back to `.text` for non-JSON responses.
+- **Following redirects** — `requests` follows redirects by default. Use `allow_redirects=False` if you want to see the 3xx response itself.
+- **Sensitive headers** — Don&#x27;t log auth headers in test output. Strip them before printing or storing results.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># http-api-tester
+
+Test HTTP APIs from the command line — quick verification without Postman or a GUI.
+
+## What it does
+
+The agent makes HTTP requests to your API endpoints, checks the response status and body, and reports pass/fail with timing. Supports GET, POST, PUT, DELETE with auth headers, JSON bodies, and batch test suites. Useful for quick debugging, post-deploy verification, and API smoke testing.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/http-api-tester/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Test my API at https://api.example.com/health&quot;
+```
+
+The agent:
+1. Makes a GET request to the endpoint
+2. Checks the status code
+3. Reports: status, response time, body
+
+## Example
+
+```
+User: &quot;Run a smoke test on my API after deploy&quot;
+
+Agent runs a test suite:
+  PASS: Health check — 200 (45ms)
+  PASS: Get users — 200 (120ms)
+  PASS: Create user — 201 (89ms)
+  PASS: Unauthorized — 401 (12ms)
+
+  4/4 passed. API is healthy.
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/http-api-tester/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

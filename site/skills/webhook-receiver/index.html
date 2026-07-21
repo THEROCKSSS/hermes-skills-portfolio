@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>webhook-receiver — Hermes Skill</title>
+  <meta name="description" content="What it does: Set up a webhook endpoint that receives and processes incoming webhooks with signature verification. How the agent uses it: Use this skill when:
+An external provider (payments, git host, CI, SaaS) needs to **push** events to
+  you via an HTTPS callback instead of you polling their...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/webhook-receiver/">
+  <meta property="og:title" content="webhook-receiver — Hermes Skill">
+  <meta property="og:description" content="What it does: Set up a webhook endpoint that receives and processes incoming webhooks with signature verification. How the agent uses it: Use this skill when:
+An external provider (payments, git host, CI, SaaS) needs to **push** events to
+  you via an HTTPS callback instead of you polling their...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/webhook-receiver/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="webhook-receiver — Hermes Skill">
+  <meta name="twitter:description" content="What it does: Set up a webhook endpoint that receives and processes incoming webhooks with signature verification. How the agent uses it: Use this skill when:
+An external provider (payments, git host, CI, SaaS) needs to **push** events to
+  you via an HTTPS callback instead of you polling their...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>webhook-receiver</h1>
+          <p class="tagline">Set up a webhook endpoint that receives and processes incoming webhooks with signature verification.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge featured">Featured</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Backend</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Highly useful within a category</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>Set up a webhook endpoint that receives and processes incoming webhooks with signature verification.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <p>Use this skill when:</p>
+<ul><li>An external provider (payments, git host, CI, SaaS) needs to **push** events to</li></ul>
+<p>you via an HTTPS callback instead of you polling their API.</p>
+<ul><li>You need to react to events in (near) real time: `payment.succeeded`,</li></ul>
+<p>`push.created`, `issue.opened`, `order.fulfilled`, etc.</p>
+<ul><li>You want a single, auditable receive → verify → process → respond pipeline.</li><li>The integration must be replay-safe (a retried delivery must not double-fire a</li></ul>
+<p>side effect).</p>
+<p>Do **not** use this skill for: outbound API calls (that&#x27;s a normal HTTP client),</p>
+<p>long-polling/streaming consumers (use the provider&#x27;s SDK), or receiving files</p>
+<p>larger than a few MB (use signed upload URLs instead).</p>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can set up a webhook endpoint that receives and processes incoming webhooks with signature verification. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/webhook-receiver/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/webhook-receiver/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: webhook-receiver
+description: Build, deploy, and secure an HTTP webhook endpoint that receives and processes inbound webhooks from external services (Stripe, GitHub, Slack, Shopify, CI, etc.). Covers endpoint creation, HMAC signature verification, payload handling, idempotency, and response contracts.
+version: 1.0.0
+---
+
+# webhook-receiver
+
+Turn any Hermes-managed host into a trustworthy webhook ingestion point. This
+skill gives you a production-ready pattern for receiving HTTP POSTs from external
+services, verifying they really came from the sender, parsing the payload safely,
+and returning the status code the sender expects — without dropping events under
+load or leaking secrets in logs.
+
+## When to Use
+
+Use this skill when:
+
+- An external provider (payments, git host, CI, SaaS) needs to **push** events to
+  you via an HTTPS callback instead of you polling their API.
+- You need to react to events in (near) real time: `payment.succeeded`,
+  `push.created`, `issue.opened`, `order.fulfilled`, etc.
+- You want a single, auditable receive → verify → process → respond pipeline.
+- The integration must be replay-safe (a retried delivery must not double-fire a
+  side effect).
+
+Do **not** use this skill for: outbound API calls (that&#x27;s a normal HTTP client),
+long-polling/streaming consumers (use the provider&#x27;s SDK), or receiving files
+larger than a few MB (use signed upload URLs instead).
+
+## Architecture
+
+```
+   External Sender                Your Endpoint                    Your System
+┌──────────────┐   HTTPS POST   ┌──────────────────┐   enqueue/    ┌──────────────┐
+│ Stripe/GitHub│ ─────────────▶ │  /webhooks/&lt;src&gt; │ ───────────▶ │  handler /
+│  (signs body)│  body + HMAC   │  1. verify sig   │   async job   │  DB / action │
+└──────────────┘  header        │  2. parse JSON    │               └──────────────┘
+                               │  3. idempotent   │
+                               │  4. respond 2xx  │
+                               └──────────────────┘
+```
+
+Core principles:
+
+- **Verify before you trust.** Reject any request whose signature does not match
+  before parsing or acting on the body.
+- **Return fast.** Do the minimum in the request thread (verify + enqueue), then
+  process asynchronously. A slow handler makes the sender retry and floods you.
+- **Be idempotent.** Senders often retry. Use the event ID + a dedup store so a
+  redelivered event runs its side effect at most once.
+- **Separate routes per source.** `/webhooks/stripe`, `/webhooks/github` — each
+  source has its own secret and verification scheme.
+
+## Workflow
+
+### 1. Create the endpoint
+
+Expose a single POST route per source behind TLS. Keep it thin:
+
+```python
+from flask import Flask, request, abort
+import hmac, hashlib, json
+
+app = Flask(__name__)
+
+@app.post(&quot;/webhooks/stripe&quot;)
+def stripe_webhook():
+    payload = request.get_data()          # raw bytes — needed for HMAC
+    sig = request.headers.get(&quot;Stripe-Signature&quot;, &quot;&quot;)
+    if not verify_stripe(payload, sig):
+        abort(400)
+    event = json.loads(payload)
+    handle_event(event)                   # enqueue, don&#x27;t block
+    return &quot;&quot;, 200
+```
+
+### 2. Validate signatures
+
+Never act on an unverified body. Compute HMAC-SHA256 over the **raw** bytes with
+your shared secret and compare against the sender&#x27;s header using a constant-time
+compare. See [Signature Verification](#signature-verification).
+
+### 3. Process the payload
+
+- Parse defensively: wrap `json.loads` in try/except; reject non-JSON with 400.
+- Extract the event type and a stable event ID.
+- Check the dedup store; if already processed, return 200 immediately.
+- Otherwise enqueue for async processing and record the event ID.
+
+```python
+def handle_event(event):
+    event_id = event.get(&quot;id&quot;)
+    if event_id and seen(event_id):
+        return
+    queue.put(event)                      # e.g. Redis/RQ, SQS, a worker
+    mark_seen(event_id)
+```
+
+### 4. Respond
+
+Send the smallest correct response:
+
+- **200 / 204** — accepted. Sender stops retrying.
+- **400** — malformed or bad signature. (Most senders will not retry 4xx.)
+- **500** — only on genuine internal failure; senders will retry.
+- Keep the body empty or a tiny JSON ack. Do not echo the payload back.
+- Target a p95 response under ~1s; offload heavy work to the worker.
+
+## Signature Verification
+
+Senders use HMAC. The exact header/algorithm varies by provider:
+
+| Provider  | Header                | Scheme                                              |
+|-----------|-----------------------|----------------------------------------------------|
+| Stripe    | `Stripe-Signature`    | `t=&lt;ts&gt;,v1=&lt;HMAC-SHA256(raw, secret)&gt;`             |
+| GitHub    | `X-Hub-Signature-256` | `sha256=&lt;HMAC-SHA256(raw, secret)&gt;`                |
+| Slack     | `X-Slack-Signature`   | `v0=&lt;HMAC-SHA256(&quot;v0:&quot;+ts+&quot;:&quot;+raw, secret)&gt;`       |
+
+Generic verifier:
+
+```python
+def constant_time_equal(a, b):
+    return hmac.compare_digest(a, b)
+
+def verify(payload: bytes, header_sig: str, secret: str, prefix: str = &quot;sha256=&quot;):
+    expected = hmac.new(secret.encode(), payload, hashlib.sha256).hexdigest()
+    provided = header_sig[len(prefix):] if header_sig.startswith(prefix) else header_sig
+    return constant_time_equal(expected, provided)
+```
+
+Rules:
+- Use `hmac.compare_digest`, never `==` (avoids timing leaks).
+- Verify over **raw bytes**, not the re-serialized JSON (whitespace/key order
+  changes the digest).
+- For timestamped schemes (Stripe, Slack), reject if `|now - ts| &gt; 300s` to
+  prevent replay attacks.
+- Store the secret in an env var / secret manager. Never in source control.
+
+## Payload Handling
+
+- **Define a schema.** Map known event types to handlers; ignore unknown types
+  with 200 (senders add new types without warning).
+- **Validate shape, not just presence.** Use a lightweight validator (pydantic,
+  jsonschema) so a malformed event fails loudly rather than crashing mid-flight.
+- **Don&#x27;t trust types.** A `price` field could arrive as string; coerce
+  explicitly.
+- **Log minimally.** Record `event_id`, `type`, and `source` — never the full
+  body or headers (they may contain PII or secrets).
+- **Backpressure.** If the queue is full, return 503 so the sender retries later
+  instead of losing the event.
+
+## Error Handling
+
+- **Bad signature / malformed JSON** → 400, no retry expected. Log as security
+  event.
+- **Unknown event type** → 200, drop silently (or to a dead-letter log).
+- **Transient processing failure** → raise so the worker retries with backoff.
+  Keep the HTTP layer returning 200 once the event is durably enqueued.
+- **Duplicate delivery** → detected via dedup store, return 200, no side effect.
+- **Dead letters.** After N retries, move to a DLQ for human inspection rather
+  than dropping.
+- Never let an unhandled exception bubble into a 500 for a *verified* event that
+  you already accepted — that triggers wasteful redelivery.
+
+## Pitfalls
+
+- **Verifying the wrong bytes.** Re-serializing JSON before HMAC is the #1 bug.
+  Always digest `request.get_data()`.
+- **Using `==` for signatures.** Timing attacks are real; use `compare_digest`.
+- **Blocking in the request handler.** Slow work → sender timeout → retry storm.
+  Enqueue and return.
+- **Non-idempotent handlers.** Retries double-charge or double-post. Always
+  dedup on event ID.
+- **Secret in git / logs.** Rotate immediately if leaked; use a secret manager.
+- **Ignoring replay windows.** Without timestamp checks, an old captured request
+  can be replayed later. Enforce `|now - ts|` limits.
+- **Returning 500 for ignorable events.** Unknown types should be 200, not errors.
+- **No HTTPS / no source routing.** Plaintext + one shared route makes rotation
+  and auditing impossible.
+- **Accepting huge bodies.** Cap `Content-Length` (e.g. 1–5 MB) before reading.
+
+## Verification Checklist
+
+- [ ] Endpoint is HTTPS-only and returns 200 for a valid signed test event.
+- [ ] Invalid signature returns 400 and is logged as a security event.
+- [ ] Same event ID delivered twice runs the side effect once.
+- [ ] Response time &lt; 1s even when processing is slow (offloaded to worker).
+- [ ] Secret is in a secret manager, absent from source and logs.
+- [ ] Replay with a stale timestamp is rejected.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># webhook-receiver
+
+A public Hermes skill for building **secure, reliable inbound webhook endpoints**.
+
+Receive events from Stripe, GitHub, Slack, Shopify, CI systems, and any other
+provider that pushes via HTTPS — verify they really came from the sender, process
+them safely, and respond with the exact status code the sender expects.
+
+&gt; Agent + skill = a working webhook endpoint, not a tutorial.
+
+## Why this exists
+
+Most webhook integrations break in the same three places: the signature check is
+wrong, retries cause double-processing, or a slow handler triggers a retry
+storm. `webhook-receiver` encodes the verify → parse → dedupe → enqueue →
+respond pipeline that fixes all three by default.
+
+## What you get
+
+- **Thin, TLS-only endpoints** — one POST route per source, returning in &lt;1s.
+- **HMAC signature verification** — constant-time compare over raw bytes, with
+  per-provider header schemes (Stripe, GitHub, Slack) and replay-window checks.
+- **Idempotent processing** — dedup on event ID so retried deliveries never
+  double-fire a side effect.
+- **Safe payload handling** — schema validation, minimal logging (no PII/secrets
+  in logs), and backpressure via 503.
+- **Clear error contract** — 200 accept, 400 reject, 500 retry; unknown event
+  types dropped cleanly.
+
+## Install
+
+Point Hermes at the skill manifest:
+
+```
+https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/webhook-receiver/SKILL.md
+```
+
+Or clone the portfolio and load `skills/webhook-receiver` locally.
+
+## Quick start
+
+```python
+import hmac, hashlib, json
+from flask import Flask, request, abort
+
+app = Flask(__name__)
+SECRET = &quot;your-secret-from-secret-manager&quot;   # never hardcode
+
+@app.post(&quot;/webhooks/stripe&quot;)
+def stripe_webhook():
+    payload = request.get_data()             # raw bytes for HMAC
+    sig = request.headers.get(&quot;Stripe-Signature&quot;, &quot;&quot;)
+    expected = hmac.new(SECRET.encode(), payload, hashlib.sha256).hexdigest()
+    if not hmac.compare_digest(expected, sig.split(&quot;v1=&quot;)[-1]):
+        abort(400)                           # verify before trust
+    event = json.loads(payload)
+    handle_event(event)                      # enqueue, don&#x27;t block
+    return &quot;&quot;, 200
+```
+
+See `SKILL.md` for the full workflow, signature tables, dedup patterns, and the
+verification checklist.
+
+## Author
+
+Part of the public [Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
+by **Owen**.
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/webhook-receiver/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

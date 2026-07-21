@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>discord-bot-build — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent creates a Discord bot using discord.js — sets up the project, registers slash commands, implements event handlers, and adds moderation commands (kick, ban, mute, purge). The bot connects to your server and responds to commands in real time. How the agent uses it: The user...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/discord-bot-build/">
+  <meta property="og:title" content="discord-bot-build — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent creates a Discord bot using discord.js — sets up the project, registers slash commands, implements event handlers, and adds moderation commands (kick, ban, mute, purge). The bot connects to your server and responds to commands in real time. How the agent uses it: The user...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/discord-bot-build/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="discord-bot-build — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent creates a Discord bot using discord.js — sets up the project, registers slash commands, implements event handlers, and adds moderation commands (kick, ban, mute, purge). The bot connects to your server and responds to commands in real time. How the agent uses it: The user...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>discord-bot-build</h1>
+          <p class="tagline">Build a working Discord bot with slash commands, events, and moderation.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge featured">Featured</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Integrations</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Highly useful within a category</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent creates a Discord bot using discord.js — sets up the project, registers slash commands, implements event handlers, and adds moderation commands (kick, ban, mute, purge). The bot connects to your server and responds to commands in real time.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants a Discord bot for their server.</li><li>The user wants to automate moderation, send announcements, or add custom commands.</li><li>The user says &quot;build a Discord bot&quot;, &quot;make a bot for my server&quot;, or &quot;I need a Discord mod bot&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can build a working discord bot with slash commands, events, and moderation. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/discord-bot-build/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/discord-bot-build/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: discord-bot-build
+description: &quot;Build a working Discord bot with slash commands, events, and moderation — agent + this skill = user gets a bot running in their server.&quot;
+version: 1.0.0
+---
+
+# discord-bot-build
+
+Build a Discord bot with slash commands, event handlers, and moderation capabilities using discord.js. The bot runs as a Node.js process and connects to Discord via the Gateway.
+
+## When to Use
+
+- The user wants a Discord bot for their server.
+- The user wants to automate moderation, send announcements, or add custom commands.
+- The user says &quot;build a Discord bot&quot;, &quot;make a bot for my server&quot;, or &quot;I need a Discord mod bot&quot;.
+
+## Prerequisites
+
+1. **Node.js 18+** — check with `node --version`
+2. **A Discord bot token** — create a bot at https://discord.com/developers/applications
+3. **Privileged Gateway Intents** — enable in the Developer Portal:
+   - Presence Intent (if you need online/offline tracking)
+   - Server Members Intent (if you need member lists)
+   - Message Content Intent (required for reading message text)
+
+## Bot Setup
+
+### Step 1: Create the application
+
+1. Go to https://discord.com/developers/applications
+2. Click &quot;New Application&quot; → name it → go to the &quot;Bot&quot; tab
+3. Click &quot;Add Bot&quot; → copy the **token** (keep it secret)
+4. Under &quot;Privileged Gateway Intents&quot;, enable Message Content Intent
+5. Under &quot;OAuth2 → URL Generator&quot;, select `bot` + `applications.commands` scopes and the permissions you need
+6. Open the generated URL to invite the bot to your server
+
+### Step 2: Initialize the project
+
+```bash
+mkdir my-bot &amp;&amp; cd my-bot
+npm init -y
+npm install discord.js dotenv
+```
+
+### Step 3: Create the bot file
+
+```javascript
+// index.js
+const { Client, GatewayIntentBits, SlashCommandBuilder, Events } = require(&#x27;discord.js&#x27;);
+require(&#x27;dotenv&#x27;).config();
+
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMembers,
+    ],
+});
+
+client.once(Events.ClientReady, c =&gt; {
+    console.log(`Logged in as ${c.user.tag}`);
+});
+
+// Register slash commands
+client.on(Events.InteractionCreate, async interaction =&gt; {
+    if (!interaction.isChatInputCommand()) return;
+
+    if (interaction.commandName === &#x27;ping&#x27;) {
+        await interaction.reply(&#x27;Pong!&#x27;);
+    }
+
+    if (interaction.commandName === &#x27;kick&#x27;) {
+        const target = interaction.options.getUser(&#x27;user&#x27;);
+        const reason = interaction.options.getString(&#x27;reason&#x27;) ?? &#x27;No reason provided&#x27;;
+        if (!interaction.memberPermissions.has(&#x27;KickMembers&#x27;)) {
+            await interaction.reply(&#x27;You do not have permission to kick members.&#x27;);
+            return;
+        }
+        try {
+            await interaction.guild.members.kick(target, reason);
+            await interaction.reply(`Kicked ${target.tag} for: ${reason}`);
+        } catch (error) {
+            await interaction.reply(`Failed to kick: ${error.message}`);
+        }
+    }
+});
+
+client.login(process.env.DISCORD_TOKEN);
+```
+
+### Step 4: Create .env
+
+```
+DISCORD_TOKEN=your_bot_token_here
+```
+
+### Step 5: Register slash commands
+
+```javascript
+// deploy-commands.js
+const { REST, Routes, SlashCommandBuilder } = require(&#x27;discord.js&#x27;);
+require(&#x27;dotenv&#x27;).config();
+
+const commands = [
+    new SlashCommandBuilder()
+        .setName(&#x27;ping&#x27;)
+        .setDescription(&#x27;Replies with pong&#x27;),
+    new SlashCommandBuilder()
+        .setName(&#x27;kick&#x27;)
+        .setDescription(&#x27;Kick a member&#x27;)
+        .addUserOption(opt =&gt; opt.setName(&#x27;user&#x27;).setDescription(&#x27;The user to kick&#x27;).setRequired(true))
+        .addStringOption(opt =&gt; opt.setName(&#x27;reason&#x27;).setDescription(&#x27;Reason for kicking&#x27;)),
+].map(cmd =&gt; cmd.toJSON());
+
+const rest = new REST().setToken(process.env.DISCORD_TOKEN);
+
+(async () =&gt; {
+    try {
+        await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: commands });
+        console.log(&#x27;Slash commands registered.&#x27;);
+    } catch (error) {
+        console.error(error);
+    }
+})();
+```
+
+Run once: `node deploy-commands.js`
+
+### Step 6: Start the bot
+
+```bash
+node index.js
+```
+
+## Command Registration
+
+Commands must be registered before they appear in Discord. Two scopes:
+
+| Scope | Where it appears | Registration |
+|---|---|---|
+| Global | All servers the bot is in | Up to 1 hour to propagate |
+| Guild | One specific server | Instant |
+
+For development, use guild commands (instant). For production, use global commands.
+
+```javascript
+// Guild command (instant, for testing)
+await rest.put(
+    Routes.applicationGuildCommands(clientId, guildId),
+    { body: commands }
+);
+
+// Global command (production, up to 1hr delay)
+await rest.put(
+    Routes.applicationCommands(clientId),
+    { body: commands }
+);
+```
+
+## Event Handling
+
+```javascript
+// Member joined
+client.on(Events.GuildMemberAdd, member =&gt; {
+    const channel = member.guild.systemChannel;
+    if (channel) channel.send(`Welcome ${member} to the server!`);
+});
+
+// Message deleted
+client.on(Events.MessageDelete, message =&gt; {
+    console.log(`Message deleted in #${message.channel.name}: ${message.content}`);
+});
+
+// Reaction added
+client.on(Events.MessageReactionAdd, (reaction, user) =&gt; {
+    if (reaction.emoji.name === &#x27;📌&#x27;) {
+        // Pin the message
+        reaction.message.pin();
+    }
+});
+```
+
+## Moderation Commands
+
+| Command | What it does | Required permission |
+|---|---|---|
+| `/kick @user [reason]` | Remove a member | KickMembers |
+| `/ban @user [reason]` | Ban a member | BanMembers |
+| `/mute @user [duration]` | Timeout a member | ModerateMembers |
+| `/purge &lt;count&gt;` | Delete recent messages | ManageMessages |
+| `/warn @user &lt;reason&gt;` | Issue a warning | ModerateMembers |
+
+## Keeping the Bot Running
+
+**With PM2 (recommended):**
+```bash
+npm install -g pm2
+pm2 start index.js --name my-bot
+pm2 save
+pm2 startup  # auto-restart on reboot
+```
+
+**With Docker:**
+```dockerfile
+FROM node:20-slim
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --production
+COPY . .
+CMD [&quot;node&quot;, &quot;index.js&quot;]
+```
+
+## Pitfalls
+
+- **Message Content Intent not enabled** — The bot can&#x27;t read message text without this. Enable it in the Developer Portal under &quot;Privileged Gateway Intents&quot;. Without it, `message.content` is always empty.
+- **Token in public code** — Never commit the `.env` file. Add it to `.gitignore`. If the token leaks, regenerate it immediately in the Developer Portal.
+- **Commands not appearing** — Global commands take up to 1 hour to propagate. Use guild commands for testing (instant). Run `deploy-commands.js` after adding new commands.
+- **Bot can&#x27;t kick/ban** — The bot&#x27;s role must be higher in the role hierarchy than the target user&#x27;s role. Also check that the bot has Kick/Ban permissions in the server settings.
+- **Rate limits** — Discord enforces rate limits on API calls. Bulk operations (mass ban, mass delete) should use `bulkDelete` and respect rate limits. The library handles rate limits automatically, but pushing too hard will still cause delays.
+- **No error handling on commands** — Always wrap command logic in try/catch. An unhandled error crashes the bot. Reply with the error message so the user knows what went wrong.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># discord-bot-build
+
+Build a working Discord bot with slash commands, event handlers, and moderation tools.
+
+## What it does
+
+The agent creates a Discord bot using discord.js — sets up the project, registers slash commands, implements event handlers, and adds moderation commands (kick, ban, mute, purge). The bot connects to your server and responds to commands in real time.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/discord-bot-build/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Build a Discord bot for my server with kick, ban, and a ping command&quot;
+```
+
+The agent:
+1. Initializes a Node.js project with discord.js
+2. Creates the bot file with slash commands and event handlers
+3. Creates the command deployment script
+4. Shows you how to invite the bot and start it
+
+## Prerequisites
+
+- Node.js 18+
+- A Discord bot token from https://discord.com/developers/applications
+- Message Content Intent enabled in the Developer Portal
+
+## Example
+
+```
+User: &quot;I need a Discord bot that welcomes new members and has a /purge command&quot;
+
+Agent:
+  1. npm init + npm install discord.js dotenv
+  2. Creates index.js:
+     - GuildMemberAdd event → sends welcome message
+     - /purge command → deletes N messages (requires ManageMessages)
+  3. Creates deploy-commands.js
+  4. Returns: &quot;Run `node deploy-commands.js` to register commands, then `node index.js` to start the bot.&quot;
+```
+
+## Commands included
+
+| Command | Action | Permission |
+|---|---|---|
+| `/ping` | Replies &quot;Pong!&quot; | None |
+| `/kick @user [reason]` | Kicks a member | KickMembers |
+| `/ban @user [reason]` | Bans a member | BanMembers |
+| `/purge &lt;count&gt;` | Deletes recent messages | ManageMessages |
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/discord-bot-build/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

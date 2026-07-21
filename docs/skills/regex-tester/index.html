@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>regex-tester — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent tests regex patterns against sample text and shows exactly what matches (with positions, groups, and highlighted output). Can also build patterns from natural language descriptions, explain what a pattern does component-by-component, and replace text using regex. How the...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/regex-tester/">
+  <meta property="og:title" content="regex-tester — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent tests regex patterns against sample text and shows exactly what matches (with positions, groups, and highlighted output). Can also build patterns from natural language descriptions, explain what a pattern does component-by-component, and replace text using regex. How the...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/regex-tester/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="regex-tester — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent tests regex patterns against sample text and shows exactly what matches (with positions, groups, and highlighted output). Can also build patterns from natural language descriptions, explain what a pattern does component-by-component, and replace text using regex. How the...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>regex-tester</h1>
+          <p class="tagline">Test and debug regular expressions with match highlighting.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent tests regex patterns against sample text and shows exactly what matches (with positions, groups, and highlighted output). Can also build patterns from natural language descriptions, explain what a pattern does component-by-component, and replace text using regex.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants to test a regex pattern against text.</li><li>The user needs help writing a regex for a specific pattern.</li><li>The user has a regex that isn&#x27;t matching correctly.</li><li>The user says &quot;test this regex&quot;, &quot;write a regex for&quot;, or &quot;why isn&#x27;t my regex working&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can test and debug regular expressions with match highlighting. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/regex-tester/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/regex-tester/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: regex-tester
+description: &quot;Test and debug regular expressions — agent + this skill = user gets a working regex with match results.&quot;
+version: 1.0.0
+---
+
+# regex-tester
+
+Test, debug, and build regular expressions. The agent creates regex patterns from descriptions, tests them against sample text, explains what they match, and helps fix patterns that don&#x27;t work as expected.
+
+## When to Use
+
+- The user wants to test a regex pattern against text.
+- The user needs help writing a regex for a specific pattern.
+- The user has a regex that isn&#x27;t matching correctly.
+- The user says &quot;test this regex&quot;, &quot;write a regex for&quot;, or &quot;why isn&#x27;t my regex working&quot;.
+
+## Test a Regex
+
+```python
+import re
+
+def test_regex(pattern: str, text: str, flags: list = None) -&gt; dict:
+    &quot;&quot;&quot;Test a regex pattern against text and return detailed results.&quot;&quot;&quot;
+    flag = 0
+    if flags:
+        if &#x27;i&#x27; in flags: flag |= re.IGNORECASE
+        if &#x27;m&#x27; in flags: flag |= re.MULTILINE
+        if &#x27;s&#x27; in flags: flag |= re.DOTALL
+        if &#x27;x&#x27; in flags: flag |= re.VERBOSE
+
+    try:
+        compiled = re.compile(pattern, flag)
+    except re.error as e:
+        return {&quot;valid&quot;: False, &quot;error&quot;: str(e), &quot;pattern&quot;: pattern}
+
+    matches = list(compiled.finditer(text))
+
+    return {
+        &quot;valid&quot;: True,
+        &quot;pattern&quot;: pattern,
+        &quot;match_count&quot;: len(matches),
+        &quot;matches&quot;: [
+            {
+                &quot;match&quot;: m.group(0),
+                &quot;start&quot;: m.start(),
+                &quot;end&quot;: m.end(),
+                &quot;groups&quot;: m.groups(),
+                &quot;named_groups&quot;: m.groupdict(),
+            }
+            for m in matches
+        ],
+        &quot;highlighted&quot;: highlight_matches(text, matches),
+    }
+
+def highlight_matches(text: str, matches) -&gt; str:
+    &quot;&quot;&quot;Return text with matches wrapped in markers.&quot;&quot;&quot;
+    result = []
+    last_end = 0
+    for m in matches:
+        result.append(text[last_end:m.start()])
+        result.append(f&quot;[{m.group(0)}]&quot;)
+        last_end = m.end()
+    result.append(text[last_end:])
+    return &#x27;&#x27;.join(result)
+```
+
+## Common Patterns
+
+```python
+PATTERNS = {
+    &quot;email&quot;: r&quot;[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}&quot;,
+    &quot;url&quot;: r&quot;https?://[^\s&lt;&gt;&quot;&#x27;]+[^\s&lt;&gt;&quot;&#x27;.]&quot;,
+    &quot;ipv4&quot;: r&quot;\b(?:\d{1,3}\.){3}\d{1,3}\b&quot;,
+    &quot;ipv6&quot;: r&quot;(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}&quot;,
+    &quot;phone_us&quot;: r&quot;\+?1?[-.\s]?\(?(\d{3})\)?[-.\s]?(\d{3})[-.\s]?(\d{4})&quot;,
+    &quot;date_iso&quot;: r&quot;\d{4}-\d{2}-\d{2}&quot;,
+    &quot;date_us&quot;: r&quot;\d{1,2}/\d{1,2}/\d{2,4}&quot;,
+    &quot;time&quot;: r&quot;\d{1,2}:\d{2}(?::\d{2})?(?:\s?[AP]M)?&quot;,
+    &quot;uuid&quot;: r&quot;[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}&quot;,
+    &quot;hex_color&quot;: r&quot;#[0-9a-fA-F]{6}\b&quot;,
+    &quot;credit_card&quot;: r&quot;\b(?:\d[ -]*?){13,16}\b&quot;,
+    &quot;zipcode_us&quot;: r&quot;\b\d{5}(?:-\d{4})?\b&quot;,
+    &quot;semver&quot;: r&quot;\d+\.\d+\.\d+(?:-[a-zA-Z0-9.]+)?(?:\+[a-zA-Z0-9.]+)?&quot;,
+    &quot;mac_address&quot;: r&quot;([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})&quot;,
+}
+```
+
+## Build Regex from Description
+
+The agent can construct patterns from natural language descriptions:
+
+```python
+def build_regex(description: str) -&gt; str:
+    &quot;&quot;&quot;Build a regex from a natural language description.
+    This is a guide — the agent constructs the pattern based on understanding.&quot;&quot;&quot;
+    # The agent interprets the description and constructs the pattern
+    # Examples of what the agent can build:
+    examples = {
+        &quot;match email addresses&quot;: PATTERNS[&quot;email&quot;],
+        &quot;find all urls&quot;: PATTERNS[&quot;url&quot;],
+        &quot;extract dates in YYYY-MM-DD format&quot;: PATTERNS[&quot;date_iso&quot;],
+        &quot;match a phone number&quot;: PATTERNS[&quot;phone_us&quot;],
+        &quot;find hex color codes&quot;: PATTERNS[&quot;hex_color&quot;],
+        &quot;match semver versions&quot;: PATTERNS[&quot;semver&quot;],
+    }
+    return examples  # The agent selects or constructs the appropriate pattern
+```
+
+## Explain a Regex
+
+```python
+def explain_regex(pattern: str) -&gt; str:
+    &quot;&quot;&quot;Break down a regex pattern into human-readable components.&quot;&quot;&quot;
+    explanations = {
+        r&#x27;\d&#x27;: &quot;any digit (0-9)&quot;,
+        r&#x27;\w&#x27;: &quot;any word character (a-z, A-Z, 0-9, _)&quot;,
+        r&#x27;\s&#x27;: &quot;any whitespace&quot;,
+        r&#x27;.&#x27;: &quot;any character&quot;,
+        r&#x27;*&#x27;: &quot;zero or more of the preceding&quot;,
+        r&#x27;+&#x27;: &quot;one or more of the preceding&quot;,
+        r&#x27;?&#x27;: &quot;zero or one of the preceding&quot;,
+        r&#x27;{n}&#x27;: &quot;exactly n of the preceding&quot;,
+        r&#x27;{n,m}&#x27;: &quot;between n and m of the preceding&quot;,
+        r&#x27;^&#x27;: &quot;start of string/line&quot;,
+        r&#x27;$&#x27;: &quot;end of string/line&quot;,
+        r&#x27;[]&#x27;: &quot;character class&quot;,
+        r&#x27;()&#x27;: &quot;capture group&quot;,
+        r&#x27;(?:)&#x27;: &quot;non-capturing group&quot;,
+        r&#x27;(?=)&#x27;: &quot;lookahead&quot;,
+        r&#x27;(?!)&#x27;: &quot;negative lookahead&quot;,
+        r&#x27;|&#x27;: &quot;alternation (OR)&quot;,
+        r&#x27;\\&#x27;: &quot;literal backslash&quot;,
+    }
+    # The agent walks through the pattern and explains each component
+    return &quot;See pattern breakdown in the response&quot;
+```
+
+## Replace with Regex
+
+```python
+def regex_replace(pattern: str, text: str, replacement: str, count: int = 0) -&gt; str:
+    &quot;&quot;&quot;Replace matches with a replacement string.&quot;&quot;&quot;
+    return re.sub(pattern, replacement, text, count=count or 0)
+```
+
+## Workflow
+
+1. Understand what the user wants to match
+2. Either the user provides a pattern to test, or the agent builds one
+3. Test the pattern against sample text
+4. Show matches with positions and groups
+5. If no matches, debug: explain the pattern and suggest fixes
+6. Return the working pattern and match results
+
+## Pitfalls
+
+- **Greedy vs lazy** — `.*` is greedy (matches as much as possible). `.*?` is lazy (matches as little as possible). This is the most common regex bug.
+- **Anchoring** — Without `^` and `$`, the pattern matches anywhere in the string. Use anchors to match the full string.
+- **Escape special characters** — `.` in a pattern matches any character. To match a literal dot, use `\.`.
+- **Catastrophic backtracking** — Nested quantifiers like `(a+)+` can cause exponential matching time on certain inputs. Avoid nested quantifiers.
+- **Character class ranges** — `[a-z]` is lowercase only. `[A-Za-z]` includes both. `[\w]` includes digits and underscore.
+- **Unicode** — `\w` in Python 3 matches Unicode word characters by default. Use `[a-zA-Z0-9_]` for ASCII-only.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># regex-tester
+
+Test, build, and debug regular expressions — with match highlighting and pattern explanations.
+
+## What it does
+
+The agent tests regex patterns against sample text and shows exactly what matches (with positions, groups, and highlighted output). Can also build patterns from natural language descriptions, explain what a pattern does component-by-component, and replace text using regex.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/regex-tester/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Test the regex \d{3}-\d{4} against this text: Call 555-1234 or 987-6543&quot;
+```
+
+The agent:
+1. Compiles the pattern
+2. Finds all matches
+3. Returns: &quot;2 matches: [555-1234] at pos 5, [987-6543] at pos 18&quot;
+
+## Common patterns included
+
+| Pattern | Matches |
+|---|---|
+| email | Email addresses |
+| url | HTTP/HTTPS URLs |
+| ipv4 | IPv4 addresses |
+| date_iso | YYYY-MM-DD dates |
+| phone_us | US phone numbers |
+| uuid | UUIDs |
+| hex_color | #RRGGBB colors |
+| semver | Semantic versions |
+
+## Example
+
+```
+User: &quot;Extract all email addresses from this text&quot;
+
+Agent:
+  1. Uses pattern: [a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}
+  2. Tests against the text
+  3. Returns: [&quot;alice@example.com&quot;, &quot;bob@work.org&quot;]
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/regex-tester/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

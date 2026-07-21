@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>invoice-generator — Hermes Skill</title>
+  <meta name="description" content="What it does: Generate professional invoices in PDF from line items. How the agent uses it: A user asks to &quot;make an invoice&quot;, &quot;bill my client&quot;, or &quot;generate an invoice PDF&quot;.
+A user provides services/products sold and wants a formal document with totals.
+A user needs recurring or one-off invoices...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/invoice-generator/">
+  <meta property="og:title" content="invoice-generator — Hermes Skill">
+  <meta property="og:description" content="What it does: Generate professional invoices in PDF from line items. How the agent uses it: A user asks to &quot;make an invoice&quot;, &quot;bill my client&quot;, or &quot;generate an invoice PDF&quot;.
+A user provides services/products sold and wants a formal document with totals.
+A user needs recurring or one-off invoices...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/invoice-generator/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="invoice-generator — Hermes Skill">
+  <meta name="twitter:description" content="What it does: Generate professional invoices in PDF from line items. How the agent uses it: A user asks to &quot;make an invoice&quot;, &quot;bill my client&quot;, or &quot;generate an invoice PDF&quot;.
+A user provides services/products sold and wants a formal document with totals.
+A user needs recurring or one-off invoices...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>invoice-generator</h1>
+          <p class="tagline">Generate professional invoices in PDF from line items.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge featured">Featured</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Highly useful within a category</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>Generate professional invoices in PDF from line items.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>A user asks to &quot;make an invoice&quot;, &quot;bill my client&quot;, or &quot;generate an invoice PDF&quot;.</li><li>A user provides services/products sold and wants a formal document with totals.</li><li>A user needs recurring or one-off invoices with consistent branding.</li><li>A user wants tax (VAT/GST/sales tax) applied and shown as its own line.</li><li>A user works across currencies and needs symbols + formatting handled correctly.</li></ul>
+<p>Do **not** use this skill for: quotes/estimates (no tax committed yet — still fine</p>
+<p>to adapt, but name it clearly), receipts for already-paid cash sales, or timesheets</p>
+<p>without a billing step. For those, adjust the document title and clarify status.</p>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can generate professional invoices in pdf from line items. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/invoice-generator/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/invoice-generator/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: invoice-generator
+description: Generate professional PDF invoices from structured line items. Use when a user wants a clean, branded invoice (client details, itemized line items, tax, totals, currency) produced as a downloadable PDF.
+version: 1.0.0
+---
+
+# invoice-generator
+
+Turn structured line items into a polished, print-ready PDF invoice. The agent
+collects client and item details, validates the math, and renders a professional
+document the user can send to a customer or file for accounting.
+
+## When to Use
+
+- A user asks to &quot;make an invoice&quot;, &quot;bill my client&quot;, or &quot;generate an invoice PDF&quot;.
+- A user provides services/products sold and wants a formal document with totals.
+- A user needs recurring or one-off invoices with consistent branding.
+- A user wants tax (VAT/GST/sales tax) applied and shown as its own line.
+- A user works across currencies and needs symbols + formatting handled correctly.
+
+Do **not** use this skill for: quotes/estimates (no tax committed yet — still fine
+to adapt, but name it clearly), receipts for already-paid cash sales, or timesheets
+without a billing step. For those, adjust the document title and clarify status.
+
+## Input Format
+
+Collect the invoice as a single YAML block. Keep field names stable so the
+generator script can parse them without guessing.
+
+```yaml
+invoice:
+  number: INV-2026-0042
+  issue_date: 2026-07-20
+  due_date: 2026-08-19
+  currency: USD
+  tax_rate: 0.20          # 20% VAT/GST; 0 if tax-exempt
+  notes: &quot;Payment due within 30 days. Bank transfer preferred.&quot;
+  sender:
+    name: Owen
+    company: Amano Studio LLC
+    email: billing@amano.studio
+    address: &quot;12 Birch Lane, Suite 4\nPortland, OR 97201&quot;
+    tax_id: &quot;US-EIN 84-1234567&quot;
+  client:
+    name: Jordan Reeves
+    company: Reeves &amp; Co.
+    email: accounts@reeves.co
+    address: &quot;88 Market Street\nLondon EC2M 1AP, UK&quot;
+  items:
+    - description: &quot;Brand identity design&quot;
+      quantity: 1
+      unit_price: 2400.00
+    - description: &quot;Logo suite (primary + secondary)&quot;
+      quantity: 2
+      unit_price: 350.00
+    - description: &quot;Business card layout&quot;
+      quantity: 3
+      unit_price: 90.00
+```
+
+### Field rules
+
+- `currency`: ISO 4217 code (`USD`, `EUR`, `GBP`, `JPY`, ...). Drives the symbol.
+- `tax_rate`: decimal fraction (0.20 = 20%). Multiply after subtotal.
+- `quantity` × `unit_price` = line total. All money values are decimals.
+- `address` may contain `\n` for line breaks.
+- Missing `due_date` → default to `issue_date` + 30 days.
+- Missing `number` → fall back to `INV-&lt;YYYY&gt;-&lt;seq&gt;` (see Numbering).
+
+## Template
+
+A clean, professional invoice has a clear visual hierarchy:
+
+1. **Header row** — Sender name/logo on the left, &quot;INVOICE&quot; title + number on the right.
+2. **Party block** — &quot;From&quot; (sender) and &quot;Bill To&quot; (client) side by side.
+3. **Meta row** — Issue date, due date, currency, tax ID.
+4. **Line-item table** — columns: Description | Qty | Unit Price | Line Total.
+5. **Totals block** — Subtotal, Tax, **Total Due** (right-aligned, emphasized).
+6. **Footer** — notes, payment terms, thank-you line.
+
+Design cues that read as &quot;professional&quot;:
+- One accent color (deep navy or slate), generous whitespace, 10–11pt body text.
+- Right-align all numeric columns; use thousands separators.
+- Bold the Total Due and separate it with a thin rule.
+- Avoid clip-art, gradients, and decorative fonts.
+
+## PDF Generation
+
+Use `fpdf2` (pure Python, no system libraries) so the skill runs anywhere Python does.
+
+Install once:
+
+```bash
+pip install fpdf2
+```
+
+Minimal generation function (embed/call this from the agent&#x27;s runtime):
+
+```python
+from fpdf import FPDF
+from datetime import date, timedelta
+
+SYMBOLS = {&quot;USD&quot;: &quot;$&quot;, &quot;EUR&quot;: &quot;€&quot;, &quot;GBP&quot;: &quot;£&quot;, &quot;JPY&quot;: &quot;¥&quot;, &quot;CAD&quot;: &quot;C$&quot;, &quot;AUD&quot;: &quot;A$&quot;}
+
+def money(value, currency):
+    sym = SYMBOLS.get(currency, f&quot;{currency} &quot;)
+    # JPY has no decimal places by convention
+    dec = 0 if currency == &quot;JPY&quot; else 2
+    return f&quot;{sym}{value:,.{dec}f}&quot;
+
+def build_invoice(data, out_path=&quot;invoice.pdf&quot;):
+    inv = data[&quot;invoice&quot;]
+    cur = inv.get(&quot;currency&quot;, &quot;USD&quot;)
+    tax_rate = float(inv.get(&quot;tax_rate&quot;, 0) or 0)
+    items = inv.get(&quot;items&quot;, [])
+
+    subtotal = sum(float(i[&quot;quantity&quot;]) * float(i[&quot;unit_price&quot;]) for i in items)
+    tax = subtotal * tax_rate
+    total = subtotal + tax
+
+    pdf = FPDF(format=&quot;A4&quot;, unit=&quot;mm&quot;)
+    pdf.add_page()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.set_margins(15, 15, 15)
+
+    # Header
+    pdf.set_font(&quot;Helvetica&quot;, &quot;B&quot;, 20)
+    pdf.cell(0, 10, inv[&quot;sender&quot;][&quot;name&quot;], ln=True)
+    pdf.set_font(&quot;Helvetica&quot;, &quot;&quot;, 10)
+    pdf.cell(0, 6, inv[&quot;sender&quot;].get(&quot;company&quot;, &quot;&quot;), ln=True)
+    pdf.ln(2)
+
+    pdf.set_xy(140, 15)
+    pdf.set_font(&quot;Helvetica&quot;, &quot;B&quot;, 16)
+    pdf.cell(0, 10, &quot;INVOICE&quot;, ln=True)
+    pdf.set_font(&quot;Helvetica&quot;, &quot;&quot;, 10)
+    pdf.set_x(140)
+    pdf.cell(0, 6, f&quot;Number: {inv.get(&#x27;number&#x27;, &#x27;N/A&#x27;)}&quot;, ln=True)
+    pdf.set_x(140)
+    pdf.cell(0, 6, f&quot;Issue: {inv.get(&#x27;issue_date&#x27;, date.today().isoformat())}&quot;, ln=True)
+
+    pdf.ln(6)
+
+    # Parties
+    y = pdf.get_y()
+    pdf.set_font(&quot;Helvetica&quot;, &quot;B&quot;, 10)
+    pdf.cell(90, 6, &quot;From&quot;, ln=0)
+    pdf.cell(90, 6, &quot;Bill To&quot;, ln=True)
+    pdf.set_font(&quot;Helvetica&quot;, &quot;&quot;, 10)
+    for key in (&quot;name&quot;, &quot;company&quot;, &quot;email&quot;, &quot;address&quot;):
+        s = str(inv[&quot;sender&quot;].get(key, &quot;&quot;)).replace(&quot;\n&quot;, &quot;  |  &quot;)
+        c = str(inv[&quot;client&quot;].get(key, &quot;&quot;)).replace(&quot;\n&quot;, &quot;  |  &quot;)
+        pdf.cell(90, 6, s[:48], ln=0)
+        pdf.cell(90, 6, c[:48], ln=True)
+
+    pdf.ln(4)
+
+    # Items table
+    pdf.set_font(&quot;Helvetica&quot;, &quot;B&quot;, 10)
+    pdf.set_fill_color(230, 232, 240)
+    pdf.cell(100, 8, &quot;Description&quot;, border=1, fill=True)
+    pdf.cell(20, 8, &quot;Qty&quot;, border=1, fill=True, align=&quot;R&quot;)
+    pdf.cell(35, 8, &quot;Unit Price&quot;, border=1, fill=True, align=&quot;R&quot;)
+    pdf.cell(35, 8, &quot;Total&quot;, border=1, fill=True, align=&quot;R&quot;, ln=True)
+    pdf.set_font(&quot;Helvetica&quot;, &quot;&quot;, 10)
+    for i in items:
+        lt = float(i[&quot;quantity&quot;]) * float(i[&quot;unit_price&quot;])
+        pdf.cell(100, 8, str(i[&quot;description&quot;])[:60], border=1)
+        pdf.cell(20, 8, str(i[&quot;quantity&quot;]), border=1, align=&quot;R&quot;)
+        pdf.cell(35, 8, money(float(i[&quot;unit_price&quot;]), cur), border=1, align=&quot;R&quot;)
+        pdf.cell(35, 8, money(lt, cur), border=1, align=&quot;R&quot;, ln=True)
+
+    # Totals
+    pdf.ln(2)
+    pdf.set_font(&quot;Helvetica&quot;, &quot;B&quot;, 11)
+    pdf.cell(155, 8, &quot;Subtotal&quot;, align=&quot;R&quot;)
+    pdf.cell(35, 8, money(subtotal, cur), align=&quot;R&quot;, ln=True)
+    if tax_rate:
+        pdf.cell(155, 8, f&quot;Tax ({int(tax_rate*100)}%)&quot;, align=&quot;R&quot;)
+        pdf.cell(35, 8, money(tax, cur), align=&quot;R&quot;, ln=True)
+    pdf.set_font(&quot;Helvetica&quot;, &quot;B&quot;, 13)
+    pdf.cell(155, 9, &quot;Total Due&quot;, align=&quot;R&quot;)
+    pdf.cell(35, 9, money(total, cur), align=&quot;R&quot;, ln=True)
+
+    # Notes
+    if inv.get(&quot;notes&quot;):
+        pdf.ln(6)
+        pdf.set_font(&quot;Helvetica&quot;, &quot;&quot;, 9)
+        pdf.multi_cell(0, 5, inv[&quot;notes&quot;])
+
+    pdf.output(out_path)
+    return out_path
+```
+
+The agent should:
+1. Parse the YAML the user provided (or assemble it from a conversation).
+2. Call `build_invoice(data, &quot;invoice.pdf&quot;)`.
+3. Return the saved PDF path to the user.
+
+## Numbering
+
+- Prefer an explicit `number` from the user (e.g. `INV-2026-0042`).
+- If absent, generate `INV-&lt;YYYY&gt;-&lt;seq&gt;` where `&lt;seq&gt;` is a zero-padded sequence
+  based on the year (start at 0001, increment per invoice).
+- Keep numbers unique and sequential; do not reuse or skip ranges silently.
+- For drafts, prefix with `DRAFT-` and strip it on finalization.
+
+## Tax Calculation
+
+- `tax = subtotal × tax_rate`. Apply **after** the subtotal, never per line, unless
+  the jurisdiction requires line-level tax (then sum line taxes).
+- Show tax as its own line with the rate in parentheses: `Tax (20%)`.
+- `total = subtotal + tax`. Never round the subtotal before computing tax if the
+  jurisdiction rounds tax on the gross — when in doubt, compute tax on the exact
+  subtotal and round only the displayed value.
+- Tax-exempt? Set `tax_rate: 0` and omit the tax line (or label it `Tax (0% — exempt)`).
+- If the client is in another tax jurisdiction, surface that to the user before
+  assuming a rate — reverse-charge rules may apply.
+
+## Multi-currency
+
+- Always store ISO 4217 codes. Map to display symbols via the `SYMBOLS` dict above;
+  extend it as needed.
+- **JPY, KRW** conventionally show **no decimals** — handle `dec = 0`.
+- Format with thousands separators (`1,234.56`) and right-align in tables.
+- If the invoice is in a non-sender currency, note the exchange basis in `notes`
+  (e.g. &quot;Converted at 1 EUR = 1.08 USD on 2026-07-20&quot;).
+- Never mix currencies within one invoice; convert first, then bill in one currency.
+
+## Pitfalls
+
+- **Float rounding**: money math in floats is fine for display, but round only at
+  presentation. Accumulate subtotal as a precise sum.
+- **Missing client address** breaks the layout — default to the email if address
+  is absent, and warn the user.
+- **Long descriptions** overflow the cell — truncate to ~60 chars or use
+  `multi_cell` for wrapping.
+- **Page breaks**: set `auto_page_break` (done above) so long item lists don&#x27;t clip.
+- **Special characters** (€, é, &amp;) — `fpdf2` core fonts are latin-1; for full
+  Unicode, add a TTF font via `pdf.add_font(...)` or sanitize to ASCII.
+- **Date formats**: store ISO `YYYY-MM-DD`; format for display per locale only at
+  render time, never in the source data.
+- **Duplicate numbers**: check before assigning a generated number.
+- **Not saved where the user expects**: return the absolute output path and confirm
+  the filename so the user can find the PDF.
+
+## Install / Source
+
+Public portfolio (Owen):
+https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/invoice-generator/SKILL.md
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># invoice-generator
+
+A public [Hermes](https://github.com/NousResearch/hermes) skill that turns
+structured line items into a clean, professional **PDF invoice** — with client
+details, itemized rows, tax, totals, and multi-currency support.
+
+&gt; &quot;Agent + skill = the user gets a branded invoice PDF without touching a
+&gt; spreadsheet.&quot;
+
+## Why
+
+Invoicing is repetitive, error-prone, and easy to get wrong on tax and totals.
+This skill standardizes the input, validates the math, and renders a
+print-ready document every time.
+
+## Install
+
+Point Hermes at the skill file:
+
+```
+https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/invoice-generator/SKILL.md
+```
+
+Or copy the `invoice-generator/` folder into your Hermes skills directory.
+
+The PDF engine uses [`fpdf2`](https://pypi.org/project/fpdf2/) (pure Python):
+
+```bash
+pip install fpdf2
+```
+
+## Usage
+
+Tell the agent what you sold. Provide the details as a YAML block, or just
+describe the job and let the agent assemble it:
+
+```yaml
+invoice:
+  number: INV-2026-0042
+  issue_date: 2026-07-20
+  currency: USD
+  tax_rate: 0.20
+  sender:
+    name: Owen
+    company: Amano Studio LLC
+    email: billing@amano.studio
+  client:
+    name: Jordan Reeves
+    company: Reeves &amp; Co.
+    email: accounts@reeves.co
+  items:
+    - description: &quot;Brand identity design&quot;
+      quantity: 1
+      unit_price: 2400.00
+    - description: &quot;Logo suite&quot;
+      quantity: 2
+      unit_price: 350.00
+```
+
+The agent returns a saved `invoice.pdf` path.
+
+## Features
+
+- **Clean template** — header, From/Bill-To blocks, itemized table, totals.
+- **Tax handling** — subtotal × rate, shown as its own line; exempt-aware.
+- **Numbering** — explicit or auto `INV-&lt;YYYY&gt;-&lt;seq&gt;`.
+- **Multi-currency** — ISO 4217 codes, correct symbols, JPY/KRW zero-decimal.
+- **Safe math** — precise accumulation, rounding only at display.
+
+## What it is not
+
+Quotes/estimates, cash receipts, and timesheets without a billing step are
+out of scope — adapt the title and status if you reuse it for those.
+
+## License
+
+MIT — free to use, fork, and ship in your own portfolio.
+
+---
+
+Part of the [hermes-skills-portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
+by Owen.
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/invoice-generator/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>caddy-reverse-proxy — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent installs Caddy, writes a Caddyfile for your services, and starts the proxy. Caddy automatically obtains Let&#x27;s Encrypt TLS certificates, redirects HTTP to HTTPS, and proxies requests to your backend services. You get production-grade HTTPS without managing certificates....">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/caddy-reverse-proxy/">
+  <meta property="og:title" content="caddy-reverse-proxy — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent installs Caddy, writes a Caddyfile for your services, and starts the proxy. Caddy automatically obtains Let&#x27;s Encrypt TLS certificates, redirects HTTP to HTTPS, and proxies requests to your backend services. You get production-grade HTTPS without managing certificates....">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/caddy-reverse-proxy/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="caddy-reverse-proxy — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent installs Caddy, writes a Caddyfile for your services, and starts the proxy. Caddy automatically obtains Let&#x27;s Encrypt TLS certificates, redirects HTTP to HTTPS, and proxies requests to your backend services. You get production-grade HTTPS without managing certificates....">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>caddy-reverse-proxy</h1>
+          <p class="tagline">Set up a Caddy reverse proxy with automatic HTTPS.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge featured">Featured</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> DevOps &amp; Infrastructure</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Highly useful within a category</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent installs Caddy, writes a Caddyfile for your services, and starts the proxy. Caddy automatically obtains Let&#x27;s Encrypt TLS certificates, redirects HTTP to HTTPS, and proxies requests to your backend services. You get production-grade HTTPS without managing certificates.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants to expose a local service over HTTPS with a real domain.</li><li>The user wants to proxy multiple services through one server with TLS.</li><li>The user wants automatic certificate management (no certbot, no manual renewal).</li><li>The user says &quot;set up a reverse proxy&quot;, &quot;I need HTTPS for my service&quot;, or &quot;proxy my Docker services&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can set up a caddy reverse proxy with automatic https. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/caddy-reverse-proxy/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/caddy-reverse-proxy/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: caddy-reverse-proxy
+description: &quot;Set up a Caddy reverse proxy with automatic HTTPS — agent + this skill = user gets a production-grade proxy that manages TLS certificates for them.&quot;
+version: 1.0.0
+---
+
+# caddy-reverse-proxy
+
+Set up Caddy as a reverse proxy with automatic HTTPS. Caddy obtains and renews Let&#x27;s Encrypt certificates automatically, handles HTTP-to-HTTPS redirects, and proxies requests to your backend services. No manual certificate management.
+
+## When to Use
+
+- The user wants to expose a local service over HTTPS with a real domain.
+- The user wants to proxy multiple services through one server with TLS.
+- The user wants automatic certificate management (no certbot, no manual renewal).
+- The user says &quot;set up a reverse proxy&quot;, &quot;I need HTTPS for my service&quot;, or &quot;proxy my Docker services&quot;.
+
+## Prerequisites
+
+- A server with a public IP address
+- A domain name pointing to your server (A record)
+- Ports 80 and 443 open
+
+## Installation
+
+### Linux
+
+```bash
+# Debian/Ubuntu (official repo)
+sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+curl -1sLf &#x27;https://dl.cloudsmith.io/public/caddy/stable/gpg.key&#x27; | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf &#x27;https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt&#x27; | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+sudo apt update
+sudo apt install caddy
+```
+
+### macOS
+
+```bash
+brew install caddy
+```
+
+### Docker
+
+```bash
+docker run -d --name caddy \
+  -p 80:80 -p 443:443 \
+  -v caddy_data:/data \
+  -v caddy_config:/config \
+  -v $PWD/Caddyfile:/etc/caddy/Caddyfile \
+  caddy:latest
+```
+
+## Caddyfile Syntax
+
+The Caddyfile is Caddy&#x27;s configuration format. It&#x27;s intentionally simple.
+
+### Single site
+
+```
+example.com {
+    reverse_proxy localhost:8080
+}
+```
+
+This one block does:
+1. Listens on ports 80 and 443 for `example.com`
+2. Obtains a Let&#x27;s Encrypt certificate automatically
+3. Redirects HTTP to HTTPS
+4. Proxies all requests to `localhost:8080`
+
+### Multiple sites
+
+```
+app.example.com {
+    reverse_proxy localhost:8080
+}
+
+api.example.com {
+    reverse_proxy localhost:3000
+}
+
+docs.example.com {
+    root * /var/www/docs
+    file_server
+}
+```
+
+### Reverse proxy with header manipulation
+
+```
+api.example.com {
+    reverse_proxy localhost:3000 {
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+    }
+}
+```
+
+### WebSocket support
+
+Caddy supports WebSockets automatically — no special config needed:
+
+```
+chat.example.com {
+    reverse_proxy localhost:3000
+}
+```
+
+### Static files + API
+
+```
+example.com {
+    # Serve static files
+    handle /assets/* {
+        root * /var/www/assets
+        file_server
+    }
+
+    # Proxy API requests
+    handle /api/* {
+        reverse_proxy localhost:3000
+    }
+
+    # Everything else → frontend
+    handle {
+        reverse_proxy localhost:5173
+    }
+}
+```
+
+### Load balancing
+
+```
+api.example.com {
+    reverse_proxy localhost:3000 localhost:3001 localhost:3002 {
+        lb_policy round_robin
+        health_uri /health
+        health_interval 10s
+    }
+}
+```
+
+## Automatic HTTPS
+
+Caddy handles certificates automatically:
+
+| Feature | How it works |
+|---|---|
+| Certificate issuance | Caddy obtains certificates from Let&#x27;s Encrypt on first request |
+| Renewal | Caddy renews certificates 30 days before expiry |
+| HTTP→HTTPS redirect | Automatic for all sites with a domain name |
+| On-demand TLS | Optional — issue certificates on first request for any domain |
+
+**On-demand TLS** (for wildcard/multi-tenant setups):
+
+```
+{
+    on_demand_tls {
+        ask https://api.example.com/check-domain
+    }
+}
+
+https:// {
+    tls {
+        on_demand
+    }
+    reverse_proxy localhost:8080
+}
+```
+
+Caddy will ask your API endpoint whether a domain is allowed before issuing a certificate.
+
+## Running Caddy
+
+### As a system service (Linux)
+
+```bash
+sudo systemctl enable caddy
+sudo systemctl start caddy
+sudo systemctl status caddy
+
+# Reload config without downtime
+sudo systemctl reload caddy
+
+# View logs
+sudo journalctl -u caddy -f
+```
+
+### With Docker Compose
+
+```yaml
+version: &quot;3&quot;
+services:
+  caddy:
+    image: caddy:latest
+    restart: unless-stopped
+    ports:
+      - &quot;80:80&quot;
+      - &quot;443:443&quot;
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    extra_hosts:
+      - &quot;host.docker.internal:host-gateway&quot;
+
+volumes:
+  caddy_data:
+  caddy_config:
+```
+
+Use `host.docker.internal` in the Caddyfile to proxy to services running on the host (not in Docker).
+
+## Pitfalls
+
+- **No domain name** — Caddy&#x27;s automatic HTTPS requires a domain name pointing to your server. Without a domain, Caddy can&#x27;t obtain certificates. For local-only HTTPS, use Caddy&#x27;s internal CA: `localhost:8080 { reverse_proxy localhost:3000 }` (generates a self-signed cert).
+- **Ports 80/443 not open** — Let&#x27;s Encrypt uses the HTTP-01 challenge, which requires port 80 to be reachable. If your firewall blocks port 80, certificate issuance fails.
+- **Rate limits** — Let&#x27;s Encrypt has rate limits (50 certificates per domain per week). Don&#x27;t repeatedly restart Caddy with new domains in testing — you&#x27;ll hit the limit.
+- **Docker networking** — If Caddy runs in Docker and your backend runs on the host, use `host.docker.internal` (with `extra_hosts` in compose). If both are in Docker, put them on the same network and use the container name.
+- **Caddyfile reload vs restart** — Use `caddy reload` (or `systemctl reload caddy`) to apply config changes without dropping connections. `caddy stop` + `caddy start` drops active connections.
+- **Large uploads** — Caddy has a default body size limit. For large file uploads: `request_body { max_size 100MB }` in the site block.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># caddy-reverse-proxy
+
+Set up a Caddy reverse proxy with automatic HTTPS — no certbot, no manual certificate renewal.
+
+## What it does
+
+The agent installs Caddy, writes a Caddyfile for your services, and starts the proxy. Caddy automatically obtains Let&#x27;s Encrypt TLS certificates, redirects HTTP to HTTPS, and proxies requests to your backend services. You get production-grade HTTPS without managing certificates.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/caddy-reverse-proxy/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Proxy my API at api.mysite.com to localhost:3000 with HTTPS&quot;
+```
+
+The agent:
+1. Installs Caddy (or uses Docker)
+2. Writes a Caddyfile:
+   ```
+   api.mysite.com {
+       reverse_proxy localhost:3000
+   }
+   ```
+3. Starts Caddy
+4. Verifies: `curl https://api.mysite.com/health` returns 200
+
+## Prerequisites
+
+- A server with a public IP
+- A domain name pointing to your server (A record)
+- Ports 80 and 443 open
+
+## What you get
+
+| Feature | Automatic? |
+|---|---|
+| TLS certificate issuance | Yes — Let&#x27;s Encrypt |
+| Certificate renewal | Yes — 30 days before expiry |
+| HTTP→HTTPS redirect | Yes |
+| WebSocket proxying | Yes — no config needed |
+| Multiple sites | Yes — one block per domain |
+
+## Example
+
+```
+User: &quot;I have three services: a web app on :5173, an API on :3000, and docs on :8080. I want them all under my domain with HTTPS.&quot;
+
+Agent:
+  1. Writes Caddyfile:
+     mysite.com { reverse_proxy localhost:5173 }
+     api.mysite.com { reverse_proxy localhost:3000 }
+     docs.mysite.com { reverse_proxy localhost:8080 }
+  2. Starts Caddy via Docker Compose
+  3. Verifies all three domains return 200 over HTTPS
+  4. Returns: &quot;All three services are live with HTTPS.&quot;
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/caddy-reverse-proxy/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>env-config-manager — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent scans your project for environment variable usage, creates a `.env.example` template with values stripped, validates your actual `.env` file against it (reports missing and unused vars), and generates markdown documentation listing all required env vars. How the agent...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/env-config-manager/">
+  <meta property="og:title" content="env-config-manager — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent scans your project for environment variable usage, creates a `.env.example` template with values stripped, validates your actual `.env` file against it (reports missing and unused vars), and generates markdown documentation listing all required env vars. How the agent...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/env-config-manager/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="env-config-manager — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent scans your project for environment variable usage, creates a `.env.example` template with values stripped, validates your actual `.env` file against it (reports missing and unused vars), and generates markdown documentation listing all required env vars. How the agent...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>env-config-manager</h1>
+          <p class="tagline">Manage environment variables — create .env.example, validate, document.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent scans your project for environment variable usage, creates a `.env.example` template with values stripped, validates your actual `.env` file against it (reports missing and unused vars), and generates markdown documentation listing all required env vars.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user is setting up a new project and needs an `.env.example`.</li><li>The user has a `.env` file and wants to validate it.</li><li>The user is deploying and wants to check all required env vars are set.</li><li>The user says &quot;set up env vars&quot;, &quot;create .env.example&quot;, or &quot;check my environment&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can manage environment variables — create .env.example, validate, document. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/env-config-manager/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/env-config-manager/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: env-config-manager
+description: &quot;Manage environment variables across projects — agent + this skill = user gets organized, validated, documented env config.&quot;
+version: 1.0.0
+---
+
+# env-config-manager
+
+Manage environment variables across projects. The agent creates `.env.example` files, validates `.env` files against the example, detects missing or unused variables, and generates documentation.
+
+## When to Use
+
+- The user is setting up a new project and needs an `.env.example`.
+- The user has a `.env` file and wants to validate it.
+- The user is deploying and wants to check all required env vars are set.
+- The user says &quot;set up env vars&quot;, &quot;create .env.example&quot;, or &quot;check my environment&quot;.
+
+## Create .env.example
+
+```python
+import os
+import re
+
+def create_env_example(env_path: str = &quot;.env&quot;, output_path: str = &quot;.env.example&quot;):
+    &quot;&quot;&quot;Generate .env.example from .env with values stripped.&quot;&quot;&quot;
+    if not os.path.exists(env_path):
+        # Try to find env vars referenced in code
+        return create_env_example_from_code(&quot;.&quot;, output_path)
+
+    with open(env_path, &#x27;r&#x27;) as f:
+        lines = f.readlines()
+
+    example_lines = []
+    for line in lines:
+        line = line.strip()
+        if not line or line.startswith(&#x27;#&#x27;):
+            example_lines.append(line)
+            continue
+        if &#x27;=&#x27; in line:
+            key = line.split(&#x27;=&#x27;)[0]
+            example_lines.append(f&quot;{key}=  # TODO: set value&quot;)
+        else:
+            example_lines.append(line)
+
+    with open(output_path, &#x27;w&#x27;) as f:
+        f.write(&#x27;\n&#x27;.join(example_lines))
+    return output_path
+```
+
+## Find env vars from code
+
+```python
+def create_env_example_from_code(src_dir: str, output_path: str = &quot;.env.example&quot;):
+    &quot;&quot;&quot;Scan source code for os.environ/os.getenv references and generate .env.example.&quot;&quot;&quot;
+    env_vars = set()
+    patterns = [
+        r&quot;os\.environ\.get\([&#x27;\&quot;](\w+)[&#x27;\&quot;]&quot;,
+        r&quot;os\.getenv\([&#x27;\&quot;](\w+)[&#x27;\&quot;]&quot;,
+        r&quot;os\.environ\[[&#x27;\&quot;](\w+)[&#x27;\&quot;]\]&quot;,
+    ]
+
+    for root, dirs, files in os.walk(src_dir):
+        # Skip common ignore dirs
+        dirs[:] = [d for d in dirs if d not in [&#x27;.git&#x27;, &#x27;node_modules&#x27;, &#x27;__pycache__&#x27;, &#x27;venv&#x27;, &#x27;.venv&#x27;]]
+        for filename in files:
+            if filename.endswith((&#x27;.py&#x27;, &#x27;.js&#x27;, &#x27;.ts&#x27;, &#x27;.jsx&#x27;, &#x27;.tsx&#x27;)):
+                filepath = os.path.join(root, filename)
+                with open(filepath, &#x27;r&#x27;, errors=&#x27;ignore&#x27;) as f:
+                    content = f.read()
+                for pattern in patterns:
+                    matches = re.findall(pattern, content)
+                    env_vars.update(matches)
+
+    with open(output_path, &#x27;w&#x27;) as f:
+        for var in sorted(env_vars):
+            f.write(f&quot;{var}=  # TODO: set value\n&quot;)
+    return output_path
+```
+
+## Validate .env
+
+```python
+def validate_env(env_path: str = &quot;.env&quot;, example_path: str = &quot;.env.example&quot;) -&gt; dict:
+    &quot;&quot;&quot;Check .env against .env.example for missing/unused variables.&quot;&quot;&quot;
+    def parse_env(path):
+        if not os.path.exists(path):
+            return {}
+        env = {}
+        with open(path, &#x27;r&#x27;) as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith(&#x27;#&#x27;) and &#x27;=&#x27; in line:
+                    key = line.split(&#x27;=&#x27;)[0].strip()
+                    env[key] = True
+        return env
+
+    actual = parse_env(env_path)
+    expected = parse_env(example_path)
+
+    missing = set(expected.keys()) - set(actual.keys())
+    unused = set(actual.keys()) - set(expected.keys())
+
+    return {
+        &quot;missing&quot;: sorted(missing),
+        &quot;unused&quot;: sorted(unused),
+        &quot;valid&quot;: len(missing) == 0
+    }
+```
+
+## Generate env documentation
+
+```python
+def generate_env_docs(example_path: str = &quot;.env.example&quot;, output: str = &quot;docs/env-vars.md&quot;):
+    &quot;&quot;&quot;Generate markdown documentation from .env.example.&quot;&quot;&quot;
+    with open(example_path, &#x27;r&#x27;) as f:
+        lines = f.readlines()
+
+    doc = &quot;# Environment Variables\n\n&quot;
+    doc += &quot;| Variable | Description | Required |\n&quot;
+    doc += &quot;|---|---|---|\n&quot;
+
+    for line in lines:
+        line = line.strip()
+        if not line or line.startswith(&#x27;#&#x27;):
+            continue
+        if &#x27;=&#x27; in line:
+            key, _, comment = line.partition(&#x27;#&#x27;)
+            key = key.split(&#x27;=&#x27;)[0].strip()
+            desc = comment.strip() or &quot;—&quot;
+            doc += f&quot;| `{key}` | {desc} | Yes |\n&quot;
+
+    os.makedirs(os.path.dirname(output), exist_ok=True)
+    with open(output, &#x27;w&#x27;) as f:
+        f.write(doc)
+    return output
+```
+
+## Workflow
+
+1. If `.env` exists, generate `.env.example` from it (strip values)
+2. If no `.env`, scan source code for `os.getenv` / `os.environ` references
+3. Validate the actual `.env` against `.env.example` — report missing and unused vars
+4. Generate markdown documentation listing all env vars
+
+## Pitfalls
+
+- **Secrets in .env.example** — Never commit real values. The `create_env_example` function strips values, but double-check before committing.
+- **Comment-based parsing** — Comments after values (`KEY=value  # description`) may be split incorrectly. The parser handles this by splitting on `=` first.
+- **Multi-line values** — Values with `export KEY=&quot;multi\nline&quot;` are not handled. Use single-line values or parse quoted strings.
+- **Code scanning misses** — `create_env_example_from_code` only finds `os.getenv` and `os.environ` patterns. Values loaded from config files or env-loading libraries (python-dotenv) won&#x27;t be detected.
+- **Unused variables** — Variables in `.env` but not in `.env.example` might be intentionally unlisted. Review before removing.
+- **Deployed environments** — On deploy, check with `validate_env()` before starting the app. Missing required vars cause confusing runtime errors.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># env-config-manager
+
+Manage environment variables across projects — create .env.example, validate .env, generate docs.
+
+## What it does
+
+The agent scans your project for environment variable usage, creates a `.env.example` template with values stripped, validates your actual `.env` file against it (reports missing and unused vars), and generates markdown documentation listing all required env vars.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/env-config-manager/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Set up environment variables for my project&quot;
+```
+
+The agent:
+1. Scans source code for `os.getenv()` / `os.environ` references
+2. Creates `.env.example` with all required vars (values stripped)
+3. Checks your `.env` file for missing or unused variables
+4. Generates `docs/env-vars.md` documenting each variable
+
+## Example
+
+```
+User: &quot;I&#x27;m deploying my app. Are all env vars set?&quot;
+
+Agent:
+  1. Scans code: finds DATABASE_URL, SECRET_KEY, API_KEY, DEBUG
+  2. Creates .env.example with those 4 vars
+  3. Validates .env:
+     - missing: [&#x27;API_KEY&#x27;]
+     - unused: [&#x27;OLD_TOKEN&#x27;]
+  4. Returns: &quot;Missing API_KEY. OLD_TOKEN is set but not used in code.&quot;
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/env-config-manager/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

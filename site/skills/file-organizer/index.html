@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>file-organizer — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent scans a directory and organizes files into subdirectories by category (Images, Videos, Documents, Code, etc.) or by modification date (Year/Month). Includes dry-run mode to preview before moving, and a duplicate finder that identifies files with identical content by hash....">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/file-organizer/">
+  <meta property="og:title" content="file-organizer — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent scans a directory and organizes files into subdirectories by category (Images, Videos, Documents, Code, etc.) or by modification date (Year/Month). Includes dry-run mode to preview before moving, and a duplicate finder that identifies files with identical content by hash....">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/file-organizer/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="file-organizer — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent scans a directory and organizes files into subdirectories by category (Images, Videos, Documents, Code, etc.) or by modification date (Year/Month). Includes dry-run mode to preview before moving, and a duplicate finder that identifies files with identical content by hash....">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>file-organizer</h1>
+          <p class="tagline">Organize files by type, date, or content hash.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent scans a directory and organizes files into subdirectories by category (Images, Videos, Documents, Code, etc.) or by modification date (Year/Month). Includes dry-run mode to preview before moving, and a duplicate finder that identifies files with identical content by hash.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user has a messy directory (Downloads, Desktop) and wants it organized.</li><li>The user wants to sort files by type, date, or name pattern.</li><li>The user wants to find and remove duplicate files.</li><li>The user says &quot;organize my downloads&quot;, &quot;clean up this folder&quot;, or &quot;sort these files&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can organize files by type, date, or content hash. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/file-organizer/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/file-organizer/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: file-organizer
+description: &quot;Organize files by type, date, or pattern — agent + this skill = user gets a clean directory structure.&quot;
+version: 1.0.0
+---
+
+# file-organizer
+
+Organize files in a directory by type, date, or custom patterns. The agent scans a directory, categorizes files, and moves them into a structured layout. Supports dry-run mode to preview before moving.
+
+## When to Use
+
+- The user has a messy directory (Downloads, Desktop) and wants it organized.
+- The user wants to sort files by type, date, or name pattern.
+- The user wants to find and remove duplicate files.
+- The user says &quot;organize my downloads&quot;, &quot;clean up this folder&quot;, or &quot;sort these files&quot;.
+
+## Organize by Type
+
+```python
+import os
+import shutil
+from pathlib import Path
+
+CATEGORY_MAP = {
+    &quot;Images&quot;: [&quot;.jpg&quot;, &quot;.jpeg&quot;, &quot;.png&quot;, &quot;.gif&quot;, &quot;.bmp&quot;, &quot;.webp&quot;, &quot;.svg&quot;, &quot;.heic&quot;],
+    &quot;Videos&quot;: [&quot;.mp4&quot;, &quot;.avi&quot;, &quot;.mov&quot;, &quot;.mkv&quot;, &quot;.wmv&quot;, &quot;.flv&quot;, &quot;.webm&quot;],
+    &quot;Audio&quot;: [&quot;.mp3&quot;, &quot;.wav&quot;, &quot;.flac&quot;, &quot;.aac&quot;, &quot;.ogg&quot;, &quot;.m4a&quot;],
+    &quot;Documents&quot;: [&quot;.pdf&quot;, &quot;.doc&quot;, &quot;.docx&quot;, &quot;.txt&quot;, &quot;.md&quot;, &quot;.odt&quot;, &quot;.rtf&quot;, &quot;.pages&quot;],
+    &quot;Spreadsheets&quot;: [&quot;.xls&quot;, &quot;.xlsx&quot;, &quot;.csv&quot;, &quot;.ods&quot;, &quot;.numbers&quot;],
+    &quot;Presentations&quot;: [&quot;.ppt&quot;, &quot;.pptx&quot;, &quot;.key&quot;, &quot;.odp&quot;],
+    &quot;Archives&quot;: [&quot;.zip&quot;, &quot;.tar&quot;, &quot;.gz&quot;, &quot;.rar&quot;, &quot;.7z&quot;, &quot;.bz2&quot;, &quot;.xz&quot;],
+    &quot;Code&quot;: [&quot;.py&quot;, &quot;.js&quot;, &quot;.ts&quot;, &quot;.jsx&quot;, &quot;.tsx&quot;, &quot;.java&quot;, &quot;.cpp&quot;, &quot;.c&quot;, &quot;.h&quot;, &quot;.go&quot;, &quot;.rs&quot;, &quot;.rb&quot;, &quot;.php&quot;, &quot;.sh&quot;, &quot;.html&quot;, &quot;.css&quot;, &quot;.json&quot;, &quot;.xml&quot;, &quot;.yaml&quot;, &quot;.yml&quot;],
+    &quot;Executables&quot;: [&quot;.exe&quot;, &quot;.msi&quot;, &quot;.deb&quot;, &quot;.rpm&quot;, &quot;.dmg&quot;, &quot;.app&quot;, &quot;.apk&quot;],
+    &quot;Fonts&quot;: [&quot;.ttf&quot;, &quot;.otf&quot;, &quot;.woff&quot;, &quot;.woff2&quot;, &quot;.eot&quot;],
+    &quot;Data&quot;: [&quot;.db&quot;, &quot;.sqlite&quot;, &quot;.sql&quot;, &quot;.json&quot;, &quot;.csv&quot;],
+}
+
+def organize_by_type(directory: str, dry_run: bool = True) -&gt; dict:
+    &quot;&quot;&quot;Organize files into subdirectories by category.&quot;&quot;&quot;
+    moved = {}
+    skipped = []
+
+    for item in Path(directory).iterdir():
+        if item.is_dir():
+            continue
+
+        ext = item.suffix.lower()
+        category = &quot;Misc&quot;
+        for cat, extensions in CATEGORY_MAP.items():
+            if ext in extensions:
+                category = cat
+                break
+
+        target_dir = Path(directory) / category
+        target_path = target_dir / item.name
+
+        if dry_run:
+            moved[str(item)] = str(target_path)
+        else:
+            target_dir.mkdir(exist_ok=True)
+            if target_path.exists():
+                # Append number to avoid overwriting
+                stem = item.stem
+                i = 1
+                while target_path.exists():
+                    target_path = target_dir / f&quot;{stem}_{i}{item.suffix}&quot;
+                    i += 1
+            shutil.move(str(item), str(target_path))
+            moved[str(item)] = str(target_path)
+
+    return {&quot;moved&quot;: moved, &quot;count&quot;: len(moved), &quot;dry_run&quot;: dry_run}
+```
+
+## Organize by Date
+
+```python
+import datetime
+
+def organize_by_date(directory: str, dry_run: bool = True) -&gt; dict:
+    &quot;&quot;&quot;Organize files into year/month subdirectories by modification date.&quot;&quot;&quot;
+    moved = {}
+
+    for item in Path(directory).iterdir():
+        if item.is_dir():
+            continue
+
+        mtime = datetime.datetime.fromtimestamp(item.stat().st_mtime)
+        year = str(mtime.year)
+        month = mtime.strftime(&quot;%m-%B&quot;)
+
+        target_dir = Path(directory) / year / month
+        target_path = target_dir / item.name
+
+        if dry_run:
+            moved[str(item)] = str(target_path)
+        else:
+            target_dir.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(item), str(target_path))
+            moved[str(item)] = str(target_path)
+
+    return {&quot;moved&quot;: moved, &quot;count&quot;: len(moved), &quot;dry_run&quot;: dry_run}
+```
+
+## Find Duplicates
+
+```python
+import hashlib
+
+def find_duplicates(directory: str) -&gt; dict:
+    &quot;&quot;&quot;Find duplicate files by content hash.&quot;&quot;&quot;
+    hashes = {}
+    duplicates = {}
+
+    for item in Path(directory).rglob(&quot;*&quot;):
+        if item.is_file():
+            h = hashlib.sha256(item.read_bytes()).hexdigest()
+            if h in hashes:
+                if h not in duplicates:
+                    duplicates[h] = [hashes[h]]
+                duplicates[h].append(str(item))
+            else:
+                hashes[h] = str(item)
+
+    return {
+        &quot;total_files&quot;: len(hashes) + sum(len(v) - 1 for v in duplicates.values()),
+        &quot;duplicate_groups&quot;: len(duplicates),
+        &quot;duplicates&quot;: duplicates,
+    }
+```
+
+## Workflow
+
+1. Identify the directory to organize
+2. Run in dry-run mode first to show what would move where
+3. Show the user the proposed organization
+4. If approved, run without dry-run to actually move files
+5. Report: files moved, categories created, any duplicates found
+
+## Pitfalls
+
+- **Always dry-run first** — Never move files without showing the user what will happen. A wrong category mapping could scatter files unexpectedly.
+- **Name collisions** — Files with the same name in different categories will collide. The code handles this by appending `_1`, `_2`, etc.
+- **Symlinks** — `Path.iterdir()` includes symlinks. Moving a symlink moves the link, not the target. Handle symlinks separately if needed.
+- **Hidden files** — Files starting with `.` (`.gitignore`, `.env`) are included by default. Filter them out if the user doesn&#x27;t want them moved.
+- **Permission errors** — Moving files requires write permission on both the source and target. On Windows, files in use can&#x27;t be moved.
+- **Large directories** — `find_duplicates` reads every file to hash it. For directories with thousands of large files, this is slow. Consider hashing only files above a size threshold first.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># file-organizer
+
+Organize files by type, date, or content — clean up messy directories automatically.
+
+## What it does
+
+The agent scans a directory and organizes files into subdirectories by category (Images, Videos, Documents, Code, etc.) or by modification date (Year/Month). Includes dry-run mode to preview before moving, and a duplicate finder that identifies files with identical content by hash.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/file-organizer/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Organize my Downloads folder by file type&quot;
+```
+
+The agent:
+1. Scans the directory
+2. Runs in dry-run mode first — shows you what would move where
+3. If approved, creates category folders and moves files
+4. Reports: &quot;Moved 47 files into 8 categories&quot;
+
+## Organize modes
+
+| Mode | How it sorts |
+|---|---|
+| By type | Images/, Videos/, Documents/, Code/, etc. |
+| By date | 2026/07-July/, 2026/08-August/, etc. |
+| Duplicates | Finds files with identical content by SHA-256 |
+
+## Example
+
+```
+User: &quot;Clean up my Desktop, but show me what you&#x27;ll do first&quot;
+
+Agent:
+  1. Dry run on ~/Desktop
+  2. Shows: &quot;Would move 23 files:
+     screenshot.png → Images/
+     report.pdf → Documents/
+     app.py → Code/
+     vacation.mp4 → Videos/&quot;
+  3. User approves
+  4. Moves files, creates category folders
+  5. Returns: &quot;Done. 23 files organized into 6 categories.&quot;
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/file-organizer/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

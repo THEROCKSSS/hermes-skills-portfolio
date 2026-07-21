@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hallmark-readme — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent reads your project and writes a README that follows anti-AI-slop rules: no filler phrases, no invented metrics, no templated structure, honest about limitations, concrete examples, real voice. The result reads like a human wrote it because it follows the patterns that...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/hallmark-readme/">
+  <meta property="og:title" content="hallmark-readme — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent reads your project and writes a README that follows anti-AI-slop rules: no filler phrases, no invented metrics, no templated structure, honest about limitations, concrete examples, real voice. The result reads like a human wrote it because it follows the patterns that...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/hallmark-readme/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="hallmark-readme — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent reads your project and writes a README that follows anti-AI-slop rules: no filler phrases, no invented metrics, no templated structure, honest about limitations, concrete examples, real voice. The result reads like a human wrote it because it follows the patterns that...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>hallmark-readme</h1>
+          <p class="tagline">Write a non-AI-slop README for any project — one that sounds like a human wrote it.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge core">Core</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Broadly empowering, nearly any user benefits</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Generalized from existing</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent reads your project and writes a README that follows anti-AI-slop rules: no filler phrases, no invented metrics, no templated structure, honest about limitations, concrete examples, real voice. The result reads like a human wrote it because it follows the patterns that distinguish human writing from LLM defaults.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user asks for a README for their project.</li><li>The user wants to improve an existing README that reads as AI-generated.</li><li>The user says &quot;write a readme&quot;, &quot;make my readme better&quot;, or &quot;this readme sounds like AI wrote it&quot;.</li><li>Any time you&#x27;re about to write a README — default to this skill.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can write a non-ai-slop readme for any project — one that sounds like a human wrote it. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/hallmark-readme/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/hallmark-readme/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: hallmark-readme
+description: &quot;Write a non-AI-slop README for any project — agent + this skill = user gets a README that sounds like a human wrote it, not a template.&quot;
+version: 1.0.0
+---
+
+# hallmark-readme
+
+Write a README that doesn&#x27;t read like it was generated by an LLM. Most AI-written READMEs share the same tells: generic headings, filler phrases, invented metrics, templated structure, no voice. This skill encodes the rules that produce READMEs which sound like a person wrote them.
+
+## When to Use
+
+- The user asks for a README for their project.
+- The user wants to improve an existing README that reads as AI-generated.
+- The user says &quot;write a readme&quot;, &quot;make my readme better&quot;, or &quot;this readme sounds like AI wrote it&quot;.
+- Any time you&#x27;re about to write a README — default to this skill.
+
+## Rules
+
+### 1. No filler phrases
+
+Banned words and phrases (never use these):
+
+| Banned | Use instead |
+|---|---|
+| empower, empowering | (delete — the verb does the work) |
+| seamless | (delete — nothing is seamless) |
+| leverage | use |
+| robust | (delete — show it with specifics) |
+| cutting-edge, state-of-the-art | (delete — let the reader judge) |
+| comprehensive | (delete — the structure shows comprehensiveness) |
+| powerful | (delete — show power with specifics) |
+| &quot;built with love&quot; | (delete) |
+| &quot;designed for developers&quot; | (delete — who else would it be for?) |
+| &quot;in today&#x27;s fast-paced world&quot; | (delete — always) |
+
+### 2. No invented metrics
+
+Never fabricate numbers. If the user didn&#x27;t supply a metric, don&#x27;t invent one.
+
+| Wrong | Right |
+|---|---|
+| &quot;Trusted by 50,000+ developers&quot; | (omit — or use the real number if the user provided it) |
+| &quot;10x faster than alternatives&quot; | (omit — or cite a real benchmark) |
+| &quot;Used by teams at Google, Meta, Stripe&quot; | (omit — unless the user confirmed these) |
+| &quot;Increases productivity by 47%&quot; | (omit — or cite the study) |
+
+If a section needs a metric and you don&#x27;t have one, use a different structure. A feature list doesn&#x27;t need a metric. A comparison table doesn&#x27;t need a metric. Skip it.
+
+### 3. No templated structure
+
+AI READMEs all follow the same shape: Title → Badges → Tagline → Features → Installation → Usage → Contributing → License. Break this pattern.
+
+Real READMEs vary:
+
+- A CLI tool README leads with installation and a one-line example, not features.
+- A library README leads with the problem it solves, not badges.
+- A skill README leads with what the agent + skill delivers, not a tagline.
+- A small project README can be 20 lines. Don&#x27;t pad it to 200.
+
+### 4. Honest about limitations
+
+Name what the project doesn&#x27;t do. This is the single most reliable signal that a human wrote the README — LLMs avoid limitations.
+
+| Wrong | Right |
+|---|---|
+| &quot;Works with any framework&quot; | &quot;Works with React and Vue. Svelte support is planned.&quot; |
+| &quot;Production-ready&quot; | &quot;Used in production by the author. Not yet tested at scale.&quot; |
+| (no limitations section) | A &quot;Limitations&quot; or &quot;Known Issues&quot; section with real items |
+
+### 5. Real structure, not generic headings
+
+| Generic (AI tell) | Specific (human signal) |
+|---|---|
+| ## Features | ## What it does |
+| ## Getting Started | ## Install |
+| ## Usage | ## How to use (with a concrete example) |
+| ## Contributing | ## For contributors (only if the project accepts contributions) |
+| ## FAQ | (only if there are actually frequently asked questions) |
+
+### 6. Voice
+
+Write in first person or direct second person. Not corporate third person.
+
+| Wrong | Right |
+|---|---|
+| &quot;This project enables developers to...&quot; | &quot;You get a running service on your tailnet.&quot; |
+| &quot;The tool provides functionality for...&quot; | &quot;The agent deploys your app and gives you a URL.&quot; |
+| &quot;It is recommended that users...&quot; | &quot;Run this before you start.&quot; |
+
+### 7. Examples are concrete
+
+Every README must have at least one concrete, runnable example. Not a placeholder. Not a &quot;TODO: add example&quot;. A real command or code block the reader can copy and run.
+
+| Wrong | Right |
+|---|---|
+| `my-tool --input &lt;file&gt; --output &lt;file&gt;` | `my-tool --input data.csv --output cleaned.json` |
+| &quot;See the docs for usage examples&quot; | A 5-line code block that does something real |
+| &quot;TODO: add example&quot; | (write the example) |
+
+### 8. No badge spam
+
+Badges are fine in moderation. AI READMEs pile on 8-12 badges (CI, coverage, npm, downloads, stars, license, contributions welcome, good-first-issues, Discord, Twitter). Use at most 3, and only if they carry real information:
+
+- License badge: yes (MIT/Apache/etc.)
+- CI badge: yes (if CI exists and passes)
+- Version badge: yes (if published to a registry)
+- Everything else: skip unless it adds real signal
+
+## Workflow
+
+### Step 1: Read the project
+
+Before writing anything, read:
+- The project&#x27;s `package.json`, `pyproject.toml`, or equivalent (name, description, dependencies)
+- The source code&#x27;s entry point (what does it actually do?)
+- Any existing README (what needs fixing?)
+- The license file
+
+### Step 2: Identify the audience
+
+Who reads this README? A stranger on GitHub. They have 10 seconds to decide if this project is worth their time. The first 3 lines must tell them what it does and whether it&#x27;s relevant.
+
+### Step 3: Write the first 3 lines
+
+Title (the project name). One-sentence description (what it does, not what it is). One-sentence &quot;who is this for&quot; or &quot;what you get&quot;.
+
+```markdown
+# tailscale-deploy
+
+Deploy a service on your Tailscale tailnet so it&#x27;s privately accessible from any of your devices.
+
+## What it does
+
+The agent deploys a web service onto your Tailscale tailnet. The service becomes reachable
+from your laptop, phone, and any other device on your tailnet. No public exposure, no port
+forwarding, no cloud relay.
+```
+
+### Step 4: Add install + one example
+
+Install instructions. One concrete example. These go near the top — not buried after features.
+
+### Step 5: Add the rest
+
+Only add sections that carry real information:
+- What it does (2-3 sentences)
+- Install (code block)
+- How to use (concrete example)
+- Prerequisites (if any)
+- What you get (table or list, if useful)
+- Limitations (always — what doesn&#x27;t it do?)
+- License
+
+Skip sections that would be empty or filler. A README with 5 useful sections is better than one with 10 sections where 5 are filler.
+
+### Step 6: Run the slop check
+
+Read the README aloud. If any sentence sounds like it could appear in any other project&#x27;s README, rewrite it. If any section could be deleted without losing information, delete it.
+
+## Pitfalls
+
+- **Lead with badges, not content** — Badges are decorative. The first thing the reader sees should be what the project does, not a row of SVG badges.
+- **Describe what it is, not what it does** — &quot;A Python library for...&quot; tells me nothing. &quot;You get a running service on your tailnet&quot; tells me what I get.
+- **Overlong READMEs** — A README is not documentation. Link to docs for deep content. Keep the README scannable in under 2 minutes.
+- **No example** — A README without a runnable example forces the reader to read the source to understand the project. Always include one.
+- **Invented limitations** — Don&#x27;t write &quot;None known&quot; in the limitations section. If you can&#x27;t name a real limitation, you don&#x27;t understand the project well enough to write the README.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># hallmark-readme
+
+Write a README that doesn&#x27;t sound like an LLM generated it.
+
+## What it does
+
+The agent reads your project and writes a README that follows anti-AI-slop rules: no filler phrases, no invented metrics, no templated structure, honest about limitations, concrete examples, real voice. The result reads like a human wrote it because it follows the patterns that distinguish human writing from LLM defaults.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/hallmark-readme/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Write a README for my project&quot;
+```
+
+The agent reads your project files, identifies the audience, and writes a README with:
+- A one-sentence description of what it does (not what it is)
+- Install instructions near the top
+- One concrete, runnable example
+- Real section headings (not generic &quot;Features&quot; / &quot;Getting Started&quot;)
+- A limitations section naming what the project doesn&#x27;t do
+- No filler, no invented metrics, no badge spam
+
+## What it checks for
+
+| AI tell | This skill |
+|---|---|
+| &quot;empower&quot;, &quot;seamless&quot;, &quot;leverage&quot;, &quot;robust&quot; | Banned — deleted on sight |
+| &quot;Trusted by 50,000+ developers&quot; | Never invented — omitted if no real number exists |
+| Title → Badges → Features → Installation → Usage | Structure varies by project type, not templated |
+| No limitations section | Always includes real limitations |
+| &quot;This project enables developers to...&quot; | First person or direct second person, not corporate third |
+| `my-tool --input &lt;file&gt;` | Concrete examples with real values, not placeholders |
+
+## Example
+
+**Before (AI-generated):**
+
+```markdown
+# Awesome Tool
+
+A powerful, comprehensive tool that empowers developers to seamlessly leverage
+cutting-edge features. Built with love. Trusted by 50,000+ teams worldwide.
+
+## Features
+- Robust architecture
+- Seamless integration
+- Comprehensive documentation
+```
+
+**After (hallmark-readme):**
+
+```markdown
+# tailscale-deploy
+
+Deploy a service on your Tailscale tailnet so it&#x27;s privately accessible from any of your devices.
+
+## What it does
+
+The agent deploys a web service onto your Tailscale tailnet. The service becomes reachable
+from your laptop, phone, and any other device on your tailnet.
+
+## Install
+
+  hermes skills install https://github.com/...
+
+## Example
+
+  User: &quot;Deploy localhost:8080 on my tailnet&quot;
+  Agent: runs tailscale serve --https 8080
+  Result: https://my-machine.tailnet.ts.net
+
+## Limitations
+
+- Requires Tailscale installed and authenticated on both the host and the accessing device.
+- `tailscale serve` is tailnet-only; `tailscale funnel` exposes to the public internet.
+```
+
+The second one sounds like a person wrote it because it follows the rules: no filler, no invented numbers, real structure, concrete example, honest limitations.
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/hallmark-readme/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

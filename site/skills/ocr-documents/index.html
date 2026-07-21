@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ocr-documents — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent runs OCR (Tesseract or EasyOCR) on an image or scanned document and returns the extracted text. For poor-quality images, it preprocesses first (grayscale, contrast enhancement, upscaling) to improve accuracy. For multi-language documents, it loads the appropriate language...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/ocr-documents/">
+  <meta property="og:title" content="ocr-documents — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent runs OCR (Tesseract or EasyOCR) on an image or scanned document and returns the extracted text. For poor-quality images, it preprocesses first (grayscale, contrast enhancement, upscaling) to improve accuracy. For multi-language documents, it loads the appropriate language...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/ocr-documents/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="ocr-documents — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent runs OCR (Tesseract or EasyOCR) on an image or scanned document and returns the extracted text. For poor-quality images, it preprocesses first (grayscale, contrast enhancement, upscaling) to improve accuracy. For multi-language documents, it loads the appropriate language...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>ocr-documents</h1>
+          <p class="tagline">Extract text from images and scanned documents using OCR.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent runs OCR (Tesseract or EasyOCR) on an image or scanned document and returns the extracted text. For poor-quality images, it preprocesses first (grayscale, contrast enhancement, upscaling) to improve accuracy. For multi-language documents, it loads the appropriate language packs.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user has a screenshot or image containing text they want to extract.</li><li>The user has a scanned document that needs to be converted to editable text.</li><li>The user says &quot;read the text in this image&quot;, &quot;OCR this scan&quot;, or &quot;extract text from screenshot&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can extract text from images and scanned documents using ocr. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ocr-documents/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ocr-documents/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: ocr-documents
+description: &quot;Extract text from images and scanned documents using OCR — agent + this skill = user gets editable text from any image or scan.&quot;
+version: 1.0.0
+---
+
+# ocr-documents
+
+Extract text from images, screenshots, and scanned documents using Tesseract OCR and EasyOCR. The agent handles image preprocessing, OCR execution, and text cleanup.
+
+## When to Use
+
+- The user has a screenshot or image containing text they want to extract.
+- The user has a scanned document that needs to be converted to editable text.
+- The user says &quot;read the text in this image&quot;, &quot;OCR this scan&quot;, or &quot;extract text from screenshot&quot;.
+
+## Prerequisites
+
+```bash
+# Tesseract (recommended for most use cases)
+pip install pytesseract pillow
+# System package:
+# Linux: apt install tesseract-ocr
+# macOS: brew install tesseract
+# Windows: https://github.com/UB-Mannheim/tesseract/wiki
+
+# EasyOCR (alternative, better for handwriting/complex layouts)
+pip install easyocr
+```
+
+## Basic OCR
+
+### Tesseract (fast, reliable for printed text)
+
+```python
+import pytesseract
+from PIL import Image
+
+def ocr_image(image_path: str, lang: str = &quot;eng&quot;) -&gt; str:
+    img = Image.open(image_path)
+    return pytesseract.image_to_string(img, lang=lang)
+```
+
+### EasyOCR (better for complex layouts, handwriting)
+
+```python
+import easyocr
+
+reader = easyocr.Reader([&#x27;en&#x27;])
+
+def ocr_image_easyocr(image_path: str) -&gt; str:
+    results = reader.readtext(image_path)
+    return &quot;\n&quot;.join([r[1] for r in results])
+```
+
+## Image Preprocessing
+
+OCR accuracy depends heavily on image quality. Preprocess for better results:
+
+```python
+from PIL import Image, ImageEnhance, ImageFilter
+import pytesseract
+
+def ocr_with_preprocessing(image_path: str) -&gt; str:
+    img = Image.open(image_path)
+
+    # Convert to grayscale
+    img = img.convert(&#x27;L&#x27;)
+
+    # Increase contrast
+    enhancer = ImageEnhance.Contrast(img)
+    img = enhancer.enhance(2.0)
+
+    # Sharpen
+    img = img.filter(ImageFilter.SHARPEN)
+
+    # Upscale small images
+    if img.width &lt; 1000:
+        ratio = 1000 / img.width
+        img = img.resize((int(img.width * ratio), int(img.height * ratio)))
+
+    return pytesseract.image_to_string(img)
+```
+
+## OCR with Bounding Boxes
+
+```python
+import pytesseract
+from PIL import Image, ImageDraw
+
+def ocr_with_boxes(image_path: str, output_path: str = &quot;annotated.png&quot;):
+    img = Image.open(image_path)
+    data = pytesseract.image_to_data(img, output_type=pytesseract.Output.DICT)
+
+    draw = ImageDraw.Draw(img)
+    for i in range(len(data[&quot;text&quot;])):
+        if int(data[&quot;conf&quot;][i]) &gt; 60:  # confidence threshold
+            x, y, w, h = data[&quot;left&quot;][i], data[&quot;top&quot;][i], data[&quot;width&quot;][i], data[&quot;height&quot;][i]
+            draw.rectangle([x, y, x + w, y + h], outline=&quot;red&quot;, width=2)
+
+    img.save(output_path)
+    return [data[&quot;text&quot;][i] for i in range(len(data[&quot;text&quot;])) if int(data[&quot;conf&quot;][i]) &gt; 60]
+```
+
+## PDF Page OCR
+
+```python
+import fitz  # pymupdf
+import pytesseract
+from PIL import Image
+import io
+
+def ocr_pdf_page(pdf_path: str, page_num: int = 0, dpi: int = 300) -&gt; str:
+    doc = fitz.open(pdf_path)
+    page = doc[page_num]
+    pix = page.get_pixmap(dpi=dpi)
+    img = Image.open(io.BytesIO(pix.tobytes(&quot;png&quot;)))
+    return pytesseract.image_to_string(img)
+```
+
+## Multi-language OCR
+
+```python
+# Install language packs:
+# Linux: apt install tesseract-ocr-fra tesseract-ocr-deu tesseract-ocr-spa
+# Then:
+text = pytesseract.image_to_string(img, lang=&#x27;eng+fra+deu&#x27;)
+```
+
+## Workflow
+
+1. Identify the image or document to OCR
+2. Check image quality — if low resolution or poor contrast, preprocess
+3. Run Tesseract for printed text, EasyOCR for handwriting/complex layouts
+4. Clean up the output (remove stray characters, fix common OCR errors)
+5. Return the extracted text
+
+## Common OCR Errors and Fixes
+
+| Error | Cause | Fix |
+|---|---|---|
+| Empty output | Image too small | Upscale to 1000px+ width |
+| Garbled text | Low contrast | Convert to grayscale + enhance contrast |
+| Missing text | Dark background | Invert colors: `ImageOps.invert(img)` |
+| Wrong characters | Similar-looking chars (0/O, 1/l) | Post-process with regex replacements |
+| Slow processing | High DPI | Use 300 DPI (sufficient for most text) |
+
+## Pitfalls
+
+- **Tesseract path not found** — On Windows, set the tesseract path: `pytesseract.pytesseract.tesseract_cmd = r&#x27;C:\Program Files\Tesseract-OCR\tesseract.exe&#x27;`
+- **Handwriting recognition** — Tesseract is poor at handwriting. Use EasyOCR or TrOCR for handwritten text.
+- **Rotated text** — Tesseract expects horizontal text. Detect and rotate first: `pytesseract.image_to_osd(img)` returns rotation angle.
+- **Multi-column layouts** — Tesseract reads left-to-right, top-to-bottom. Multi-column documents get jumbled. Use `image_to_data` with bounding boxes and sort by column.
+- **Low confidence results** — Filter by confidence score. `image_to_data` returns confidence per word. Anything below 50 is unreliable.
+- **Large images** — Images over 5000px take significant time. Resize to 2000-3000px width before OCR.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># ocr-documents
+
+Extract text from images, screenshots, and scanned documents using OCR.
+
+## What it does
+
+The agent runs OCR (Tesseract or EasyOCR) on an image or scanned document and returns the extracted text. For poor-quality images, it preprocesses first (grayscale, contrast enhancement, upscaling) to improve accuracy. For multi-language documents, it loads the appropriate language packs.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ocr-documents/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Extract the text from this screenshot&quot;
+```
+
+The agent:
+1. Opens the image
+2. Preprocesses if needed (grayscale, contrast, upscale)
+3. Runs Tesseract OCR
+4. Returns the text
+
+## Prerequisites
+
+- Tesseract OCR installed (system package)
+- Python: `pip install pytesseract pillow`
+
+## Example
+
+```
+User: &quot;Read the text in this receipt photo&quot;
+
+Agent:
+  1. Opens receipt.jpg (800px wide, low contrast)
+  2. Preprocesses: grayscale + contrast x2 + upscale to 1000px
+  3. Runs: pytesseract.image_to_string(img)
+  4. Returns: &quot;Coffee Shop\nLatte      $4.50\nMuffin     $3.25\nTotal      $7.75&quot;
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ocr-documents/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

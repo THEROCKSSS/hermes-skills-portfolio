@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ollama-local — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent installs Ollama, pulls a model that fits your hardware, and shows you how to use it via the command line or REST API. Models run entirely on your machine — nothing leaves your network. You can use the local model for chat, code generation, embeddings, or as a provider for...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/ollama-local/">
+  <meta property="og:title" content="ollama-local — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent installs Ollama, pulls a model that fits your hardware, and shows you how to use it via the command line or REST API. Models run entirely on your machine — nothing leaves your network. You can use the local model for chat, code generation, embeddings, or as a provider for...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/ollama-local/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="ollama-local — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent installs Ollama, pulls a model that fits your hardware, and shows you how to use it via the command line or REST API. Models run entirely on your machine — nothing leaves your network. You can use the local model for chat, code generation, embeddings, or as a provider for...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>ollama-local</h1>
+          <p class="tagline">Run local LLMs with Ollama — private, offline, no API costs.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge featured">Featured</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> DevOps &amp; Infrastructure</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Highly useful within a category</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent installs Ollama, pulls a model that fits your hardware, and shows you how to use it via the command line or REST API. Models run entirely on your machine — nothing leaves your network. You can use the local model for chat, code generation, embeddings, or as a provider for Hermes Agent.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants to run an LLM locally without paying for API access.</li><li>The user wants privacy — no data leaves their machine.</li><li>The user wants to use a local model with their agent or application.</li><li>The user says &quot;set up Ollama&quot;, &quot;run a local LLM&quot;, or &quot;I want offline AI&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can run local llms with ollama — private, offline, no api costs. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ollama-local/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ollama-local/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: ollama-local
+description: &quot;Run local LLMs with Ollama — agent + this skill = user gets a private, offline LLM running on their machine.&quot;
+version: 1.0.0
+---
+
+# ollama-local
+
+Set up and use Ollama for running large language models locally. Ollama runs models on your machine — no API keys, no cloud, no per-token costs. The agent installs Ollama, pulls models, and shows you how to use them via the REST API or command line.
+
+## When to Use
+
+- The user wants to run an LLM locally without paying for API access.
+- The user wants privacy — no data leaves their machine.
+- The user wants to use a local model with their agent or application.
+- The user says &quot;set up Ollama&quot;, &quot;run a local LLM&quot;, or &quot;I want offline AI&quot;.
+
+## Installation
+
+### Linux
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+### macOS
+
+```bash
+# Via Homebrew
+brew install ollama
+
+# Or download from https://ollama.com/download
+```
+
+### Windows
+
+Download from https://ollama.com/download and run the installer. Ollama runs as a background service on Windows.
+
+### Verify installation
+
+```bash
+ollama --version
+# ollama version is 0.x.x
+```
+
+## Model Management
+
+### Pull a model
+
+```bash
+# Small, fast model (good for testing)
+ollama pull llama3.2:3b
+
+# Medium model (good balance of speed and quality)
+ollama pull llama3.1:8b
+
+# Large model (best quality, needs 16GB+ RAM)
+ollama pull llama3.1:70b
+
+# Coding-focused model
+ollama pull qwen2.5-coder:7b
+
+# Embedding model
+ollama pull nomic-embed-text
+```
+
+### List installed models
+
+```bash
+ollama list
+```
+
+### Run a model (interactive chat)
+
+```bash
+ollama run llama3.1:8b
+&gt;&gt;&gt; Tell me about quantum computing
+```
+
+### Remove a model
+
+```bash
+ollama rm llama3.2:3b
+```
+
+## API Usage
+
+Ollama exposes a REST API at `http://localhost:11434`:
+
+### Generate a response
+
+```bash
+curl http://localhost:11434/api/generate -d &#x27;{
+  &quot;model&quot;: &quot;llama3.1:8b&quot;,
+  &quot;prompt&quot;: &quot;Explain recursion in one sentence.&quot;,
+  &quot;stream&quot;: false
+}&#x27;
+```
+
+### Chat (multi-turn)
+
+```bash
+curl http://localhost:11434/api/chat -d &#x27;{
+  &quot;model&quot;: &quot;llama3.1:8b&quot;,
+  &quot;messages&quot;: [
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What is 2+2?&quot;},
+    {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: &quot;4&quot;},
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What about 3+5?&quot;}
+  ],
+  &quot;stream&quot;: false
+}&#x27;
+```
+
+### Generate embeddings
+
+```bash
+curl http://localhost:11434/api/embeddings -d &#x27;{
+  &quot;model&quot;: &quot;nomic-embed-text&quot;,
+  &quot;prompt&quot;: &quot;The quick brown fox jumps over the lazy dog.&quot;
+}&#x27;
+```
+
+### Python client
+
+```python
+import requests
+
+response = requests.post(&#x27;http://localhost:11434/api/generate&#x27;, json={
+    &#x27;model&#x27;: &#x27;llama3.1:8b&#x27;,
+    &#x27;prompt&#x27;: &#x27;Write a haiku about the ocean.&#x27;,
+    &#x27;stream&#x27;: False
+})
+print(response.json()[&#x27;response&#x27;])
+```
+
+### Streaming responses
+
+```python
+import requests
+
+response = requests.post(&#x27;http://localhost:11434/api/generate&#x27;, json={
+    &#x27;model&#x27;: &#x27;llama3.1:8b&#x27;,
+    &#x27;prompt&#x27;: &#x27;Tell me a story.&#x27;,
+    &#x27;stream&#x27;: True
+}, stream=True)
+
+for line in response.iter_lines():
+    if line:
+        import json
+        chunk = json.loads(line)
+        print(chunk.get(&#x27;response&#x27;, &#x27;&#x27;), end=&#x27;&#x27;, flush=True)
+```
+
+## Integration with Hermes
+
+Configure Hermes to use the local Ollama instance as a provider:
+
+```bash
+# Set Ollama as a custom provider
+hermes config set model.provider custom
+hermes config set model.base_url http://localhost:11434/v1
+hermes config set model.api_key ollama  # Ollama doesn&#x27;t require a real key
+hermes config set model.default llama3.1:8b
+```
+
+Or use Ollama for specific tasks (like auxiliary/compression) while keeping a cloud model for main reasoning:
+
+```bash
+hermes config set auxiliary.compression.provider custom
+hermes config set auxiliary.compression.base_url http://localhost:11434/v1
+hermes config set auxiliary.compression.model llama3.2:3b
+```
+
+## Model Selection Guide
+
+| Model | Size | RAM needed | Best for |
+|---|---|---|---|
+| `llama3.2:3b` | 2 GB | 4 GB | Fast responses, simple tasks |
+| `llama3.1:8b` | 5 GB | 8 GB | General purpose, good balance |
+| `qwen2.5-coder:7b` | 5 GB | 8 GB | Code generation, debugging |
+| `llama3.1:70b` | 40 GB | 64 GB | High quality, complex reasoning |
+| `nomic-embed-text` | 0.3 GB | 1 GB | Embeddings for RAG/search |
+
+## Performance Tips
+
+- **Use GPU if available** — Ollama auto-detects NVIDIA/AMD GPUs and Apple Silicon. GPU inference is 5-10x faster than CPU.
+- **Match model size to your RAM** — A model that doesn&#x27;t fit in RAM will spill to disk and become extremely slow. Check `ollama ps` to see if the model is fully in memory.
+- **Use smaller models for simple tasks** — Don&#x27;t use a 70B model for a one-sentence answer. Use 3B or 8B for quick tasks.
+- **Keep models loaded** — Ollama keeps models in memory for 5 minutes after last use by default. Increase this with `OLLAMA_KEEP_ALIVE` env var if you&#x27;re making frequent requests.
+- **Quantization** — Ollama uses 4-bit quantization by default, which reduces memory usage by ~70% with minimal quality loss. No configuration needed.
+
+## Pitfalls
+
+- **Out of memory** — If the model is larger than your available RAM, Ollama will try to use disk swap and performance will be unusable. Use a smaller model or add RAM.
+- **First run is slow** — The first time you pull a model, it downloads the full model file. Subsequent runs are instant (model is cached).
+- **Port conflicts** — Ollama uses port 11434 by default. If another service uses it, set `OLLAMA_HOST=0.0.0.0:11435` before starting.
+- **No GPU detected** — On Linux, ensure NVIDIA drivers and CUDA toolkit are installed. On Windows, ensure the NVIDIA driver is up to date. On Mac, Apple Silicon is auto-detected.
+- **Context length limits** — Local models have smaller context windows than cloud models. Llama 3.1 supports 128k tokens, but running at full context requires massive RAM. Keep prompts under 8k tokens for 8B models.
+- **Concurrent requests** — Ollama processes requests sequentially by default. If you need concurrency, set `OLLAMA_NUM_PARALLEL` env var.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># ollama-local
+
+Run large language models locally with Ollama — no API keys, no cloud, no per-token costs.
+
+## What it does
+
+The agent installs Ollama, pulls a model that fits your hardware, and shows you how to use it via the command line or REST API. Models run entirely on your machine — nothing leaves your network. You can use the local model for chat, code generation, embeddings, or as a provider for Hermes Agent.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ollama-local/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Set up Ollama with a model that fits my 16GB RAM laptop&quot;
+```
+
+The agent:
+1. Installs Ollama (or verifies it&#x27;s installed)
+2. Recommends a model based on your RAM (llama3.1:8b for 16GB)
+3. Pulls the model: `ollama pull llama3.1:8b`
+4. Tests it: `ollama run llama3.1:8b &quot;Hello&quot;`
+5. Shows you the REST API endpoint at http://localhost:11434
+
+## Model selection
+
+| Model | RAM needed | Best for |
+|---|---|---|
+| llama3.2:3b | 4 GB | Fast, simple tasks |
+| llama3.1:8b | 8 GB | General purpose |
+| qwen2.5-coder:7b | 8 GB | Code generation |
+| llama3.1:70b | 64 GB | Complex reasoning |
+
+## Example
+
+```
+User: &quot;I want to use a local model for my Hermes agent instead of paying for API calls&quot;
+
+Agent:
+  1. Checks RAM: 16 GB available
+  2. Recommends: llama3.1:8b (fits in RAM, good quality)
+  3. Pulls: ollama pull llama3.1:8b
+  4. Configures Hermes:
+     hermes config set model.provider custom
+     hermes config set model.base_url http://localhost:11434/v1
+     hermes config set model.default llama3.1:8b
+  5. Returns: &quot;Hermes is now using your local model. No API costs.&quot;
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ollama-local/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

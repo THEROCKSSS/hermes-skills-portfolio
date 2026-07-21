@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pdf-extract — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent reads a PDF and extracts its content as structured text. For normal PDFs, it uses direct text extraction (fast). For scanned PDFs (image-only), it falls back to OCR with tesseract. It can also extract tables as structured rows and pull embedded images. How the agent uses...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/pdf-extract/">
+  <meta property="og:title" content="pdf-extract — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent reads a PDF and extracts its content as structured text. For normal PDFs, it uses direct text extraction (fast). For scanned PDFs (image-only), it falls back to OCR with tesseract. It can also extract tables as structured rows and pull embedded images. How the agent uses...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/pdf-extract/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="pdf-extract — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent reads a PDF and extracts its content as structured text. For normal PDFs, it uses direct text extraction (fast). For scanned PDFs (image-only), it falls back to OCR with tesseract. It can also extract tables as structured rows and pull embedded images. How the agent uses...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>pdf-extract</h1>
+          <p class="tagline">Extract text, images, and tables from PDFs with OCR fallback.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent reads a PDF and extracts its content as structured text. For normal PDFs, it uses direct text extraction (fast). For scanned PDFs (image-only), it falls back to OCR with tesseract. It can also extract tables as structured rows and pull embedded images.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants to extract text from a PDF.</li><li>The user has a scanned PDF that needs OCR.</li><li>The user wants to pull tables or images out of a PDF.</li><li>The user says &quot;read this PDF&quot;, &quot;extract text from PDF&quot;, or &quot;what&#x27;s in this PDF&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can extract text, images, and tables from pdfs with ocr fallback. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/pdf-extract/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/pdf-extract/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: pdf-extract
+description: &quot;Extract text, images, and tables from PDFs — agent + this skill = user gets structured content from any PDF file.&quot;
+version: 1.0.0
+---
+
+# pdf-extract
+
+Extract text, images, and tables from PDF files using open-source Python libraries. The agent handles PDF parsing, OCR fallback for scanned documents, and structured output.
+
+## When to Use
+
+- The user wants to extract text from a PDF.
+- The user has a scanned PDF that needs OCR.
+- The user wants to pull tables or images out of a PDF.
+- The user says &quot;read this PDF&quot;, &quot;extract text from PDF&quot;, or &quot;what&#x27;s in this PDF&quot;.
+
+## Prerequisites
+
+```bash
+pip install pymupdf pdfplumber pillow
+# For OCR fallback:
+pip install pytesseract
+# Also install tesseract-ocr system package:
+# Linux: apt install tesseract-ocr
+# macOS: brew install tesseract
+# Windows: download from https://github.com/UB-Mannheim/tesseract/wiki
+```
+
+## Text Extraction
+
+### Basic text extraction (pymupdf)
+
+```python
+import fitz  # pymupdf
+
+def extract_text(pdf_path: str) -&gt; str:
+    doc = fitz.open(pdf_path)
+    text = []
+    for page in doc:
+        text.append(page.get_text())
+    return &quot;\n&quot;.join(text)
+```
+
+### With page numbers
+
+```python
+def extract_text_with_pages(pdf_path: str) -&gt; list[dict]:
+    doc = fitz.open(pdf_path)
+    pages = []
+    for i, page in enumerate(doc):
+        pages.append({
+            &quot;page&quot;: i + 1,
+            &quot;text&quot;: page.get_text()
+        })
+    return pages
+```
+
+## Table Extraction
+
+```python
+import pdfplumber
+
+def extract_tables(pdf_path: str) -&gt; list:
+    tables = []
+    with pdfplumber.open(pdf_path) as pdf:
+        for i, page in enumerate(pdf.pages):
+            page_tables = page.extract_tables()
+            for table in page_tables:
+                tables.append({&quot;page&quot;: i + 1, &quot;rows&quot;: table})
+    return tables
+```
+
+## Image Extraction
+
+```python
+import fitz
+import os
+
+def extract_images(pdf_path: str, output_dir: str = &quot;./extracted_images&quot;):
+    os.makedirs(output_dir, exist_ok=True)
+    doc = fitz.open(pdf_path)
+    images = []
+    for page_num, page in enumerate(doc):
+        for img_index, img in enumerate(page.get_images(full=True)):
+            xref = img[0]
+            base_image = doc.extract_image(xref)
+            image_bytes = base_image[&quot;image&quot;]
+            ext = base_image[&quot;ext&quot;]
+            filename = f&quot;{output_dir}/page{page_num+1}_img{img_index+1}.{ext}&quot;
+            with open(filename, &quot;wb&quot;) as f:
+                f.write(image_bytes)
+            images.append(filename)
+    return images
+```
+
+## OCR Fallback (for scanned PDFs)
+
+If `get_text()` returns empty or near-empty, the PDF is likely scanned images. Use OCR:
+
+```python
+import fitz
+import pytesseract
+from PIL import Image
+import io
+
+def extract_with_ocr(pdf_path: str) -&gt; str:
+    doc = fitz.open(pdf_path)
+    text = []
+    for page in doc:
+        # Render page to image at 300 DPI
+        pix = page.get_pixmap(dpi=300)
+        img = Image.open(io.BytesIO(pix.tobytes(&quot;png&quot;)))
+        page_text = pytesseract.image_to_string(img)
+        text.append(page_text)
+    return &quot;\n&quot;.join(text)
+```
+
+## Auto-detect: text vs scanned
+
+```python
+def extract_pdf(pdf_path: str) -&gt; str:
+    doc = fitz.open(pdf_path)
+    # Try direct text extraction
+    total_text = &quot;&quot;.join(page.get_text() for page in doc)
+    # If less than 50 chars per page on average, use OCR
+    if len(total_text) / len(doc) &lt; 50:
+        return extract_with_ocr(pdf_path)
+    return total_text
+```
+
+## Workflow
+
+1. Identify the PDF file path
+2. Try direct text extraction with pymupdf
+3. If text is sparse (&lt; 50 chars/page average), fall back to OCR
+4. If the user needs tables, use pdfplumber
+5. If the user needs images, extract with pymupdf&#x27;s image API
+6. Return structured output (text, tables, or image paths)
+
+## Pitfalls
+
+- **Scanned PDFs return empty text** — `get_text()` returns &quot;&quot; for image-only PDFs. Always check text length and fall back to OCR.
+- **OCR is slow** — Rendering at 300 DPI and running tesseract takes 2-5 seconds per page. For large PDFs, warn the user.
+- **Encrypted PDFs** — `fitz.open()` will fail on password-protected PDFs. Use `doc.authenticate(&quot;password&quot;)` if the password is known.
+- **Table extraction quality varies** — pdfplumber works well for bordered tables but struggles with borderless tables. Check the output.
+- **Large PDFs use lots of memory** — A 500-page PDF loaded with pymupdf uses significant RAM. Process pages one at a time if memory is constrained.
+- **Tesseract language packs** — For non-English PDFs, install the appropriate language pack: `tesseract-ocr-fra` for French, etc. Pass `lang=&#x27;fra&#x27;` to `image_to_string`.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># pdf-extract
+
+Extract text, tables, and images from PDF files — with OCR fallback for scanned documents.
+
+## What it does
+
+The agent reads a PDF and extracts its content as structured text. For normal PDFs, it uses direct text extraction (fast). For scanned PDFs (image-only), it falls back to OCR with tesseract. It can also extract tables as structured rows and pull embedded images.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/pdf-extract/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Extract the text from report.pdf&quot;
+```
+
+The agent:
+1. Opens the PDF with pymupdf
+2. Tries direct text extraction
+3. If text is sparse (scanned PDF), falls back to OCR
+4. Returns the extracted text
+
+## What you get
+
+| Output | Method | Notes |
+|---|---|---|
+| Text | pymupdf `get_text()` | Fast, works on text-based PDFs |
+| Tables | pdfplumber `extract_tables()` | Bordered tables work best |
+| Images | pymupdf `extract_image()` | Saves to disk |
+| OCR text | tesseract via PIL | Fallback for scanned PDFs |
+
+## Example
+
+```
+User: &quot;Pull the tables out of financial_report.pdf&quot;
+
+Agent:
+  1. Uses pdfplumber to extract tables
+  2. Finds 3 tables across 5 pages
+  3. Returns: [{&quot;page&quot;: 2, &quot;rows&quot;: [[&quot;Q1&quot;, &quot;$1.2M&quot;], ...]}, ...]
+  4. Optionally exports to CSV
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/pdf-extract/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

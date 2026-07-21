@@ -70,4 +70,50 @@ jobs:
               exit 1
             fi
           done
+          # Check skills-index.json is in sync
+          if ! diff -q "skills-index.json" "docs/skills-index.json" > /dev/null 2>&1; then
+            echo "FAIL: skills-index.json and docs/skills-index.json are out of sync. Run: cp skills-index.json docs/"
+            exit 1
+          fi
           echo "site/ and docs/ are in sync."
+
+      - name: Validate per-skill pages exist
+        run: |
+          set -eu
+          missing=0
+          for skill_dir in skills/*/; do
+            [ -d "$skill_dir" ] || continue
+            name=$(basename "$skill_dir")
+            for target in "site/skills/$name/index.html" "docs/skills/$name/index.html"; do
+              if [ ! -f "$target" ]; then
+                echo "FAIL: $target missing. Run: python scripts/generate_skill_pages.py"
+                missing=$((missing+1))
+              fi
+            done
+          done
+          if [ "$missing" -gt 0 ]; then
+            exit 1
+          fi
+          echo "All per-skill pages exist."
+
+      - name: Validate provenance in skills-index.json
+        run: |
+          set -eu
+          python3 -c "
+          import json
+          with open('skills-index.json') as f:
+              idx = json.load(f)
+          errors = []
+          for s in idx['skills']:
+              sa = s.get('source_attribution')
+              if not sa:
+                  errors.append(f\"{s['name']}: source_attribution is empty\")
+                  continue
+              if isinstance(sa, dict):
+                  if s.get('source') == 'adapted' and not sa.get('origin_url'):
+                      errors.append(f\"{s['name']}: adapted skill requires origin_url\")
+          if errors:
+              for e in errors: print(f'FAIL: {e}')
+              exit(1)
+          print(f\"All {len(idx['skills'])} skills have valid provenance.\")
+          "

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>openapi-generator — Hermes Skill</title>
+  <meta name="description" content="What it does: Point the skill at an OpenAPI 2.0 / 3.0 / 3.1 specification and it produces
+real, buildable code — no hand-written boilerplate:
+
+- **Client SDKs** — typed clients for TypeScript, Python, Go, Java, C#, Rust, Swift, and more.
+- **Server stubs** — routing, models, and interfaces to...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/openapi-generator/">
+  <meta property="og:title" content="openapi-generator — Hermes Skill">
+  <meta property="og:description" content="What it does: Point the skill at an OpenAPI 2.0 / 3.0 / 3.1 specification and it produces
+real, buildable code — no hand-written boilerplate:
+
+- **Client SDKs** — typed clients for TypeScript, Python, Go, Java, C#, Rust, Swift, and more.
+- **Server stubs** — routing, models, and interfaces to...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/openapi-generator/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="openapi-generator — Hermes Skill">
+  <meta name="twitter:description" content="What it does: Point the skill at an OpenAPI 2.0 / 3.0 / 3.1 specification and it produces
+real, buildable code — no hand-written boilerplate:
+
+- **Client SDKs** — typed clients for TypeScript, Python, Go, Java, C#, Rust, Swift, and more.
+- **Server stubs** — routing, models, and interfaces to...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>openapi-generator</h1>
+          <p class="tagline">Generate client SDKs and server stubs from an OpenAPI spec.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge featured">Featured</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Backend</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Highly useful within a category</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>Point the skill at an OpenAPI 2.0 / 3.0 / 3.1 specification and it produces
+real, buildable code — no hand-written boilerplate:
+
+- **Client SDKs** — typed clients for TypeScript, Python, Go, Java, C#, Rust, Swift, and more.
+- **Server stubs** — routing, models, and interfaces to implement on Spring, FastAPI, Express, ASP.NET Core, and others.
+- **Documentation** — HTML, Markdown, AsciiDoc, and Redoc sites generated from the same contract.
+- **Infrastructure** — Kubernetes, Terraform, and Postman collections from the spec.
+
+---</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <p>Load this skill when the user:</p>
+<ul><li>Has an OpenAPI 2.0 (Swagger) or 3.0/3.1 spec and wants a **client SDK** in a</li></ul>
+<p>specific language (TypeScript, Python, Go, Java, C#, Ruby, etc.).</p>
+<ul><li>Wants a **server stub** / skeleton to implement an API described by a spec.</li><li>Needs **API documentation** (HTML, Markdown, AsciiDoc, Redoc) generated from a</li></ul>
+<p>spec.</p>
+<ul><li>Asks to scaffold a new project &quot;from the API contract&quot;.</li><li>Wants to keep generated clients/stubs in sync with a changing spec.</li><li>Mentions Swagger Codegen, `openapi-generator`, `openapi-generator-cli`,</li></ul>
+<p>`nswag`, or &quot;generate a client from this YAML/JSON&quot;.</p>
+<p>Do **not** use this for: writing the OpenAPI spec itself (that&#x27;s design work),</p>
+<p>runtime API mocking (use Prism/httpbin), or contract testing (use Dredd/Schemathesis).</p>
+<p>This skill is about *code generation from an existing spec*.</p>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can generate client sdks and server stubs from an openapi spec. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/openapi-generator/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/openapi-generator/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: openapi-generator
+description: &gt;-
+  Generate client SDKs, server stubs, API documentation, and infrastructure
+  from an OpenAPI 2.0/3.x specification using openapi-generator-cli. Supports
+  50+ languages and frameworks. Use when a user has an OpenAPI/Swagger spec and
+  wants typed clients, server skeletons, docs, or config without hand-writing
+  boilerplate.
+version: 1.0.0
+---
+
+# openapi-generator
+
+Turn an OpenAPI specification into working code. This skill wraps
+[OpenAPI Generator](https://openapi-generator.tech) so an agent can produce
+client SDKs, server stubs, documentation, and supporting config directly from a
+spec file — with the right flags, the right generator, and none of the common
+pitfalls.
+
+## When to Use
+
+Load this skill when the user:
+
+- Has an OpenAPI 2.0 (Swagger) or 3.0/3.1 spec and wants a **client SDK** in a
+  specific language (TypeScript, Python, Go, Java, C#, Ruby, etc.).
+- Wants a **server stub** / skeleton to implement an API described by a spec.
+- Needs **API documentation** (HTML, Markdown, AsciiDoc, Redoc) generated from a
+  spec.
+- Asks to scaffold a new project &quot;from the API contract&quot;.
+- Wants to keep generated clients/stubs in sync with a changing spec.
+- Mentions Swagger Codegen, `openapi-generator`, `openapi-generator-cli`,
+  `nswag`, or &quot;generate a client from this YAML/JSON&quot;.
+
+Do **not** use this for: writing the OpenAPI spec itself (that&#x27;s design work),
+runtime API mocking (use Prism/httpbin), or contract testing (use Dredd/Schemathesis).
+This skill is about *code generation from an existing spec*.
+
+## openapi-generator-cli
+
+The CLI is distributed as a Java JAR, Docker image, and native installers. Pick
+one and reuse it for every generation in a session.
+
+### Option A — Docker (recommended, no Java install)
+
+```bash
+# List every available generator
+docker run --rm openapitools/openapi-generator-cli list
+
+# Generate a TypeScript fetch client
+docker run --rm -v &quot;${PWD}:/local&quot; openapitools/openapi-generator-cli generate \
+  -i /local/openapi.yaml \
+  -g typescript-fetch \
+  -o /local/out/typescript
+```
+
+The `-v &quot;${PWD}:/local&quot;` bind mount is mandatory — the container writes output
+into `/local`, which maps to your working directory.
+
+### Option B — JAR (needs Java 11+)
+
+```bash
+curl -L https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.6.0/openapi-generator-cli-7.6.0.jar \
+  -o openapi-generator-cli.jar
+
+java -jar openapi-generator-cli.jar list
+java -jar openapi-generator-cli.jar generate -i openapi.yaml -g python -o out/python
+```
+
+### Option C — npm wrapper (single-binary, no Java)
+
+```bash
+npm install -g @openapitools/openapi-generator-cli
+openapi-generator-cli version-manager set 7.6.0
+openapi-generator-cli generate -i openapi.yaml -g go -o out/go
+```
+
+Pin a specific version (`openapi-generator-cli version-manager set 7.6.0`) so
+generated output is reproducible across machines.
+
+## Generator Types
+
+### Client
+
+Generates a typed SDK to *call* the API. Most common request.
+
+```bash
+openapi-generator-cli generate \
+  -i openapi.yaml -g typescript-fetch -o sdk/ts \
+  --additional-properties=supportsES6=true,npmName=my-api-sdk,npmVersion=1.0.0
+```
+
+Common client generators: `typescript-fetch`, `typescript-axios`, `python`,
+`java`, `go`, `csharp-netcore`, `ruby`, `php`, `rust`, `kotlin`, `swift5`, `dart`.
+
+### Server
+
+Generates a server stub with routing, models, and (optionally) business-logic
+stubs you fill in.
+
+```bash
+openapi-generator-cli generate \
+  -i openapi.yaml -g spring -o server/java \
+  --additional-properties=interfaceOnly=true,useSpringBoot3=true
+```
+
+Common server generators: `spring` (Java), `flask` / `fastapi` (Python),
+`express` (Node), `go-server`, `aspnetcore` (C#), `ruby-on-sinatra`, `php-symfony`.
+
+Use `interfaceOnly=true` to emit just the interfaces/models — ideal when you
+already have a framework set up and only want the contract types.
+
+### Documentation
+
+```bash
+# Static HTML2 docs
+openapi-generator-cli generate -i openapi.yaml -g html2 -o docs/html
+
+# Markdown
+openapi-generator-cli generate -i openapi.yaml -g markdown -o docs/md
+
+# AsciiDoc
+openapi-generator-cli generate -i openapi.yaml -g asciidoc -o docs/ascii
+```
+
+Other doc-ish generators: `openapi` (normalizes/re-exports the spec),
+`openapi-yaml`, `redoc` (bundles Redoc viewer), `confluencewiki`.
+
+## Language Support
+
+OpenAPI Generator supports **50+ targets**. The agent should verify the exact
+generator name before invoking — names are case-sensitive and change between
+versions. Run `list` (Docker/JAR) or `openapi-generator-cli list` (npm) and grep
+for the language.
+
+```bash
+docker run --rm openapitools/openapi-generator-cli list | grep -i typescript
+```
+
+High-traffic families and their canonical generator names:
+
+| Family     | Generator(s)                                  |
+|------------|------------------------------------------------|
+| TypeScript | `typescript-fetch`, `typescript-axios`, `typescript-node` |
+| Python     | `python`, `python-fastapi`                     |
+| Go         | `go`, `go-server`                              |
+| Java       | `java`, `spring`                               |
+| C#         | `csharp-netcore`, `aspnetcore`                 |
+| Rust       | `rust`, `rust-server`                          |
+| Kotlin     | `kotlin`, `kotlin-spring`                      |
+| Swift      | `swift5`                                       |
+| PHP        | `php`, `php-symfony`, `php-laravel`            |
+| Ruby       | `ruby`, `ruby-on-sinatra`                      |
+
+If a user asks for a language not listed by `list`, tell them it is unsupported
+rather than guessing a generator name — a wrong name fails loudly.
+
+## Customization
+
+Generators are configured with `--additional-properties` (comma-separated
+`key=value`) and `-c config.json` for many properties.
+
+```bash
+openapi-generator-cli generate -i openapi.yaml -g python -o out/python \
+  -c config.json
+```
+
+`config.json`:
+
+```json
+{
+  &quot;packageName&quot;: &quot;my_api_client&quot;,
+  &quot;projectName&quot;: &quot;my-api-client&quot;,
+  &quot;packageVersion&quot;: &quot;2.1.0&quot;,
+  &quot;generateSourceCodeOnly&quot;: false,
+  &quot;useOneOfDiscriminatorLookup&quot;: true
+}
+```
+
+Useful properties (generator-specific — always confirm with `config-help`):
+
+```bash
+openapi-generator-cli config-help -g typescript-fetch
+```
+
+- `useOneOfDiscriminatorLookup`, `useInlineModelResolver` — shape of models.
+- `enumClassPrefix`, `enumNameMappings` — enum naming.
+- `hideGenerationTimestamp` — set `true` to keep diffs clean in version control.
+- `sourceFolder`, `apiPackage`, `modelPackage` — output layout.
+
+For deeper changes (custom templates, license headers, naming), use the
+`-t templates/` flag to supply a Mustache template directory. Copy the default
+templates first:
+
+```bash
+openapi-generator-cli author template -g typescript-fetch -o my-templates/
+```
+
+## Validation
+
+Validate the spec before generating — most failures trace back to an invalid or
+partially-resolved spec.
+
+```bash
+# Built-in structural validation
+openapi-generator-cli validate -i openapi.yaml
+
+# Stronger linting with Spectral (separate tool)
+npm install -g @stoplight/spectral-cli
+spectral lint openapi.yaml
+```
+
+Workflow the agent should follow:
+
+1. `validate` the spec — fix schema/reference errors first.
+2. `list` / `config-help` to confirm generator name and properties.
+3. `generate` into a clean output directory.
+4. Inspect the output: does `out/&lt;lang&gt;/README.md` / build file exist?
+5. For client/server, optionally compile/build the generated project to confirm
+   it is non-trivial and importable.
+
+```bash
+# Example check after generating a Python client
+cd out/python &amp;&amp; python -m pip install -e . &amp;&amp; python -c &quot;import openapi_client&quot;
+```
+
+## Pitfalls
+
+- **Mounting the spec into Docker.** Forgetting `-v &quot;${PWD}:/local&quot;` means the
+  container cannot see your spec and writes nothing where you expect. Always bind
+  the working directory.
+- **`$ref` must resolve.** Remote `$ref`s (URLs) work online but break in
+  air-gapped runs. Bundle first with `openapi-generator-cli merge` or
+  `swagger-cli bundle` to inline all references.
+- **Version drift.** Different CLI versions emit different code. Pin the version
+  and record it in the generated project&#x27;s README or a `Makefile`/CI step.
+- **Overwriting hand-written code.** Never generate into a directory that
+  contains source you edited. Use `interfaceOnly=true` or generate into a
+  dedicated `generated/` subtree and import it.
+- **`hideGenerationTimestamp`.** Leave it off during debugging, but set it
+  `true` for committed code so regeneration doesn&#x27;t create noisy diffs.
+- **Case-sensitive generator names.** `TypeScript-Fetch` fails; the correct
+  name is `typescript-fetch`. Always copy the exact string from `list`.
+- **Java/JAR memory.** Large specs can OOM the JVM. Raise the heap:
+  `java -Xmx2g -jar openapi-generator-cli.jar generate ...`.
+- **OpenAPI 3.1 vs 2.0.** Some generators lag on 3.1 features (webhooks,
+  discriminators). If a 3.1 spec fails, try converting to 3.0 with
+  `openapi-generator-cli merge` or `swagger2openapi`.
+- **Don&#x27;t hand-merge generated folders.** Treat generated code as build
+  artifacts; regenerate rather than resolve Git merge conflicts inside them.
+- **Docker writes files as root.** Add `--user $(id -u):$(id -g)` to the
+  `docker run` command so output files aren&#x27;t owned by root.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># openapi-generator
+
+&gt; Generate client SDKs, server stubs, API docs, and config from an OpenAPI spec — in 50+ languages, straight from the contract.
+
+Part of the [Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio) by **Owen**.
+
+---
+
+## What it does
+
+Point the skill at an OpenAPI 2.0 / 3.0 / 3.1 specification and it produces
+real, buildable code — no hand-written boilerplate:
+
+- **Client SDKs** — typed clients for TypeScript, Python, Go, Java, C#, Rust, Swift, and more.
+- **Server stubs** — routing, models, and interfaces to implement on Spring, FastAPI, Express, ASP.NET Core, and others.
+- **Documentation** — HTML, Markdown, AsciiDoc, and Redoc sites generated from the same contract.
+- **Infrastructure** — Kubernetes, Terraform, and Postman collections from the spec.
+
+---
+
+## Why you want it
+
+| Without this skill | With this skill |
+|--------------------|-----------------|
+| Hand-write a client per language | One spec → every client in minutes |
+| Drift between docs and code | Docs generated from the same source of truth |
+| Guess generator flags | Correct, version-pinned invocations |
+| Hit Docker/JAR pitfalls blind | Guided around the common traps |
+
+---
+
+## Quick start
+
+```bash
+# Generate a TypeScript fetch client from your spec
+docker run --rm -v &quot;${PWD}:/local&quot; openapitools/openapi-generator-cli generate \
+  -i /local/openapi.yaml \
+  -g typescript-fetch \
+  -o /local/out/typescript
+```
+
+Prefer npm or the JAR? The skill documents all three install paths
+(Docker, JAR, npm wrapper) plus version pinning for reproducible output.
+
+---
+
+## Highlights
+
+- ✅ 50+ generator targets with verified canonical names
+- ✅ Client, server, and documentation generator recipes
+- ✅ `additional-properties` and `config.json` customization patterns
+- ✅ Spec validation with built-in and Spectral linting
+- ✅ A dedicated **Pitfalls** section: Docker mounts, `$ref` resolution, version drift, overwriting hand-written code, JVM memory, 3.1 support
+
+---
+
+## Install
+
+Add this skill to your Hermes agent:
+
+```
+https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/openapi-generator/SKILL.md
+```
+
+Then ask your agent things like:
+
+- *&quot;Generate a Python client and a Spring server stub from my openapi.yaml.&quot;*
+- *&quot;Build HTML docs from this spec and pin the generator version.&quot;*
+- *&quot;Create a TypeScript SDK with ES6 support and a custom package name.&quot;*
+
+---
+
+## License
+
+MIT — contributions welcome via the portfolio repository.
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/openapi-generator/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

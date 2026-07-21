@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>snippet-manager — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent stores code snippets as markdown files with metadata (language, tags, description) in a snippet directory. You can save snippets by giving the code + a name, search by keyword/tag/language, and retrieve snippets to insert into your code. Snippets persist across sessions....">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/snippet-manager/">
+  <meta property="og:title" content="snippet-manager — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent stores code snippets as markdown files with metadata (language, tags, description) in a snippet directory. You can save snippets by giving the code + a name, search by keyword/tag/language, and retrieve snippets to insert into your code. Snippets persist across sessions....">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/snippet-manager/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="snippet-manager — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent stores code snippets as markdown files with metadata (language, tags, description) in a snippet directory. You can save snippets by giving the code + a name, search by keyword/tag/language, and retrieve snippets to insert into your code. Snippets persist across sessions....">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>snippet-manager</h1>
+          <p class="tagline">Save and retrieve reusable code snippets.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent stores code snippets as markdown files with metadata (language, tags, description) in a snippet directory. You can save snippets by giving the code + a name, search by keyword/tag/language, and retrieve snippets to insert into your code. Snippets persist across sessions.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants to save a useful code snippet for reuse.</li><li>The user wants to find a snippet they saved earlier.</li><li>The user wants to build a personal snippet library.</li><li>The user says &quot;save this snippet&quot;, &quot;find my snippet for&quot;, or &quot;I had code for this&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can save and retrieve reusable code snippets. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/snippet-manager/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/snippet-manager/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: snippet-manager
+description: &quot;Save and retrieve code snippets — agent + this skill = user gets a searchable snippet library.&quot;
+version: 1.0.0
+---
+
+# snippet-manager
+
+Store, search, and retrieve reusable code snippets. The agent saves snippets with metadata (language, tags, description), searches by keyword or tag, and inserts snippets into files on demand.
+
+## When to Use
+
+- The user wants to save a useful code snippet for reuse.
+- The user wants to find a snippet they saved earlier.
+- The user wants to build a personal snippet library.
+- The user says &quot;save this snippet&quot;, &quot;find my snippet for&quot;, or &quot;I had code for this&quot;.
+
+## Storage
+
+Snippets are stored as individual files in a snippet directory:
+
+```
+~/.snippets/
+├── python_http_get.md
+├── js_debounce.md
+├── bash_find_large_files.md
+└── sql_upsert.md
+```
+
+Each snippet file has YAML frontmatter + the code:
+
+```markdown
+---
+language: python
+tags: [http, requests, api]
+description: HTTP GET request with error handling and timeout
+created: 2026-07-20
+---
+
+```python
+import requests
+
+def http_get(url, timeout=10):
+    try:
+        resp = requests.get(url, timeout=timeout)
+        resp.raise_for_status()
+        return resp.json()
+    except requests.exceptions.RequestException as e:
+        print(f&quot;Request failed: {e}&quot;)
+        return None
+```
+```
+
+## Save a Snippet
+
+```python
+import os
+from datetime import datetime
+from pathlib import Path
+
+def save_snippet(name: str, language: str, code: str, tags: list = None, description: str = &quot;&quot;, snippet_dir: str = None):
+    &quot;&quot;&quot;Save a code snippet to the snippet library.&quot;&quot;&quot;
+    if snippet_dir is None:
+        snippet_dir = os.path.expanduser(&quot;~/.snippets&quot;)
+    Path(snippet_dir).mkdir(parents=True, exist_ok=True)
+
+    filename = f&quot;{name}.md&quot;
+    filepath = os.path.join(snippet_dir, filename)
+
+    frontmatter = f&quot;&quot;&quot;---
+language: {language}
+tags: [{&#x27;, &#x27;.join(tags or [])}]
+description: {description}
+created: {datetime.now().strftime(&#x27;%Y-%m-%d&#x27;)}
+---
+
+```{language}
+{code}
+```
+&quot;&quot;&quot;
+    with open(filepath, &#x27;w&#x27;) as f:
+        f.write(frontmatter)
+    return filepath
+```
+
+## Search Snippets
+
+```python
+import re
+
+def search_snippets(query: str = &quot;&quot;, tag: str = &quot;&quot;, language: str = &quot;&quot;, snippet_dir: str = None) -&gt; list:
+    &quot;&quot;&quot;Search snippets by keyword, tag, or language.&quot;&quot;&quot;
+    if snippet_dir is None:
+        snippet_dir = os.path.expanduser(&quot;~/.snippets&quot;)
+
+    results = []
+    for filepath in Path(snippet_dir).glob(&quot;*.md&quot;):
+        with open(filepath, &#x27;r&#x27;) as f:
+            content = f.read()
+
+        # Parse frontmatter
+        fm_match = re.match(r&#x27;^---\n(.*?)\n---\n(.*)&#x27;, content, re.DOTALL)
+        if not fm_match:
+            continue
+
+        frontmatter = fm_match.group(1)
+        body = fm_match.group(2)
+
+        # Check filters
+        match = True
+        if language and f&quot;language: {language}&quot; not in frontmatter:
+            match = False
+        if tag and f&quot;tags: [{tag}&quot; not in frontmatter and f&quot;, {tag}&quot; not in frontmatter:
+            match = False
+        if query and query.lower() not in content.lower():
+            match = False
+
+        if match:
+            results.append({
+                &quot;file&quot;: filepath.name,
+                &quot;content&quot;: body.strip(),
+                &quot;frontmatter&quot;: frontmatter,
+            })
+
+    return results
+```
+
+## List All Snippets
+
+```python
+def list_snippets(snippet_dir: str = None) -&gt; list:
+    &quot;&quot;&quot;List all saved snippets with metadata.&quot;&quot;&quot;
+    if snippet_dir is None:
+        snippet_dir = os.path.expanduser(&quot;~/.snippets&quot;)
+
+    snippets = []
+    for filepath in Path(snippet_dir).glob(&quot;*.md&quot;):
+        with open(filepath, &#x27;r&#x27;) as f:
+            content = f.read()
+        fm_match = re.match(r&#x27;^---\n(.*?)\n---&#x27;, content, re.DOTALL)
+        if fm_match:
+            fm = fm_match.group(1)
+            lang = re.search(r&#x27;language:\s*(\w+)&#x27;, fm)
+            desc = re.search(r&#x27;description:\s*(.+)&#x27;, fm)
+            snippets.append({
+                &quot;name&quot;: filepath.stem,
+                &quot;language&quot;: lang.group(1) if lang else &quot;unknown&quot;,
+                &quot;description&quot;: desc.group(1).strip() if desc else &quot;&quot;,
+            })
+    return snippets
+```
+
+## Workflow
+
+1. **Save**: The user provides code + a name → save to `~/.snippets/name.md`
+2. **Search**: The user asks for a snippet → search by keyword, tag, or language
+3. **Insert**: The user wants to use a snippet → retrieve it and insert into the current file
+4. **List**: Show all saved snippets with metadata
+
+## Pitfalls
+
+- **Snippet directory location** — Default is `~/.snippets/`. If the user has a preferred location (e.g., inside a dotfiles repo), set it explicitly.
+- **Name collisions** — Saving a snippet with an existing name overwrites it. Warn the user or append a number.
+- **No syntax validation** — Snippets are stored as-is. The code isn&#x27;t validated. Test snippets before saving.
+- **Tags format** — Tags in frontmatter use `[tag1, tag2]` format. Ensure consistent comma separation for search to work.
+- **Large snippets** — Files over a few hundred lines make the library unwieldy. Keep snippets focused — one function or pattern per file.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># snippet-manager
+
+Save, search, and retrieve reusable code snippets — a personal searchable snippet library.
+
+## What it does
+
+The agent stores code snippets as markdown files with metadata (language, tags, description) in a snippet directory. You can save snippets by giving the code + a name, search by keyword/tag/language, and retrieve snippets to insert into your code. Snippets persist across sessions.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/snippet-manager/SKILL.md
+```
+
+## How to use
+
+**Save a snippet:**
+```
+&quot;Save this Python HTTP client as &#x27;http_get&#x27;&quot;
+```
+
+**Find a snippet:**
+```
+&quot;Find my snippet for debouncing&quot;
+```
+
+The agent searches the library and returns the matching snippet.
+
+## Example
+
+```
+User: &quot;Save this as a snippet: const debounce = (fn, ms) =&gt; { ... }&quot;
+
+Agent:
+  1. Saves to ~/.snippets/js_debounce.md
+  2. Tags: [javascript, utility, performance]
+  3. Returns: &quot;Saved. Find it with: search &#x27;debounce&#x27;&quot;
+
+Later:
+User: &quot;Find my debounce snippet&quot;
+Agent: Returns the snippet code from ~/.snippets/js_debounce.md
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/snippet-manager/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

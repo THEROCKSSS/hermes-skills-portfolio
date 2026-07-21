@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>youtube-transcript — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent fetches the caption track from a YouTube video and returns it as plain text or timestamped segments. Works with manual captions and auto-generated captions. You get the text content of a video without watching it. How the agent uses it: The user wants the text content of...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/youtube-transcript/">
+  <meta property="og:title" content="youtube-transcript — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent fetches the caption track from a YouTube video and returns it as plain text or timestamped segments. Works with manual captions and auto-generated captions. You get the text content of a video without watching it. How the agent uses it: The user wants the text content of...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/youtube-transcript/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="youtube-transcript — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent fetches the caption track from a YouTube video and returns it as plain text or timestamped segments. Works with manual captions and auto-generated captions. You get the text content of a video without watching it. How the agent uses it: The user wants the text content of...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>youtube-transcript</h1>
+          <p class="tagline">Extract transcripts from YouTube videos.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent fetches the caption track from a YouTube video and returns it as plain text or timestamped segments. Works with manual captions and auto-generated captions. You get the text content of a video without watching it.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants the text content of a YouTube video.</li><li>The user wants to search for a specific topic within a video.</li><li>The user wants to summarize or quote a video.</li><li>The user says &quot;get the transcript&quot;, &quot;what does this video say&quot;, or &quot;extract the captions&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can extract transcripts from youtube videos. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/youtube-transcript/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/youtube-transcript/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: youtube-transcript
+description: &quot;Extract transcripts from YouTube videos — agent + this skill = user gets the text of any YouTube video.&quot;
+version: 1.0.0
+---
+
+# youtube-transcript
+
+Fetch transcripts from YouTube videos. The agent retrieves the video&#x27;s caption track, cleans the text, and returns it as plain text or structured segments with timestamps.
+
+## When to Use
+
+- The user wants the text content of a YouTube video.
+- The user wants to search for a specific topic within a video.
+- The user wants to summarize or quote a video.
+- The user says &quot;get the transcript&quot;, &quot;what does this video say&quot;, or &quot;extract the captions&quot;.
+
+## Prerequisites
+
+```bash
+pip install youtube-transcript-api
+```
+
+## Basic Transcript
+
+```python
+from youtube_transcript_api import YouTubeTranscriptApi
+
+def get_transcript(video_id: str, lang: str = &quot;en&quot;) -&gt; str:
+    &quot;&quot;&quot;Get the full transcript as plain text.&quot;&quot;&quot;
+    transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[lang])
+    return &quot; &quot;.join([snippet[&quot;text&quot;] for snippet in transcript])
+```
+
+## With Timestamps
+
+```python
+def get_transcript_with_timestamps(video_id: str, lang: str = &quot;en&quot;) -&gt; list:
+    &quot;&quot;&quot;Get transcript as a list of {start, duration, text} dicts.&quot;&quot;&quot;
+    transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[lang])
+    return [
+        {
+            &quot;start&quot;: snippet[&quot;start&quot;],
+            &quot;end&quot;: snippet[&quot;start&quot;] + snippet[&quot;duration&quot;],
+            &quot;text&quot;: snippet[&quot;text&quot;]
+        }
+        for snippet in transcript
+    ]
+```
+
+## Extract Video ID from URL
+
+```python
+import re
+
+def extract_video_id(url: str) -&gt; str:
+    patterns = [
+        r&quot;(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/)([a-zA-Z0-9_-]{11})&quot;,
+        r&quot;youtube\.com/shorts/([a-zA-Z0-9_-]{11})&quot;,
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, url)
+        if match:
+            return match.group(1)
+    # Maybe it&#x27;s already just the ID
+    if re.match(r&quot;^[a-zA-Z0-9_-]{11}$&quot;, url):
+        return url
+    raise ValueError(f&quot;Could not extract video ID from: {url}&quot;)
+```
+
+## Full Workflow
+
+```python
+# 1. Get video ID from URL
+video_id = extract_video_id(&quot;https://www.youtube.com/watch?v=dQw4w9WgXcQ&quot;)
+
+# 2. Get transcript
+transcript = get_transcript(video_id)
+
+# 3. Optionally save to file
+with open(&quot;transcript.txt&quot;, &quot;w&quot;) as f:
+    f.write(transcript)
+```
+
+## Search Within Transcript
+
+```python
+def search_transcript(video_id: str, query: str, lang: str = &quot;en&quot;) -&gt; list:
+    &quot;&quot;&quot;Find segments containing a query string.&quot;&quot;&quot;
+    transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[lang])
+    query_lower = query.lower()
+    matches = []
+    for snippet in transcript:
+        if query_lower in snippet[&quot;text&quot;].lower():
+            matches.append({
+                &quot;timestamp&quot;: snippet[&quot;start&quot;],
+                &quot;text&quot;: snippet[&quot;text&quot;]
+            })
+    return matches
+```
+
+## Translate Non-English Transcripts
+
+```python
+from youtube_transcript_api import YouTubeTranscriptApi
+
+def get_transcript_any_language(video_id: str) -&gt; str:
+    &quot;&quot;&quot;Get transcript in any available language.&quot;&quot;&quot;
+    transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+    for transcript in transcript_list:
+        try:
+            return &quot; &quot;.join([s[&quot;text&quot;] for s in transcript.fetch()])
+        except:
+            continue
+    raise ValueError(&quot;No transcript available in any language&quot;)
+```
+
+## Pitfalls
+
+- **No captions available** — Not all videos have captions. `get_transcript` raises `NoTranscriptFound`. Check with `list_transcripts` first.
+- **Auto-generated captions** — YouTube auto-generates captions for many videos. They&#x27;re less accurate than manual captions but usually available.
+- **Rate limiting** — YouTube may rate-limit frequent requests. Add delays between multiple video fetches.
+- **Video is private or deleted** — Private or deleted videos have no transcript. The API raises `VideoUnavailable`.
+- **Language not available** — If the requested language isn&#x27;t available, try `list_transcripts` to see what languages exist. Many videos have auto-translated tracks.
+- **HTML entities in text** — Transcript text may contain HTML entities (`&amp;amp;`, `&amp;#39;`). Use `html.unescape()` to clean them.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># youtube-transcript
+
+Extract the transcript from any YouTube video that has captions.
+
+## What it does
+
+The agent fetches the caption track from a YouTube video and returns it as plain text or timestamped segments. Works with manual captions and auto-generated captions. You get the text content of a video without watching it.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/youtube-transcript/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Get the transcript from https://www.youtube.com/watch?v=...&quot;
+```
+
+The agent:
+1. Extracts the video ID from the URL
+2. Fetches the transcript via the YouTube Transcript API
+3. Returns the text (optionally with timestamps)
+
+## Example
+
+```
+User: &quot;What does this video say about machine learning? https://youtu.be/...&quot;
+
+Agent:
+  1. Extracts video ID
+  2. Gets transcript with timestamps
+  3. Searches for &quot;machine learning&quot; in the text
+  4. Returns: &quot;At 3:42, the speaker says: &#x27;Machine learning is...&#x27;&quot;
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/youtube-transcript/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

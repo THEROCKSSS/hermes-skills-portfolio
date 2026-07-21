@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>skill-publish — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent extracts a single skill from a skills monorepo, generates a self-contained README, creates a new public GitHub repo for that skill, and pushes it. The monorepo stays the source of truth — the per-skill repo is a spotlight artifact for discoverability. How the agent uses...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/skill-publish/">
+  <meta property="og:title" content="skill-publish — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent extracts a single skill from a skills monorepo, generates a self-contained README, creates a new public GitHub repo for that skill, and pushes it. The monorepo stays the source of truth — the per-skill repo is a spotlight artifact for discoverability. How the agent uses...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/skill-publish/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="skill-publish — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent extracts a single skill from a skills monorepo, generates a self-contained README, creates a new public GitHub repo for that skill, and pushes it. The monorepo stays the source of truth — the per-skill repo is a spotlight artifact for discoverability. How the agent uses...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>skill-publish</h1>
+          <p class="tagline">Publish one skill from a monorepo into its own dedicated GitHub repo with a standalone README.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge core">Core</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Meta</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Broadly empowering, nearly any user benefits</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent extracts a single skill from a skills monorepo, generates a self-contained README, creates a new public GitHub repo for that skill, and pushes it. The monorepo stays the source of truth — the per-skill repo is a spotlight artifact for discoverability.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants to give one skill its own GitHub repo with its own page, separate from the monorepo.</li><li>The user says &quot;publish this skill&quot;, &quot;give this skill its own repo&quot;, or &quot;spotlight this skill&quot;.</li><li>The user wants a single skill to be more discoverable than it would be inside a monorepo.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can publish one skill from a monorepo into its own dedicated github repo with a standalone readme. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/skill-publish/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/skill-publish/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: skill-publish
+description: &quot;Publish one skill from a monorepo into its own dedicated GitHub repo with a standalone README — agent + this skill = user gets a spotlight repo for a single skill.&quot;
+version: 1.0.0
+---
+
+# skill-publish
+
+Extract one skill from a skills monorepo and publish it into its own dedicated GitHub repository with a self-contained README. This is the per-skill spotlight flow — the monorepo stays the source of truth, the per-skill repo is a derived artifact for discoverability.
+
+## When to Use
+
+- The user wants to give one skill its own GitHub repo with its own page, separate from the monorepo.
+- The user says &quot;publish this skill&quot;, &quot;give this skill its own repo&quot;, or &quot;spotlight this skill&quot;.
+- The user wants a single skill to be more discoverable than it would be inside a monorepo.
+
+## Prerequisites
+
+1. **A skills monorepo** with skills in `skills/&lt;skill-name&gt;/` directories.
+2. **GitHub authentication** — a GitHub personal access token with `repo` scope. Set as `GITHUB_TOKEN` or `GH_TOKEN` environment variable, or use `gh auth login`.
+3. **The skill to publish** must have a valid `SKILL.md` with frontmatter (`name`, `description` minimum).
+
+## Workflow
+
+### Step 1: Identify the skill to publish
+
+Confirm the skill name with the user. The skill must exist in the monorepo at `skills/&lt;skill-name&gt;/`.
+
+```bash
+# Verify the skill exists
+ls skills/&lt;skill-name&gt;/SKILL.md
+```
+
+Read the SKILL.md frontmatter to get the skill name and description.
+
+### Step 2: Create a temporary staging directory
+
+```bash
+STAGING_DIR=&quot;/tmp/skill-publish-&lt;skill-name&gt;&quot;
+rm -rf &quot;$STAGING_DIR&quot;
+mkdir -p &quot;$STAGING_DIR&quot;
+
+# Copy the skill directory
+cp -r skills/&lt;skill-name&gt;/* &quot;$STAGING_DIR/&quot;
+```
+
+### Step 3: Generate a standalone README
+
+If the skill already has a `README.md`, polish it for standalone context. If not, generate one from the SKILL.md content:
+
+```markdown
+# &lt;skill-name&gt;
+
+&lt;description from frontmatter&gt;
+
+## What it does
+&lt;2-3 sentences from the SKILL.md body&gt;
+
+## Install
+\`\`\`bash
+hermes skills install https://github.com/&lt;user&gt;/&lt;skill-name&gt;/blob/main/SKILL.md
+\`\`\`
+
+## How to use
+&lt;from the SKILL.md workflow section&gt;
+```
+
+The README must be self-contained — no references to a parent monorepo, no relative links that assume the reader is inside a larger repo.
+
+### Step 4: Create the GitHub repository
+
+Use the GitHub CLI or API:
+
+```bash
+# Using gh CLI
+gh repo create &lt;skill-name&gt; --public --description &quot;&lt;description from frontmatter&gt;&quot; --source &quot;$STAGING_DIR&quot; --push
+
+# Or using the API
+curl -s -X POST https://api.github.com/user/repos \
+  -H &quot;Authorization: token $GITHUB_TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &quot;{\&quot;name\&quot;:\&quot;&lt;skill-name&gt;\&quot;,\&quot;description\&quot;:\&quot;&lt;description&gt;\&quot;,\&quot;public\&quot;:true}&quot;
+```
+
+### Step 5: Initialize git and push
+
+```bash
+cd &quot;$STAGING_DIR&quot;
+git init
+git checkout -b main
+git add -A
+git commit -m &quot;Publish &lt;skill-name&gt; — standalone skill repo&quot;
+git remote add origin https://github.com/&lt;user&gt;/&lt;skill-name&gt;.git
+git push -u origin main
+```
+
+### Step 6: Verify
+
+```bash
+# Check the repo is public and the SKILL.md is accessible
+curl -s -o /dev/null -w &quot;%{http_code}&quot; https://github.com/&lt;user&gt;/&lt;skill-name&gt;/blob/main/SKILL.md
+# Should return 200
+```
+
+### Step 7: Return the URL to the user
+
+```
+Published: https://github.com/&lt;user&gt;/&lt;skill-name&gt;
+Install: hermes skills install https://github.com/&lt;user&gt;/&lt;skill-name&gt;/blob/main/SKILL.md
+```
+
+### Step 8: Clean up
+
+```bash
+rm -rf &quot;$STAGING_DIR&quot;
+```
+
+## Configuration
+
+The skill reads these from the user&#x27;s environment or asks interactively:
+
+| Setting | Env var | Default | Notes |
+|---|---|---|---|
+| GitHub username | `GITHUB_USER` | asks user | The repo will be created under this user/org |
+| GitHub token | `GITHUB_TOKEN` or `GH_TOKEN` | asks user | Needs `repo` scope |
+| Repo visibility | — | public | Can be set to private if the user asks |
+
+## Pitfalls
+
+- **Token lacks scope** — The GitHub token needs `repo` scope to create repos. A read-only token will fail with 403. Generate a token at https://github.com/settings/tokens.
+- **Repo name collision** — If a repo with the same name already exists, creation fails with 422. Either pick a different name or delete the existing repo first.
+- **Relative links in README** — Links like `../other-skill/` that work inside the monorepo break in a standalone repo. The README must be rewritten with absolute URLs or self-contained paths.
+- **Missing frontmatter** — If the SKILL.md lacks `name` or `description` in frontmatter, the publish will fail at the README generation step. Validate first.
+- **Large files in the skill directory** — If the skill directory contains large binaries or datasets, the push may be slow or fail. Add a `.gitignore` to the staging dir for any large or generated files.
+- **The monorepo is the source of truth** — Changes to the skill should be made in the monorepo first, then re-published. The per-skill repo is a derived artifact, not the canonical source.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># skill-publish
+
+Publish one skill from a monorepo into its own dedicated GitHub repo with a standalone README.
+
+## What it does
+
+The agent extracts a single skill from a skills monorepo, generates a self-contained README, creates a new public GitHub repo for that skill, and pushes it. The monorepo stays the source of truth — the per-skill repo is a spotlight artifact for discoverability.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/skill-publish/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Publish the tailscale-deploy skill to its own GitHub repo&quot;
+```
+
+The agent:
+1. Reads the skill from `skills/tailscale-deploy/` in your monorepo
+2. Generates a standalone README (rewrites relative links, adds install instructions)
+3. Creates `https://github.com/&lt;your-user&gt;/tailscale-deploy`
+4. Pushes the skill files
+5. Returns the repo URL and the one-line install command
+
+## Prerequisites
+
+- A skills monorepo with skills in `skills/&lt;name&gt;/` directories
+- A GitHub personal access token with `repo` scope (set as `GITHUB_TOKEN` or use `gh auth login`)
+- The skill to publish must have a `SKILL.md` with `name` and `description` frontmatter
+
+## What you get
+
+- A public GitHub repo containing one skill, self-contained
+- A standalone README with install instructions pointing to the new repo
+- The skill is installable via `hermes skills install &lt;url&gt;` from the new repo
+- The monorepo is unchanged — the per-skill repo is a derived artifact
+
+## Example
+
+```
+User: &quot;Give the hallmark-readme skill its own repo&quot;
+
+Agent:
+  1. Reads skills/hallmark-readme/SKILL.md → name: hallmark-readme, description: &quot;...&quot;
+  2. Stages the skill files to a temp directory
+  3. Generates a standalone README.md (rewrites relative links)
+  4. Creates repo: gh repo create hallmark-readme --public
+  5. Pushes: git push -u origin main
+  6. Returns: &quot;Published at https://github.com/your-user/hallmark-readme&quot;
+
+The skill is now installable from its own repo:
+  hermes skills install https://github.com/your-user/hallmark-readme/blob/main/SKILL.md
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/skill-publish/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

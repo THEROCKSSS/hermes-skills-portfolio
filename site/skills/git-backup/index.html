@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>git-backup — Hermes Skill</title>
+  <meta name="description" content="What it does: - **Three strategies**, matched to your setup:
+  - **Mirror clone** — compact bare mirror of every ref, ready to push to a host.
+  - **Bundle** — one self-contained `.bundle` file for cold/portable storage.
+  - **Bundle + push** — both, for a 3-2-1-grade safety net.
+-...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/git-backup/">
+  <meta property="og:title" content="git-backup — Hermes Skill">
+  <meta property="og:description" content="What it does: - **Three strategies**, matched to your setup:
+  - **Mirror clone** — compact bare mirror of every ref, ready to push to a host.
+  - **Bundle** — one self-contained `.bundle` file for cold/portable storage.
+  - **Bundle + push** — both, for a 3-2-1-grade safety net.
+-...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/git-backup/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="git-backup — Hermes Skill">
+  <meta name="twitter:description" content="What it does: - **Three strategies**, matched to your setup:
+  - **Mirror clone** — compact bare mirror of every ref, ready to push to a host.
+  - **Bundle** — one self-contained `.bundle` file for cold/portable storage.
+  - **Bundle + push** — both, for a 3-2-1-grade safety net.
+-...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>git-backup</h1>
+          <p class="tagline">Automate git backup of your repos to a remote.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge featured">Featured</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Highly useful within a category</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>- **Three strategies**, matched to your setup:
+  - **Mirror clone** — compact bare mirror of every ref, ready to push to a host.
+  - **Bundle** — one self-contained `.bundle` file for cold/portable storage.
+  - **Bundle + push** — both, for a 3-2-1-grade safety net.
+- **Scheduling** out of the box: `cron` or a `systemd` timer (Windows via Task
+  Scheduler / WSL).
+- **Any remote**: GitHub, Forgejo/Gitea, GitLab, or S3-compatible object storage
+  (incl. Backblaze B2, Wasabi, MinIO via `rclone`).
+- **Verification** built in: `git bundle verify`, `git fsck`, push exit codes,
+  and a weekly spot-restore check plus a heartbeat alert.
+- **Restore** in three lines, from mirror, bundle, or bucket.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user says &quot;back up my repos&quot;, &quot;I don&#x27;t want to lose my code&quot;, or &quot;set up</li></ul>
+<p>automatic repo backups&quot;.</p>
+<ul><li>The user has local git repos (work, personal, dotfiles) that are not pushed</li></ul>
+<p>anywhere, or are pushed only to one provider and want a second copy.</p>
+<ul><li>The user wants a 3-2-1-style strategy: 3 copies, 2 media, 1 offsite.</li><li>Suitable for any OS where `git` runs (Linux, macOS, Windows/WSL, MSYS).</li></ul>
+<p>Do **not** use this skill for:</p>
+<ul><li>Non-git directories — use a file-level tool (rsync, restic, borg).</li><li>One-off manual pushes the user will do by hand.</li><li>Large binary/asset stores — consider Git LFS or object storage instead.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can automate git backup of your repos to a remote. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/git-backup/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/git-backup/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: git-backup
+description: Automate offsite backups of local git repositories to a remote. Covers mirror clones, bundles, scheduled jobs (cron / systemd), remote targets (GitHub, Forgejo, GitLab, S3), verification, and restore. Use when a user wants a hands-off, repeatable backup of one or many git repos.
+version: 1.0.0
+---
+
+# git-backup
+
+Give an agent this skill and it will set up an automated, verifiable backup of
+the user&#x27;s git repositories to a remote destination — with no manual `git push`
+required and no data lost when a laptop dies.
+
+Backups are only useful if they are (a) automatic, (b) verified, and
+(c) restorable. This skill optimizes for all three.
+
+## When to Use
+
+- The user says &quot;back up my repos&quot;, &quot;I don&#x27;t want to lose my code&quot;, or &quot;set up
+  automatic repo backups&quot;.
+- The user has local git repos (work, personal, dotfiles) that are not pushed
+  anywhere, or are pushed only to one provider and want a second copy.
+- The user wants a 3-2-1-style strategy: 3 copies, 2 media, 1 offsite.
+- Suitable for any OS where `git` runs (Linux, macOS, Windows/WSL, MSYS).
+
+Do **not** use this skill for:
+- Non-git directories — use a file-level tool (rsync, restic, borg).
+- One-off manual pushes the user will do by hand.
+- Large binary/asset stores — consider Git LFS or object storage instead.
+
+## Backup Strategies
+
+Pick one based on how many repos, how much automation, and how &quot;portable&quot; the
+backup must be.
+
+### 1. Mirror clone (recommended for live remotes)
+
+A bare mirror keeps **all** refs (branches, tags, notes) and is what remote
+hosts expect.
+
+```bash
+# One-time setup
+git clone --mirror https://github.com/user/repo.git /backups/repo.git
+
+# Each run (idempotent)
+cd /backups/repo.git
+git remote update --prune
+```
+
+Mirror clones are compact (bare, no working tree) and push cleanly to a fresh
+remote later. Good when the destination is another git host.
+
+### 2. Bundle (recommended for cold/portable storage)
+
+A bundle is a **single self-contained file** containing the entire repo — perfect
+for S3, NAS, USB drives, or emailing to yourself.
+
+```bash
+# Full snapshot into one file
+git bundle create /backups/repo-$(date +%F).bundle --all
+
+# Incremental after a known base (smaller files over time)
+git bundle create /backups/repo-inc.bundle --since=1.week --all
+```
+
+Verify a bundle before trusting it:
+
+```bash
+git bundle verify /backups/repo-2026-07-20.bundle
+```
+
+### 3. Bundle + push (belt and suspenders)
+
+Combine both: keep a live mirror on a git host **and** ship a dated bundle to
+object storage. This survives both &quot;host went down&quot; and &quot;account locked&quot;.
+
+```bash
+git clone --mirror /src/repo /backups/repo.git &amp;&amp; \
+  (cd /backups/repo.git &amp;&amp; git remote update --prune) &amp;&amp; \
+  git -C /src/repo bundle create /backups/bundles/repo-$(date +%F).bundle --all &amp;&amp; \
+  aws s3 cp /backups/bundles/repo-$(date +%F).bundle s3://my-bucket/git/
+```
+
+## Scheduling
+
+### cron (Linux/macOS/WSL)
+
+Edit the user&#x27;s crontab; never run backups as root unless the repos require it.
+
+```bash
+crontab -e
+# Daily at 03:15, log to a file, silence on success
+15 3 * * * /usr/bin/bash /home/user/bin/git-backup.sh &gt;&gt; /var/log/git-backup.log 2&gt;&amp;1
+```
+
+Stagger multiple repos so they don&#x27;t all hit the network at once:
+
+```bash
+15 3 * * * /home/user/bin/git-backup.sh work      &gt;&gt; /var/log/gb-work.log 2&gt;&amp;1
+30 3 * * * /home/user/bin/git-backup.sh personal  &gt;&gt; /var/log/gb-personal.log 2&gt;&amp;1
+```
+
+### systemd timer (preferred on modern Linux)
+
+Timers survive sleep, log to the journal, and recover missed runs.
+
+```ini
+# ~/.config/systemd/user/git-backup.service
+[Unit]
+Description=Git backup
+
+[Service]
+Type=oneshot
+ExecStart=/home/user/bin/git-backup.sh
+```
+
+```ini
+# ~/.config/systemd/user/git-backup.timer
+[Unit]
+Description=Daily git backup
+
+[Timer]
+OnCalendar=*-*-* 03:15:00
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target
+```
+
+```bash
+systemctl --user daemon-reload
+systemctl --user enable --now git-backup.timer
+systemctl --user status git-backup.timer
+```
+
+On Windows use Task Scheduler to call a `.bat`/`.ps1` wrapper around the same
+script, or run the script under WSL.
+
+## Remote Options
+
+### GitHub
+Create a private repo, then push the mirror:
+```bash
+cd /backups/repo.git
+git remote add github https://github.com/user/backup-repo.git
+git push --mirror github
+```
+
+### Forgejo / Gitea
+Same flow, different URL:
+```bash
+git remote add forge https://forgejo.example.com/user/backup-repo.git
+git push --mirror forge
+```
+
+### GitLab
+```bash
+git remote add gitlab https://gitlab.com/user/backup-repo.git
+git push --mirror gitlab
+```
+
+### S3 (or any S3-compatible bucket)
+Bundles are the natural fit here — they&#x27;re immutable files:
+```bash
+aws s3 cp repo-$(date +%F).bundle s3://my-backup-bucket/git/
+# rclone also works for Backblaze B2, Wasabi, MinIO, etc.
+rclone copy repo-$(date +%F).bundle remote:bucket/git/
+```
+Set lifecycle rules to expire very old bundles after N copies exist.
+
+## Verification
+
+A backup you never check is a hope, not a backup. After every run:
+
+1. **Mirror:** `git fsck --connectivity-only` inside the mirror, and confirm the
+   remote&#x27;s ref list matches the source.
+2. **Bundle:** always run `git bundle verify &lt;file&gt;` in the backup script and
+   abort on non-zero exit.
+3. **Remote push:** check `git push --mirror` exit code; alert on failure.
+4. **Spot restore (weekly):** clone the mirror or unbundle into a temp dir and
+   confirm `git log -1` works.
+
+Add a heartbeat: a tiny `echo &quot;$(date) OK&quot; &gt;&gt; /var/log/gb-heartbeat` line, and
+alert if the file is older than 26h.
+
+## Restore
+
+From a mirror:
+```bash
+git clone /backups/repo.git restored-repo
+```
+
+From a bundle:
+```bash
+git clone /backups/repo-2026-07-20.bundle restored-repo
+```
+
+From S3:
+```bash
+aws s3 cp s3://my-backup-bucket/git/repo-2026-07-20.bundle ./
+git clone repo-2026-07-20.bundle restored-repo
+```
+
+Then re-point remotes to the live host and push normally. If the original host
+is gone, the mirror/bundle *is* the source of truth.
+
+## Pitfalls
+
+- **`git push` (not `--mirror`) loses tags/branches.** Always use `--mirror` for
+  full-fidelity copies, or `git push --tags` plus every branch explicitly.
+- **Non-bare mirrors drift.** Use `git clone --mirror` (bare) or `remote update
+  --prune`; a normal clone accumulates conflicts on repeated fetches.
+- **Credentials expire.** Use SSH keys or a token stored in the OS keychain, not
+  inline in scripts. On CI, use scoped deploy keys.
+- **Unverified bundles rot silently.** A truncated bundle fails only on clone —
+  always `git bundle verify` immediately after creation.
+- **Clock skew / timezones** in dated filenames cause confusing overwrites;
+  use UTC (`date -u +%FT%TZ`) for filenames.
+- **Huge repos + daily full bundles** waste space; switch to incremental
+  bundles (`--since`) or keep only the mirror for those.
+- **Silent failures.** If the script has no alert path, a broken backup looks
+  identical to a working one. Always log + heartbeat + alert.
+- **Symlinks / submodules.** `git bundle` does not follow submodules; back them
+  up separately or use `git submodule` foreach.
+
+## Minimal script skeleton (`git-backup.sh`)
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+SRC=&quot;$1&quot;; NAME=$(basename &quot;$SRC&quot;); STAMP=$(date -u +%F)
+BAK=&quot;/backups&quot;; mkdir -p &quot;$BAK/bundles&quot;
+git -C &quot;$SRC&quot; bundle create &quot;$BAK/bundles/$NAME-$STAMP.bundle&quot; --all
+git bundle verify &quot;$BAK/bundles/$NAME-$STAMP.bundle&quot;
+echo &quot;$(date -u) $NAME OK&quot; &gt;&gt; /var/log/gb-heartbeat
+```
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># git-backup
+
+&gt; A Hermes skill that gives the agent everything it needs to set up **automatic,
+&gt; verifiable, restorable backups** of your git repositories to an offsite remote.
+
+Part of the [Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
+by Owen.
+
+---
+
+## Why
+
+A local repo is one spilled coffee away from gone. `git-backup` turns &quot;I should
+really push that&quot; into a scheduled, hands-off job that you can prove works.
+
+Backups are only real when they are **automatic**, **verified**, and
+**restorable**. This skill is built around all three.
+
+## What it does
+
+- **Three strategies**, matched to your setup:
+  - **Mirror clone** — compact bare mirror of every ref, ready to push to a host.
+  - **Bundle** — one self-contained `.bundle` file for cold/portable storage.
+  - **Bundle + push** — both, for a 3-2-1-grade safety net.
+- **Scheduling** out of the box: `cron` or a `systemd` timer (Windows via Task
+  Scheduler / WSL).
+- **Any remote**: GitHub, Forgejo/Gitea, GitLab, or S3-compatible object storage
+  (incl. Backblaze B2, Wasabi, MinIO via `rclone`).
+- **Verification** built in: `git bundle verify`, `git fsck`, push exit codes,
+  and a weekly spot-restore check plus a heartbeat alert.
+- **Restore** in three lines, from mirror, bundle, or bucket.
+
+## Install
+
+Point Hermes at the skill file:
+
+```
+https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/git-backup/SKILL.md
+```
+
+Or copy the `git-backup` folder into your Hermes skills directory.
+
+## Quick start
+
+Tell the agent:
+
+&gt; &quot;Back up my `~/code` repos to a private GitHub repo every night, and also drop
+&gt; a weekly bundle in my S3 bucket. Verify each backup and warn me if one fails.&quot;
+
+The agent will pick the mirror + bundle strategy, wire up a `systemd` timer (or
+`cron`), add verification + a heartbeat, and hand you the restore commands.
+
+## Example
+
+```bash
+# One self-contained, verified snapshot
+git bundle create repo-2026-07-20.bundle --all
+git bundle verify repo-2026-07-20.bundle
+
+# Restore it anywhere
+git clone repo-2026-07-20.bundle restored-repo
+```
+
+## License
+
+MIT — use it, fork it, ship it.
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/git-backup/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

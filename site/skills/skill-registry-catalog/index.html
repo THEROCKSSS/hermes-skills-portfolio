@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>skill-registry-catalog — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent pulls skill data from public registries (skills.md, skillsmp.com), filters it by the
+categories you care about, and builds a repository where every third-party skill gets its own
+folder. Skills are split into three buckets — **approved** (already in your local...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/skill-registry-catalog/">
+  <meta property="og:title" content="skill-registry-catalog — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent pulls skill data from public registries (skills.md, skillsmp.com), filters it by the
+categories you care about, and builds a repository where every third-party skill gets its own
+folder. Skills are split into three buckets — **approved** (already in your local...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/skill-registry-catalog/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="skill-registry-catalog — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent pulls skill data from public registries (skills.md, skillsmp.com), filters it by the
+categories you care about, and builds a repository where every third-party skill gets its own
+folder. Skills are split into three buckets — **approved** (already in your local...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>skill-registry-catalog</h1>
+          <p class="tagline">Catalog third-party AI agent skills from public registries — a categorized, tracked catalog of skills worth evaluating.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge core">Core</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Meta</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Broadly empowering, nearly any user benefits</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Generalized from existing</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent pulls skill data from public registries (skills.md, skillsmp.com), filters it by the
+categories you care about, and builds a repository where every third-party skill gets its own
+folder. Skills are split into three buckets — **approved** (already in your local library),
+**pending** (awaiting your review), and **other** (out of focus) — and a counter tracks how many
+skills you add per time window. Optional CI re-scans the registries on a schedule so the catalog
+stays current.
+
+This is the &quot;what&#x27;s out there worth evaluating&quot; skill. It deliberately keeps third-party skills
+separate from your own so you can approve or reject them one at a time.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>Survey public skill registries (skills.md, skillsmp.com) for specific domains — Discord,</li></ul>
+<p>security/pentest, backend, API, MCP, frontend, etc.</p>
+<ul><li>Produce a repo the user can browse and approve/reject one skill at a time.</li><li>Track ingestion volume over time (hour / day / week / month / year / all-time).</li><li>The user asks to &quot;look at these registries and catalog the skills&quot; or &quot;track external skills</li></ul>
+<p>separated from my own.&quot;</p>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can catalog third-party ai agent skills from public registries — a categorized, tracked catalog of skills worth evaluating. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/skill-registry-catalog/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/skill-registry-catalog/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: skill-registry-catalog
+description: &quot;Catalog third-party AI agent skills from public registries — agent + this skill = user gets a categorized, tracked catalog of skills worth evaluating.&quot;
+version: 1.0.0
+---
+
+# skill-registry-catalog
+
+Build a categorized, source-cited catalog of third-party agent skills harvested from public
+registries. Each skill is separated from your own library so it is easy to triage — approved
+skills (matching your local library) and pending skills (awaiting human review) live in their
+own folders, with a master `CATALOG.md` and live ingestion counters.
+
+## When to Use
+
+- Survey public skill registries (skills.md, skillsmp.com) for specific domains — Discord,
+  security/pentest, backend, API, MCP, frontend, etc.
+- Produce a repo the user can browse and approve/reject one skill at a time.
+- Track ingestion volume over time (hour / day / week / month / year / all-time).
+- The user asks to &quot;look at these registries and catalog the skills&quot; or &quot;track external skills
+  separated from my own.&quot;
+
+## Sources
+
+Two public registries are the defaults. Fetch structured data from their JSON APIs, not the
+HTML pages.
+
+| Registry | List page | JSON API | Notes |
+|---|---|---|---|
+| skills.md | `https://skills.md/skills` | `https://skills.md/api/skills` | Returns the full array in one call |
+| skillsmp.com | `https://skillsmp.com/search` | `https://skillsmp.com/api/skills?page=N&amp;limit=100` | Caps at 100/page — must paginate |
+
+Fetch from `terminal` with `curl`/`urllib`, or from the browser console with `fetch()`. Keep
+the HTML pages for visual confirmation only; the catalog data comes from the JSON.
+
+### Response shapes (abridged)
+
+skills.md element:
+```json
+{&quot;name&quot;:&quot;api-test-suite&quot;,&quot;displayName&quot;:&quot;API Test Suite&quot;,
+ &quot;description&quot;:&quot;Generate and run API test suites...&quot;,&quot;category&quot;:&quot;Development Tools&quot;,
+ &quot;tags&quot;:[&quot;api&quot;,&quot;testing&quot;,&quot;automation&quot;,&quot;qa&quot;],&quot;pricing&quot;:{&quot;tier&quot;:&quot;free&quot;},&quot;source&quot;:&quot;official&quot;}
+```
+
+skillsmp.com element:
+```json
+{&quot;id&quot;:&quot;...&quot;,&quot;name&quot;:&quot;openspec-apply-change&quot;,&quot;author&quot;:&quot;Orient-Software-Development&quot;,
+ &quot;description&quot;:&quot;...&quot;,&quot;githubUrl&quot;:&quot;https://github.com/.../tree/main/.claude/skills/...&quot;,
+ &quot;stars&quot;:0,&quot;updatedAt&quot;:&quot;1783911957&quot;,&quot;path&quot;:&quot;SKILL.md&quot;,
+ &quot;route&quot;:{&quot;ownerSlug&quot;:&quot;...&quot;,&quot;repoSlug&quot;:&quot;...&quot;,&quot;routeSlug&quot;:&quot;...&quot;,&quot;sourceSkillPath&quot;:&quot;...&quot;}}
+```
+
+### Parsing quirks (real, not theoretical)
+
+- **skillsmp.com caps at 100 per response** even if you pass `limit=1000`. Paginate `page=1..N`
+  until a page returns `[]` or fewer than 100 items:
+  ```python
+  all_sk = []
+  for p in range(1, 30):
+      d = json.load(urlopen(f&quot;https://skillsmp.com/api/skills?page={p}&amp;limit=100&quot;))
+      s = d.get(&quot;skills&quot;, [])
+      if not s:
+          break
+      all_sk += s
+  ```
+- **skills.md `/api/skills`** can return the JSON array concatenated with `===` plus an HTML
+  error page if multiple candidate URLs were fetched together in one console call. Slice before
+  parsing:
+  ```python
+  raw = wrapper[&quot;result&quot;]
+  end = raw.find(&quot;}]&quot;) + 2
+  skills = json.loads(raw[:end])
+  ```
+- **skillsmp.com `/api/search?q=` returns 404.** There is no text-search API — pull the full
+  paginated `/api/skills` and filter client-side.
+
+## Workflow
+
+### 1. Confirm sources and categories
+Agree the registries and focus categories with the user (e.g. Discord, Security/Pentest, Backend,
+API, MCP). Categories are defined as regex keyword maps over each skill&#x27;s
+`name + description + tags + category/author` (lower-cased).
+
+```python
+CATS = {
+  &quot;Discord&quot;:         [r&quot;discord&quot;],
+  &quot;Security/Pentest&quot;:[r&quot;security&quot;, r&quot;pentest&quot;, r&quot;penetration&quot;, r&quot;vuln&quot;, r&quot;\baudit\b&quot;,
+                      r&quot;exploit&quot;, r&quot;\bcve\b&quot;, r&quot;secure&quot;, r&quot;threat&quot;, r&quot;secret&quot;, r&quot;\bauth\b&quot;,
+                      r&quot;hardening&quot;],
+  &quot;Backend&quot;:         [r&quot;backend&quot;, r&quot;server&quot;, r&quot;\bdb\b&quot;, r&quot;database&quot;, r&quot;orm&quot;, r&quot;microservice&quot;,
+                      r&quot;fastapi&quot;, r&quot;django&quot;, r&quot;express&quot;, r&quot;\bsql\b&quot;],
+  &quot;API&quot;:             [r&quot;\bapi\b&quot;, r&quot;\brest\b&quot;, r&quot;graphql&quot;, r&quot;openapi&quot;, r&quot;endpoint&quot;,
+                      r&quot;webhook&quot;, r&quot;\bsdk\b&quot;],
+  &quot;MCP&quot;:             [r&quot;\bmcp\b&quot;, r&quot;model context protocol&quot;, r&quot;mcp server&quot;, r&quot;mcp client&quot;],
+}
+```
+
+### 2. Extract + filter
+- Pull both datasets as JSON (see quirks above).
+- Run each skill through the category maps; a skill hits a category if any pattern matches.
+- Cross-reference each skill name against the user&#x27;s **local skill library** to decide
+  approved vs pending (see Filtering).
+- Dedupe by `(source, name)`.
+
+### 3. Build the catalog repo
+```
+&lt;repo&gt;/
+├── README.md            # overview + live COUNTERS block
+├── CATALOG.md           # 3-bucket master list (approved / pending / other)
+├── .github/workflows/   # validate.yml, counters.yml, rescan.yml
+├── scripts/             # build_catalog.py, counters.py
+└── skills/
+    ├── approved/&lt;name&gt;__&lt;source&gt;/{README.md, SKILL.md}
+    └── pending/&lt;name&gt;__&lt;source&gt;/{README.md, SKILL.md}
+```
+- Per-skill `SKILL.md` frontmatter: `name`, `source` (direct registry URL), `status`
+  (`approved` | `pending`), `incorporated_as` (for approved).
+- Per-skill `README.md`: description, metadata table, Original URL, an action checkbox for review.
+- Folder names join skill and source so the same skill from two registries does not collide:
+  `&lt;name&gt;__&lt;source&gt;` (e.g. `api-test-suite__skills.md`).
+
+### 4. Cross-reference against local library
+Decide `approved` vs `pending`:
+- **Approved** — the skill&#x27;s name or function overlaps an existing local skill, or it is a
+  known upgrade of one you already use. Keep the match loose-but-verified.
+- **Other** — does not fit any focus category and is not approved; still recorded so re-scans
+  stay stable.
+Require either exact local-skill-name containment **or** an explicit `known_upgrades` map
+(e.g. `api-test-suite`, `backend-patterns`, `generate-dockerfile`, `repo-security-audit`,
+`discord-suite`). Reject bare substring hits (`image`, `write`, `backend`) — they over-match.
+
+## Catalog Structure
+
+`CATALOG.md` is the master index with three buckets:
+
+```markdown
+# Catalog
+
+## Approved (already in your library)
+| Name | Source | Category | Local match |
+|---|---|---|---|
+| api-test-suite | skills.md | Backend/API | api-test-suite |
+
+## Pending (awaiting review)
+| Name | Source | Category | Original URL |
+|---|---|---|---|
+| some-new-skill | skillsmp.com | MCP | https://... |
+
+## Other (out of focus, not approved)
+| Name | Source | Category |
+|---|---|---|
+| ... | ... | ... |
+```
+
+Each per-skill folder has a self-contained `README.md` with an `[ ] reviewed` checkbox so a
+human can tick skills off one at a time.
+
+## Counters
+
+The user wants time-window tracking. `README.md` carries a fenced block that the counter script
+rewrites from git history:
+
+```
+&lt;!-- COUNTERS_START --&gt;
+| Window | Skills Added |
+|---|---|
+| Past hour | 0 |
+| Past 24h | 0 |
+| Past 7d | 0 |
+| Past 30d | 0 |
+| Past 6mo | 0 |
+| Past 1y | 0 |
+| All time | 0 |
+&lt;!-- COUNTERS_END --&gt;
+```
+
+`scripts/counters.py --patch` computes the counts from the commit timestamps of added files under
+`skills/` and rewrites the block in place:
+
+```bash
+git log --diff-filter=A --name-only --pretty=%ct -- skills/ \
+  | python scripts/counters.py --patch
+```
+
+## CI/Automation
+
+Put three workflows in your git host&#x27;s CI directory (GitHub: `.github/workflows/`; Forgejo:
+`.forgejo/workflows/`; GitLab: `.gitlab-ci.yml`). Use `[skip ci]` in counter-commit messages to
+avoid loops.
+
+- **validate.yml** — on push/PR, lint every `SKILL.md` frontmatter (required: `name`, `source`,
+  `status`; `status ∈ {approved, pending}`).
+- **counters.yml** — scheduled hourly + on push; runs `counters.py --patch` and commits if the
+  block changed.
+- **rescan.yml** — scheduled weekly; re-fetches both APIs, diffs new names against existing
+  `skills/` entries, and opens one review issue per new focus skill (labels: `pending-approval`,
+  `source:*`, `cat:*`).
+
+Issue posting uses your git host&#x27;s REST API with a token. Labels usually require **numeric IDs**
+(GitHub: `labels: [id,...]`), so fetch the label list first and map `name → id`. Never embed the
+token in source; read it from a CI secret.
+
+## Pitfalls
+
+- **skillsmp.com page cap** — 100/page is a hard server limit. Loop until a page is empty or
+  short; do not trust a single `limit=1000` call.
+- **skills.md concatenated response** — slice at the first `}]` before `json.loads`, or you will
+  hit a JSON decode error on the trailing HTML.
+- **No search API on skillsmp.com** — `/api/search?q=` is 404. Pull everything and filter locally.
+- **Approved-match false positives** — bare substring hits (`image`, `write`, `backend`) over-match.
+  Require exact local-name containment or an explicit upgrade map.
+- **Do not self-declare the catalog &quot;done&quot;** — hand the live repo URL to the user for visual
+  verification. The catalog is a living artifact; re-scans keep adding to it.
+- **CI commit loops** — counter workflows that commit must use `[skip ci]` (or an equivalent
+  skip directive) in their commit message, or they retrigger themselves.
+- **Token scope** — repo/issue creation needs write scope on the target repo. A read-only token
+  fails with 403. Use a CI secret, never inline the token.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># skill-registry-catalog
+
+Survey public AI-agent skill registries and turn them into a categorized, source-cited catalog
+you can actually triage — not a bookmark dump.
+
+## What it does
+
+The agent pulls skill data from public registries (skills.md, skillsmp.com), filters it by the
+categories you care about, and builds a repository where every third-party skill gets its own
+folder. Skills are split into three buckets — **approved** (already in your local library),
+**pending** (awaiting your review), and **other** (out of focus) — and a counter tracks how many
+skills you add per time window. Optional CI re-scans the registries on a schedule so the catalog
+stays current.
+
+This is the &quot;what&#x27;s out there worth evaluating&quot; skill. It deliberately keeps third-party skills
+separate from your own so you can approve or reject them one at a time.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/skill-registry-catalog/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Catalog the Discord, security, and MCP skills from skills.md and skillsmp.com,
+ separated from my own library, and track how many I add per week.&quot;
+```
+
+The agent will:
+
+1. Confirm which registries and focus categories you want.
+2. Fetch the structured data from each registry&#x27;s JSON API.
+3. Filter by your categories and cross-reference against your local skill library.
+4. Build a repo with per-skill folders, a master `CATALOG.md`, and a `README.md` counter block.
+5. (Optional) Wire up CI to re-scan and update counters on a schedule.
+
+## Sources and APIs
+
+Two registries are supported out of the box. Always pull from the JSON API, not the HTML page.
+
+| Registry | JSON API | Behavior |
+|---|---|---|
+| skills.md | `https://skills.md/api/skills` | Returns the full skill array in one response |
+| skillsmp.com | `https://skillsmp.com/api/skills?page=N&amp;limit=100` | Caps at 100 items/page — paginate until empty |
+
+Both return one JSON object per skill with at least `name`, `description`, and a source URL
+(skills.md adds `tags`/`category`; skillsmp.com adds `githubUrl`/`author`/`updatedAt`).
+
+### Fetching skillsmp.com (paginated)
+
+```python
+import json, urllib.request
+
+def fetch_skillsmp():
+    out, page = [], 1
+    while True:
+        url = f&quot;https://skillsmp.com/api/skills?page={page}&amp;limit=100&quot;
+        with urllib.request.urlopen(url) as r:
+            data = json.load(r)
+        batch = data.get(&quot;skills&quot;, [])
+        if not batch:
+            break
+        out.extend(batch)
+        if len(batch) &lt; 100:
+            break
+        page += 1
+    return out
+```
+
+### Fetching skills.md
+
+```python
+import json, urllib.request
+
+def fetch_skillsmd():
+    with urllib.request.urlopen(&quot;https://skills.md/api/skills&quot;) as r:
+        raw = r.read().decode()
+    end = raw.find(&quot;}]&quot;) + 2          # guard against concatenated error HTML
+    return json.loads(raw[:end])
+```
+
+### Known parsing quirks
+
+- **skillsmp.com** ignores `limit` above 100 — loop until a short or empty page.
+- **skills.md** `/api/skills` can append `===` and an HTML error page if several candidate URLs
+  were fetched in one console call. Slice at the first `}]` before parsing.
+- **skillsmp.com** has no search API (`/api/search?q=` is 404). Pull all pages and filter locally.
+
+## Catalog structure
+
+```
+&lt;repo&gt;/
+├── README.md            # overview + live COUNTERS block
+├── CATALOG.md           # approved / pending / other
+├── .github/workflows/   # validate.yml, counters.yml, rescan.yml
+├── scripts/
+│   ├── build_catalog.py # scrape + filter + write folders
+│   └── counters.py      # time-window counter + README patcher
+└── skills/
+    ├── approved/&lt;name&gt;__&lt;source&gt;/{README.md, SKILL.md}
+    └── pending/&lt;name&gt;__&lt;source&gt;/{README.md, SKILL.md}
+```
+
+Folder names join skill and source (`api-test-suite__skills.md`) so the same skill from two
+registries never collides. Each per-skill `README.md` carries an `[ ] reviewed` checkbox so a
+human can tick skills off one at a time.
+
+### Per-skill SKILL.md frontmatter
+
+```yaml
+---
+name: api-test-suite
+source: https://skills.md/skills/api-test-suite
+status: approved          # approved | pending
+incorporated_as: api-test-suite   # only for approved
+---
+```
+
+## Filtering
+
+Categories are regex keyword maps over each skill&#x27;s `name + description + tags + category/author`
+(lower-cased). A skill lands in a category if any pattern matches.
+
+```python
+CATS = {
+    &quot;Discord&quot;:          [r&quot;discord&quot;],
+    &quot;Security/Pentest&quot;: [r&quot;security&quot;, r&quot;pentest&quot;, r&quot;penetration&quot;, r&quot;vuln&quot;, r&quot;\baudit\b&quot;,
+                         r&quot;exploit&quot;, r&quot;\bcve\b&quot;, r&quot;secure&quot;, r&quot;threat&quot;, r&quot;secret&quot;,
+                         r&quot;\bauth\b&quot;, r&quot;hardening&quot;],
+    &quot;Backend&quot;:          [r&quot;backend&quot;, r&quot;server&quot;, r&quot;\bdb\b&quot;, r&quot;database&quot;, r&quot;orm&quot;,
+                         r&quot;microservice&quot;, r&quot;fastapi&quot;, r&quot;django&quot;, r&quot;express&quot;, r&quot;\bsql\b&quot;],
+    &quot;API&quot;:              [r&quot;\bapi\b&quot;, r&quot;\brest\b&quot;, r&quot;graphql&quot;, r&quot;openapi&quot;, r&quot;endpoint&quot;,
+                         r&quot;webhook&quot;, r&quot;\bsdk\b&quot;],
+    &quot;MCP&quot;:              [r&quot;\bmcp\b&quot;, r&quot;model context protocol&quot;, r&quot;mcp server&quot;, r&quot;mcp client&quot;],
+}
+```
+
+### Approved vs pending
+
+- **Approved** — the skill name or function overlaps a skill already in your local library, or it
+  is a known upgrade of one you use.
+- **Pending** — everything that fits a focus category but is not yet approved.
+- **Other** — does not fit any focus category and is not approved; still recorded so re-scans are
+  stable.
+
+Match loosely but verify: require exact local-skill-name containment **or** an explicit
+`known_upgrades` allowlist. Reject bare substring hits (`image`, `write`, `backend`) — they
+over-match unrelated skills.
+
+## Counters
+
+The `README.md` holds a fenced block the counter script rewrites from git history:
+
+```
+&lt;!-- COUNTERS_START --&gt;
+| Window | Skills Added |
+|---|---|
+| Past hour | 0 |
+| Past 24h | 0 |
+| Past 7d | 0 |
+| Past 30d | 0 |
+| Past 6mo | 0 |
+| Past 1y | 0 |
+| All time | 0 |
+&lt;!-- COUNTERS_END --&gt;
+```
+
+`scripts/counters.py --patch` derives the numbers from the timestamps of added files under
+`skills/`:
+
+```bash
+git log --diff-filter=A --name-only --pretty=%ct -- skills/ \
+  | python scripts/counters.py --patch
+```
+
+## CI / automation
+
+Use your git host&#x27;s CI directory (GitHub `.github/workflows/`, Forgejo `.forgejo/workflows/`,
+GitLab `.gitlab-ci.yml`). Put the token in a CI secret — never inline it.
+
+- **validate.yml** — on push/PR, lint every `SKILL.md` for required frontmatter
+  (`name`, `source`, `status`; `status ∈ {approved, pending}`).
+- **counters.yml** — hourly + on push; runs `counters.py --patch` and commits if the block
+  changed. Use `[skip ci]` in the commit message to avoid a self-trigger loop.
+- **rescan.yml** — weekly; re-fetches both APIs, diffs new names against existing `skills/`, and
+  opens one review issue per new focus skill. Labels generally need **numeric IDs** — fetch the
+  label list first and map `name → id`.
+
+## Requirements
+
+- A local skill library to cross-reference against (so &quot;approved&quot; is meaningful).
+- Network access to the registries&#x27; JSON APIs.
+- A git host account and a token with repo/issue write scope for the optional automation.
+
+## Pitfalls
+
+- **Page caps** — skillsmp.com returns at most 100 items per call. Loop until short or empty.
+- **Concatenated responses** — slice skills.md output at the first `}]` before `json.loads`.
+- **No search API** — skillsmp.com `/api/search` is 404; filter the full pull locally.
+- **False-positive approvals** — bare substring matches over-approve. Use exact-name or an
+  allowlist.
+- **CI loops** — counter commits must carry a skip directive or they re-trigger themselves.
+- **Token scope** — repo/issue creation needs write scope; a read-only token fails with 403.
+
+## Example end state
+
+A repo where `CATALOG.md` lists 40 approved, 120 pending, 300 other skills; `README.md` shows
+23 skills added in the past 7 days; and a Monday CI job opens five new review issues for skills
+that appeared in the registries since last scan.
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/skill-registry-catalog/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>log-analyzer — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent reads a log file and produces a structured analysis: total lines, error count, error types categorized (connection failures, timeouts, auth errors, etc.), errors by hour to find spikes, and full stack trace extraction. You get a summary of what went wrong without manually...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/log-analyzer/">
+  <meta property="og:title" content="log-analyzer — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent reads a log file and produces a structured analysis: total lines, error count, error types categorized (connection failures, timeouts, auth errors, etc.), errors by hour to find spikes, and full stack trace extraction. You get a summary of what went wrong without manually...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/log-analyzer/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="log-analyzer — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent reads a log file and produces a structured analysis: total lines, error count, error types categorized (connection failures, timeouts, auth errors, etc.), errors by hour to find spikes, and full stack trace extraction. You get a summary of what went wrong without manually...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>log-analyzer</h1>
+          <p class="tagline">Analyze log files for errors, patterns, and anomalies.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent reads a log file and produces a structured analysis: total lines, error count, error types categorized (connection failures, timeouts, auth errors, etc.), errors by hour to find spikes, and full stack trace extraction. You get a summary of what went wrong without manually scrolling through thousands of log lines.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants to find errors in a log file.</li><li>The user wants to understand what happened in a service from its logs.</li><li>The user wants to count error types or find the most common issues.</li><li>The user says &quot;check the logs&quot;, &quot;find errors in this log&quot;, or &quot;what went wrong&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can analyze log files for errors, patterns, and anomalies. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/log-analyzer/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/log-analyzer/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: log-analyzer
+description: &quot;Analyze log files for errors, patterns, and anomalies — agent + this skill = user gets insights from raw logs.&quot;
+version: 1.0.0
+---
+
+# log-analyzer
+
+Parse and analyze log files to find errors, warnings, patterns, and anomalies. The agent handles large log files, extracts structured data, counts error types, finds time-based patterns, and summarizes findings.
+
+## When to Use
+
+- The user wants to find errors in a log file.
+- The user wants to understand what happened in a service from its logs.
+- The user wants to count error types or find the most common issues.
+- The user says &quot;check the logs&quot;, &quot;find errors in this log&quot;, or &quot;what went wrong&quot;.
+
+## Basic Error Extraction
+
+```python
+import re
+from collections import Counter
+
+def find_errors(log_path: str, patterns: list = None) -&gt; dict:
+    &quot;&quot;&quot;Find error and warning lines in a log file.&quot;&quot;&quot;
+    if patterns is None:
+        patterns = [
+            r&#x27;\bERROR\b&#x27;,
+            r&#x27;\bFATAL\b&#x27;,
+            r&#x27;\bCRITICAL\b&#x27;,
+            r&#x27;\bException\b&#x27;,
+            r&#x27;\bTraceback\b&#x27;,
+            r&#x27;\bpanic\b&#x27;,
+        ]
+
+    errors = []
+    with open(log_path, &#x27;r&#x27;, errors=&#x27;ignore&#x27;) as f:
+        for line_num, line in enumerate(f, 1):
+            for pattern in patterns:
+                if re.search(pattern, line, re.IGNORECASE):
+                    errors.append({&quot;line&quot;: line_num, &quot;text&quot;: line.strip(), &quot;pattern&quot;: pattern})
+                    break
+
+    return {
+        &quot;total_errors&quot;: len(errors),
+        &quot;first_10&quot;: errors[:10],
+        &quot;last_10&quot;: errors[-10:],
+    }
+```
+
+## Error Type Counting
+
+```python
+def count_error_types(log_path: str) -&gt; dict:
+    &quot;&quot;&quot;Categorize and count errors by type.&quot;&quot;&quot;
+    error_patterns = {
+        &quot;connection_refused&quot;: r&quot;Connection.*refused|ECONNREFUSED&quot;,
+        &quot;timeout&quot;: r&quot;timeout|timed out|ETIMEDOUT&quot;,
+        &quot;not_found&quot;: r&quot;not found|404|ENOENT&quot;,
+        &quot;permission_denied&quot;: r&quot;permission denied|EACCES|403&quot;,
+        &quot;out_of_memory&quot;: r&quot;out of memory|ENOMEM|OOM&quot;,
+        &quot;auth_failure&quot;: r&quot;auth.*fail|unauthorized|401&quot;,
+        &quot;rate_limit&quot;: r&quot;rate limit|429|throttl&quot;,
+        &quot;ssl_error&quot;: r&quot;SSL|certificate|TLS&quot;,
+    }
+
+    counts = Counter()
+    with open(log_path, &#x27;r&#x27;, errors=&#x27;ignore&#x27;) as f:
+        for line in f:
+            for error_type, pattern in error_patterns.items():
+                if re.search(pattern, line, re.IGNORECASE):
+                    counts[error_type] += 1
+
+    return dict(counts.most_common())
+```
+
+## Time-based Analysis
+
+```python
+from datetime import datetime
+from collections import defaultdict
+
+def errors_by_hour(log_path: str, timestamp_pattern: str = r&#x27;\[(\d{4}-\d{2}-\d{2}T\d{2}):\d{2}:\d{2}&#x27;):
+    &quot;&quot;&quot;Count errors per hour to find spikes.&quot;&quot;&quot;
+    hourly = defaultdict(int)
+    with open(log_path, &#x27;r&#x27;, errors=&#x27;ignore&#x27;) as f:
+        for line in f:
+            if re.search(r&#x27;ERROR|FATAL|Exception&#x27;, line, re.IGNORECASE):
+                match = re.search(timestamp_pattern, line)
+                if match:
+                    hourly[match.group(1)] += 1
+
+    return dict(sorted(hourly.items()))
+```
+
+## Extract Stack Traces
+
+```python
+def extract_tracebacks(log_path: str) -&gt; list:
+    &quot;&quot;&quot;Extract full stack traces from a log file.&quot;&quot;&quot;
+    tracebacks = []
+    current_trace = []
+    in_trace = False
+
+    with open(log_path, &#x27;r&#x27;, errors=&#x27;ignore&#x27;) as f:
+        for line in f:
+            if &#x27;Traceback&#x27; in line or &#x27;panic:&#x27; in line:
+                if current_trace:
+                    tracebacks.append(&#x27;\n&#x27;.join(current_trace))
+                current_trace = [line]
+                in_trace = True
+            elif in_trace:
+                if line.strip() == &#x27;&#x27; or (not line.startswith(&#x27; &#x27;) and not line.startswith(&#x27;\t&#x27;) and not line.startswith(&#x27;File&#x27;) and not line.startswith(&#x27;  &#x27;)):
+                    tracebacks.append(&#x27;\n&#x27;.join(current_trace))
+                    current_trace = []
+                    in_trace = False
+                else:
+                    current_trace.append(line)
+
+    if current_trace:
+        tracebacks.append(&#x27;\n&#x27;.join(current_trace))
+
+    return tracebacks
+```
+
+## Tail with Filtering
+
+```python
+def tail_filter(log_path: str, keyword: str, lines: int = 50):
+    &quot;&quot;&quot;Get the last N lines matching a keyword.&quot;&quot;&quot;
+    matching = []
+    with open(log_path, &#x27;r&#x27;, errors=&#x27;ignore&#x27;) as f:
+        for line in f:
+            if keyword.lower() in line.lower():
+                matching.append(line.strip())
+                if len(matching) &gt; lines:
+                    matching.pop(0)
+    return matching
+```
+
+## Summary Report
+
+```python
+def log_summary(log_path: str) -&gt; dict:
+    &quot;&quot;&quot;Generate a comprehensive log summary.&quot;&quot;&quot;
+    total_lines = 0
+    error_count = 0
+    warn_count = 0
+    info_count = 0
+
+    with open(log_path, &#x27;r&#x27;, errors=&#x27;ignore&#x27;) as f:
+        for line in f:
+            total_lines += 1
+            if re.search(r&#x27;\bERROR\b|\bFATAL\b&#x27;, line, re.IGNORECASE):
+                error_count += 1
+            elif re.search(r&#x27;\bWARN&#x27;, line, re.IGNORECASE):
+                warn_count += 1
+            elif re.search(r&#x27;\bINFO\b&#x27;, line, re.IGNORECASE):
+                info_count += 1
+
+    return {
+        &quot;file&quot;: log_path,
+        &quot;total_lines&quot;: total_lines,
+        &quot;errors&quot;: error_count,
+        &quot;warnings&quot;: warn_count,
+        &quot;info&quot;: info_count,
+        &quot;error_rate&quot;: f&quot;{error_count / total_lines * 100:.2f}%&quot; if total_lines &gt; 0 else &quot;0%&quot;,
+        &quot;error_types&quot;: count_error_types(log_path),
+    }
+```
+
+## Workflow
+
+1. Identify the log file(s) to analyze
+2. Run `log_summary` for a quick overview
+3. Run `count_error_types` to categorize errors
+4. Run `errors_by_hour` to find time-based spikes
+5. Extract specific tracebacks or filtered lines for detail
+6. Report findings: what errors, how many, when, and what types
+
+## Pitfalls
+
+- **Large log files** — Reading a 10GB log file line by line into memory will crash. Use the line-by-line iterators (as shown above) — they&#x27;re memory-efficient. For extremely large files, use `grep` first to pre-filter.
+- **Timestamp format varies** — The default regex assumes ISO 8601. Adjust the pattern for your log format (e.g., `r&#x27;(\d{2}:\d{2}):\d{2}&#x27;` for `HH:MM:SS`).
+- **Multi-line stack traces** — Error lines span multiple lines. The traceback extractor handles this, but simple line-by-line error counting may miss context.
+- **Rotated logs** — If logs rotate (`app.log.1`, `app.log.2`), analyze all of them. Use `glob.glob(&quot;app.log*&quot;)` to find all rotation files.
+- **Encoding** — Some logs use non-UTF-8 encoding. Use `errors=&#x27;ignore&#x27;` to skip bad bytes, or detect encoding with `chardet`.
+- **False positives** — The word &quot;error&quot; can appear in non-error contexts (e.g., &quot;error handling module&quot;). Refine patterns to match your log format.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># log-analyzer
+
+Parse log files to find errors, count error types, detect spikes, and extract stack traces.
+
+## What it does
+
+The agent reads a log file and produces a structured analysis: total lines, error count, error types categorized (connection failures, timeouts, auth errors, etc.), errors by hour to find spikes, and full stack trace extraction. You get a summary of what went wrong without manually scrolling through thousands of log lines.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/log-analyzer/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Check app.log for errors and tell me what went wrong&quot;
+```
+
+The agent:
+1. Runs a log summary (total lines, errors, warnings)
+2. Categorizes errors by type
+3. Shows errors by hour to find spikes
+4. Extracts the most recent stack traces
+5. Reports: &quot;23 errors, mostly timeouts between 2-4 AM&quot;
+
+## Example
+
+```
+User: &quot;Why did my service crash last night?&quot;
+
+Agent:
+  1. Analyzes service.log (450k lines)
+  2. Finds 15 ERROR lines, 3 FATAL
+  3. Error types: 8 timeouts, 4 connection refused, 3 OOM
+  4. Spikes at 3:00-3:15 AM
+  5. Extracts traceback: &quot;OutOfMemoryError: heap space&quot;
+  6. Returns: &quot;Service ran out of memory at 3 AM. 8 timeouts cascaded from the OOM event.&quot;
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/log-analyzer/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

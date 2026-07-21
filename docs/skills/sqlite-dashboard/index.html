@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sqlite-dashboard — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent launches a web-based dashboard (sqlite-web) for any SQLite database file. You get a table browser, SQL query editor, schema viewer, and CSV/JSON export — all in a browser. No desktop app needed. How the agent uses it: The user wants to browse a SQLite database without...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/sqlite-dashboard/">
+  <meta property="og:title" content="sqlite-dashboard — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent launches a web-based dashboard (sqlite-web) for any SQLite database file. You get a table browser, SQL query editor, schema viewer, and CSV/JSON export — all in a browser. No desktop app needed. How the agent uses it: The user wants to browse a SQLite database without...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/sqlite-dashboard/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="sqlite-dashboard — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent launches a web-based dashboard (sqlite-web) for any SQLite database file. You get a table browser, SQL query editor, schema viewer, and CSV/JSON export — all in a browser. No desktop app needed. How the agent uses it: The user wants to browse a SQLite database without...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>sqlite-dashboard</h1>
+          <p class="tagline">Browse SQLite databases with a web UI.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge featured">Featured</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Backend</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Highly useful within a category</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent launches a web-based dashboard (sqlite-web) for any SQLite database file. You get a table browser, SQL query editor, schema viewer, and CSV/JSON export — all in a browser. No desktop app needed.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user wants to browse a SQLite database without installing a desktop app.</li><li>The user wants to inspect an application&#x27;s database (Hermes state.db, a web app&#x27;s SQLite, etc.).</li><li>The user wants to run ad-hoc SQL queries against a database from a browser.</li><li>The user says &quot;let me see my database&quot;, &quot;browse my SQLite db&quot;, or &quot;what&#x27;s in this .db file&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can browse sqlite databases with a web ui. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/sqlite-dashboard/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/sqlite-dashboard/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: sqlite-dashboard
+description: &quot;Browse SQLite databases with a web UI — agent + this skill = user gets a visual interface for inspecting any SQLite database.&quot;
+version: 1.0.0
+---
+
+# sqlite-dashboard
+
+Set up a web-based UI for browsing SQLite databases. SQLite is everywhere — application databases, agent state stores, config files — but there&#x27;s no built-in UI for inspecting them. This skill deploys a lightweight web dashboard for any SQLite database file.
+
+## When to Use
+
+- The user wants to browse a SQLite database without installing a desktop app.
+- The user wants to inspect an application&#x27;s database (Hermes state.db, a web app&#x27;s SQLite, etc.).
+- The user wants to run ad-hoc SQL queries against a database from a browser.
+- The user says &quot;let me see my database&quot;, &quot;browse my SQLite db&quot;, or &quot;what&#x27;s in this .db file&quot;.
+
+## Options
+
+Three approaches, depending on the user&#x27;s needs:
+
+| Tool | Type | Best for |
+|---|---|---|
+| **sqlite-web** | Python web app | Quick browsing, query execution, export |
+| **DB Browser for SQLite** | Desktop app | Local inspection without a server |
+| **LiteQueen / sqlite-explorer** | Docker web UI | Persistent web access, multiple databases |
+
+## Option 1: sqlite-web (recommended)
+
+A Python-based web UI for SQLite databases.
+
+### Install
+
+```bash
+pip install sqlite-web
+```
+
+### Run
+
+```bash
+# Start the web UI for a database file
+sqlite-web /path/to/database.db
+
+# With options
+sqlite-web /path/to/database.db \
+  --host 0.0.0.0 \
+  --port 8080 \
+  --read-only  # prevent accidental edits
+```
+
+Open `http://localhost:8080` in a browser.
+
+### Features
+
+- Table browser with pagination
+- SQL query editor with syntax highlighting
+- CSV/JSON export
+- Insert/update/delete rows
+- Foreign key navigation
+- Index and trigger viewer
+
+### With Docker
+
+```yaml
+version: &quot;3&quot;
+services:
+  sqlite-web:
+    image: coleifer/sqlite-web:latest
+    restart: unless-stopped
+    ports:
+      - &quot;8080:8080&quot;
+    volumes:
+      - /path/to/your/db:/data
+    command: sqlite_web /data/database.db --host 0.0.0.0 --port 8080
+```
+
+## Option 2: DB Browser for SQLite (desktop)
+
+A GUI app for local inspection. No server needed.
+
+- **Linux**: `apt install sqlitebrowser` or download from https://sqlitebrowser.org
+- **macOS**: `brew install --cask db-browser-for-sqlite`
+- **Windows**: download from https://sqlitebrowser.org
+
+Open the app, then File → Open Database → select your `.db` file.
+
+## Option 3: Docker web UI (persistent)
+
+For a persistent web dashboard that can browse multiple databases:
+
+```yaml
+version: &quot;3&quot;
+services:
+  sqlite-explorer:
+    image: ghcr.io/coleifer/sqlite-web:latest
+    restart: unless-stopped
+    ports:
+      - &quot;8080:8080&quot;
+    volumes:
+      - ./databases:/data:ro
+    command: sqlite_web /data --host 0.0.0.0 --port 8080 --read-only
+```
+
+Mount a directory of database files and browse any of them from the UI.
+
+## Workflow
+
+### Step 1: Identify the database
+
+Find the SQLite database the user wants to browse:
+
+```bash
+# Find .db files in a project
+find /path/to/project -name &quot;*.db&quot; -o -name &quot;*.sqlite&quot; -o -name &quot;*.sqlite3&quot;
+
+# Check it&#x27;s a valid SQLite database
+file /path/to/database.db
+# → SQLite 3.x database
+```
+
+### Step 2: Start the dashboard
+
+```bash
+sqlite-web /path/to/database.db --host 0.0.0.0 --port 8080 --read-only
+```
+
+### Step 3: Browse
+
+Open `http://localhost:8080`:
+- **Browse Data** tab → select a table → see rows with pagination
+- **Execute SQL** tab → run ad-hoc queries
+- **Structure** tab → see schema, indexes, triggers
+- **Export** → download as CSV or JSON
+
+### Step 4: Query examples
+
+```sql
+-- List all tables
+SELECT name FROM sqlite_master WHERE type=&#x27;table&#x27;;
+
+-- Count rows in each table
+SELECT &#x27;sessions&#x27; as tbl, COUNT(*) as rows FROM sessions
+UNION ALL
+SELECT &#x27;logs&#x27;, COUNT(*) FROM logs;
+
+-- Recent records
+SELECT * FROM sessions ORDER BY rowid DESC LIMIT 10;
+
+-- Search across columns
+SELECT * FROM logs WHERE message LIKE &#x27;%error%&#x27; ORDER BY timestamp DESC LIMIT 20;
+```
+
+## Export
+
+```bash
+# Export a table to CSV via the command line
+sqlite3 /path/to/database.db &quot;.mode csv&quot; &quot;.headers on&quot; &quot;.output export.csv&quot; &quot;SELECT * FROM my_table;&quot; &quot;.quit&quot;
+
+# Export to JSON
+sqlite3 /path/to/database.db &quot;.mode json&quot; &quot;.output export.json&quot; &quot;SELECT * FROM my_table;&quot; &quot;.quit&quot;
+```
+
+## Pitfalls
+
+- **Database locked** — If another process has the database open for writing, the web UI may get &quot;database is locked&quot; errors. Use `--read-only` mode for browsing (doesn&#x27;t require write locks).
+- **Large databases** — sqlite-web paginates results, but loading a table with millions of rows can be slow. Use the SQL query tab with `LIMIT` for large tables.
+- **WAL mode** — If the database uses WAL (Write-Ahead Logging), the `.db` file alone doesn&#x27;t contain all data — the `-wal` file is also needed. Copy both files, or checkpoint the WAL first: `sqlite3 database.db &quot;PRAGMA wal_checkpoint(TRUNCATE);&quot;`.
+- **Corrupt databases** — If `file database.db` doesn&#x27;t say &quot;SQLite 3.x database&quot;, the file may be corrupt or not SQLite. Run `sqlite3 database.db &quot;PRAGMA integrity_check;&quot;` to verify.
+- **Accidental writes** — If the dashboard is writable, a user could accidentally modify or delete data. Use `--read-only` for inspection. For production databases, always use read-only mode.
+- **Exposing the dashboard** — Don&#x27;t expose sqlite-web to the public internet without authentication. It gives full access to the database. Use Tailscale or a reverse proxy with auth for remote access.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># sqlite-dashboard
+
+Browse SQLite databases with a web UI — inspect tables, run queries, and export data from any browser.
+
+## What it does
+
+The agent launches a web-based dashboard (sqlite-web) for any SQLite database file. You get a table browser, SQL query editor, schema viewer, and CSV/JSON export — all in a browser. No desktop app needed.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/sqlite-dashboard/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Let me browse my Hermes state.db&quot;
+```
+
+The agent:
+1. Finds the database file
+2. Launches: `sqlite-web /path/to/state.db --port 8080 --read-only`
+3. Opens `http://localhost:8080` in your browser
+4. You see tables, can run queries, export data
+
+## What you get
+
+| Feature | Notes |
+|---|---|
+| Table browser | Paginated, sortable |
+| SQL query editor | With syntax highlighting |
+| Schema viewer | Tables, indexes, triggers |
+| CSV/JSON export | Per-table or per-query |
+| Read-only mode | Prevents accidental edits |
+
+## Example
+
+```
+User: &quot;What&#x27;s in my app&#x27;s database?&quot;
+
+Agent:
+  1. Finds: /var/lib/myapp/data.db
+  2. Launches: sqlite-web /var/lib/myapp/data.db --port 8080 --read-only
+  3. Returns: &quot;Dashboard at http://localhost:8080&quot;
+  4. User browses tables, runs SELECT queries, exports to CSV
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/sqlite-dashboard/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

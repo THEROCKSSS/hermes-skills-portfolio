@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>generate-dockerfile — Hermes Skill</title>
+  <meta name="description" content="What it does: `generate-dockerfile` reads a project&#x27;s manifests (`package.json`, `requirements.txt`, `go.mod`, `Cargo.toml`, `pyproject.toml`, `uv.lock`, …), figures out what runtime it uses, and writes a multi-stage `Dockerfile` plus the files that make the build safe and reproducible:...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/generate-dockerfile/">
+  <meta property="og:title" content="generate-dockerfile — Hermes Skill">
+  <meta property="og:description" content="What it does: `generate-dockerfile` reads a project&#x27;s manifests (`package.json`, `requirements.txt`, `go.mod`, `Cargo.toml`, `pyproject.toml`, `uv.lock`, …), figures out what runtime it uses, and writes a multi-stage `Dockerfile` plus the files that make the build safe and reproducible:...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/generate-dockerfile/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="generate-dockerfile — Hermes Skill">
+  <meta name="twitter:description" content="What it does: `generate-dockerfile` reads a project&#x27;s manifests (`package.json`, `requirements.txt`, `go.mod`, `Cargo.toml`, `pyproject.toml`, `uv.lock`, …), figures out what runtime it uses, and writes a multi-stage `Dockerfile` plus the files that make the build safe and reproducible:...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>generate-dockerfile</h1>
+          <p class="tagline">Generate an optimized multi-stage Dockerfile for your detected project stack.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge core">Core</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Backend</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Broadly empowering, nearly any user benefits</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Generalized from existing</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>`generate-dockerfile` reads a project&#x27;s manifests (`package.json`, `requirements.txt`, `go.mod`, `Cargo.toml`, `pyproject.toml`, `uv.lock`, …), figures out what runtime it uses, and writes a multi-stage `Dockerfile` plus the files that make the build safe and reproducible: `.dockerignore`, `.env.example`, and a `docker-compose.yml` when the service has dependencies. The agent runs the detection and writes the files; the skill supplies the rules and the templates. It covers Python (pip/poetry/uv), Node.js (npm/yarn/pnpm), Go, Rust, and static sites.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user says &quot;dockerize this&quot;, &quot;write a Dockerfile&quot;, or &quot;containerize my app&quot;.</li><li>You are scaffolding a new project and it will be deployed as a container.</li><li>An existing project has no Dockerfile, or has one that copies source before</li></ul>
+<p>dependencies, runs as root, or ships a single oversized stage.</p>
+<ul><li>You are setting up local development with multiple services (app + database +</li></ul>
+<p>cache) and need a `docker-compose.yml`.</p>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can generate an optimized multi-stage dockerfile for your detected project stack. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/generate-dockerfile/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/generate-dockerfile/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: generate-dockerfile
+description: &quot;Generate an optimized multi-stage Dockerfile for a detected project stack — agent + this skill = user gets a production-ready Docker setup.&quot;
+version: 1.0.0
+---
+
+# generate-dockerfile
+
+Read a project, detect its stack, and emit a multi-stage Dockerfile plus the
+supporting files (`.dockerignore`, `.env.example`, `docker-compose.yml`) needed
+for a reproducible, small, non-root container build. The agent writes the files;
+this skill carries the detection rules and the templates.
+
+## When to Use
+- The user says &quot;dockerize this&quot;, &quot;write a Dockerfile&quot;, or &quot;containerize my app&quot;.
+- You are scaffolding a new project and it will be deployed as a container.
+- An existing project has no Dockerfile, or has one that copies source before
+  dependencies, runs as root, or ships a single oversized stage.
+- You are setting up local development with multiple services (app + database +
+  cache) and need a `docker-compose.yml`.
+
+## Workflow
+1. **Inventory the project root.** List files and read the manifest(s):
+   `package.json`, `requirements.txt`, `pyproject.toml`, `Pipfile`, `go.mod`,
+   `Cargo.toml`, `uv.lock`, `yarn.lock`, `pnpm-lock.yaml`, `index.html`.
+2. **Detect the stack** using the signals in the table below. One project can
+   mix stacks (e.g. Node frontend + Python API) — generate one Dockerfile per
+   deployable service, not one mega-image.
+3. **Pick the matching template** and adjust versions to the constraints you
+   found (Node `engines`, Python version in `pyproject.toml`, Go toolchain).
+4. **Write `Dockerfile`** to the service root. Always write `.dockerignore`
+   alongside it — without it the build context leaks `.env`, `node_modules`,
+   and `.git` into the image.
+5. **Emit `.env.example`** if the code reads env vars (database URLs, API keys,
+   ports). Never write real secrets into the image.
+6. **Emit `docker-compose.yml`** when the service has dependencies (Postgres,
+   Redis, a sibling API). Skip it for a standalone static site.
+7. **Verify** by running `docker build` (or `docker compose build`) if Docker is
+   available and the user wants validation. Otherwise hand back the files with
+   the exact build command to run.
+
+## Stack Detection
+
+| Stack        | Primary signal(s)                                   | Package manager        |
+|--------------|-----------------------------------------------------|------------------------|
+| Node.js      | `package.json`                                      | npm / yarn / pnpm      |
+| Python (pip) | `requirements.txt`                                  | pip                    |
+| Python (poetry) | `pyproject.toml` with `[tool.poetry]`            | poetry                 |
+| Python (uv)  | `pyproject.toml` + `uv.lock`                        | uv                     |
+| Go           | `go.mod`                                            | go modules             |
+| Rust         | `Cargo.toml` + `Cargo.lock`                         | cargo                  |
+| Static site  | `index.html` / SPA build output, no backend runtime | (none — nginx serves)  |
+
+Detection priority when multiple exist: a backend runtime manifest
+(`go.mod`, `Cargo.toml`, `pyproject.toml`, `requirements.txt`) wins over a
+frontend `package.json`. A `package.json` with only a `build` script and no
+server start script is a static-site build step, not a Node service.
+
+## Dockerfile Templates
+
+### Python — pip (primary)
+```dockerfile
+FROM python:3.12-slim AS builder
+WORKDIR /app
+ENV PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1
+COPY requirements.txt ./
+RUN pip wheel --no-cache-dir --wheel-dir /wheels -r requirements.txt
+
+FROM python:3.12-slim AS runtime
+WORKDIR /app
+RUN groupadd --system app &amp;&amp; useradd --system --gid app --home /app app
+COPY --from=builder /wheels /wheels
+COPY requirements.txt ./
+RUN pip install --no-cache-dir --no-index --find-links /wheels -r requirements.txt \
+    &amp;&amp; rm -rf /wheels
+COPY --chown=app:app . /app
+USER app
+EXPOSE 8000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD python -c &quot;import urllib.request; urllib.request.urlopen(&#x27;http://127.0.0.1:8000/health&#x27;)&quot; || exit 1
+CMD [&quot;uvicorn&quot;, &quot;app.main:app&quot;, &quot;--host&quot;, &quot;0.0.0.0&quot;, &quot;--port&quot;, &quot;8000&quot;]
+```
+Poetry / uv differ only in how the dependency set is produced before the
+install. Replace the `builder` stage&#x27;s copy+install with:
+- **Poetry:** `RUN pip install poetry` → `COPY pyproject.toml poetry.lock ./` →
+  `RUN poetry config virtualenvs.create false &amp;&amp; poetry export -f requirements.txt --without-hashes -o requirements.txt` → then the same `pip wheel` step.
+- **uv:** `RUN pip install uv` → `COPY pyproject.toml uv.lock* ./` →
+  `RUN uv pip compile -o requirements.txt pyproject.toml || true` → then the same `pip wheel` step. (If you install straight into a venv target instead, drop the wheel stage.)
+
+### Node.js — npm (primary)
+```dockerfile
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts
+COPY . .
+RUN npm run build
+
+FROM node:20-alpine AS runtime
+WORKDIR /app
+ENV NODE_ENV=production
+RUN addgroup -S app &amp;&amp; adduser -S app -G app
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev --ignore-scripts
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/public ./public
+USER app
+EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD wget -q -O - http://127.0.0.1:3000/health || exit 1
+CMD [&quot;node&quot;, &quot;dist/index.js&quot;]
+```
+Package-manager variants change the manifest copy and the install command:
+
+| Manager | Manifest(s) copied        | Install command (builder / runtime)                          |
+|---------|---------------------------|--------------------------------------------------------------|
+| npm     | `package.json package-lock.json` | `npm ci --ignore-scripts` / `npm ci --omit=dev --ignore-scripts` |
+| yarn    | `package.json yarn.lock`  | `yarn install --frozen-lockfile --ignore-scripts` / `--production` |
+| pnpm    | `package.json pnpm-lock.yaml` | `pnpm install --frozen-lockfile --ignore-scripts` / `--prod` (needs `corepack enable`) |
+
+### Go (static binary)
+```dockerfile
+FROM golang:1.22-alpine AS builder
+WORKDIR /src
+RUN apk add --no-cache git
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -o /app/bin ./cmd/server
+
+FROM gcr.io/distroless/static-debian12
+COPY --from=builder /app/bin /app/bin
+USER nonroot:nonroot
+EXPOSE 8080
+ENTRYPOINT [&quot;/app/bin&quot;]
+```
+For a `HEALTHCHECK` under distroless you need a binary in the image, so either
+add a small health subcommand to the server and call it from `HEALTHCHECK`, or
+drop the `HEALTHCHECK` here and rely on the compose-level check.
+
+### Rust (static binary)
+```dockerfile
+FROM rust:1.78 AS builder
+WORKDIR /app
+# Build dependencies first: the dummy crate lets Cargo cache the dep layer.
+COPY Cargo.toml Cargo.lock ./
+RUN mkdir src &amp;&amp; echo &quot;fn main() {}&quot; &gt; src/main.rs \
+    &amp;&amp; cargo build --release \
+    &amp;&amp; rm -rf src
+COPY . .
+RUN cargo build --release
+
+FROM gcr.io/distroless/cc-debian12
+COPY --from=builder /app/target/release/app /app/app
+USER nonroot:nonroot
+EXPOSE 8080
+ENTRYPOINT [&quot;/app/app&quot;]
+```
+
+### Static site (SPA built with Node, served by nginx)
+```dockerfile
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts
+COPY . .
+RUN npm run build
+
+FROM nginx:1.27-alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
+    CMD wget -q -O - http://127.0.0.1/ || exit 1
+```
+For client-side routing (React/Vue history mode) the `nginx.conf` needs an
+internal fallback to `index.html`:
+```nginx
+server {
+  listen 80;
+  root /usr/share/nginx/html;
+  location / { try_files $uri $uri/ /index.html; }
+}
+```
+
+## Supporting Files
+
+### `.dockerignore`
+Always write this. It keeps build context small and stops `.env` from landing
+in the image.
+```
+.git
+.gitignore
+node_modules
+__pycache__
+*.pyc
+.venv
+venv
+dist
+build
+target
+.env
+.env.*
+Dockerfile
+docker-compose.yml
+.dockerignore
+*.md
+.vscode
+.idea
+.DS_Store
+```
+
+### `.env.example`
+Write this only if the code reads environment variables. Keep it secret-free.
+```
+# Copy to .env and fill in real values — never commit the filled-in .env.
+DATABASE_URL=postgres://app:app@db:5432/app
+REDIS_URL=redis://cache:6379
+PORT=8000
+LOG_LEVEL=info
+```
+
+### `docker-compose.yml`
+Write this when the service has dependencies. The `depends_on` + healthcheck
+pattern avoids &quot;container started but DB not ready&quot; races.
+```yaml
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - &quot;8000:8000&quot;
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: [&quot;CMD&quot;, &quot;wget&quot;, &quot;-q&quot;, &quot;-O&quot;, &quot;-&quot;, &quot;http://127.0.0.1:8000/health&quot;]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: app
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [&quot;CMD-SHELL&quot;, &quot;pg_isready -U app&quot;]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+volumes:
+  db_data:
+```
+
+## Health Checks
+- Point the `HEALTHCHECK` at a real endpoint the app actually serves
+  (`/health`, `/ready`). A `wget` against `/` that returns 200 for any HTML page
+  hides a broken backend.
+- `wget` and `curl` are not present in `distroless` or `slim` Python by default.
+  The Python template uses `python -c` for the check; the Node/alpine and nginx
+  templates use `wget` (present in `-alpine`).
+
+## Non-root User
+- Alpine: `addgroup -S app &amp;&amp; adduser -S app -G app` then `USER app`.
+- Debian-slim: `groupadd --system app &amp;&amp; useradd --system --gid app --home /app app`.
+- distroless: the `nonroot` user already exists — just `USER nonroot:nonroot`.
+- When you `COPY` source after creating the user, pass `--chown=app:app` (or the
+  distroless `nonroot`) so the runtime user can read it.
+
+## Pitfalls
+- **`npm install` instead of `npm ci`.** `npm ci` requires a lockfile and
+  installs exactly what it pins — reproducible. `npm install` can drift. Use
+  `npm ci`, `yarn install --frozen-lockfile`, or `pnpm install --frozen-lockfile`.
+- **Lifecycle scripts.** Plain `npm ci` runs `postinstall` scripts from
+  dependencies. Default to `--ignore-scripts` and only enable it for a specific
+  package you have inspected.
+- **Copying source before dependencies.** If `COPY . .` comes before the dep
+  install, every source edit invalidates the dependency layer and re-downloads
+  everything. Copy the manifest, install, then copy source.
+- **Missing `.dockerignore`.** Without it, `node_modules`, `.git`, and `.env`
+  get sent as build context and can be baked into the image.
+- **Running as root.** The default container user is root; add a non-root user
+  in the runtime stage.
+- **`--latest` base tags.** Pin (`python:3.12-slim`, `node:20-alpine`). Unpinned
+  builds break unpredictably when upstream moves.
+- **SPA `__dirname` layout mismatch.** A Node server that resolves a sibling
+  `frontend/` via `path.join(__dirname, &#x27;..&#x27;, &#x27;frontend&#x27;)` breaks when the
+  Dockerfile copies the backend to `/app` and the frontend elsewhere — every
+  static asset 404s while `/api/*` still works. Copy the frontend into the same
+  directory the server expects and have the resolver try both candidate paths.
+- **Host loopback on some setups.** When testing from the host, prefer
+  `http://127.0.0.1:&lt;port&gt;` over `localhost` — on some systems `localhost`
+  resolves to IPv6 `::1` first and the request hangs even though the container
+  is healthy. Confirm the app is alive from inside the container
+  (`docker compose exec app wget -q -O - http://127.0.0.1:8000/health`) before
+  blaming the code.
+
+## Verification
+- Run `docker build -t &lt;svc&gt; .` (or `docker compose build`) and confirm it
+  succeeds and the final image is small.
+- Run the container and hit the health endpoint from inside it.
+- Confirm it does not run as root: `docker run --rm &lt;svc&gt; id` should report a
+  non-zero uid.
+- Confirm no `.env` is in the image: `docker run --rm &lt;svc&gt; ls -la` and inspect
+  the build context.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># generate-dockerfile
+
+Detect a project&#x27;s stack and generate an optimized multi-stage Dockerfile with the supporting files for a reproducible, non-root build.
+
+## What it does
+
+`generate-dockerfile` reads a project&#x27;s manifests (`package.json`, `requirements.txt`, `go.mod`, `Cargo.toml`, `pyproject.toml`, `uv.lock`, …), figures out what runtime it uses, and writes a multi-stage `Dockerfile` plus the files that make the build safe and reproducible: `.dockerignore`, `.env.example`, and a `docker-compose.yml` when the service has dependencies. The agent runs the detection and writes the files; the skill supplies the rules and the templates. It covers Python (pip/poetry/uv), Node.js (npm/yarn/pnpm), Go, Rust, and static sites.
+
+## Install
+
+This skill ships in the Hermes skills portfolio. Install it with:
+
+```bash
+hermes skills install generate-dockerfile
+```
+
+If you are vendoring it into your own profile, copy the `skills/generate-dockerfile` directory (the `SKILL.md`) into your Hermes skills folder.
+
+## How to use
+
+Ask Hermes to dockerize a project, or trigger it during scaffolding:
+
+```
+dockerize this project
+```
+
+```
+write a Dockerfile for ./api
+```
+
+```
+containerize my Go service and add a compose file with Postgres
+```
+
+The agent will:
+
+1. Read the project root and identify the manifest(s).
+2. Detect the stack from the signals in the supported-stacks table.
+3. Write `Dockerfile`, `.dockerignore`, and (when relevant) `.env.example` and `docker-compose.yml`.
+4. Optionally run `docker build` to confirm it works.
+
+A mixed project (a Node frontend and a Python API, for example) produces one Dockerfile per deployable service, not a single combined image.
+
+## Supported stacks
+
+| Stack           | Detected from                          | Package manager      |
+|-----------------|----------------------------------------|----------------------|
+| Node.js         | `package.json`                         | npm / yarn / pnpm    |
+| Python (pip)    | `requirements.txt`                     | pip                  |
+| Python (poetry) | `pyproject.toml` with `[tool.poetry]`  | poetry               |
+| Python (uv)     | `pyproject.toml` + `uv.lock`           | uv                   |
+| Go              | `go.mod`                               | go modules           |
+| Rust            | `Cargo.toml` + `Cargo.lock`            | cargo                |
+| Static site     | `index.html` / SPA build output        | none (nginx serves)  |
+
+## Example
+
+Given a FastAPI project with `requirements.txt`:
+
+```
+myapi/
+  app/
+    main.py
+  requirements.txt
+```
+
+Running `generate-dockerfile` produces:
+
+- A two-stage `Dockerfile` that builds wheels in a `builder` stage, installs them into a clean `python:3.12-slim` runtime stage, runs as a non-root `app` user, and exposes a `HEALTHCHECK` against `/health`.
+- A `.dockerignore` that keeps `node_modules`, `.git`, `.env`, and build output out of the image.
+- A `.env.example` listing `DATABASE_URL`, `PORT`, and `LOG_LEVEL` (no secrets).
+- A `docker-compose.yml` wiring the API to a `postgres:16-alpine` container with a health-gated `depends_on`, so the app only starts once the database is ready.
+
+You then build and run it:
+
+```bash
+docker compose up --build
+```
+
+The full templates for every stack live in `SKILL.md`.
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/generate-dockerfile/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>

@@ -155,7 +155,7 @@
       seg.setAttribute("title", categories[key].name + " (" + count + " skills — click to filter)");
       // Hover popup with tier breakdown
       (function(k, c, tc) {
-        seg.addEventListener("mouseenter", function(e) { showDistPopup(e, k, c, tc); });
+        seg.addEventListener("mouseenter", function(e) { showDistPopupEnhanced(e, k, c, tc); });
         seg.addEventListener("mouseleave", function() { hideDistPopup(); });
         seg.addEventListener("click", function() {
           currentCategory = k;
@@ -527,6 +527,59 @@
     });
   }
 
+  // --- GitHub star count badge (issue #7) ---
+  function loadStarCount() {
+    var repo = "THEROCKSSS/hermes-skills-portfolio";
+    var url = "https://api.github.com/repos/" + repo;
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var stars = data.stargazers_count || 0;
+        var badge = document.getElementById("star-count-badge");
+        if (badge) {
+          badge.textContent = "\u2605 " + stars;
+          badge.style.display = "inline-flex";
+        }
+      })
+      .catch(function() { /* silently fail — star badge is non-critical */ });
+  }
+
+  // --- Distribution bar tooltip: show top 3 skills (issue #8) ---
+  function showDistPopupEnhanced(e, catKey, count, tierCounts) {
+    hideDistPopup();
+    var catName = indexData.categories[catKey] ? indexData.categories[catKey].name : catKey;
+    var pct = Math.round((count / indexData.skills.length) * 100);
+    // Get top 3 skills in this category by usage
+    var catSkills = indexData.skills.filter(function(s) { return s.category === catKey; });
+    catSkills.sort(function(a, b) { return totalUsage(b) - totalUsage(a); });
+    var top3 = catSkills.slice(0, 3).map(function(s) { return s.name; });
+    var top3Html = top3.length > 0
+      ? '<div class="dist-popup-skills">' + top3.map(function(n) { return '<span class="dist-popup-skill">' + escapeHtml(n) + '</span>'; }).join('') + '</div>'
+      : '';
+    var popup = document.createElement("div");
+    popup.className = "dist-popup";
+    popup.innerHTML =
+      '<div class="dist-popup-name">' + escapeHtml(catName) + '</div>' +
+      '<div class="dist-popup-count">' + count + ' skills &middot; ' + pct + '%</div>' +
+      '<div class="dist-popup-tiers">' +
+        (tierCounts.core ? '<span class="dist-popup-tier core">Core: ' + tierCounts.core + '</span>' : '') +
+        (tierCounts.featured ? '<span class="dist-popup-tier featured">Featured: ' + tierCounts.featured + '</span>' : '') +
+        (tierCounts.utility ? '<span class="dist-popup-tier utility">Utility: ' + tierCounts.utility + '</span>' : '') +
+      '</div>' +
+      top3Html +
+      '<div class="dist-popup-hint">Click to filter</div>';
+    document.body.appendChild(popup);
+    distPopup = popup;
+    var rect = e.target.getBoundingClientRect();
+    var popupRect = popup.getBoundingClientRect();
+    var left = rect.left + rect.width / 2 - popupRect.width / 2;
+    var top = rect.bottom + 6;
+    if (left < 8) left = 8;
+    if (left + popupRect.width > window.innerWidth - 8) left = window.innerWidth - popupRect.width - 8;
+    popup.style.left = left + "px";
+    popup.style.top = top + "px";
+  }
+
   // --- Init ---
   function init() {
     initTheme();
@@ -540,6 +593,7 @@
       setupCardClicks();
       setupDetailEvents();
     });
+    loadStarCount();
     document.getElementById("theme-toggle").addEventListener("click", toggleTheme);
     document.getElementById("sort-select").addEventListener("change", function (e) { currentSort = e.target.value; render(); });
     document.getElementById("category-filter").addEventListener("change", function (e) { currentCategory = e.target.value; render(); });

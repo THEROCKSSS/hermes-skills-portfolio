@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>password-generator — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent generates cryptographically secure credentials using Python&#x27;s `secrets` module. Three modes: random passwords (configurable length and character set), memorable passphrases (random words joined by dashes), and API keys (alphanumeric tokens with optional prefix). Includes...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/password-generator/">
+  <meta property="og:title" content="password-generator — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent generates cryptographically secure credentials using Python&#x27;s `secrets` module. Three modes: random passwords (configurable length and character set), memorable passphrases (random words joined by dashes), and API keys (alphanumeric tokens with optional prefix). Includes...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/password-generator/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="password-generator — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent generates cryptographically secure credentials using Python&#x27;s `secrets` module. Three modes: random passwords (configurable length and character set), memorable passphrases (random words joined by dashes), and API keys (alphanumeric tokens with optional prefix). Includes...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#skill-content">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-top">
+        <div class="masthead-titles">
+          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
+          <h1>password-generator</h1>
+          <p class="tagline">Generate secure passwords, passphrases, and API keys.</p>
+        </div>
+        <div class="masthead-actions">
+          <span class="tier-badge utility">Utility</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item"><strong>Category:</strong> Utility</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Tier:</strong> Useful for specific workflows</span>
+        <span class="meta-sep">&middot;</span>
+        <span class="meta-item"><strong>Source:</strong> Newly authored</span>
+        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="skill-content" class="skill-detail-main">
+    <div class="skill-detail-inner">
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
+        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
+      </div>
+
+      <div class="detail-tab-content active" id="tab-overview">
+        <section class="detail-section">
+          <h3>What it does</h3>
+          <p>The agent generates cryptographically secure credentials using Python&#x27;s `secrets` module. Three modes: random passwords (configurable length and character set), memorable passphrases (random words joined by dashes), and API keys (alphanumeric tokens with optional prefix). Includes a strength checker.</p>
+        </section>
+        <section class="detail-section">
+          <h3>How an agent uses it</h3>
+          <ul><li>The user needs a strong password.</li><li>The user wants a memorable passphrase.</li><li>The user needs an API key or token.</li><li>The user says &quot;generate a password&quot;, &quot;make me a secure password&quot;, or &quot;create an API key&quot;.</li></ul>
+        </section>
+        <section class="detail-section">
+          <h3>What you get</h3>
+          <p>Install this skill and your Hermes agent can generate secure passwords, passphrases, and api keys. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+        </section>
+        
+        <div class="install-block">
+          <h4>Install command</h4>
+          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/password-generator/SKILL.md</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        </div>
+        
+        <div class="detail-links">
+          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/password-generator/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          
+        </div>
+      </div>
+
+      <div class="detail-tab-content" id="tab-skillmd">
+        <pre class="skillmd-viewer">---
+name: password-generator
+description: &quot;Generate secure passwords and passphrases — agent + this skill = user gets cryptographically strong credentials.&quot;
+version: 1.0.0
+---
+
+# password-generator
+
+Generate secure passwords, passphrases, and API keys. The agent creates random passwords with configurable complexity, memorable passphrases from word lists, and API tokens with specific character sets.
+
+## When to Use
+
+- The user needs a strong password.
+- The user wants a memorable passphrase.
+- The user needs an API key or token.
+- The user says &quot;generate a password&quot;, &quot;make me a secure password&quot;, or &quot;create an API key&quot;.
+
+## Secure Password
+
+```python
+import secrets
+import string
+
+def generate_password(length: int = 16, uppercase: bool = True, lowercase: bool = True, digits: bool = True, symbols: bool = True, exclude_similar: bool = False) -&gt; str:
+    &quot;&quot;&quot;Generate a cryptographically secure random password.&quot;&quot;&quot;
+    chars = &quot;&quot;
+    if lowercase:
+        chars += string.ascii_lowercase
+    if uppercase:
+        chars += string.ascii_uppercase
+    if digits:
+        chars += string.digits
+    if symbols:
+        chars += &quot;!@#$%^&amp;*()_+-=[]{}|;:,.&lt;&gt;?&quot;
+
+    if exclude_similar:
+        chars = chars.replace(&quot;0&quot;, &quot;&quot;).replace(&quot;O&quot;, &quot;&quot;).replace(&quot;l&quot;, &quot;&quot;).replace(&quot;1&quot;, &quot;&quot;).replace(&quot;I&quot;, &quot;&quot;)
+
+    # Ensure at least one of each requested type
+    password = []
+    required = []
+    if lowercase:
+        required.append(secrets.choice(string.ascii_lowercase))
+    if uppercase:
+        required.append(secrets.choice(string.ascii_uppercase))
+    if digits:
+        required.append(secrets.choice(string.digits))
+    if symbols:
+        required.append(secrets.choice(&quot;!@#$%^&amp;*()_+-=[]{}|;:,.&lt;&gt;?&quot;))
+
+    remaining = length - len(required)
+    password = required + [secrets.choice(chars) for _ in range(remaining)]
+
+    # Shuffle
+    secrets.SystemRandom().shuffle(password)
+    return &#x27;&#x27;.join(password)
+```
+
+## Passphrase (memorable)
+
+```python
+import secrets
+
+WORD_LIST = [
+    &quot;apple&quot;, &quot;brave&quot;, &quot;cloud&quot;, &quot;dance&quot;, &quot;eagle&quot;, &quot;flame&quot;, &quot;grace&quot;, &quot;heart&quot;,
+    &quot;ivory&quot;, &quot;jungle&quot;, &quot;kneel&quot;, &quot;lemon&quot;, &quot;maple&quot;, &quot;noble&quot;, &quot;ocean&quot;, &quot;pearl&quot;,
+    &quot;quest&quot;, &quot;river&quot;, &quot;storm&quot;, &quot;trust&quot;, &quot;unity&quot;, &quot;vivid&quot;, &quot;whisper&quot;, &quot;xenon&quot;,
+    &quot;yacht&quot;, &quot;zebra&quot;, &quot;anchor&quot;, &quot;bloom&quot;, &quot;creek&quot;, &quot;dawn&quot;, &quot;ember&quot;, &quot;frost&quot;,
+    &quot;globe&quot;, &quot;haven&quot;, &quot;ideal&quot;, &quot;jewel&quot;, &quot;karma&quot;, &quot;lotus&quot;, &quot;mint&quot;, &quot;north&quot;,
+]
+
+def generate_passphrase(words: int = 4, separator: str = &quot;-&quot;, capitalize: bool = True, add_number: bool = True) -&gt; str:
+    &quot;&quot;&quot;Generate a memorable passphrase from random words.&quot;&quot;&quot;
+    selected = [secrets.choice(WORD_LIST) for _ in range(words)]
+    if capitalize:
+        selected = [w.capitalize() for w in selected]
+    if add_number:
+        selected.append(str(secrets.randbelow(100)))
+    return separator.join(selected)
+```
+
+## API Key / Token
+
+```python
+def generate_api_key(length: int = 32, prefix: str = &quot;&quot;) -&gt; str:
+    &quot;&quot;&quot;Generate a random API key.&quot;&quot;&quot;
+    chars = string.ascii_letters + string.digits
+    key = &#x27;&#x27;.join(secrets.choice(chars) for _ in range(length))
+    if prefix:
+        return f&quot;{prefix}_{key}&quot;
+    return key
+```
+
+## Hex Token
+
+```python
+def generate_hex_token(bytes_len: int = 32) -&gt; str:
+    &quot;&quot;&quot;Generate a hex token (e.g., for OAuth).&quot;&quot;&quot;
+    return secrets.token_hex(bytes_len)
+```
+
+## URL-safe Token
+
+```python
+def generate_urlsafe_token(bytes_len: int = 32) -&gt; str:
+    &quot;&quot;&quot;Generate a URL-safe token.&quot;&quot;&quot;
+    return secrets.token_urlsafe(bytes_len)
+```
+
+## Password Strength Check
+
+```python
+import re
+
+def check_strength(password: str) -&gt; dict:
+    &quot;&quot;&quot;Evaluate password strength.&quot;&quot;&quot;
+    score = 0
+    checks = {
+        &quot;length_12+&quot;: len(password) &gt;= 12,
+        &quot;length_16+&quot;: len(password) &gt;= 16,
+        &quot;has_lowercase&quot;: bool(re.search(r&#x27;[a-z]&#x27;, password)),
+        &quot;has_uppercase&quot;: bool(re.search(r&#x27;[A-Z]&#x27;, password)),
+        &quot;has_digit&quot;: bool(re.search(r&#x27;\d&#x27;, password)),
+        &quot;has_symbol&quot;: bool(re.search(r&#x27;[!@#$%^&amp;*()_+\-=\[\]{}|;:,.&lt;&gt;?]&#x27;, password)),
+        &quot;no_common_patterns&quot;: not re.search(r&#x27;(123|abc|qwe|password|admin)&#x27;, password, re.IGNORECASE),
+    }
+
+    for check in checks.values():
+        if check:
+            score += 1
+
+    if score &gt;= 7:
+        rating = &quot;strong&quot;
+    elif score &gt;= 5:
+        rating = &quot;moderate&quot;
+    else:
+        rating = &quot;weak&quot;
+
+    return {&quot;score&quot;: score, &quot;rating&quot;: rating, &quot;checks&quot;: checks}
+```
+
+## Batch Generation
+
+```python
+def generate_batch(count: int = 10, length: int = 16) -&gt; list:
+    &quot;&quot;&quot;Generate multiple passwords at once.&quot;&quot;&quot;
+    return [generate_password(length) for _ in range(count)]
+```
+
+## Workflow
+
+1. Determine what the user needs: password, passphrase, or API key
+2. For passwords: confirm length and character requirements
+3. For passphrases: confirm word count and separator
+4. For API keys: confirm length and prefix
+5. Generate using `secrets` module (cryptographically secure)
+6. Optionally check strength
+7. Return the credential(s)
+
+## Pitfalls
+
+- **Never use `random` for passwords** — The `random` module is not cryptographically secure. Always use `secrets` (Python 3.6+).
+- **Similar characters** — Characters like `0/O`, `l/1/I` cause confusion. Use `exclude_similar=True` for passwords that will be typed manually.
+- **Short passphrases** — A 2-word passphrase is weaker than a 12-char random password. Use at least 4 words for adequate entropy.
+- **Word list size** — A small word list reduces passphrase entropy. The built-in list has 40 words; for higher security, use a larger list (e.g., EFF&#x27;s 7776-word list).
+- **Password in process args** — Don&#x27;t pass generated passwords as command-line arguments (visible in `ps`). Write to a file or stdout instead.
+- **Logging** — Never log generated passwords. Print them once and let the user copy them.
+</pre>
+      </div>
+
+      <div class="detail-tab-content" id="tab-readme">
+        <pre class="skillmd-viewer"># password-generator
+
+Generate secure passwords, memorable passphrases, and API keys.
+
+## What it does
+
+The agent generates cryptographically secure credentials using Python&#x27;s `secrets` module. Three modes: random passwords (configurable length and character set), memorable passphrases (random words joined by dashes), and API keys (alphanumeric tokens with optional prefix). Includes a strength checker.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/password-generator/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Generate a strong 20-character password&quot;
+```
+
+The agent generates a password with mixed case, digits, and symbols, then checks its strength.
+
+## Types
+
+| Type | Example | Best for |
+|---|---|---|
+| Password | `K7#m@xL9!pQ4$vB2` | Accounts, databases |
+| Passphrase | `Ocean-Storm-Vivid-Maple-42` | Master passwords |
+| API key | `sk_aB3dE9fG2hI5jK8` | Service tokens |
+| Hex token | `a3f5b8c1d2e4...` | OAuth, sessions |
+
+## Example
+
+```
+User: &quot;I need a memorable master password&quot;
+
+Agent:
+  1. Generates: generate_passphrase(words=5, separator=&quot;-&quot;, add_number=True)
+  2. Returns: &quot;Haven-Globe-Ember-Noble-Creek-73&quot;
+  3. Strength: strong (7/7 checks passed)
+```
+</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
+    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/password-generator/SKILL.md</code> or clone the repo.</p>
+    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+  </footer>
+
+  <script>
+  function switchTab(tabName) {
+    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+  function copyInstall() {
+    var cmd = document.getElementById('install-cmd').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.location.href = '../../';
+  });
+  </script>
+</body>
+</html>
