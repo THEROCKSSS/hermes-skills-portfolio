@@ -98,19 +98,20 @@
   // --- URL hash state ---
   function readHashState() {
     var hash = window.location.hash.substring(1);
-    if (!hash) return;
+    if (!hash) return false;
     // Check if it's a skill detail hash (#skill/name)
     if (hash.indexOf("skill/") === 0) {
       var skillName = hash.substring(6);
       // Defer — skills may not be loaded yet
       setTimeout(function () { openDetail(skillName); }, 100);
-      return;
+      return true; // signal to caller: skill detail requested, don't re-render/wipe hash
     }
     var params = new URLSearchParams(hash);
     if (params.get("sort")) { currentSort = params.get("sort"); document.getElementById("sort-select").value = currentSort; }
     if (params.get("cat")) { currentCategory = params.get("cat"); document.getElementById("category-filter").value = currentCategory; }
     if (params.get("tier")) { currentTier = params.get("tier"); document.getElementById("tier-filter").value = currentTier; }
     if (params.get("q")) { currentSearch = params.get("q"); document.getElementById("search-input").value = currentSearch; }
+    return false;
   }
   function writeHashState() {
     if (currentDetailSkill) return; // Don't overwrite skill detail hash
@@ -454,7 +455,7 @@
       searchTimer = setTimeout(render, 150);
     });
     setupKeyboard(); setupBackToTop(); setupClearFilters();
-    window.addEventListener("hashchange", function () { readHashState(); render(); });
+    window.addEventListener("hashchange", function () { var isSkill = readHashState(); if (!isSkill) render(); });
   }
   if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", init); }
   else { init(); }

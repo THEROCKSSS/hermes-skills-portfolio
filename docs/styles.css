@@ -163,14 +163,14 @@ body.detail-open { overflow: hidden; }
   inset: 0;
   z-index: 200;
   background: oklch(0% 0 0 / 0.6);
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: flex-start;
   overflow-y: auto;
   opacity: 0;
   transition: opacity 200ms ease-out;
 }
-.detail-overlay:not([hidden]) { opacity: 1; }
+.detail-overlay:not([hidden]) { display: flex; opacity: 1; }
 
 .detail-page {
   width: 100%;
