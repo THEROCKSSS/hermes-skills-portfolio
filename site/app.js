@@ -280,6 +280,15 @@
     // SKILL.md link
     document.getElementById("detail-skillmd-link").href = skill.install_url;
 
+    // Source attribution link (for adapted/generalized skills from external repos)
+    var sourceLink = document.getElementById("detail-source-link");
+    if (skill.source_attribution) {
+      sourceLink.href = skill.source_attribution;
+      sourceLink.hidden = false;
+    } else {
+      sourceLink.hidden = true;
+    }
+
     // SKILL.md content
     var skillmdEl = document.getElementById("detail-skillmd-content");
     if (skill.skillmd_content) {

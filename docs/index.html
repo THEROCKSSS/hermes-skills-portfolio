@@ -35,42 +35,40 @@
         <span class="meta-sep">·</span>
         <span class="meta-item">MIT licensed</span>
       </div>
+      <section class="distribution-bar" id="distribution-bar" aria-label="Category distribution"></section>
+      <nav class="controls" aria-label="Sort and filter">
+        <div class="control-group">
+          <label for="sort-select">Sort by</label>
+          <select id="sort-select">
+            <option value="tier-usage">Usefulness, then usage</option>
+            <option value="usage">Usage only</option>
+            <option value="recency">Most recent</option>
+            <option value="category">Category</option>
+            <option value="alpha">Alphabetical</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="category-filter">Category</label>
+          <select id="category-filter">
+            <option value="">All categories</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="tier-filter">Tier</label>
+          <select id="tier-filter">
+            <option value="">All tiers</option>
+            <option value="core">Core</option>
+            <option value="featured">Featured</option>
+            <option value="utility">Utility</option>
+          </select>
+        </div>
+        <div class="control-group control-grow">
+          <label for="search-input">Search <kbd class="kbd-hint">/</kbd></label>
+          <input type="search" id="search-input" placeholder="Skill name, keyword, or capability...">
+        </div>
+      </nav>
     </div>
   </header>
-
-  <section class="distribution-bar" id="distribution-bar" aria-label="Category distribution"></section>
-
-  <nav class="controls" aria-label="Sort and filter">
-    <div class="control-group">
-      <label for="sort-select">Sort by</label>
-      <select id="sort-select">
-        <option value="tier-usage">Usefulness, then usage</option>
-        <option value="usage">Usage only</option>
-        <option value="recency">Most recent</option>
-        <option value="category">Category</option>
-        <option value="alpha">Alphabetical</option>
-      </select>
-    </div>
-    <div class="control-group">
-      <label for="category-filter">Category</label>
-      <select id="category-filter">
-        <option value="">All categories</option>
-      </select>
-    </div>
-    <div class="control-group">
-      <label for="tier-filter">Tier</label>
-      <select id="tier-filter">
-        <option value="">All tiers</option>
-        <option value="core">Core</option>
-        <option value="featured">Featured</option>
-        <option value="utility">Utility</option>
-      </select>
-    </div>
-    <div class="control-group control-grow">
-      <label for="search-input">Search <kbd class="kbd-hint">/</kbd></label>
-      <input type="search" id="search-input" placeholder="Skill name, keyword, or capability...">
-    </div>
-  </nav>
 
   <div class="active-filters" id="active-filters"></div>
 
@@ -132,6 +130,7 @@
               <button class="copy-btn" id="detail-copy-btn">Copy</button>
             </div>
             <a class="detail-skillmd-link" id="detail-skillmd-link" href="#" target="_blank" rel="noopener">View SKILL.md on GitHub ↗</a>
+            <a class="detail-source-link" id="detail-source-link" href="#" target="_blank" rel="noopener" hidden>View original source ↗</a>
           </div>
 
           <div class="detail-tab-content" id="tab-skillmd">

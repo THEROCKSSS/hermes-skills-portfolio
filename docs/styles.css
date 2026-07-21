@@ -83,7 +83,7 @@ body.detail-open { overflow: hidden; }
 .skip-link:focus { top: 0; }
 
 /* ============ MASTHEAD ============ */
-.masthead { border-bottom: 2px solid var(--ink); padding: 2.5rem 1.5rem; background: var(--bg); }
+.masthead { border-bottom: 2px solid var(--ink); padding: 2.5rem 1.5rem 1.5rem; background: var(--bg); }
 .masthead-inner { max-width: 1200px; margin: 0 auto; }
 .masthead-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
 .masthead-titles { flex: 1; min-width: 0; }
@@ -102,8 +102,8 @@ body.detail-open { overflow: hidden; }
 .meta-row { font-size: 0.8rem; color: var(--ink-3); display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
 .meta-sep { color: var(--ink-4); }
 
-/* ============ DISTRIBUTION BAR ============ */
-.distribution-bar { max-width: 1200px; margin: 0 auto; padding: 0.75rem 1.5rem; display: flex; gap: 2px; height: 6px; border-radius: 3px; overflow: hidden; background: var(--dist-bar-bg); }
+/* ============ DISTRIBUTION BAR (inside masthead) ============ */
+.distribution-bar { margin: 1rem 0 0; display: flex; gap: 2px; height: 6px; border-radius: 3px; overflow: hidden; background: var(--dist-bar-bg); }
 .dist-segment { flex: 1; border-radius: 1px; transition: opacity 150ms ease-out; cursor: default; position: relative; }
 .dist-segment:hover { opacity: 0.8; }
 .dist-segment[data-cat="devops"] { background: oklch(65% 0.12 145); }
@@ -113,8 +113,8 @@ body.detail-open { overflow: hidden; }
 .dist-segment[data-cat="meta"] { background: oklch(65% 0.12 0); }
 .dist-segment[data-cat="utility"] { background: oklch(65% 0.10 180); }
 
-/* ============ CONTROLS ============ */
-.controls { border-bottom: 1px solid var(--rule); border-top: 1px solid var(--rule); padding: 1rem 1.5rem; display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-end; background: var(--bg-2); }
+/* ============ CONTROLS (inside masthead) ============ */
+.controls { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-end; }
 .control-group { display: flex; flex-direction: column; gap: 4px; }
 .control-grow { flex: 1; min-width: 200px; }
 .control-group label { font-size: 0.7rem; color: var(--ink-3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; display: flex; align-items: center; gap: 6px; }
@@ -263,6 +263,8 @@ body.detail-open { overflow: hidden; }
 
 .detail-skillmd-link { display: inline-block; font-size: 0.85rem; color: var(--accent-text); text-decoration: none; font-weight: 600; }
 .detail-skillmd-link:hover { text-decoration: underline; }
+.detail-source-link { display: inline-block; font-size: 0.85rem; color: var(--ink-3); text-decoration: none; font-weight: 500; margin-left: 1rem; }
+.detail-source-link:hover { color: var(--accent-text); text-decoration: underline; }
 
 /* ============ SKILLMD VIEWER ============ */
 .skillmd-viewer {
