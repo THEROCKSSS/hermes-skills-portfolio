@@ -34,7 +34,7 @@ accept JSON interchangeably. The canonical schema:
 
 ```yaml
 basics:
-  name: "Owen"
+  name: "Alex"
   label: "Senior Software Engineer"
   email: "monica@example.com"
   phone: "+1 555 0100"

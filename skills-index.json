@@ -3,11 +3,10 @@
   "generated_at": "2026-07-20T08:54:32Z",
   "portfolio": {
     "name": "Hermes Skills Portfolio",
-    "owner": "Owen",
+    "owner": "Alex",
     "tagline": "Empowering skills for the Hermes agent — install one, your agent can now do that for you.",
     "total_skills": 51,
-    "github_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio",
-    "forgejo_url": "http://localhost:3000/agentsoul/hermes-skills-portfolio"
+    "github_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio"
   },
   "categories": {
     "devops": {

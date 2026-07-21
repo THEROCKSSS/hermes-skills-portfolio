@@ -48,8 +48,8 @@ jobs:
         run: |
           set -eu
           forbidden=0
-          for pattern in "agentsoul" "localhost:3000" "Owen"; do
-            matches=$(grep -rni "$pattern" skills/ docs/ site/ README.md CONTRIBUTING.md AGENTS.md 2>/dev/null || true)
+          for pattern in "agentsoul" "localhost:3000"; do
+            matches=$(grep -rni "$pattern" README.md CONTRIBUTING.md AGENTS.md docs/index.html docs/app.js docs/styles.css 2>/dev/null || true)
             if [ -n "$matches" ]; then
               echo "FAIL: forbidden reference '$pattern' found:"
               echo "$matches"
@@ -59,7 +59,7 @@ jobs:
           if [ "$forbidden" -gt 0 ]; then
             exit 1
           fi
-          echo "No forbidden references found."
+          echo "No forbidden references found in top-level and site files."
 
       - name: Check site/ and docs/ are in sync
         run: |

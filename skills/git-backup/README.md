@@ -4,7 +4,7 @@
 > verifiable, restorable backups** of your git repositories to an offsite remote.
 
 Part of the [Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
-by Owen.
+by Alex.
 
 ---
 

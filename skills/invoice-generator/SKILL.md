@@ -36,7 +36,7 @@ invoice:
   tax_rate: 0.20          # 20% VAT/GST; 0 if tax-exempt
   notes: "Payment due within 30 days. Bank transfer preferred."
   sender:
-    name: Owen
+    name: Alex
     company: Amano Studio LLC
     email: billing@amano.studio
     address: "12 Birch Lane, Suite 4\nPortland, OR 97201"
@@ -246,5 +246,5 @@ The agent should:
 
 ## Install / Source
 
-Public portfolio (Owen):
+Public portfolio (Alex):
 https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/invoice-generator/SKILL.md

@@ -2,7 +2,7 @@
 
 > Generate client SDKs, server stubs, API docs, and config from an OpenAPI spec — in 50+ languages, straight from the contract.
 
-Part of the [Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio) by **Owen**.
+Part of the [Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio) by **Alex**.
 
 ---
 

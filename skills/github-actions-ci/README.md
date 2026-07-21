@@ -4,7 +4,7 @@
 > deployments that actually pass, generated from a single conversation.
 
 Part of the [Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
-by **Owen**.
+by **Alex**.
 
 ---
 

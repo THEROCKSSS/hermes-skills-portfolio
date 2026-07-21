@@ -4,7 +4,7 @@
 > PowerPoint in one command.
 
 Part of the [Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
-by **Owen**.
+by **Alex**.
 
 ## Why this skill exists
 
@@ -77,4 +77,4 @@ exports in full.
 
 ---
 
-© Owen — released for the Hermes community.
+© Alex — released for the Hermes community.

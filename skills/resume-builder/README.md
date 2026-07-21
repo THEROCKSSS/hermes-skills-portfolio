@@ -29,7 +29,7 @@ skill handles the typography, pagination, and print fidelity.
 ```yaml
 # resume.yaml
 basics:
-  name: "Owen"
+  name: "Alex"
   label: "Senior Software Engineer"
   email: "monica@example.com"
   summary: "Engineer focused on distributed systems."
