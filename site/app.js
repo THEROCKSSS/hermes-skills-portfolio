@@ -99,10 +99,11 @@
   function readHashState() {
     var hash = window.location.hash.substring(1);
     if (!hash) return false;
-    // Old #skill/<name> hash links — redirect to the real per-skill page
+    // #skill/<name> — open the SPA detail overlay popup
     if (hash.indexOf("skill/") === 0) {
       var skillName = hash.substring(6);
-      window.location.replace("skills/" + skillName + "/index.html");
+      // Defer — skills may not be loaded yet
+      setTimeout(function () { openDetail(skillName); }, 100);
       return true;
     }
     var params = new URLSearchParams(hash);
@@ -259,7 +260,7 @@
     var a = document.createElement("a");
     a.className = "skill-card";
     a.setAttribute("data-skill", skill.name);
-    a.setAttribute("href", "skills/" + skill.name + "/index.html");
+    a.setAttribute("href", "#skill/" + skill.name);
     a.setAttribute("role", "button");
     a.innerHTML =
       '<div class="skill-card-header">' +
@@ -451,8 +452,8 @@
 
   // --- Card clicks → open detail via hash change ---
   function setupCardClicks() {
-    // Cards are <a> tags with href="skills/<name>/index.html" — clicking navigates
-    // directly to the standalone per-skill page. No hash interception needed.
+    // Cards are <a> tags with href="#skill/<name>" — clicking changes the hash,
+    // hashchange listener calls readHashState which calls openDetail (popup overlay)
     document.getElementById("skill-grid").addEventListener("click", function (e) {
       if (e.target.classList.contains("skill-install-link")) return;
     });
