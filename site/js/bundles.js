@@ -6,16 +6,7 @@
   var HC = window.HermesCommon;
 
   function loadBundles(cb) {
-    var paths = ["./bundles.json", "../bundles.json", "/bundles.json"];
-    var tried = 0;
-    function tryNext() {
-      if (tried >= paths.length) { cb(null); return; }
-      fetch(paths[tried++])
-        .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
-        .then(cb)
-        .catch(tryNext);
-    }
-    tryNext();
+    HC.loadJsonWithFallback(["./bundles.json", "../bundles.json", "/bundles.json"], cb);
   }
 
   function skillInstallCmd(skill) {

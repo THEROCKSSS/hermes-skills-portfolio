@@ -15,19 +15,11 @@
   }
 
   // --- Pending external sources (Owen's personal review queue — not the
-  // catalog). Fetch-with-fallback-paths, mirroring HermesCommon.loadIndex's
-  // pattern for skills-index.json, since pending-sources.json lives beside it. ---
+  // catalog). Uses HermesCommon's shared fetch-with-fallback-paths helper
+  // (consolidated there after an architecture review found this same ~10
+  // lines duplicated verbatim in bundles.js and here). ---
   function loadPendingSources(cb) {
-    var paths = ["./pending-sources.json", "../pending-sources.json", "/pending-sources.json"];
-    var tried = 0;
-    function tryNext() {
-      if (tried >= paths.length) { cb(null); return; }
-      fetch(paths[tried++])
-        .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
-        .then(cb)
-        .catch(tryNext);
-    }
-    tryNext();
+    window.HermesCommon.loadJsonWithFallback(["./pending-sources.json", "../pending-sources.json", "/pending-sources.json"], cb);
   }
 
   function renderPendingSource(escapeHtml, source) {

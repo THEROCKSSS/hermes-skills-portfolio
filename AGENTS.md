@@ -68,7 +68,7 @@ CONTEXT.md                    Project glossary and locked decisions
 2. Create `skills/<name>/README.md` with human-facing docs.
 3. Add an entry to `skills-index.json` with all required fields (see existing entries for schema).
 4. Run `python scripts/generate_skill_pages.py` to render the new static per-skill page and refresh cached content — run it as its own command (the sandbox can terminate a single process writing ~100 files across `site/` and `docs/`).
-5. Sync `site/` to `docs/` for anything you touched directly (`cp site/index.html docs/`, etc. — there is no single sync-everything script yet, see `ARCHITECTURE.md`).
+5. Run `python scripts/sync_site.py` to sync `site/` to `docs/` (every real file, not a hand-picked list).
 6. Commit with a message like: `Add <name> skill (<tier> tier, <category>)`.
 
 ## How to Change the Site
@@ -77,7 +77,7 @@ CONTEXT.md                    Project glossary and locked decisions
 2. Never introduce a different theme "for variety" — variety lives in macrostructure/component choice, not palette.
 3. Never edit `site/css/tokens.css` or `site/css/base.css` per-page — they're shared; add page-specific rules to that page's own CSS file.
 4. `site/js/common.js` owns theme, cmd-k, toast, copy-to-clipboard, and reveal-on-scroll — call into it, don't reimplement.
-5. Sync `site/` → `docs/` for every file you touched.
+5. Run `python scripts/sync_site.py` to sync `site/` → `docs/`.
 6. Regenerate `CHANGELOG.md` after committing (see `scripts/` or the changelog-regeneration steps in `ARCHITECTURE.md`) — don't hand-edit it.
 
 ## What NOT to Do

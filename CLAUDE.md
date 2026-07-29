@@ -34,7 +34,7 @@ Background server processes started via the Bash tool's `run_in_background` have
 
 ## Deploying
 
-- `site/` is the working copy; `docs/` is what GitHub Pages serves from `main`. Sync manually (`cp site/<file> docs/<file>` per changed file — see `ARCHITECTURE.md`, there's no single sync script yet).
+- `site/` is the working copy; `docs/` is what GitHub Pages serves from `main`. Sync with `python scripts/sync_site.py` (syncs every real file, not a hand-picked list — see `ARCHITECTURE.md`).
 - After syncing, regenerate `CHANGELOG.md` and prepend a new entry to `changelog.js`'s `COMMITS` array with the real commit hash/date/subject once you've committed — don't invent a commit that hasn't happened yet.
 - Push only after `python -m pytest tests/` passes and CI (GitHub Actions) is green — check with `gh run list --repo THEROCKSSS/hermes-skills-portfolio --limit 3`.
 - After pushing, GitHub Pages takes ~10-30s to rebuild — poll `gh api repos/THEROCKSSS/hermes-skills-portfolio/pages --jq '.status'` until `built` before telling the user it's live.

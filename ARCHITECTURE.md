@@ -75,6 +75,16 @@ Validates on every push: SKILL.md frontmatter presence, `skills-index.json` coun
 
 ## Deliberately not automated yet
 
-- **`site/` → `docs/` sync** is a manual `cp` step (see `AGENTS.md`). No single sync script exists.
-- **`CHANGELOG.md` / `changelog.js`'s `COMMITS` array** are a point-in-time snapshot of `git log` output, manually appended after each meaningful commit — not regenerated automatically on every push.
+- **`CHANGELOG.md` / `changelog.js`'s `COMMITS` array** are a point-in-time snapshot of `git log` output, manually appended after each meaningful commit — not regenerated automatically on every push. (This already drifted once — two real commits went briefly missing from `changelog.js` until caught by an architecture review, not CI.)
 - **Promoting a `pending-sources.json` entry into the live catalog** is a manual, human-reviewed action — by design, not an oversight (see `design.md`'s honesty rules and `AGENTS.md`'s external-sourcing conventions).
+
+## Automated as of the 2026-07-30 architecture review
+
+An Explore-agent survey (via `/improve-codebase-architecture`) found real friction, not theoretical: CI's site/docs parity check only diffed 4 hardcoded filenames — 2 of them (`app.js`, `styles.css`) dead and unreferenced since the Cobalt redesign — while the real site had grown to 4 pages plus 7 CSS files and 6 JS files CI never touched. Fixed:
+
+- **`scripts/sync_site.py`** — syncs every real file under `site/` into `docs/` (excluding `site/skills/`, which `generate_skill_pages.py` owns), plus the root `skills-index.json`. Run this instead of a manual `cp` per file.
+- **CI's parity check** (`.github/workflows/ci.yml`) now globs every file under `site/` against its `docs/` counterpart, rather than checking a fixed list that silently stops covering new files.
+- The two dead files (`site/app.js`, `site/styles.css` and their `docs/` copies) were deleted — confirmed zero references first.
+- **`HermesCommon.loadJsonWithFallback(paths, cb)`** — the "try `./x.json`, then `../x.json`, then `/x.json`" fetch pattern was duplicated verbatim in `common.js`'s `loadIndex`, `bundles.js`'s `loadBundles`, and `submit.js`'s `loadPendingSources`. Consolidated into one function in `common.js`; the three named functions are now one-line callers.
+
+Two further candidates from that review were **not** implemented — they need a design decision first, not just code: whether `skills-index.json`'s cached skill content should have an automated staleness check (it drifted for 46/51 skills once already), and whether the nav/footer markup hand-copied across 5 places (this file, `design.md`, 4 pages, `portfolio_tools.py`) should get a verification check, given the project's own "no build step" value is in some tension with adding one.

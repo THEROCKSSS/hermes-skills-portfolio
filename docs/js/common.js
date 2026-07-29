@@ -19,9 +19,12 @@
     if (btn) btn.addEventListener("click", toggleTheme);
   }
 
-  // --- Data loading (skills-index.json, tried from a few relative depths) ---
-  function loadIndex(cb) {
-    var paths = ["./skills-index.json", "../skills-index.json", "/skills-index.json"];
+  // --- Data loading ---
+  // One seam for "fetch a JSON file, trying a few relative-path depths, because
+  // the same page can be served from different directory depths." Previously
+  // reimplemented verbatim in bundles.js and submit.js for their own data files —
+  // consolidated here after an architecture review found the duplication.
+  function loadJsonWithFallback(paths, cb) {
     var tried = 0;
     function tryNext() {
       if (tried >= paths.length) { cb(null); return; }
@@ -31,6 +34,9 @@
         .catch(tryNext);
     }
     tryNext();
+  }
+  function loadIndex(cb) {
+    loadJsonWithFallback(["./skills-index.json", "../skills-index.json", "/skills-index.json"], cb);
   }
 
   function escapeHtml(s) {
@@ -189,7 +195,7 @@
 
   global.HermesCommon = {
     initTheme: initTheme, toggleTheme: toggleTheme, wireThemeToggle: wireThemeToggle,
-    loadIndex: loadIndex, escapeHtml: escapeHtml, highlightText: highlightText, canonicalSkillUrl: canonicalSkillUrl,
+    loadIndex: loadIndex, loadJsonWithFallback: loadJsonWithFallback, escapeHtml: escapeHtml, highlightText: highlightText, canonicalSkillUrl: canonicalSkillUrl,
     showToast: showToast, copyToClipboard: copyToClipboard, initReveal: initReveal, initCmdk: initCmdk,
   };
 

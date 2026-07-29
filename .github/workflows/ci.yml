@@ -64,18 +64,30 @@ jobs:
       - name: Check site/ and docs/ are in sync
         run: |
           set -eu
-          for f in index.html app.js styles.css; do
-            if ! diff -q "site/$f" "docs/$f" > /dev/null 2>&1; then
-              echo "FAIL: site/$f and docs/$f are out of sync. Run: cp site/* docs/"
-              exit 1
+          # Diffs every real file under site/ against its docs/ counterpart — not a
+          # hardcoded list. A hardcoded list silently stops protecting new pages/files
+          # (this one only checked index.html/app.js/styles.css long after the site grew
+          # to 4 pages plus css/ and js/ subdirectories with neither file even referenced
+          # anymore). site/skills/ has its own check below, so it's excluded here.
+          mismatch=0
+          while IFS= read -r f; do
+            rel="${f#site/}"
+            if [ ! -f "docs/$rel" ]; then
+              echo "FAIL: docs/$rel is missing (present in site/$rel)"
+              mismatch=$((mismatch+1))
+            elif ! diff -q "$f" "docs/$rel" > /dev/null 2>&1; then
+              echo "FAIL: site/$rel and docs/$rel are out of sync. Run: cp \"$f\" \"docs/$rel\""
+              mismatch=$((mismatch+1))
             fi
-          done
-          # Check skills-index.json is in sync
-          if ! diff -q "skills-index.json" "docs/skills-index.json" > /dev/null 2>&1; then
+          done < <(find site -type f -not -path 'site/skills/*')
+          if [ ! -f "docs/skills-index.json" ] || ! diff -q "skills-index.json" "docs/skills-index.json" > /dev/null 2>&1; then
             echo "FAIL: skills-index.json and docs/skills-index.json are out of sync. Run: cp skills-index.json docs/"
+            mismatch=$((mismatch+1))
+          fi
+          if [ "$mismatch" -gt 0 ]; then
             exit 1
           fi
-          echo "site/ and docs/ are in sync."
+          echo "site/ and docs/ are in sync (every real file checked, not a fixed list)."
 
       - name: Validate per-skill pages exist
         run: |
