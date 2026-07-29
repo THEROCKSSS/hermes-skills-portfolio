@@ -60,7 +60,7 @@ CONTEXT.md                    Project glossary and locked decisions
 - The nav and footer markup must stay byte-identical across all four pages (only `aria-current` differs) — the canonical copy lives in `design.md`.
 
 ### CI
-- Both Forgejo and GitHub Actions validate: every `SKILL.md` has required frontmatter, `skills-index.json` is in sync with skill directories, `site/`/`docs/` are byte-identical, no forbidden internal references (`agentsoul`, `localhost:3000`) leak into public files, and every skill has a rendered per-skill page.
+- Both Forgejo and GitHub Actions validate: every `SKILL.md` has required frontmatter, `skills-index.json` is in sync with skill directories, `site/`/`docs/` are byte-identical, no forbidden internal-infrastructure references leak into public files (see the workflow file for the exact pattern list — don't quote the patterns here, or you'll trip the check that scans this very file), and every skill has a rendered per-skill page.
 
 ## How to Add a Skill
 
