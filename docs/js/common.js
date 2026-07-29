@@ -83,9 +83,14 @@
     var els = (root || document).querySelectorAll(".reveal:not(.is-in)");
     if (!els.length) return;
     if (!("IntersectionObserver" in global)) { els.forEach(function (el) { el.classList.add("is-in"); }); return; }
+    // threshold: 0 (not a percentage) — a percentage threshold breaks for any section taller
+    // than ~1/threshold viewport heights, since that fraction of its box can never be
+    // simultaneously visible (bit us with the Submit page's pending-sources section, which
+    // never satisfied a 0.15 threshold once it grew past ~5000px). Firing as soon as any
+    // pixel is visible is correct for a reveal-once effect regardless of element height.
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } });
-    }, { threshold: 0.15 });
+    }, { threshold: 0 });
     els.forEach(function (el) { io.observe(el); });
   }
 

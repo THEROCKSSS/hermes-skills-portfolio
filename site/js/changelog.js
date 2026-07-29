@@ -20,6 +20,8 @@
   // names already listed in that same subject line — no names added beyond what the
   // commit itself named).
   var COMMITS = [
+    { date: "2026-07-29", time: "16:58", hash: "3fe43b7",
+      text: "Redesigns the entire site with the Cobalt design system across four pages (Catalog, Bundles, Changelog, Submit), rewrites all 51 skill docs to the real Hermes skill schema, and adds a curated-bundles page plus an external-sourcing review pipeline." },
     { date: "2026-07-20", time: "23:49", hash: "37761f6",
       text: "Reverts to a popup overlay for skill clicks, keeping standalone pages for crawlers and share links." },
     { date: "2026-07-20", time: "23:35", hash: "ddffdf5",
