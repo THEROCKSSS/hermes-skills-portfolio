@@ -1,10 +1,18 @@
 ---
 name: qr-code-generator
-description: "Generate QR codes for URLs, text, WiFi, and more — agent + this skill = user gets a scannable QR code for any content."
+description: Use when the user wants a QR code generated for a URL, plain text, WiFi credentials, a vCard contact, or other custom content — triggers include "make a QR code", "generate a QR", or "create a scannable code".
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [qr-code, image-generation, wifi, vcard, barcodes]
+    related_skills: [password-generator, color-palette-generator, invoice-generator]
 ---
 
 # qr-code-generator
+
+## Overview
 
 Generate QR codes as PNG or SVG images. The agent creates QR codes for URLs, plain text, WiFi credentials, vCards, and custom content with customizable size, color, and error correction.
 
@@ -140,11 +148,20 @@ def qr_with_logo(data: str, logo_path: str, output: str = "qr_logo.png"):
 4. Generate the QR code
 5. Return the file path
 
-## Pitfalls
+## Common Pitfalls
 
-- **Too much data** — QR codes have capacity limits. A v1 QR holds 17 alphanumeric chars; v40 holds 4,296. Long URLs produce large, dense codes that are hard to scan. Use a URL shortener first.
-- **Dark on dark** — QR codes need high contrast. Dark fill on dark background won't scan. Always use dark fill on light background.
-- **Logo too large** — A logo covering more than 30% of the QR code will make it unscannable. Keep logos to 20% max and use error correction H.
-- **PNG vs SVG** — PNG is for screen and print at fixed size. SVG is scalable (good for large prints). Use SVG for billboards or large displays.
-- **WiFi QR format** — The format must be exactly `WIFI:T:WPA;S:SSID;P:PASSWORD;;` — note the double semicolon at the end. Missing it breaks the QR.
-- **Special characters** — Escape semicolons and colons in WiFi SSIDs/passwords: `\\:` and `\\;`.
+1. **Too much data.** QR codes have capacity limits — a v1 QR holds 17 alphanumeric chars, v40 holds 4,296. Long URLs produce large, dense codes that are hard to scan; shorten the URL first.
+2. **Dark on dark.** QR codes need high contrast — dark fill on a dark background won't scan. Always use dark fill on a light background.
+3. **Logo too large.** A logo covering more than ~30% of the QR code makes it unscannable — keep logos to 20% max and use error correction H.
+4. **PNG vs SVG confusion.** PNG is for screen/fixed-size print; SVG is scalable. Use SVG for billboards or large-format displays, not screen previews.
+5. **Malformed WiFi QR format.** The string must be exactly `WIFI:T:WPA;S:SSID;P:PASSWORD;;` — the trailing double semicolon is required; omitting it breaks the QR.
+6. **Unescaped special characters.** Semicolons and colons inside WiFi SSIDs/passwords must be escaped as `\\:` and `\\;` or the field boundaries break.
+
+## Verification Checklist
+
+- [ ] Generated file opens as a valid image (PNG renders, SVG parses without errors)
+- [ ] Decoded the QR (phone camera or a decoder library) to confirm the payload round-trips exactly
+- [ ] Fill/background contrast is dark-on-light
+- [ ] WiFi QR strings end in the required `;;` and escape any `:`/`;` inside SSID/password
+- [ ] Logo overlay (if used) covers ≤20-30% of the code and error correction is set to H
+- [ ] Output format (PNG vs SVG) matches the stated use case (screen vs print/large display)

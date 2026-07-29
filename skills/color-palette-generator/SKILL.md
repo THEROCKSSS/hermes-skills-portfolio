@@ -1,10 +1,18 @@
 ---
 name: color-palette-generator
-description: "Generate color palettes from images or keywords — agent + this skill = user gets a cohesive color scheme for any project."
+description: Use when the user wants a color palette for a web project, wants to extract colors from an image or screenshot, wants a palette based on a mood or base color, or says "generate a color palette", "extract colors from this image", or "give me a color scheme".
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [color-palette, css-custom-properties, image-color-extraction, design]
+    related_skills: [frontend-design-toolkit, hallmark-readme, ascii-art]
 ---
 
 # color-palette-generator
+
+## Overview
 
 Generate color palettes from images, keywords, or base colors. The agent extracts dominant colors from images, generates complementary palettes from a seed color, and produces CSS custom properties ready to use.
 
@@ -111,11 +119,20 @@ def palette_to_css(palette: list, name: str = "palette") -> str:
 5. Optionally output as CSS custom properties
 6. Return the palette
 
-## Pitfalls
+## Common Pitfalls
 
-- **Similar colors** — Raw color extraction returns near-identical shades. The deduplication threshold (distance < 50) filters these, but may be too aggressive or too loose for some images.
-- **Image too large** — Extracting from a 5000x5000 image is slow. Downsize first (the code resizes to 150x150).
-- **Transparency** — RGBA images have an alpha channel. Convert to RGB first to avoid transparent pixels skewing the palette.
-- **Scheme choice** — "Analogous" is safe for most projects. "Complementary" can be jarring. "Monochrome" is elegant but low contrast.
-- **Hex vs OKLCH** — This skill generates hex colors. For perceptually uniform palettes, convert to OKLCH. The `hallmark-readme` and `frontend-design-toolkit` skills recommend OKLCH.
-- **Dark mode** — The generated palette is for light mode. For dark mode, invert the lightness of each color while keeping the hue.
+1. **Near-identical shades pass the dedup filter.** Raw color extraction returns many near-identical pixels. The distance-< 50 threshold filters most, but on low-contrast images it can still let through two colors that read as the same to the eye — or, on high-contrast images, reject colors that should have been kept. Check the returned hexes visually, don't trust the threshold blindly.
+2. **Extracting from a huge image is slow.** A 5000x5000 image has 25M pixels to count. Always downsize first (the code resizes to 150x150) before running `Counter`.
+3. **RGBA images skew the palette.** Images with an alpha channel need `img.convert("RGB")` first, or transparent/semi-transparent pixels get counted as if they were opaque colors.
+4. **Wrong scheme for the mood.** "Analogous" is safe for most projects. "Complementary" can be visually jarring if applied without restraint. "Monochrome" is elegant but risks low contrast for text/background pairs — check contrast ratio, not just hue.
+5. **Hex output isn't perceptually uniform.** This skill generates hex/RGB colors via HSV math, not OKLCH. For a palette that needs consistent perceived lightness across hues, convert to OKLCH afterward (see `hallmark-readme` / `frontend-design-toolkit`).
+6. **Palette is light-mode only.** The generated palette targets light backgrounds. For a dark theme, don't reuse it as-is — invert lightness per color while keeping hue constant, and re-check contrast.
+
+## Verification Checklist
+
+- [ ] Extracted or generated hex values were rendered/previewed, not just returned as strings
+- [ ] Source image was downsized before extraction (large images not passed directly to `Counter`)
+- [ ] RGBA images were converted to RGB before extraction
+- [ ] Chosen scheme (analogous/complementary/triadic/monochrome) matches the stated mood or use case
+- [ ] If used for text-on-background pairs, contrast was checked (not just hue difference)
+- [ ] CSS custom properties output (if requested) was validated as parseable CSS

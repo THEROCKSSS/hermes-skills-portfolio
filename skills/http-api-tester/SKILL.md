@@ -1,10 +1,18 @@
 ---
 name: http-api-tester
-description: "Test HTTP APIs from the command line — agent + this skill = user gets quick API verification without Postman."
+description: Use when a user wants to test or debug an HTTP API endpoint quickly from the command line or Python, verify an API is working after deployment, or says "test this API" / "check this endpoint" / "is my API working" — without a Postman-style GUI.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [http, api-testing, curl, python-requests]
+    related_skills: [api-test-suite, openapi-generator, webhook-receiver]
 ---
 
 # http-api-tester
+
+## Overview
 
 Test HTTP APIs quickly from the command line or Python. The agent makes requests, checks responses, and reports results — no Postman or GUI needed.
 
@@ -165,11 +173,19 @@ def inspect_response(url: str, method: str = "GET", headers=None):
 5. Check status code and response body
 6. Report pass/fail with timing
 
-## Pitfalls
+## Common Pitfalls
 
-- **HTTPS certificate errors** — Self-signed certs fail by default. Use `verify=False` for testing (not production): `requests.get(url, verify=False)`.
-- **Timeout** — Default timeout is 30s. For slow APIs, increase it. For health checks, use 5s so you know quickly if something is wrong.
-- **Rate limiting** — Rapid requests may hit rate limits. Add `time.sleep(1)` between requests if testing the same endpoint repeatedly.
-- **Response parsing** — Not all APIs return JSON. Check `content-type` header before calling `.json()`. Fall back to `.text` for non-JSON responses.
-- **Following redirects** — `requests` follows redirects by default. Use `allow_redirects=False` if you want to see the 3xx response itself.
-- **Sensitive headers** — Don't log auth headers in test output. Strip them before printing or storing results.
+1. **HTTPS certificate errors.** Self-signed certs fail by default. Use `verify=False` for testing (not production): `requests.get(url, verify=False)`.
+2. **Timeout.** Default timeout is 30s. For slow APIs, increase it. For health checks, use 5s so you know quickly if something is wrong.
+3. **Rate limiting.** Rapid requests may hit rate limits. Add `time.sleep(1)` between requests if testing the same endpoint repeatedly.
+4. **Response parsing.** Not all APIs return JSON. Check `content-type` header before calling `.json()`. Fall back to `.text` for non-JSON responses.
+5. **Following redirects.** `requests` follows redirects by default. Use `allow_redirects=False` if you want to see the 3xx response itself.
+6. **Sensitive headers.** Don't log auth headers in test output. Strip them before printing or storing results.
+
+## Verification Checklist
+
+- [ ] Each test reports both status code and response time, not just pass/fail
+- [ ] Auth headers (Authorization, X-API-Key) are excluded from any logged or printed output
+- [ ] Non-2xx responses are checked against the test's `expected_status`, not assumed to be failures
+- [ ] `content-type` is checked before calling `.json()` on a response
+- [ ] A batch test suite reports pass/fail per named test, not just raw request output

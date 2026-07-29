@@ -1,10 +1,18 @@
 ---
 name: tailscale-deploy
-description: "Deploy a service on the user's Tailscale tailnet so it's privately accessible from any device — agent + this skill = user gets a running service only they can reach."
+description: Use when the user wants a service reachable privately from their own devices (laptop, phone) without exposing it to the public internet, wants to share a local dev server with a specific person on their tailnet, or says "deploy this on my tailnet" / "make this accessible via Tailscale".
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [tailscale, vpn, tailnet, wireguard, private-networking, docker-sidecar]
+    related_skills: [caddy-reverse-proxy, docker-umbrella]
 ---
 
 # tailscale-deploy
+
+## Overview
 
 Deploy a service on a Tailscale tailnet. The service becomes privately accessible from any device on the user's tailnet — no public exposure, no port forwarding, no cloud relay.
 
@@ -142,11 +150,35 @@ docker compose down
 
 **Important:** `tailscale serve` is tailnet-only (private). `tailscale funnel` is public internet exposure. Most users want `serve`, not `funnel`. Always confirm with the user before using `funnel`.
 
-## Pitfalls
+## Common Pitfalls
 
-- **Auth key expired** — Tailscale auth keys (for Docker sidecar) expire. Generate a new one at https://login.tailscale.com/admin/settings/keys. Ephemeral keys are best for containers.
-- **Firewall blocking Tailscale** — Some corporate networks block Tailscale's WireGuard traffic. The user may need to enable UDP 41641 outbound, or use Tailscale's DERP relay (automatic fallback).
-- **Machine not visible on tailnet** — Run `tailscale status` to check. If the machine isn't listed, `tailscale up` may not have completed. Re-authenticate.
-- **Port conflicts** — `tailscale serve --https 8080` serves on port 443 of the tailnet interface, not on localhost:8080. The local service stays on its original port.
-- **Docker sidecar can't reach the app** — The sidecar and the app must be on the same Docker network. Use a custom bridge network (as in the compose example above), not the default network.
-- **Funnel vs Serve** — `tailscale funnel` exposes the service to the entire internet. `tailscale serve` only exposes it to the tailnet. Always default to `serve` unless the user explicitly asks for public access.
+1. **Docker sidecar `TS_AUTHKEY` expired or non-ephemeral.** Auth keys expire and non-ephemeral
+   keys leave stale devices in the admin console after teardown. Generate a fresh ephemeral key
+   at https://login.tailscale.com/admin/settings/keys for container use.
+2. **Assuming `tailscale serve --https 8080` serves on localhost:8080.** It actually serves on
+   port 443 of the *tailnet* interface; the local service keeps its original port. Don't look for
+   it on `localhost:443`.
+3. **Putting the app and the Tailscale sidecar on the default Docker network.** The sidecar can't
+   route to the app unless both share a custom bridge network, as in the compose example — the
+   default network isolates them.
+4. **Reaching for `tailscale funnel` when `serve` was meant.** `funnel` exposes the service to the
+   entire public internet; `serve` is tailnet-only. Default to `serve` and confirm explicitly
+   before ever using `funnel`.
+5. **Not checking `tailscale status` after `tailscale up`.** If the machine doesn't appear in the
+   tailnet device list, `tailscale up` didn't complete — re-authenticate rather than assuming the
+   service is reachable.
+6. **Corporate/restrictive networks blocking WireGuard.** If UDP 41641 outbound is blocked,
+   Tailscale falls back to its DERP relay automatically, but performance suffers — flag this to
+   the user rather than treating a slow connection as a bug.
+
+## Verification Checklist
+
+- [ ] `tailscale status` shows the machine as connected (not `idle`) before deploying.
+- [ ] Service responds to `curl` from a *second* device on the tailnet, not just from localhost
+      on the host machine.
+- [ ] Confirmed with the user whether `serve` (tailnet-only) or `funnel` (public) was intended —
+      `funnel` was never used without explicit confirmation.
+- [ ] For Docker sidecar deployments, `tailscale serve status` or the sidecar's logs show it
+      joined the tailnet under the expected hostname.
+- [ ] Cleanup step (`tailscale serve --https off` or `docker compose down`) documented for when
+      the user wants to stop serving.

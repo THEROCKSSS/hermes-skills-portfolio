@@ -1,10 +1,18 @@
 ---
 name: portfolio-upkeep
-description: "Maintain and update a Hermes skills portfolio — sync site files, enrich the index, validate skills, and push updates. Agent + this skill = user gets a maintained portfolio that stays in sync."
+description: Use when a skill has been added or updated in a Hermes skills portfolio and the site/index need to catch up — syncing site/ to docs/, enriching skills-index.json, validating frontmatter, or pushing to Forgejo and GitHub Pages. Triggers include "update the portfolio", "sync the site", "refresh the index", or "publish changes".
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [portfolio, skills-index, github-pages, forgejo, sync, validation]
+    related_skills: [skills-portfolio-scaffold, skill-publish, skill-registry-catalog]
 ---
 
 # portfolio-upkeep
+
+## Overview
 
 Maintain and update a Hermes skills portfolio. The agent syncs site files to the docs/ directory, enriches skills-index.json with agent_use/user_use/skillmd_content/readme_content fields, validates skill frontmatter, and pushes updates to Forgejo and GitHub Pages.
 
@@ -17,7 +25,7 @@ Maintain and update a Hermes skills portfolio. The agent syncs site files to the
 
 ## Prerequisites
 
-- A portfolio repo with the structure described in `hermes-portfolio-template`
+- A portfolio repo with the structure described in `skills-portfolio-scaffold`
 - Git remotes for both Forgejo and GitHub
 - GitHub Pages enabled on the GitHub repo (serving from /docs)
 
@@ -179,11 +187,20 @@ When adding a new skill to the portfolio:
 4. Sync to docs/
 5. Commit and push
 
-## Pitfalls
+## Common Pitfalls
 
-- **docs/ drift** — The most common upkeep issue. You update site/ files but forget to copy them to docs/. GitHub Pages serves from docs/, so the live site shows stale content. Always run the sync step.
-- **Index bloat** — The skills-index.json with embedded content can reach 500KB+ for 50 skills. This is fine for a static site (loads once, cached by the browser), but be aware of it when committing.
-- **Frontmatter mismatch** — The `name` field in SKILL.md frontmatter must match the directory name. The validation script checks this, but it's easy to forget when renaming a skill.
-- **GitHub Pages build time** — After pushing, GitHub Pages takes 60-90 seconds to rebuild. Don't verify the live URL immediately — wait at least 60 seconds.
-- **Forgejo and GitHub out of sync** — Always push to both remotes. If only one is pushed, the local review surface (Forgejo) and the public site (GitHub) will diverge.
-- **Missing user_use field** — If a README doesn't have a "What it does" section, the user_use field will be empty. The site falls back to the description, but it's better to have a proper "What it does" section in every README.
+1. **docs/ drift.** The most common upkeep issue — you update site/ files but forget to copy them to docs/. GitHub Pages serves from docs/, so the live site shows stale content. Always run the sync step.
+2. **Index bloat.** skills-index.json with embedded content can reach 500KB+ for 50 skills. Fine for a static site (loads once, cached by the browser), but be aware of it when committing.
+3. **Frontmatter mismatch.** The `name` field in SKILL.md frontmatter must match the directory name — easy to forget when renaming a skill; the validation script catches it.
+4. **GitHub Pages build time.** After pushing, GitHub Pages takes 60-90 seconds to rebuild — don't verify the live URL immediately.
+5. **Forgejo and GitHub out of sync.** Always push to both remotes. Pushing only one leaves the review surface (Forgejo) and the public site (GitHub) diverged.
+6. **Missing user_use field.** If a README lacks a "What it does" section, user_use stays empty and the site falls back to the raw description — add the section instead.
+
+## Verification Checklist
+
+- [ ] `validate_portfolio()` returns zero issues (no missing files, no index drift, no frontmatter mismatch)
+- [ ] docs/ files match site/ files after the sync step
+- [ ] docs/skills-index.json matches the root skills-index.json
+- [ ] Pushed to both `forgejo main` and `origin main`
+- [ ] Waited 60+ seconds and confirmed the live GitHub Pages URL reflects the change
+- [ ] Every skill directory has both SKILL.md and README.md, and each README has a "What it does" section

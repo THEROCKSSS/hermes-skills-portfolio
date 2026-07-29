@@ -1,14 +1,22 @@
 ---
 name: github-actions-ci
 description: >-
-  Design, author, and debug GitHub Actions CI/CD workflows for any project.
   Use when a user wants automated testing, builds, deployments, matrix
-  builds, caching, or secret handling on GitHub. Produces a working
-  .github/workflows YAML file tailored to their language and stack.
+  builds, caching, or secret handling via GitHub Actions — including
+  debugging a flaky or broken workflow, or setting up a baseline CI/CD
+  pipeline for a new repo.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [github-actions, ci-cd, yaml, workflows, matrix-builds]
+    related_skills: [generate-dockerfile, changelog-generator, api-test-suite]
 ---
 
 # GitHub Actions CI/CD
+
+## Overview
 
 Turn a user's project into a repo with a real, working continuous integration
 and continuous deployment pipeline. This skill produces a correct
@@ -223,7 +231,7 @@ Cache dependencies to slash build times:
 - `restore-keys` provides a prefix match fallback when the exact key misses.
 - Cache size limit is ~10 GB and caches are scoped per-branch/PR by default.
 
-## Pitfalls
+## Common Pitfalls
 
 1. **Missing checkout.** Steps read an empty workspace without
    `actions/checkout@v4` first. Always check it out.
@@ -250,9 +258,7 @@ Cache dependencies to slash build times:
 10. **Timeouts.** Long jobs may exceed the default. Add `timeout-minutes:` to
     jobs to fail fast and free runners.
 
-## Deliverable Checklist
-
-When finishing, confirm:
+## Verification Checklist
 
 - [ ] Workflow file lives at `.github/workflows/<name>.yml`.
 - [ ] `actions/checkout@v4` is the first step of every job that needs code.

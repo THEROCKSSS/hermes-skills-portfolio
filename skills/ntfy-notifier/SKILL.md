@@ -1,10 +1,18 @@
 ---
 name: ntfy-notifier
-description: "Send push notifications to your phone and desktop via ntfy — agent + this skill = user gets instant alerts without a mobile app SDK."
+description: Use when the user wants push notifications to their phone or desktop from a script, cron job, or agent task — via ntfy's HTTP pub/sub topics — without setting up Firebase, APNS, or a mobile SDK. Covers the public ntfy.sh server and self-hosting via Docker.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [notifications, ntfy, push, pub-sub, alerting, self-hosted]
+    related_skills: [webhook-receiver, uptime-kuma-self-host, cron-task]
 ---
 
 # ntfy-notifier
+
+## Overview
 
 Send push notifications to any device using ntfy — a simple HTTP-based pub/sub notification service. No SDK, no mobile app integration, no APNS/FCM setup. Just HTTP POST to a topic URL and the notification appears on any subscribed device.
 
@@ -133,11 +141,20 @@ curl -H "Priority: urgent" -d "Server is DOWN" ntfy.sh/my-alerts-abc123
 | Deploy notification | `curl -H "Title: Deploy" -d "v1.2.3 live" ntfy.sh/my-topic` |
 | With action button | `curl -H "Actions: view, Logs, https://..." -d "Build failed" ntfy.sh/my-topic` |
 
-## Pitfalls
+## Common Pitfalls
 
-- **Public topics are public** — Anyone who guesses your topic name can read your notifications. Use a long, random topic name (e.g., `alerts-k7m3x9p2q4`). For sensitive notifications, self-host.
-- **No authentication on public server** — The public ntfy.sh server doesn't require auth. Anyone can publish to any topic. If you need auth, self-host and configure access control.
-- **Rate limiting on public server** — The public server rate-limits to ~60 requests/hour per IP. For higher volume, self-host.
-- **Topic name collisions** — If two people use the topic "test", they'll see each other's notifications. Always use unique topic names.
-- **No delivery guarantees** — ntfy is fire-and-forget. If no client is subscribed when you send, the notification is lost (unless you enable message caching on a self-hosted server).
-- **Self-hosted needs HTTPS for iOS** — iOS push notifications require HTTPS. If self-hosting, put ntfy behind Caddy or nginx with TLS for iOS clients to receive push in the background.
+1. **Public topics are public.** Anyone who guesses your topic name can read your notifications. Use a long, random topic name (e.g., `alerts-k7m3x9p2q4`), never a plain word like `alerts`. For sensitive notifications, self-host.
+2. **No authentication on the public server.** The public ntfy.sh server doesn't require auth — anyone can publish to any topic they can guess. If you need auth, self-host and configure access control.
+3. **Rate limiting on the public server.** ntfy.sh rate-limits to roughly 60 requests/hour per IP. For higher volume (e.g., per-line log streaming), self-host instead.
+4. **Topic name collisions.** Two unrelated users on the same topic name (e.g., both picking "test") will see each other's notifications. Always use a unique, hard-to-guess topic name.
+5. **No delivery guarantees by default.** ntfy is fire-and-forget — if no client is subscribed when a message is sent, it's lost unless message caching is enabled on a self-hosted server.
+6. **Self-hosted push silently fails on iOS without HTTPS.** iOS requires HTTPS for background push delivery. Put a self-hosted ntfy instance behind Caddy or nginx with TLS, or iOS clients won't receive notifications when the app is backgrounded.
+
+## Verification Checklist
+
+- [ ] A test `curl -d "test" ntfy.sh/<topic>` (or self-hosted equivalent) returns HTTP 200
+- [ ] The notification actually arrives on the subscribed device/app, not just a 200 from the API
+- [ ] Topic name is long/random enough that it isn't guessable (not `alerts`, `test`, `notify`)
+- [ ] Priority level matches the alert's urgency (`urgent` for outages, `default` for routine heartbeats)
+- [ ] For self-hosted setups: the server is reachable over HTTPS if iOS clients are involved
+- [ ] Any `Actions` buttons open the correct URL / fire the correct HTTP request when tapped

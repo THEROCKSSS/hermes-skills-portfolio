@@ -1,10 +1,18 @@
 ---
 name: csv-toolkit
-description: "Process CSV files — filter, transform, merge, and analyze — agent + this skill = user gets structured data operations without Excel."
+description: Use when the user wants to filter or transform a CSV file, merge multiple CSVs, compute summary statistics from CSV data, or says "process this CSV", "filter this data", or "merge these CSVs".
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [csv, pandas, data-transformation, data-merge, aggregation]
+    related_skills: [sqlite-dashboard, json-formatter]
 ---
 
 # csv-toolkit
+
+## Overview
 
 Process CSV files with Python. Filter rows, transform columns, merge files, compute aggregates, and export results. The agent handles CSV reading, manipulation, and writing without needing Excel or a database.
 
@@ -147,11 +155,21 @@ def simple_filter(path: str, output: str, column: str, value: str):
                 writer.writerow(row)
 ```
 
-## Pitfalls
+## Common Pitfalls
 
-- **Encoding issues** — CSVs from Excel may use Windows-1252 encoding. Use `pd.read_csv(path, encoding='latin1')` if UTF-8 fails.
-- **Large CSVs** — pandas loads the entire file into memory. For files over 1GB, use `chunksize` parameter or `polars` instead.
-- **Delimiter detection** — Some CSVs use semicolons or tabs. Use `pd.read_csv(path, sep=';')` or `engine='python'` for auto-detection.
-- **Quoting** — Fields with commas should be quoted. pandas handles this, but the `csv` module needs `quoting=csv.QUOTE_MINIMAL`.
-- **Date parsing** — Date columns are read as strings by default. Use `pd.read_csv(path, parse_dates=['date_column'])`.
-- **NaN vs empty** — Empty cells become NaN in pandas, not empty strings. Use `df.fillna('')` to convert back.
+1. **UTF-8 read fails on Excel-exported CSVs.** Files saved from Excel are often Windows-1252, not UTF-8. Use `pd.read_csv(path, encoding='latin1')` if the default UTF-8 read raises a `UnicodeDecodeError`.
+2. **Loading a huge file blows up memory.** pandas reads the entire file into memory. For files over ~1GB, use the `chunksize` parameter to stream, or switch to `polars`.
+3. **Wrong delimiter assumed.** Some CSVs use semicolons or tabs instead of commas. Pass `sep=';'` explicitly, or `engine='python'` with `sep=None` for auto-detection — don't assume comma.
+4. **Unquoted commas inside fields break parsing.** pandas handles RFC-4180 quoting automatically, but the plain `csv` module needs `quoting=csv.QUOTE_MINIMAL` (or matching the source file's quoting) or embedded commas will split a field in two.
+5. **Date columns silently stay strings.** `pd.read_csv` does not parse dates by default — a "date" column read without `parse_dates=['date_column']` stays a string, and sort/filter operations on it behave lexicographically instead of chronologically.
+6. **NaN and empty string are not the same.** Empty cells become `NaN` in pandas, not `''`. Downstream string operations or JSON export may need `df.fillna('')` first, or `NaN` will show up as `null`/`nan` unexpectedly.
+7. **`df.eval()` transforms silently produce NaN on a typo.** A misspelled column name in a `transforms` expression doesn't always raise — check the output column for unexpected `NaN` after `transform_csv`.
+
+## Verification Checklist
+
+- [ ] `inspect_csv()` (or equivalent) was run on the output file to confirm expected row/column counts
+- [ ] Row counts before/after filtering or deduplication were compared and match expectations (no silent full-table drop)
+- [ ] Encoding was confirmed (UTF-8 succeeded, or `latin1`/other encoding was explicitly used after a decode failure)
+- [ ] Delimiter was verified against the actual file (opened a few raw lines) rather than assumed to be a comma
+- [ ] Date columns intended for sorting/filtering were parsed with `parse_dates`, not left as strings
+- [ ] Output CSV was opened/read back to confirm it's valid and matches the expected schema

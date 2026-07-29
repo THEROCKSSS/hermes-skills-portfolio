@@ -1,10 +1,18 @@
 ---
 name: docker-umbrella
-description: "Consolidate multiple services under a single Docker front-end with routing, themed index, and health checks — agent + this skill = user gets one port for all their services."
+description: Use when the user runs several local web UIs, dashboards, doc sites, or media servers and wants one address instead of a row of ports, or says "one page for all my apps", "group my containers", "declutter Docker Desktop", or "a landing page that links my services". Do not use for stateful runtimes that must be operated directly — databases, game servers, bots — link those from the hub instead of proxying them.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [docker-compose, nginx, reverse-proxy, service-hub, self-hosting]
+    related_skills: [caddy-reverse-proxy]
 ---
 
 # docker-umbrella
+
+## Overview
 
 Set up one Docker container that fronts every local service behind a single port:
 a themed landing page plus path- or subdomain-based routing, optional TLS at the
@@ -147,29 +155,38 @@ it. A two-button switcher is enough:
 Define tokens once (`--bg`, `--fg`, `--accent`, `--card`) so every card inherits
 them. Cards are plain links: `<a class="card" href="/dash/">Dashboard</a>`.
 
-## Pitfalls
-- **Port conflict**: check `ss -ltnp` before binding. A dead container holding the
-  port blocks `up -d` ("address already in use").
-- **`host.docker.internal` on Linux Engine**: needs
-  `extra_hosts: ["host.docker.internal:host-gateway"]`. On Docker Desktop it
-  resolves automatically. On a shared compose network, use the service name.
-- **Binding `127.0.0.1` locks out the LAN**: publish on `0.0.0.0`
-  (`"8080:80"` does this), not `"127.0.0.1:8080:80"`.
-- **`nginx:alpine` ships no `wget`**: a healthcheck using `wget` reports
-  `unhealthy` even when nginx serves 200. Use `curl -f`.
-- **Trailing-slash mismatch**: `location /dash/` with `proxy_pass http://host:8080`
-  (no slash) preserves `/dash/`; with a slash it strips it. Pick one and verify
-  with `curl -i`.
-- **Stale container holds the name**: an exited container with the same
-  `container_name` blocks `up -d` ("Conflict ... already in use").
-  `docker rm -f umbrella`, then retry.
-- **Healthcheck on a redirecting root**: if `/` 302-redirects, `curl -f` fails the
-  check. Hit a known-200 asset instead (`/index.html`, `/healthz`, `/static/app.js`).
-- **TLS + plain HTTP both listening**: terminate TLS at the edge (a `443` server
-  block or Caddy) and `proxy_pass http://...:80` internally; don't expose the same
-  backend on both without intent.
-- **`up -d` in an agent shell**: some shells trip a long-running-server guard and
-  hang. If it does, run it as a bounded background task instead.
-- **Hot edits to bind-mounts**: changing `default.conf` needs
-  `docker exec umbrella nginx -s reload` (zero downtime) — `docker compose up -d`
-  alone won't reload a changed config file.
+## Common Pitfalls
+1. **Port conflict on `up -d`.** Check `ss -ltnp` before binding. A dead container holding the
+   port blocks `up -d` ("address already in use").
+2. **`host.docker.internal` unresolved on Linux Engine.** Needs
+   `extra_hosts: ["host.docker.internal:host-gateway"]`. On Docker Desktop it
+   resolves automatically. On a shared compose network, use the service name instead.
+3. **Binding `127.0.0.1` locks out the LAN.** Publish on `0.0.0.0`
+   (`"8080:80"` does this), not `"127.0.0.1:8080:80"`, if other devices need access.
+4. **`nginx:alpine` ships no `wget`.** A healthcheck using `wget` reports
+   `unhealthy` even when nginx serves 200. Use `curl -f`.
+5. **Trailing-slash mismatch breaks routing.** `location /dash/` with `proxy_pass http://host:8080`
+   (no slash) preserves `/dash/`; with a slash it strips it. Pick one and verify
+   with `curl -i`.
+6. **Stale container holds the name.** An exited container with the same
+   `container_name` blocks `up -d` ("Conflict ... already in use").
+   `docker rm -f umbrella`, then retry.
+7. **Healthcheck fails on a redirecting root.** If `/` 302-redirects, `curl -f` fails the
+   check. Hit a known-200 asset instead (`/index.html`, `/healthz`, `/static/app.js`).
+8. **TLS and plain HTTP both exposed unintentionally.** Terminate TLS at the edge (a `443` server
+   block or Caddy) and `proxy_pass http://...:80` internally; don't expose the same
+   backend on both without intent.
+9. **`up -d` hangs in an agent shell.** Some shells trip a long-running-server guard and
+   hang. If it does, run it as a bounded background task instead.
+10. **Hot edits to bind-mounts don't reload.** Changing `default.conf` needs
+    `docker exec umbrella nginx -s reload` (zero downtime) — `docker compose up -d`
+    alone won't reload a changed config file.
+
+## Verification Checklist
+
+- [ ] `docker ps` shows the `umbrella` container `healthy`, not `starting` or `unhealthy`
+- [ ] Every `location /<path>/` route returns 200 via `curl -i` from outside the container
+- [ ] Landing page (`/`) renders in an actual browser, not just curl, with all service cards linking correctly
+- [ ] Trailing-slash behavior on each `proxy_pass` was verified against the target service's expected URL prefix
+- [ ] If TLS is terminated at the edge, plain-HTTP-only backends are not separately exposed on the host
+- [ ] Config edits were applied via `nginx -s reload`, and the reload was confirmed (not just assumed) by re-checking a changed route

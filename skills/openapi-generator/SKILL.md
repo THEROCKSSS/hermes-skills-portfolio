@@ -1,15 +1,23 @@
 ---
 name: openapi-generator
 description: >-
-  Generate client SDKs, server stubs, API documentation, and infrastructure
-  from an OpenAPI 2.0/3.x specification using openapi-generator-cli. Supports
-  50+ languages and frameworks. Use when a user has an OpenAPI/Swagger spec and
-  wants typed clients, server skeletons, docs, or config without hand-writing
-  boilerplate.
+  Use when the user has an OpenAPI 2.0 (Swagger) or 3.x spec and wants a
+  typed client SDK, a server stub, generated API documentation, or config
+  scaffolded from it via openapi-generator-cli — instead of hand-writing
+  boilerplate. Covers 50+ language/framework targets, Docker/JAR/npm CLI
+  options, and spec validation before generation.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [openapi, swagger, code-generation, client-sdk, server-stub, api-docs]
+    related_skills: [mcp-server-build, http-api-tester]
 ---
 
 # openapi-generator
+
+## Overview
 
 Turn an OpenAPI specification into working code. This skill wraps
 [OpenAPI Generator](https://openapi-generator.tech) so an agent can produce
@@ -223,29 +231,24 @@ Workflow the agent should follow:
 cd out/python && python -m pip install -e . && python -c "import openapi_client"
 ```
 
-## Pitfalls
+## Common Pitfalls
 
-- **Mounting the spec into Docker.** Forgetting `-v "${PWD}:/local"` means the
-  container cannot see your spec and writes nothing where you expect. Always bind
-  the working directory.
-- **`$ref` must resolve.** Remote `$ref`s (URLs) work online but break in
-  air-gapped runs. Bundle first with `openapi-generator-cli merge` or
-  `swagger-cli bundle` to inline all references.
-- **Version drift.** Different CLI versions emit different code. Pin the version
-  and record it in the generated project's README or a `Makefile`/CI step.
-- **Overwriting hand-written code.** Never generate into a directory that
-  contains source you edited. Use `interfaceOnly=true` or generate into a
-  dedicated `generated/` subtree and import it.
-- **`hideGenerationTimestamp`.** Leave it off during debugging, but set it
-  `true` for committed code so regeneration doesn't create noisy diffs.
-- **Case-sensitive generator names.** `TypeScript-Fetch` fails; the correct
-  name is `typescript-fetch`. Always copy the exact string from `list`.
-- **Java/JAR memory.** Large specs can OOM the JVM. Raise the heap:
-  `java -Xmx2g -jar openapi-generator-cli.jar generate ...`.
-- **OpenAPI 3.1 vs 2.0.** Some generators lag on 3.1 features (webhooks,
-  discriminators). If a 3.1 spec fails, try converting to 3.0 with
-  `openapi-generator-cli merge` or `swagger2openapi`.
-- **Don't hand-merge generated folders.** Treat generated code as build
-  artifacts; regenerate rather than resolve Git merge conflicts inside them.
-- **Docker writes files as root.** Add `--user $(id -u):$(id -g)` to the
-  `docker run` command so output files aren't owned by root.
+1. **Forgetting to mount the spec into Docker.** Omitting `-v "${PWD}:/local"` means the container can't see your spec and silently writes nothing where you expect. Always bind the working directory.
+2. **Remote `$ref`s break in air-gapped runs.** Remote (URL) `$ref`s resolve fine online but fail with no network access. Bundle first with `openapi-generator-cli merge` or `swagger-cli bundle` to inline all references.
+3. **Version drift produces different code on different machines.** Pin the CLI version (`version-manager set 7.6.0`) and record it in the generated project's README or a Makefile/CI step.
+4. **Overwriting hand-written code.** Never generate into a directory that contains source you've edited — a regeneration silently clobbers your changes. Use `interfaceOnly=true` or generate into a dedicated `generated/` subtree and import it.
+5. **`hideGenerationTimestamp` left off in committed code.** Leave it off while debugging, but set it `true` before committing so every regeneration doesn't create a noisy timestamp-only diff.
+6. **Case-sensitive generator names.** `TypeScript-Fetch` fails outright; the correct name is `typescript-fetch`. Always copy the exact string from `list` rather than guessing casing.
+7. **JVM runs out of memory on large specs.** The JAR path can OOM on big specs. Raise the heap: `java -Xmx2g -jar openapi-generator-cli.jar generate ...`.
+8. **OpenAPI 3.1 features aren't fully supported by every generator.** Webhooks and some discriminator patterns lag behind on certain generators. If a 3.1 spec fails, try converting to 3.0 first with `openapi-generator-cli merge` or `swagger2openapi`.
+9. **Hand-resolving merge conflicts inside generated folders.** Treat generated code as a build artifact — regenerate rather than resolve Git conflicts inside it.
+10. **Docker writes output owned by root.** Add `--user $(id -u):$(id -g)` to the `docker run` command so generated files aren't root-owned on the host.
+
+## Verification Checklist
+
+- [ ] `openapi-generator-cli validate -i <spec>` passes with no schema/reference errors before generating
+- [ ] The exact generator name was confirmed via `list` (case-sensitive), not guessed
+- [ ] Output directory contains the expected files (`README.md`, build file, model/client sources) after generation
+- [ ] For client SDKs: the generated project actually installs/builds/imports (e.g. `pip install -e .` then `import <package>` succeeds)
+- [ ] Generated output was written to a dedicated directory, not one containing hand-edited source
+- [ ] CLI version used is recorded (README, Makefile, or CI config) so regeneration is reproducible

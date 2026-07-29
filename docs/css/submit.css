@@ -1,0 +1,311 @@
+/* Hallmark · macrostructure: Narrative Workflow (per design.md, process family)
+ * theme: Cobalt (locked — design.md, tokens.css) · mode: light-default, dark toggle preserved
+ * page: Submit a skill · nav: shared design.md block · footer: Ft2 shared design.md block
+ * enrichment: none (typography + hairlines only, per design.md per-page allowances)
+ * pre-emit critique: P5 H5 E5 S5 R5 V4
+ * Imports tokens.css + base.css (via <link>, in that order, unmodified) before this file.
+ * Every colour/font below is a var(--token) reference — no inline OKLCH/hex/font-family.
+ */
+
+.submit {
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 1.5rem);
+}
+
+/* ============ HERO — left-biased, typography only ============ */
+.submit-hero {
+  max-width: 42rem;
+  padding-block: var(--space-3xl) var(--space-2xl);
+}
+.submit-hero h1 {
+  font-size: var(--text-display);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.submit-hero .lede {
+  margin-top: var(--space-md);
+  font-size: var(--text-lg);
+  color: var(--color-ink-3);
+  max-width: 36rem;
+}
+.submit-meta {
+  margin-top: var(--space-lg);
+  font-size: var(--text-xs);
+  color: var(--color-ink-3);
+  letter-spacing: 0.02em;
+}
+.submit-meta #catalog-count {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+/* ============ QUALITY BAR — hairline-ruled definition list ============ */
+.quality-bar {
+  border-top: 1px solid var(--color-rule);
+  border-bottom: 1px solid var(--color-rule);
+  padding-block: var(--space-xl);
+  margin-block: var(--space-xl) var(--space-2xl);
+  max-width: 46rem;
+}
+.quality-bar h2 {
+  font-size: var(--text-xl);
+}
+.quality-intro {
+  margin-top: var(--space-xs);
+  color: var(--color-ink-3);
+  font-size: var(--text-sm);
+  max-width: 34rem;
+}
+.quality-list {
+  margin: var(--space-lg) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.quality-item {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: baseline;
+  padding-block: var(--space-sm);
+  border-top: 1px solid var(--color-rule);
+  margin: 0;
+}
+.quality-item:first-child { border-top: none; padding-top: 0; }
+.quality-term {
+  flex: 0 0 8rem;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-3);
+}
+.quality-desc {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+}
+
+/* ============ STAGES — Narrative Workflow: numbered timeline ============ */
+.stages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 42rem;
+}
+.stage {
+  border-top: 3px solid var(--color-rule-2);
+  padding-block: var(--space-2xl);
+}
+.stage:first-child {
+  padding-top: var(--space-xl);
+}
+.stage-title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  font-size: var(--text-2xl);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.stage-num {
+  color: var(--color-accent);
+  font-size: var(--text-lg);
+  font-weight: 500;
+}
+.stage-body {
+  margin-top: var(--space-sm);
+  max-width: 38rem;
+}
+.stage-body p {
+  color: var(--color-ink-2);
+}
+.stage-actions {
+  margin-top: var(--space-lg);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+.stage-actions .btn,
+.submit-foot .btn {
+  white-space: nowrap;
+}
+
+/* ============ HONESTY NOTE — plain hairline callout, no side-stripe ============ */
+.submit-note {
+  border-top: 1px solid var(--color-rule);
+  padding-block: var(--space-xl);
+  max-width: 42rem;
+}
+.submit-note h2 {
+  font-size: var(--text-lg);
+}
+.submit-note p {
+  margin-top: var(--space-sm);
+  color: var(--color-ink-3);
+  font-size: var(--text-sm);
+  max-width: 40rem;
+}
+
+/* ============ PENDING EXTERNAL SOURCES — review queue, hairlines only ============ */
+.pending-sources {
+  border-top: 1px solid var(--color-rule);
+  padding-block: var(--space-xl);
+  max-width: 46rem;
+}
+.pending-sources h2 {
+  font-size: var(--text-xl);
+}
+.pending-intro {
+  margin-top: var(--space-sm);
+  color: var(--color-ink-3);
+  font-size: var(--text-sm);
+  max-width: 42rem;
+}
+.pending-list {
+  margin: var(--space-lg) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.pending-item {
+  border-top: 1px solid var(--color-rule);
+  padding-block: var(--space-lg);
+}
+.pending-item:first-child { border-top: none; padding-top: 0; }
+.pending-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+.pending-name {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+}
+.pending-category {
+  font-size: var(--text-xs);
+  color: var(--color-ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Deliberately NOT .tier-badge — neutral/informational, not the accent pill
+ * used for approved tiers. Square-ish radius, bordered, no fill colour. */
+.source-status {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: auto;
+  padding: var(--space-3xs) var(--space-xs);
+  border: 1px solid var(--color-rule-2);
+  border-radius: var(--radius-control);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-ink-3);
+  background: var(--color-paper-2);
+  white-space: nowrap;
+}
+
+.source-status.is-recommended { border-color: var(--color-success); color: var(--color-success); background: var(--color-accent-soft); }
+.source-status.is-needs-review { border-color: var(--color-rule-2); color: var(--color-ink-3); background: var(--color-paper-2); }
+
+.pending-summary {
+  font-size: var(--text-xs);
+  color: var(--color-ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+
+.pending-desc {
+  margin-top: var(--space-xs);
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+  max-width: 40rem;
+}
+.pending-note {
+  margin-top: var(--space-xs);
+  font-size: var(--text-xs);
+  color: var(--color-ink-3);
+  max-width: 46rem;
+  border-left: 2px solid var(--color-rule-2);
+  padding-left: var(--space-sm);
+}
+.pending-meta {
+  margin-top: var(--space-sm);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2xs) var(--space-sm);
+  font-size: var(--text-xs);
+  color: var(--color-ink-3);
+}
+.pending-meta a {
+  color: var(--color-ink-3);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  overflow-wrap: anywhere;
+}
+.pending-meta a:hover { color: var(--color-accent); }
+.pending-sep { color: var(--color-ink-4); }
+
+.pending-loading,
+.pending-empty,
+.pending-error {
+  padding-block: var(--space-sm) 0;
+  color: var(--color-ink-3);
+  font-size: var(--text-sm);
+}
+
+/* ============ FOOT CTA — "Start at stage 1" ============ */
+.submit-foot {
+  border-top: 1px solid var(--color-rule);
+  padding-block: var(--space-2xl) var(--space-3xl);
+  max-width: 34rem;
+}
+.submit-foot h2 {
+  font-size: var(--text-xl);
+}
+.submit-foot p {
+  margin-top: var(--space-xs);
+  margin-bottom: var(--space-lg);
+  color: var(--color-ink-3);
+}
+
+/* ============ MONO — code refs inline in prose ============ */
+.stage-body code.mono,
+.submit-note code.mono {
+  font-size: 0.9em;
+  background: var(--color-paper-2);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+
+/* ============ MOBILE — collapse quality-item to one column ============ */
+@media (max-width: 40rem) {
+  .quality-item {
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+  .quality-term {
+    flex-basis: auto;
+  }
+  .submit-hero h1 {
+    font-size: var(--text-display-s);
+  }
+  .stage-title {
+    font-size: var(--text-xl);
+  }
+  .pending-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2xs);
+  }
+  .source-status {
+    margin-inline-start: 0;
+  }
+}

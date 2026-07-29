@@ -1,10 +1,18 @@
 ---
 name: caddy-reverse-proxy
-description: "Set up a Caddy reverse proxy with automatic HTTPS — agent + this skill = user gets a production-grade proxy that manages TLS certificates for them."
+description: Use when the user wants to expose a local service over HTTPS with a real domain, proxy multiple services through one server with TLS, get automatic certificate management without certbot or manual renewal, or says "set up a reverse proxy", "I need HTTPS for my service", or "proxy my Docker services".
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [caddy, reverse-proxy, tls, lets-encrypt, caddyfile, docker]
+    related_skills: [docker-umbrella]
 ---
 
 # caddy-reverse-proxy
+
+## Overview
 
 Set up Caddy as a reverse proxy with automatic HTTPS. Caddy obtains and renews Let's Encrypt certificates automatically, handles HTTP-to-HTTPS redirects, and proxies requests to your backend services. No manual certificate management.
 
@@ -214,11 +222,20 @@ volumes:
 
 Use `host.docker.internal` in the Caddyfile to proxy to services running on the host (not in Docker).
 
-## Pitfalls
+## Common Pitfalls
 
-- **No domain name** — Caddy's automatic HTTPS requires a domain name pointing to your server. Without a domain, Caddy can't obtain certificates. For local-only HTTPS, use Caddy's internal CA: `localhost:8080 { reverse_proxy localhost:3000 }` (generates a self-signed cert).
-- **Ports 80/443 not open** — Let's Encrypt uses the HTTP-01 challenge, which requires port 80 to be reachable. If your firewall blocks port 80, certificate issuance fails.
-- **Rate limits** — Let's Encrypt has rate limits (50 certificates per domain per week). Don't repeatedly restart Caddy with new domains in testing — you'll hit the limit.
-- **Docker networking** — If Caddy runs in Docker and your backend runs on the host, use `host.docker.internal` (with `extra_hosts` in compose). If both are in Docker, put them on the same network and use the container name.
-- **Caddyfile reload vs restart** — Use `caddy reload` (or `systemctl reload caddy`) to apply config changes without dropping connections. `caddy stop` + `caddy start` drops active connections.
-- **Large uploads** — Caddy has a default body size limit. For large file uploads: `request_body { max_size 100MB }` in the site block.
+1. **No domain name.** Caddy's automatic HTTPS requires a domain name pointing to your server. Without a domain, Caddy can't obtain certificates. For local-only HTTPS, use Caddy's internal CA: `localhost:8080 { reverse_proxy localhost:3000 }` (generates a self-signed cert).
+2. **Ports 80/443 not open.** Let's Encrypt uses the HTTP-01 challenge, which requires port 80 to be reachable. If your firewall blocks port 80, certificate issuance fails.
+3. **Hitting Let's Encrypt rate limits.** Let's Encrypt allows 50 certificates per domain per week. Don't repeatedly restart Caddy with new domains in testing — you'll hit the limit and have to wait it out.
+4. **Wrong host resolution in Docker.** If Caddy runs in Docker and your backend runs on the host, use `host.docker.internal` (with `extra_hosts` in compose). If both are in Docker, put them on the same network and use the container name instead.
+5. **Restarting instead of reloading.** Use `caddy reload` (or `systemctl reload caddy`) to apply config changes without dropping connections. `caddy stop` + `caddy start` drops active connections.
+6. **Large uploads silently rejected.** Caddy has a default body size limit. For large file uploads, set `request_body { max_size 100MB }` in the site block.
+
+## Verification Checklist
+
+- [ ] `curl -I https://<domain>` returns a valid certificate (no `-k` needed) and the expected backend response
+- [ ] HTTP requests to the same domain redirect to HTTPS (`curl -I http://<domain>` shows a 301/308)
+- [ ] `caddy validate --config Caddyfile` (or `docker exec caddy caddy validate`) passes before reload
+- [ ] Config changes were applied with `caddy reload`, not a hard restart, if connections needed to stay up
+- [ ] WebSocket-dependent backends were tested with an actual upgrade request, not just a plain GET
+- [ ] Domain's A record resolves to the server's public IP before expecting certificate issuance to succeed

@@ -1,10 +1,18 @@
 ---
 name: gif-search
-description: "Search and download GIFs from Tenor — agent + this skill = user gets the right GIF for any reaction or message."
+description: "Use when the user wants a GIF for a message or reaction — including a specific reaction GIF (facepalm, thumbs up, celebration) — found and downloaded via the Tenor API."
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [tenor-api, gif-search, reaction-gif, media-download]
+    related_skills: [discord-bot-build, telegram-bot-build]
 ---
 
 # gif-search
+
+## Overview
 
 Search and download animated GIFs from Tenor's API. The agent finds GIFs by keyword, previews results, and downloads the selected GIF to a local file.
 
@@ -128,11 +136,18 @@ def categories() -> list:
 5. Download the selected GIF to a local file
 6. Return the file path
 
-## Pitfalls
+## Common Pitfalls
 
-- **No API key** — Without a Tenor API key, all requests fail. Get one at https://tenor.com/developer/keyregistration (free).
-- **Content filter** — Tenor returns NSFW content by default if no filter is set. Use `contentfilter=medium` or `contentfilter=high` to keep results safe.
-- **Rate limits** — Tenor's free tier allows ~100 requests per minute. For normal use this is plenty.
-- **GIF size** — Full GIFs can be 5-20 MB. If you need smaller files, use the `tinygif` or `nanogif` media format instead of `gif`.
-- **API version** — Tenor has v1 and v2 APIs. v2 is current. v1 is deprecated but still works. Always use `tenor.googleapis.com/v2/`.
-- **Attribution** — Tenor doesn't require attribution, but linking back to the Tenor page is good practice.
+1. **No API key** — Without a Tenor API key, all requests fail. Get one at https://tenor.com/developer/keyregistration (free).
+2. **Content filter** — Tenor returns NSFW content by default if no filter is set. Use `contentfilter=medium` or `contentfilter=high` to keep results safe.
+3. **Rate limits** — Tenor's free tier allows ~100 requests per minute. For normal use this is plenty.
+4. **GIF size** — Full GIFs can be 5-20 MB. If you need smaller files, use the `tinygif` or `nanogif` media format instead of `gif`.
+5. **API version** — Tenor has v1 and v2 APIs. v2 is current. v1 is deprecated but still works. Always use `tenor.googleapis.com/v2/`.
+6. **Attribution** — Tenor doesn't require attribution, but linking back to the Tenor page is good practice.
+
+## Verification Checklist
+
+- [ ] `TENOR_API_KEY` is set and a test search returns results, not an auth error
+- [ ] `contentfilter` set to `medium` or `high` before showing results to the user
+- [ ] Downloaded file is a valid, non-zero-size GIF at the expected path
+- [ ] Media format chosen (`gif` vs `tinygif`/`nanogif`) matches the size constraint the use case needs

@@ -1,15 +1,15 @@
-# hermes-portfolio-template
+# skills-portfolio-scaffold
 
-Scaffold a publishable skills portfolio with categorized, ranked, sortable skills and a static site.
+Scaffold a publishable skills portfolio with categorized, ranked, sortable skills and a static site — named and branded as *your own*, not a copy of this one.
 
 ## What it does
 
-The agent creates a portfolio repo structure for your skills: a monorepo with one directory per skill, a `skills-index.json` that serves as the single source of truth (for both humans and agents), a sortable static site, CI validation, and a Hallmark-quality README. This is the meta-skill that reproduces the portfolio structure so anyone can publish their own skills the same way.
+The agent asks what you want your portfolio called, then creates a portfolio repo structure for your skills: a monorepo with one directory per skill, a `skills-index.json` that serves as the single source of truth (for both humans and agents), a sortable static site, CI validation, and a Hallmark-quality README. This is the meta-skill that reproduces the portfolio structure so anyone can publish their own skills the same way — under their own name.
 
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/hermes-portfolio-template/SKILL.md
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/skills-portfolio-scaffold/SKILL.md
 ```
 
 ## How to use

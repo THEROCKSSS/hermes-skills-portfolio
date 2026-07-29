@@ -1,47 +1,158 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hermes Skills Portfolio — 50 Empowering Skills</title>
-  <meta name="description" content="A curated portfolio of 50 empowering skills for the Hermes agent. Install one, your agent can now do that for you.">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Hermes Skills Portfolio — Catalog</title>
+  <meta name="description" content="Browse the Hermes Skills Portfolio — install one, your agent can now do that for you. Search, filter, and install skills for the Hermes agent.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/catalog.css">
 </head>
 <body>
-  <a class="skip-link" href="#skill-grid">Skip to skills</a>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="./index.html">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
+        Hermes Skills
+      </a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="./index.html" data-nav="catalog" aria-current="page">Catalog</a>
+        <a href="./bundles.html" data-nav="bundles">Bundles</a>
+        <a href="./changelog.html" data-nav="changelog">Changelog</a>
+        <a href="./submit.html" data-nav="submit">Submit a skill</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="cmdk-trigger" id="cmdk-trigger" aria-haspopup="dialog" aria-controls="cmdk-modal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="cmdk-trigger-label">Search skills…</span>
+          <kbd class="cmdk-trigger-kbd">&#8984;K</kbd>
+        </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme (t)">
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a class="github-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </header>
 
-  <header class="masthead">
-    <div class="masthead-inner">
-      <div class="masthead-top">
-        <div class="masthead-titles">
-          <h1>Hermes Skills Portfolio</h1>
-          <p class="tagline">Empowering skills for the Hermes agent — install one, your agent can now do that for you.</p>
+  <main id="main">
+
+    <!-- ============ HERO — left-biased, brief positioning paragraph, no display type ============ -->
+    <section class="hero wrap">
+      <p class="hero-eyebrow mono">ECOSYSTEM INDEX</p>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <h1 class="hero-heading" id="hero-heading">Skills your Hermes agent can just install.</h1>
+          <p class="hero-tagline">Empowering skills for the Hermes agent — install one, your agent can now do that for you.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#all-skills">Browse all skills</a>
+            <button class="btn btn-outline" id="hero-search-btn" type="button">Search skills</button>
+          </div>
         </div>
-        <div class="masthead-actions">
-          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle theme (t)">
-            <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-            <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          </button>
-          <a class="github-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">GitHub ↗</a>
-          <span class="star-count-badge" id="star-count-badge" style="display:none;" title="GitHub stars">&#9733; 0</span>
+        <aside class="hero-stats" aria-label="Portfolio statistics">
+          <div class="hero-stat">
+            <span class="hero-stat-value" id="stat-total">—</span>
+            <span class="hero-stat-label">skills</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value" id="stat-categories">—</span>
+            <span class="hero-stat-label">categories</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value" id="stat-core">—</span>
+            <span class="hero-stat-label">core tier</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ RAIL — Featured (core tier) ============ -->
+    <section class="rail" aria-labelledby="rail-featured-title">
+      <div class="rail-head wrap">
+        <div>
+          <h2 class="rail-title" id="rail-featured-title">Core skills</h2>
+          <p class="rail-desc" id="rail-featured-desc">Broadly empowering — nearly any user benefits.</p>
         </div>
+        <a class="rail-more" href="#all-skills" data-tier-link="core">See all core skills <span aria-hidden="true">→</span></a>
       </div>
-      <div class="meta-row">
-        <span class="meta-item" id="skill-count">— skills</span>
-        <span class="meta-sep">·</span>
-        <span class="meta-item">by Owen</span>
-        <span class="meta-sep">·</span>
-        <span class="meta-item">MIT licensed</span>
+      <div class="rail-track" id="rail-featured-track" role="list" aria-label="Core skills">
+        <p class="rail-loading mono">Loading…</p>
       </div>
-      <section class="distribution-bar" id="distribution-bar" aria-label="Category distribution"></section>
-      <div class="dist-index" id="dist-index" aria-label="Category index"></div>
-      <nav class="controls" aria-label="Sort and filter">
+    </section>
+
+    <!-- ============ BROWSE — by category ============ -->
+    <section class="browse" aria-labelledby="browse-cat-title">
+      <div class="browse-head wrap">
+        <h2 class="browse-title" id="browse-cat-title">Browse by category</h2>
+        <p class="browse-desc">Six categories across the portfolio, counted live from the index.</p>
+      </div>
+      <div class="browse-grid wrap" id="category-grid" role="list" aria-label="Categories">
+        <p class="rail-loading mono">Loading…</p>
+      </div>
+    </section>
+
+    <!-- ============ BROWSE — by tier ============ -->
+    <section class="browse" aria-labelledby="browse-tier-title">
+      <div class="browse-head wrap">
+        <h2 class="browse-title" id="browse-tier-title">Browse by tier</h2>
+        <p class="browse-desc">Every skill is ranked by how broadly useful it is.</p>
+      </div>
+      <div class="tier-grid wrap" id="tier-grid" role="list" aria-label="Tiers">
+        <p class="rail-loading mono">Loading…</p>
+      </div>
+    </section>
+
+    <!-- ============ GRAPHITE BAND — quickstart (Cobalt's one dark beat) ============ -->
+    <section class="quickstart">
+      <div class="quickstart-inner wrap">
+        <h2 class="quickstart-title">How it works</h2>
+        <ol class="quickstart-steps">
+          <li class="quickstart-step">
+            <span class="quickstart-num mono">01</span>
+            <div>
+              <h3>Find a skill</h3>
+              <p>Search with <kbd>&#8984;K</kbd>, or browse by category and tier below.</p>
+            </div>
+          </li>
+          <li class="quickstart-step">
+            <span class="quickstart-num mono">02</span>
+            <div>
+              <h3>Copy the install command</h3>
+              <p>Every skill page has one. Example, live from the index:</p>
+              <div class="quickstart-code-row">
+                <code class="quickstart-code mono" id="quickstart-install-cmd">hermes skills install …</code>
+                <button class="btn btn-outline btn-sm" id="quickstart-copy-btn" type="button" disabled>Copy</button>
+              </div>
+            </div>
+          </li>
+          <li class="quickstart-step">
+            <span class="quickstart-num mono">03</span>
+            <div>
+              <h3>Your agent has it</h3>
+              <p>The agent reads the skill's own <code class="mono">SKILL.md</code> front matter and knows when to reach for it.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ FULL CATALOG — search / sort / filter / grid ============ -->
+    <section class="catalog wrap" id="all-skills">
+      <div class="catalog-head">
+        <h2 class="catalog-title">All skills</h2>
+        <p class="catalog-desc" id="catalog-total-desc">Loading the full index…</p>
+      </div>
+
+      <form class="catalog-controls" id="catalog-controls" aria-label="Sort and filter skills" novalidate>
         <div class="control-group">
           <label for="sort-select">Sort by</label>
-          <select id="sort-select">
+          <select id="sort-select" name="sort">
             <option value="tier-usage">Usefulness, then usage</option>
             <option value="usage">Usage only</option>
             <option value="recency">Most recent</option>
@@ -51,13 +162,13 @@
         </div>
         <div class="control-group">
           <label for="category-filter">Category</label>
-          <select id="category-filter">
+          <select id="category-filter" name="category">
             <option value="">All categories</option>
           </select>
         </div>
         <div class="control-group">
           <label for="tier-filter">Tier</label>
-          <select id="tier-filter">
+          <select id="tier-filter" name="tier">
             <option value="">All tiers</option>
             <option value="core">Core</option>
             <option value="featured">Featured</option>
@@ -65,44 +176,40 @@
           </select>
         </div>
         <div class="control-group control-grow">
-          <label for="search-input">Search <kbd class="kbd-hint">/</kbd></label>
-          <input type="search" id="search-input" placeholder="Skill name, keyword, or capability...">
+          <label for="search-input">Search</label>
+          <input type="search" id="search-input" name="q" placeholder="Skill name, keyword, or capability…" autocomplete="off">
         </div>
-      </nav>
-    </div>
-  </header>
+      </form>
 
-  <div class="active-filters" id="active-filters"></div>
+      <div class="active-filters" id="active-filters"></div>
 
-  <div class="stats-bar" id="stats-bar">
-    <span id="results-count">Loading...</span>
-  </div>
+      <div class="catalog-status" id="catalog-status" aria-live="polite">Loading skills…</div>
 
-  <main class="skill-grid" id="skill-grid" aria-live="polite">
-    <p class="empty-state">Loading skills...</p>
+      <div class="catalog-grid" id="catalog-grid" role="list" aria-label="All skills"></div>
+
+      <div class="no-results" id="no-results" hidden>
+        <p>No skills match the current filters.</p>
+        <button class="btn btn-outline" id="clear-filters-btn" type="button">Clear all filters</button>
+      </div>
+    </section>
   </main>
 
-  <div class="no-results" id="no-results" hidden>
-    <p>No skills match the current filters.</p>
-    <button class="clear-filters-btn" id="clear-filters-btn">Clear all filters</button>
-  </div>
-
   <button class="back-to-top" id="back-to-top" aria-label="Back to top" hidden>
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
   </button>
 
-  <!-- Detail page overlay -->
+  <!-- ============ SKILL DETAIL OVERLAY ============ -->
   <div class="detail-overlay" id="detail-overlay" hidden>
-    <div class="detail-page">
+    <div class="detail-page" role="dialog" aria-modal="true" aria-labelledby="detail-name">
       <div class="detail-header">
         <div class="detail-header-inner">
           <div class="detail-header-top">
             <div class="detail-titles">
-              <h2 id="detail-name">Skill Name</h2>
+              <h2 id="detail-name">Skill name</h2>
               <span class="tier-badge" id="detail-tier">Core</span>
             </div>
-            <button class="detail-close" id="detail-close" aria-label="Close skill detail page" title="Close (Esc)">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <button class="icon-btn detail-close" id="detail-close" aria-label="Close skill detail" title="Close (Esc)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
           </div>
           <p class="detail-desc" id="detail-desc"></p>
@@ -111,13 +218,13 @@
       </div>
       <div class="detail-body">
         <div class="detail-body-inner">
-          <div class="detail-tabs">
-            <button class="detail-tab active" data-tab="overview">Overview</button>
-            <button class="detail-tab" data-tab="skillmd">SKILL.md</button>
-            <button class="detail-tab" data-tab="readme">README</button>
+          <div class="detail-tabs" role="tablist">
+            <button class="detail-tab active" data-tab="overview" role="tab" aria-selected="true">Overview</button>
+            <button class="detail-tab" data-tab="skillmd" role="tab" aria-selected="false">SKILL.md</button>
+            <button class="detail-tab" data-tab="readme" role="tab" aria-selected="false">README</button>
           </div>
 
-          <div class="detail-tab-content active" id="tab-overview">
+          <div class="detail-tab-content active" id="tab-overview" role="tabpanel">
             <section class="detail-section">
               <h3>What it does</h3>
               <p id="detail-user-use">—</p>
@@ -128,19 +235,27 @@
             </section>
             <div class="install-block">
               <h4>Install command</h4>
-              <code id="detail-install-cmd">—</code>
-              <button class="copy-btn" id="detail-copy-btn">Copy</button>
+              <div class="install-row">
+                <code id="detail-install-cmd">—</code>
+                <button class="btn btn-outline btn-sm" id="detail-copy-btn" type="button">Copy</button>
+              </div>
             </div>
-            <a class="detail-skillmd-link" id="detail-skillmd-link" href="#" target="_blank" rel="noopener">View SKILL.md on GitHub ↗</a>
-            <a class="detail-source-link" id="detail-source-link" href="#" target="_blank" rel="noopener" hidden>View original source ↗</a>
+            <a class="detail-link" id="detail-skillmd-link" href="#" target="_blank" rel="noopener">View SKILL.md on GitHub <span aria-hidden="true">↗</span></a>
+            <a class="detail-link" id="detail-source-link" href="#" target="_blank" rel="noopener" hidden>View original source <span aria-hidden="true">↗</span></a>
+
+            <div class="detail-share-row">
+              <button class="btn btn-outline btn-sm" id="detail-copy-link-btn" type="button">Copy link</button>
+              <button class="btn btn-outline btn-sm" id="detail-copy-discord-btn" type="button">Copy Discord blurb</button>
+            </div>
+            <pre class="discord-preview" id="detail-discord-preview" hidden></pre>
           </div>
 
-          <div class="detail-tab-content" id="tab-skillmd">
-            <pre class="skillmd-viewer" id="detail-skillmd-content">Loading...</pre>
+          <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
+            <pre class="skillmd-viewer" id="detail-skillmd-content">Loading…</pre>
           </div>
 
-          <div class="detail-tab-content" id="tab-readme">
-            <pre class="skillmd-viewer" id="detail-readme-content">Loading...</pre>
+          <div class="detail-tab-content" id="tab-readme" role="tabpanel">
+            <pre class="skillmd-viewer" id="detail-readme-content">Loading…</pre>
           </div>
         </div>
       </div>
@@ -148,12 +263,16 @@
   </div>
 
   <footer class="footer">
-    <p>Each skill is self-contained. Install with <code>hermes skills install &lt;url&gt;</code> or clone the repo.</p>
-    <p><strong>50 skills</strong> across 6 categories — DevOps, Frontend, Backend, Utility, Integrations, Meta. Ranked by usefulness tier (Core, Featured, Utility) and usage.</p>
-    <p>Maintained by Owen. MIT licensed. Skills adapted from third parties carry per-skill attribution.</p>
-    <p class="keyboard-hints">Keyboard: <kbd>/</kbd> search · <kbd>Esc</kbd> close detail page · <kbd>t</kbd> toggle theme</p>
+    <div class="footer-inner">
+      <span class="footer-word">Hermes Skills — by Owen</span>
+      <span class="footer-sep">&middot;</span>
+      <span>Install one, your agent can now do that for you.</span>
+      <span class="footer-sep">&middot;</span>
+      <span>MIT licensed</span>
+    </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/catalog.js"></script>
 </body>
 </html>

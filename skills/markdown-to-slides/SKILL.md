@@ -1,10 +1,18 @@
 ---
 name: markdown-to-slides
-description: Turn Markdown into polished presentation slides using reveal.js, Marp, or Slidev. Use when a user wants to author talks, decks, or lectures from plain text and export them to PDF/PPTX.
+description: Use when the user wants to author a talk, deck, or lecture from plain Markdown and export it to PDF/PPTX/HTML — build a slide deck with reveal.js, Marp, or Slidev, theme/brand an existing deck, or set up a live-reloading slide preview.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [markdown, slides, presentations, reveal.js, marp, slidev]
+    related_skills: [markdown-to-pdf, markdown-linter]
 ---
 
 # markdown-to-slides
+
+## Overview
 
 Author beautiful presentations from plain Markdown — no drag-and-drop editors, no
 locked-in proprietary formats. This skill covers three best-in-class engines
@@ -185,20 +193,34 @@ Ensure `npx playwright install chromium` is available for PDF/PPTX builds.
 Always preview before exporting; fonts, backgrounds, and code blocks often
 shift between preview and print.
 
-## Pitfalls
+## Common Pitfalls
 
-- **`---` ambiguity:** YAML front matter and slide separators both use `---`.
-  Keep front matter at the very top and ensure a blank line around separators.
-- **Chromium missing:** PDF/PPTX export in Marp and Slidev needs a headless
-  browser. Install it (`npx @marp-team/marp-cli --version` then
-  `npx playwright install chromium`) or exports silently fail.
-- **Absolute image paths:** Use relative paths; pass `--allow-local-files`
-  (Marp) or run from the deck's directory so assets resolve in export.
-- **Fonts not embedded:** Some PDF converters drop web fonts. Prefer system
-  fonts or bundle `@font-face` files alongside the deck.
-- **Speaker notes leak:** Notes render in HTML export by default; strip them
-  for public PDFs (`marp --pdf` excludes notes; reveal needs a flag).
-- **Engine mismatch:** reveal.js uses `--` for vertical slides; Marp/Slidev
-  treat `--` as a thematic break. Don't mix syntaxes across engines.
-- **Watch-mode port clash:** If a preview server won't start, the port is
-  likely busy — kill the stray process or pass an explicit port flag.
+1. **`---` ambiguity.** YAML front matter and slide separators both use `---`.
+   Keep front matter at the very top and ensure a blank line around separators
+   or the parser reads the first content slide as more front matter.
+2. **Chromium missing.** PDF/PPTX export in Marp and Slidev needs a headless
+   browser. Install it (`npx @marp-team/marp-cli --version` then
+   `npx playwright install chromium`) or exports silently fail with no output file.
+3. **Absolute image paths break in export.** Use relative paths, and pass
+   `--allow-local-files` (Marp) or run the export from the deck's own directory
+   so assets resolve.
+4. **Fonts not embedded.** Some PDF converters drop web fonts. Prefer system
+   fonts or bundle `@font-face` files alongside the deck.
+5. **Speaker notes leak into public exports.** Notes render in HTML export by
+   default; strip them for public PDFs (`marp --pdf` excludes notes; reveal
+   needs an explicit flag).
+6. **Engine mismatch.** reveal.js uses `--` for vertical slides; Marp/Slidev
+   treat `--` as a thematic break (a visible horizontal rule), not a slide
+   boundary. Don't copy `--`-based syntax between engines.
+7. **Watch-mode port clash.** If a preview server won't start, the port is
+   likely already bound by a previous run — kill the stray process or pass an
+   explicit port flag rather than retrying the same command.
+
+## Verification Checklist
+
+- [ ] Every intended slide boundary (`---`) actually produced a separate slide, not a merged or extra one
+- [ ] Exported PDF/PPTX file exists, opens, and has the same slide count as the live preview
+- [ ] Code blocks in the deck show syntax highlighting in both preview and export
+- [ ] Speaker notes are present in the presenter view but absent from any public-facing export
+- [ ] Chosen theme's colors/fonts are visibly applied in the export, not just the preview
+- [ ] No leftover `--allow-local-files` / chromium warnings in the export command's output

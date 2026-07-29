@@ -1,10 +1,18 @@
 ---
 name: webhook-receiver
-description: Build, deploy, and secure an HTTP webhook endpoint that receives and processes inbound webhooks from external services (Stripe, GitHub, Slack, Shopify, CI, etc.). Covers endpoint creation, HMAC signature verification, payload handling, idempotency, and response contracts.
+description: Use when the user needs an HTTP endpoint that receives inbound webhooks from an external service (Stripe, GitHub, Slack, Shopify, CI) and must verify the sender's signature, parse the payload safely, dedupe retried deliveries, and return the right status code — not for outbound API calls or long-polling/streaming consumers.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [webhooks, hmac-verification, idempotency, http-api, event-ingestion]
+    related_skills: [http-api-tester, env-config-manager, telegram-bot-build]
 ---
 
 # webhook-receiver
+
+## Overview
 
 Turn any Hermes-managed host into a trustworthy webhook ingestion point. This
 skill gives you a production-ready pattern for receiving HTTP POSTs from external
@@ -163,22 +171,31 @@ Rules:
 - Never let an unhandled exception bubble into a 500 for a *verified* event that
   you already accepted — that triggers wasteful redelivery.
 
-## Pitfalls
+## Common Pitfalls
 
-- **Verifying the wrong bytes.** Re-serializing JSON before HMAC is the #1 bug.
-  Always digest `request.get_data()`.
-- **Using `==` for signatures.** Timing attacks are real; use `compare_digest`.
-- **Blocking in the request handler.** Slow work → sender timeout → retry storm.
-  Enqueue and return.
-- **Non-idempotent handlers.** Retries double-charge or double-post. Always
-  dedup on event ID.
-- **Secret in git / logs.** Rotate immediately if leaked; use a secret manager.
-- **Ignoring replay windows.** Without timestamp checks, an old captured request
-  can be replayed later. Enforce `|now - ts|` limits.
-- **Returning 500 for ignorable events.** Unknown types should be 200, not errors.
-- **No HTTPS / no source routing.** Plaintext + one shared route makes rotation
-  and auditing impossible.
-- **Accepting huge bodies.** Cap `Content-Length` (e.g. 1–5 MB) before reading.
+1. **Verifying the wrong bytes.** Re-serializing JSON before computing the HMAC is the #1 bug —
+   whitespace/key-order changes the digest. Always digest the raw body (`request.get_data()`),
+   never `json.dumps(parsed_body)`.
+2. **Using `==` for signature comparison.** A naive string compare leaks timing information.
+   Always use `hmac.compare_digest`.
+3. **Doing the real work inside the request handler.** Slow processing causes the sender to time
+   out and retry, which compounds load. Verify + enqueue, then return — process asynchronously.
+4. **Skipping the dedup/idempotency check.** Senders retry on any ambiguous response. Without a
+   dedup store keyed on event ID, a retried delivery re-runs the side effect (double-charge,
+   double-post).
+5. **Leaving the shared secret in git history or logs.** Rotate immediately if leaked; store it
+   in a secret manager, and never log the full request body or headers.
+6. **Skipping the replay-window check on timestamped schemes.** Stripe and Slack sign with a
+   timestamp; without enforcing `|now - ts| > 300s` rejection, a captured request can be replayed
+   later even with a valid signature.
+7. **Returning 500 for an unknown-but-harmless event type.** That triggers sender retries for
+   something that was never going to be handled. Return 200 and drop (or log to a dead-letter
+   sink) instead.
+8. **Sharing one route across sources instead of one per source.** A single shared endpoint means
+   one compromised secret affects every integration, and there's no way to rotate one source's
+   secret without touching the others.
+9. **Not capping request body size.** An unbounded `Content-Length` read on `/webhooks/*` is a
+   trivial DoS vector — cap it (e.g. 1–5 MB) before reading the body.
 
 ## Verification Checklist
 

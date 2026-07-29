@@ -1,10 +1,18 @@
 ---
 name: markdown-linter
-description: "Lint markdown files for consistency and common issues — agent + this skill = user gets clean, consistent documentation."
+description: Use when a user wants to check markdown files for issues (inconsistent heading levels, broken links, missing alt text, formatting inconsistencies) before publishing docs, or says "check my markdown" / "lint this doc" / "fix markdown issues".
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [markdown, linting, documentation-quality]
+    related_skills: [markdown-to-pdf, markdown-to-slides, hallmark-readme]
 ---
 
 # markdown-linter
+
+## Overview
 
 Check markdown files for common issues: inconsistent heading levels, broken links, missing alt text, trailing whitespace, and formatting inconsistencies. The agent scans markdown files and reports a fixable punch list.
 
@@ -165,10 +173,17 @@ def fix_markdown(filepath: str) -> dict:
 4. For other issues, show the line and suggested fix
 5. Let the user decide which to fix
 
-## Pitfalls
+## Common Pitfalls
 
-- **Frontmatter** — YAML frontmatter (between `---` lines) is not markdown. Skip it during linting.
-- **Tables** — Table rows can be long. The line-length check skips lines starting with `|`.
-- **URLs** — Long URLs make lines long. The check skips lines containing `http`.
-- **Nested code blocks** — Code blocks inside code blocks (quarto, mdx) can confuse the parser. The `in_code_block` toggle handles simple cases.
-- **Auto-fix is conservative** — Only fixes whitespace and list markers. Heading levels, alt text, and link text require manual judgment.
+1. **Frontmatter.** YAML frontmatter (between `---` lines) is not markdown. Skip it during linting.
+2. **Tables.** Table rows can be long. The line-length check skips lines starting with `|`.
+3. **URLs.** Long URLs make lines long. The check skips lines containing `http`.
+4. **Nested code blocks.** Code blocks inside code blocks (quarto, mdx) can confuse the parser. The `in_code_block` toggle handles simple cases.
+5. **Auto-fix is conservative.** Only fixes whitespace and list markers. Heading levels, alt text, and link text require manual judgment.
+
+## Verification Checklist
+
+- [ ] `lint_markdown` was run and its full issue list — not just a sample — was reported, sorted by line number
+- [ ] YAML frontmatter block was excluded from line-length and heading checks
+- [ ] `fix_markdown` was only applied to whitespace/list-marker issues; heading levels, alt text, and link text were left for manual review
+- [ ] Re-running `lint_markdown` after fixes shows the fixed issue count reduced accordingly

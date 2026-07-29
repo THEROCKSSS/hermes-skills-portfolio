@@ -1,10 +1,18 @@
 ---
 name: pdf-extract
-description: "Extract text, images, and tables from PDFs — agent + this skill = user gets structured content from any PDF file."
+description: Use when the user wants to extract text, tables, or images from a PDF file — including scanned/image-only PDFs needing OCR — or asks to "read this PDF", "extract text from PDF", "what's in this PDF", or to pull tables/images out of one.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [pdf, ocr, text-extraction, table-extraction, pymupdf, tesseract]
+    related_skills: [ocr-documents, markdown-to-pdf, csv-toolkit]
 ---
 
 # pdf-extract
+
+## Overview
 
 Extract text, images, and tables from PDF files using open-source Python libraries. The agent handles PDF parsing, OCR fallback for scanned documents, and structured output.
 
@@ -138,11 +146,20 @@ def extract_pdf(pdf_path: str) -> str:
 5. If the user needs images, extract with pymupdf's image API
 6. Return structured output (text, tables, or image paths)
 
-## Pitfalls
+## Common Pitfalls
 
-- **Scanned PDFs return empty text** — `get_text()` returns "" for image-only PDFs. Always check text length and fall back to OCR.
-- **OCR is slow** — Rendering at 300 DPI and running tesseract takes 2-5 seconds per page. For large PDFs, warn the user.
-- **Encrypted PDFs** — `fitz.open()` will fail on password-protected PDFs. Use `doc.authenticate("password")` if the password is known.
-- **Table extraction quality varies** — pdfplumber works well for bordered tables but struggles with borderless tables. Check the output.
-- **Large PDFs use lots of memory** — A 500-page PDF loaded with pymupdf uses significant RAM. Process pages one at a time if memory is constrained.
-- **Tesseract language packs** — For non-English PDFs, install the appropriate language pack: `tesseract-ocr-fra` for French, etc. Pass `lang='fra'` to `image_to_string`.
+1. **Scanned PDFs return empty text.** `get_text()` returns `""` for image-only PDFs — always check text length and fall back to OCR.
+2. **OCR is slow.** Rendering at 300 DPI and running tesseract takes 2-5 seconds per page — warn the user before running it on large PDFs.
+3. **Encrypted PDFs fail to open.** `fitz.open()` raises on password-protected PDFs — call `doc.authenticate("password")` first if the password is known.
+4. **Table extraction quality varies.** pdfplumber handles bordered tables well but struggles with borderless ones — check the output before trusting it.
+5. **Large PDFs exhaust memory.** A 500-page PDF loaded whole with pymupdf can use significant RAM — process pages one at a time if memory is constrained.
+6. **Missing Tesseract language packs.** Non-English PDFs need the matching pack (e.g. `tesseract-ocr-fra`) installed and `lang='fra'` passed to `image_to_string`, or OCR silently produces garbage text.
+
+## Verification Checklist
+
+- [ ] Checked average chars/page before deciding text-extraction vs. OCR
+- [ ] Extracted text/table/image count is consistent with the source PDF's page count
+- [ ] OCR output spot-checked for garbled text when a scanned PDF was processed
+- [ ] Correct Tesseract language pack used for non-English documents
+- [ ] Password-protected PDFs authenticated successfully before extraction was attempted
+- [ ] Output files (images, extracted text/tables) saved where the user expects them

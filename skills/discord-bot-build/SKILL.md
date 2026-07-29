@@ -1,10 +1,18 @@
 ---
 name: discord-bot-build
-description: "Build a working Discord bot with slash commands, events, and moderation — agent + this skill = user gets a bot running in their server."
+description: Use when the user wants a Discord bot for their server, wants to automate moderation/announcements/custom commands, or says "build a Discord bot", "make a bot for my server", or "I need a Discord mod bot".
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [discord-bot, discordjs, slash-commands, moderation-bot, gateway-intents]
+    related_skills: [telegram-bot-build, env-config-manager]
 ---
 
 # discord-bot-build
+
+## Overview
 
 Build a Discord bot with slash commands, event handlers, and moderation capabilities using discord.js. The bot runs as a Node.js process and connects to Discord via the Gateway.
 
@@ -211,11 +219,20 @@ COPY . .
 CMD ["node", "index.js"]
 ```
 
-## Pitfalls
+## Common Pitfalls
 
-- **Message Content Intent not enabled** — The bot can't read message text without this. Enable it in the Developer Portal under "Privileged Gateway Intents". Without it, `message.content` is always empty.
-- **Token in public code** — Never commit the `.env` file. Add it to `.gitignore`. If the token leaks, regenerate it immediately in the Developer Portal.
-- **Commands not appearing** — Global commands take up to 1 hour to propagate. Use guild commands for testing (instant). Run `deploy-commands.js` after adding new commands.
-- **Bot can't kick/ban** — The bot's role must be higher in the role hierarchy than the target user's role. Also check that the bot has Kick/Ban permissions in the server settings.
-- **Rate limits** — Discord enforces rate limits on API calls. Bulk operations (mass ban, mass delete) should use `bulkDelete` and respect rate limits. The library handles rate limits automatically, but pushing too hard will still cause delays.
-- **No error handling on commands** — Always wrap command logic in try/catch. An unhandled error crashes the bot. Reply with the error message so the user knows what went wrong.
+1. **Message Content Intent not enabled.** The bot can't read message text without this. Enable it in the Developer Portal under "Privileged Gateway Intents" — without it, `message.content` is always empty even though the event still fires.
+2. **Token committed or leaked.** Never commit the `.env` file — add it to `.gitignore`. If the token leaks, regenerate it immediately in the Developer Portal; a leaked token gives full control of the bot.
+3. **Commands not appearing after deploy.** Global commands take up to 1 hour to propagate. Use guild commands (`applicationGuildCommands`) for testing since they're instant. Also re-run `deploy-commands.js` after adding or changing any command definition — editing `index.js` alone doesn't re-register them.
+4. **Bot can't kick/ban despite having the permission.** The bot's role must sit higher in the role hierarchy than the target user's highest role, in addition to having the Kick/Ban permission — Discord enforces hierarchy regardless of permission flags.
+5. **Rate limits on bulk operations.** Discord enforces per-route rate limits. Bulk operations (mass ban, mass delete) should use `bulkDelete` and expect the library's automatic rate-limit handling to introduce delays — don't assume every call completes instantly.
+6. **No error handling crashes the whole bot.** An unhandled exception inside an interaction handler can crash the process if not caught. Always wrap command logic in try/catch and reply with the error so the user gets feedback instead of a silently dead bot.
+
+## Verification Checklist
+
+- [ ] `node index.js` logs "Logged in as ..." with no uncaught errors on startup
+- [ ] `deploy-commands.js` was run and slash commands appear in Discord (guild commands show instantly; confirm before assuming global propagation)
+- [ ] Message Content Intent is enabled in the Developer Portal if any command reads `message.content`
+- [ ] `.env` is listed in `.gitignore` and the token was never committed
+- [ ] Moderation commands (`/kick`, `/ban`, etc.) were tested against a low-permission test account, confirming both the permission check and the Discord role-hierarchy behavior
+- [ ] Every interaction handler has a try/catch that replies with an error message instead of leaving the interaction unanswered

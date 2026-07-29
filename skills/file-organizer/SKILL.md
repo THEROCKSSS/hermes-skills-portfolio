@@ -1,10 +1,18 @@
 ---
 name: file-organizer
-description: "Organize files by type, date, or pattern — agent + this skill = user gets a clean directory structure."
+description: "Use when the user has a messy directory (Downloads, Desktop) and wants files organized by type or date, or wants duplicate files found — with a dry-run preview shown before anything actually moves."
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [file-management, deduplication, directory-cleanup, dry-run, file-sorting]
+    related_skills: [csv-toolkit, pdf-extract]
 ---
 
 # file-organizer
+
+## Overview
 
 Organize files in a directory by type, date, or custom patterns. The agent scans a directory, categorizes files, and moves them into a structured layout. Supports dry-run mode to preview before moving.
 
@@ -137,11 +145,18 @@ def find_duplicates(directory: str) -> dict:
 4. If approved, run without dry-run to actually move files
 5. Report: files moved, categories created, any duplicates found
 
-## Pitfalls
+## Common Pitfalls
 
-- **Always dry-run first** — Never move files without showing the user what will happen. A wrong category mapping could scatter files unexpectedly.
-- **Name collisions** — Files with the same name in different categories will collide. The code handles this by appending `_1`, `_2`, etc.
-- **Symlinks** — `Path.iterdir()` includes symlinks. Moving a symlink moves the link, not the target. Handle symlinks separately if needed.
-- **Hidden files** — Files starting with `.` (`.gitignore`, `.env`) are included by default. Filter them out if the user doesn't want them moved.
-- **Permission errors** — Moving files requires write permission on both the source and target. On Windows, files in use can't be moved.
-- **Large directories** — `find_duplicates` reads every file to hash it. For directories with thousands of large files, this is slow. Consider hashing only files above a size threshold first.
+1. **Always dry-run first** — Never move files without showing the user what will happen. A wrong category mapping could scatter files unexpectedly.
+2. **Name collisions** — Files with the same name in different categories will collide. The code handles this by appending `_1`, `_2`, etc.
+3. **Symlinks** — `Path.iterdir()` includes symlinks. Moving a symlink moves the link, not the target. Handle symlinks separately if needed.
+4. **Hidden files** — Files starting with `.` (`.gitignore`, `.env`) are included by default. Filter them out if the user doesn't want them moved.
+5. **Permission errors** — Moving files requires write permission on both the source and target. On Windows, files in use can't be moved.
+6. **Large directories** — `find_duplicates` reads every file to hash it. For directories with thousands of large files, this is slow. Consider hashing only files above a size threshold first.
+
+## Verification Checklist
+
+- [ ] Dry-run output was shown to and approved by the user before any real move ran
+- [ ] Post-move file count matches pre-move count — nothing was lost or silently overwritten
+- [ ] Any name-collision case produced a `_1`/`_2` suffixed file instead of overwriting the original
+- [ ] `find_duplicates` groups spot-checked (same hash, same actual content) before deleting anything

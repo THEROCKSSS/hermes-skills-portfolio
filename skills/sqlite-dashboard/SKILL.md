@@ -1,10 +1,18 @@
 ---
 name: sqlite-dashboard
-description: "Browse SQLite databases with a web UI — agent + this skill = user gets a visual interface for inspecting any SQLite database."
+description: Use when the user wants to browse a SQLite database file through a web UI or desktop app, run ad-hoc SQL queries against it, or inspect an application's .db/.sqlite/.sqlite3 file without installing a full database server.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [sqlite, database-browser, sqlite-web, docker, ad-hoc-sql]
+    related_skills: [tailscale-deploy, caddy-reverse-proxy, csv-toolkit]
 ---
 
 # sqlite-dashboard
+
+## Overview
 
 Set up a web-based UI for browsing SQLite databases. SQLite is everywhere — application databases, agent state stores, config files — but there's no built-in UI for inspecting them. This skill deploys a lightweight web dashboard for any SQLite database file.
 
@@ -160,11 +168,34 @@ sqlite3 /path/to/database.db ".mode csv" ".headers on" ".output export.csv" "SEL
 sqlite3 /path/to/database.db ".mode json" ".output export.json" "SELECT * FROM my_table;" ".quit"
 ```
 
-## Pitfalls
+## Common Pitfalls
 
-- **Database locked** — If another process has the database open for writing, the web UI may get "database is locked" errors. Use `--read-only` mode for browsing (doesn't require write locks).
-- **Large databases** — sqlite-web paginates results, but loading a table with millions of rows can be slow. Use the SQL query tab with `LIMIT` for large tables.
-- **WAL mode** — If the database uses WAL (Write-Ahead Logging), the `.db` file alone doesn't contain all data — the `-wal` file is also needed. Copy both files, or checkpoint the WAL first: `sqlite3 database.db "PRAGMA wal_checkpoint(TRUNCATE);"`.
-- **Corrupt databases** — If `file database.db` doesn't say "SQLite 3.x database", the file may be corrupt or not SQLite. Run `sqlite3 database.db "PRAGMA integrity_check;"` to verify.
-- **Accidental writes** — If the dashboard is writable, a user could accidentally modify or delete data. Use `--read-only` for inspection. For production databases, always use read-only mode.
-- **Exposing the dashboard** — Don't expose sqlite-web to the public internet without authentication. It gives full access to the database. Use Tailscale or a reverse proxy with auth for remote access.
+1. **Opening a database that's already open for writing elsewhere.** A second writer hits
+   "database is locked" errors. Use `--read-only` mode for browsing — it doesn't require write
+   locks.
+2. **Scrolling a multi-million-row table instead of querying it.** sqlite-web paginates, but
+   rendering that many pages is slow. Use the SQL query tab with `LIMIT` instead.
+3. **Copying only the `.db` file from a WAL-mode database.** Uncommitted data lives in the
+   `-wal` file, not the main file. Copy both, or checkpoint first:
+   `sqlite3 database.db "PRAGMA wal_checkpoint(TRUNCATE);"`.
+4. **Assuming a `.db` extension means valid SQLite.** Run `file database.db` first — if it
+   doesn't say "SQLite 3.x database," confirm with `sqlite3 database.db "PRAGMA integrity_check;"`
+   before trusting the dashboard's output.
+5. **Leaving the dashboard writable for a production database.** Without `--read-only`, a
+   misclick in the UI can modify or delete rows. Default to read-only for any database that isn't
+   a scratch copy.
+6. **Exposing sqlite-web directly to the public internet.** It has no built-in authentication and
+   grants full read/write access to the database. Put it behind Tailscale or a reverse proxy with
+   auth instead of publishing the port.
+
+## Verification Checklist
+
+- [ ] `file <database>` confirms "SQLite 3.x database" before the dashboard is pointed at it.
+- [ ] Dashboard reachable at `http://<host>:8080` and the target database's tables are visible in
+      the Browse Data tab.
+- [ ] Read-only mode confirmed (`--read-only` flag present) unless the user explicitly wants
+      write access.
+- [ ] If the source database uses WAL, the `-wal` file was copied alongside `.db` or checkpointed
+      first — row counts match the live database.
+- [ ] Dashboard is not reachable from the public internet without authentication (Tailscale/proxy
+      auth in front, or bound to localhost only).

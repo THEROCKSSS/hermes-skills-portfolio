@@ -130,6 +130,31 @@
     return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
   }
 
+  // --- Search match highlighting ---
+  function highlightText(text, q) {
+    var escaped = escapeHtml(text);
+    if (!q) return escaped;
+    var pattern = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    try {
+      var re = new RegExp("(" + pattern + ")", "ig");
+      return escaped.replace(re, "<mark>$1</mark>");
+    } catch (e) { return escaped; }
+  }
+
+  // --- Canonical per-skill share link (static page baked for crawlers) ---
+  function canonicalSkillUrl(name) {
+    var base = window.location.origin + window.location.pathname.replace(/index\.html$/, "");
+    if (base.charAt(base.length - 1) !== "/") base += "/";
+    return base + "skills/" + encodeURIComponent(name) + "/";
+  }
+
+  function discordBlurb(skill) {
+    return "**" + skill.name + "** — " + skill.category + " · " + TIER_LABELS[skill.tier] + "\n" +
+      skill.description + "\n" +
+      "Install: `hermes skills install " + skill.install_url + "`\n" +
+      canonicalSkillUrl(skill.name);
+  }
+
   function renderDistributionBar(categories, skills) {
     var bar = document.getElementById("distribution-bar");
     bar.innerHTML = "";
@@ -264,10 +289,10 @@
     a.setAttribute("role", "button");
     a.innerHTML =
       '<div class="skill-card-header">' +
-        '<span class="skill-name">' + escapeHtml(skill.name) + '</span>' +
+        '<span class="skill-name">' + highlightText(skill.name, currentSearch) + '</span>' +
         '<span class="tier-badge ' + skill.tier + '">' + TIER_LABELS[skill.tier] + '</span>' +
       '</div>' +
-      '<p class="skill-desc">' + escapeHtml(skill.description) + '</p>' +
+      '<p class="skill-desc">' + highlightText(skill.description, currentSearch) + '</p>' +
       '<div class="skill-meta">' +
         '<span class="skill-cat">' + escapeHtml(catName) + '</span>' +
         '<span class="skill-source">' + escapeHtml(sourceLabel) + '</span>' +
@@ -392,6 +417,18 @@
       readmeEl.textContent = "README.md content not available.";
     }
 
+    // Share block: canonical link + Discord blurb preview
+    var copyLinkBtn = document.getElementById("detail-copy-link-btn");
+    var copyDiscordBtn = document.getElementById("detail-copy-discord-btn");
+    copyLinkBtn.setAttribute("data-clipboard", canonicalSkillUrl(skill.name));
+    copyLinkBtn.textContent = "Copy link";
+    copyLinkBtn.classList.remove("copied");
+    copyDiscordBtn.setAttribute("data-clipboard", discordBlurb(skill));
+    copyDiscordBtn.textContent = "Copy Discord blurb";
+    copyDiscordBtn.classList.remove("copied");
+    document.getElementById("detail-discord-preview").textContent = discordBlurb(skill);
+    document.getElementById("detail-discord-preview").hidden = false;
+
     // Reset to overview tab
     switchDetailTab("overview");
 
@@ -442,8 +479,11 @@
   }
 
   // --- Copy to clipboard ---
-  function copyToClipboard(text, btn) {
-    function onSuccess() { btn.classList.add("copied"); btn.textContent = "Copied!"; showToast("Install command copied"); setTimeout(function() { btn.classList.remove("copied"); btn.textContent = "Copy"; }, 2000); }
+  function copyToClipboard(text, btn, opts) {
+    opts = opts || {};
+    var restoreLabel = opts.restoreLabel || "Copy";
+    var toastMsg = opts.toastMsg || "Copied";
+    function onSuccess() { btn.classList.add("copied"); btn.textContent = "Copied!"; showToast(toastMsg); setTimeout(function() { btn.classList.remove("copied"); btn.textContent = restoreLabel; }, 2000); }
     if (navigator.clipboard) { navigator.clipboard.writeText(text).then(onSuccess); }
     else {
       var ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta); onSuccess();
@@ -473,7 +513,27 @@
     // Copy button in detail
     document.getElementById("detail-copy-btn").addEventListener("click", function() {
       var text = this.getAttribute("data-clipboard");
-      copyToClipboard(text, this);
+      copyToClipboard(text, this, { restoreLabel: "Copy", toastMsg: "Install command copied" });
+    });
+    // Copy link / Copy Discord blurb (share block)
+    document.getElementById("detail-copy-link-btn").addEventListener("click", function() {
+      var text = this.getAttribute("data-clipboard");
+      copyToClipboard(text, this, { restoreLabel: "Copy link", toastMsg: "Skill link copied" });
+    });
+    document.getElementById("detail-copy-discord-btn").addEventListener("click", function() {
+      var text = this.getAttribute("data-clipboard");
+      copyToClipboard(text, this, { restoreLabel: "Copy Discord blurb", toastMsg: "Discord blurb copied" });
+    });
+  }
+
+  // --- Random skill ("dice") ---
+  function setupDice() {
+    var btn = document.getElementById("dice-btn");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      if (!indexData || !indexData.skills.length) return;
+      var pick = indexData.skills[Math.floor(Math.random() * indexData.skills.length)];
+      window.location.hash = "skill/" + pick.name;
     });
   }
 
@@ -509,6 +569,7 @@
         if (currentDetailSkill) { closeDetail(); }
       }
       else if (e.key === "t" || e.key === "T") { toggleTheme(); }
+      else if (e.key === "r" || e.key === "R") { document.getElementById("dice-btn").click(); }
     });
   }
 
@@ -601,7 +662,7 @@
       if (searchTimer) clearTimeout(searchTimer);
       searchTimer = setTimeout(render, 150);
     });
-    setupKeyboard(); setupBackToTop(); setupClearFilters();
+    setupKeyboard(); setupBackToTop(); setupClearFilters(); setupDice();
     window.addEventListener("hashchange", function () { var isSkill = readHashState(); if (!isSkill) render(); });
   }
   if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", init); }

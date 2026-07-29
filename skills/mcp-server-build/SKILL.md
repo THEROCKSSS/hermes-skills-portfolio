@@ -1,10 +1,18 @@
 ---
 name: mcp-server-build
-description: "Build a working MCP server that exposes your tools to AI agents — agent + this skill = user gets a functional Model Context Protocol server."
+description: Use when the user wants to expose their tools, APIs, or data to an AI agent via the Model Context Protocol — building a new MCP server (tools/resources/prompts), choosing stdio vs HTTP transport, writing tool JSON Schemas, or connecting a built server to Hermes or another MCP client.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [mcp, model-context-protocol, tool-schema, server, agent-integration]
+    related_skills: [openapi-generator, webhook-receiver]
 ---
 
 # mcp-server-build
+
+## Overview
 
 Build a Model Context Protocol (MCP) server that exposes your tools, resources, and prompts to AI agents. MCP is an open protocol that lets AI assistants interact with external systems through a standardized interface.
 
@@ -220,11 +228,20 @@ hermes mcp test file-search
 hermes mcp list
 ```
 
-## Pitfalls
+## Common Pitfalls
 
-- **Vague tool descriptions** — The agent decides whether to call a tool based on its description. "Searches stuff" won't be called. "Searches the database for records matching a query string, returns up to N results as JSON" will.
-- **No error handling** — Tools that crash on bad input will break the agent's workflow. Always return error messages as strings, never raise unhandled exceptions.
-- **Returning too much data** — Agents have context limits. Cap returns at a reasonable size (10k chars, 50 results) and let the agent ask for more if needed.
-- **No input validation** — Validate paths, queries, and parameters before processing. Don't trust the agent to send valid input.
-- **Blocking operations** — MCP handlers should be async. If you have blocking I/O (file reads, database queries), run them in a thread executor.
-- **Transport mismatch** — stdio servers are launched by the agent process. HTTP servers need to be running independently. Don't try to serve HTTP over stdio or vice versa.
+1. **Vague tool descriptions.** The agent decides whether to call a tool based on its description alone. "Searches stuff" won't get called. "Searches the database for records matching a query string, returns up to N results as JSON" will.
+2. **No error handling.** Tools that crash on bad input break the agent's whole turn. Always catch exceptions and return error messages as strings — never let a handler raise unhandled.
+3. **Returning too much data.** Agents have context limits. Cap returns at a reasonable size (10k chars, 50 results as shown above) and let the agent ask for more if needed.
+4. **No input validation.** Validate paths, queries, and parameters before processing. Don't trust the agent to send valid input — it will occasionally pass malformed or out-of-range values.
+5. **Blocking operations inside async handlers.** MCP handlers should be async. Blocking I/O (file reads, database queries) run inline stalls the whole server; run them in a thread executor.
+6. **Transport mismatch.** stdio servers are launched by the agent process and read/write over the process pipes; HTTP servers must be running independently before the agent connects. Don't try to serve HTTP over stdio or vice versa.
+7. **Forgetting the session is cached.** After adding a new tool to a running server, some MCP clients (including Hermes) cache the tool list from initial connection — reconnect or restart the client to see new tools.
+
+## Verification Checklist
+
+- [ ] `mcp inspect python my_server.py` (or equivalent) lists every tool with its schema and description
+- [ ] Each tool returns a string/structured result for both valid and invalid input — no unhandled exception in the server logs
+- [ ] stdio servers are invoked by the client's own command (not left running as an orphan process); HTTP servers are confirmed reachable with `curl` before wiring into the client
+- [ ] `hermes mcp test <name>` (or the equivalent client-side test) succeeds and the tool list matches what the server defines
+- [ ] A sample call to at least one tool returns the expected data end-to-end, not just a schema-level pass

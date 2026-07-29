@@ -1,10 +1,18 @@
 ---
 name: ascii-art
-description: "Generate ASCII art from text and images — agent + this skill = user gets text-based art for terminals, docs, and comments."
+description: Use when the user wants a text banner or logo for a CLI tool/README, wants an image converted to ASCII art, wants decorative ASCII for a terminal output or code comment, or explicitly says "make ASCII art", "generate a banner", or "convert this image to ASCII".
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [ascii-art, text-banner, image-to-ascii, pyfiglet, terminal-art]
+    related_skills: [color-palette-generator, qr-code-generator]
 ---
 
 # ascii-art
+
+## Overview
 
 Generate ASCII art from text (banners, logos) and images (photo-to-ASCII conversion). The agent creates text banners, converts images to ASCII, and produces decorative art for terminals, documentation, and code comments.
 
@@ -121,10 +129,18 @@ def box_text(text: str, style: str = "single") -> str:
 3. For images: resize to terminal width, convert to grayscale, map to ASCII ramp
 4. Return the ASCII art as a string
 
-## Pitfalls
+## Common Pitfalls
 
-- **Banners too wide** — pyfiglet banners can be 100+ chars wide. Check the terminal width and pick a narrower font (small, mini, thin) for narrow terminals.
-- **Image ASCII looks wrong** — Terminal characters are ~2x taller than wide. Adjust the aspect ratio with `height = int(aspect * width * 0.5)`.
-- **Font not found** — Not all pyfiglet fonts are installed by default. Check `pyfiglet.FigletFont.getFonts()` for available fonts.
-- **Color** — ASCII art in a terminal can use ANSI color codes. Add color with `\033[91m` (red) etc., but it won't render in plain text files.
-- **Very large images** — Don't try to convert a 4000px image. Resize to 80-120 chars wide first. Larger widths produce unreadable ASCII.
+1. **Banners too wide.** pyfiglet banners can be 100+ chars wide. Check the terminal width and pick a narrower font (small, mini, thin) for narrow terminals.
+2. **Image ASCII looks squashed or stretched.** Terminal characters are ~2x taller than wide. Adjust the aspect ratio with `height = int(aspect * width * 0.5)` — skipping this factor distorts the output.
+3. **Requested font not installed.** Not all pyfiglet fonts ship by default. Check `pyfiglet.FigletFont.getFonts()` for what's actually available before promising a specific font.
+4. **Color codes leaking into plain-text output.** ANSI color codes (`\033[91m`) render correctly in a terminal but show as garbage escape sequences in a README or plain text file — only add color when the target is a live terminal.
+5. **Converting an oversized image directly.** A 4000px image produces an unreadable wall of characters. Resize to 80-120 chars wide before mapping to the ASCII ramp, not after.
+
+## Verification Checklist
+
+- [ ] Text banner output was actually printed/reviewed at the target line width (not assumed to fit)
+- [ ] Chosen pyfiglet font was confirmed present via `pyfiglet.FigletFont.getFonts()` before use
+- [ ] Image-to-ASCII output used the aspect-ratio correction (`* 0.5`) so the result isn't vertically stretched
+- [ ] Source image was resized to ≤120 chars wide before conversion
+- [ ] If ANSI color was added, confirmed the output target is a terminal, not a file meant to stay plain text

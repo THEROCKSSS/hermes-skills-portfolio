@@ -1,0 +1,42 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-07-30T00:00:00Z",
+  "bundles": [
+    {
+      "id": "self-host-starter",
+      "name": "Self-Host Starter Kit",
+      "one_liner": "Stand up your own privately-accessible services with HTTPS, uptime alerts, and a Git server — no cloud hosting bill.",
+      "skills": ["caddy-reverse-proxy", "docker-umbrella", "tailscale-deploy", "uptime-kuma-self-host", "forgejo-self-host"]
+    },
+    {
+      "id": "api-developer-kit",
+      "name": "API Developer Kit",
+      "one_liner": "Build, test, and document an API end to end — contract tests, a CLI tester, SDK generation, and a working MCP server.",
+      "skills": ["api-test-suite", "http-api-tester", "openapi-generator", "json-formatter", "mcp-server-build"]
+    },
+    {
+      "id": "automation-kit",
+      "name": "Agent Automation Kit",
+      "one_liner": "Wire up scheduled tasks, incoming webhooks, and push notifications so your agent can act on events, not just requests.",
+      "skills": ["cron-task", "webhook-receiver", "ntfy-notifier", "rss-monitor"]
+    },
+    {
+      "id": "publish-your-skills",
+      "name": "Publish Your Own Skills Kit",
+      "one_liner": "Everything this project itself used to go from a folder of skills to a public, sortable portfolio with a real README.",
+      "skills": ["skills-portfolio-scaffold", "skill-publish", "portfolio-upkeep", "skill-registry-catalog", "hallmark-readme"]
+    },
+    {
+      "id": "content-and-docs",
+      "name": "Content & Docs Kit",
+      "one_liner": "Turn structured data and markdown into finished documents — PDFs, slides, resumes, invoices, and a changelog.",
+      "skills": ["markdown-to-pdf", "markdown-to-slides", "changelog-generator", "resume-builder", "invoice-generator"]
+    },
+    {
+      "id": "chatbot-builder-kit",
+      "name": "Chat Bot Builder Kit",
+      "one_liner": "Build a real Discord or Telegram bot with commands and events, wired to webhooks and kept configurable via env vars.",
+      "skills": ["discord-bot-build", "telegram-bot-build", "env-config-manager", "webhook-receiver"]
+    }
+  ]
+}

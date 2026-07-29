@@ -1,10 +1,18 @@
 ---
 name: markdown-to-pdf
-description: "Convert markdown to PDF with styling — agent + this skill = user gets a styled PDF from any markdown file."
+description: Use when the user wants to convert a Markdown file into a styled PDF — via weasyprint, pandoc, or puppeteer — including choosing a theme (default, dark, print-friendly), embedding syntax-highlighted code, or producing a shareable report/handout from notes.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [markdown, pdf, weasyprint, pandoc, puppeteer, document-conversion]
+    related_skills: [markdown-to-slides, markdown-linter, pdf-extract]
 ---
 
 # markdown-to-pdf
+
+## Overview
 
 Convert markdown files to PDF with customizable styling. The agent handles markdown parsing, CSS styling, and PDF generation with options for themes, page size, and syntax highlighting.
 
@@ -146,11 +154,19 @@ table { font-size: 10pt; }
 4. Generate the PDF
 5. Return the file path
 
-## Pitfalls
+## Common Pitfalls
 
-- **Missing system dependencies** — weasyprint needs cairo, pango, and gdk-pixbuf system libraries. On Ubuntu: `apt install libpango-1.0-0 libpangoft2-1.0-0`. On macOS: `brew install pango`.
-- **Code blocks not highlighted** — Without the `codehilite` extension (Python) or a highlight.js include (JS), code blocks are plain text. Install `pygments` for Python highlighting.
-- **Images not rendering** — Local image paths must be absolute or relative to the HTML file. Use `file://` URLs or embed images as base64.
-- **Page breaks in bad places** — Use CSS `page-break-before: always` on h1 elements to force chapter breaks. Add `page-break-inside: avoid` on tables and code blocks.
-- **Emoji rendering** — weasyprint may not render emoji. Install a color emoji font (Noto Color Emoji) or replace emoji with text.
-- **Large PDFs** — PDFs with many images can be large. Optimize images before embedding (resize to max 1000px width, use JPEG for photos).
+1. **Missing system dependencies.** weasyprint needs cairo, pango, and gdk-pixbuf system libraries — it fails at import time, not at write_pdf, if these are absent. Ubuntu: `apt install libpango-1.0-0 libpangoft2-1.0-0`. macOS: `brew install pango`.
+2. **Code blocks render as plain text.** Without the `codehilite` extension (Python) or a highlight.js include (JS), fenced code loses highlighting. Install `pygments` for Python highlighting.
+3. **Images don't appear in the PDF.** Local image paths must be absolute or relative to the HTML file being rendered, not relative to the original markdown file's directory. Use `file://` URLs or embed images as base64.
+4. **Page breaks land mid-section.** Add `page-break-before: always` on `h1` only (not every heading level) or every chapter starts a new page needlessly; add `page-break-inside: avoid` on tables and code blocks so they don't split across pages.
+5. **Emoji show as boxes or blanks.** weasyprint doesn't ship a color emoji font. Install Noto Color Emoji or replace emoji with text before conversion.
+6. **PDF is unexpectedly huge.** Embedded images at original resolution bloat file size. Resize to max 1000px width and use JPEG for photos before embedding.
+
+## Verification Checklist
+
+- [ ] Output PDF file exists at the expected path and is non-zero bytes
+- [ ] Page count is plausible for the source document's length (check with `pdfinfo output.pdf` or open it)
+- [ ] Fenced code blocks show syntax highlighting, not plain monospace text
+- [ ] Every image referenced in the markdown actually renders in the PDF (no broken-image icons)
+- [ ] The chosen theme (default/dark/print) is visibly applied — colors and fonts match what was requested

@@ -1,10 +1,18 @@
 ---
 name: snippet-manager
-description: "Save and retrieve code snippets — agent + this skill = user gets a searchable snippet library."
+description: Use when the user wants to save a reusable code snippet for later, find a snippet they saved earlier, or build a searchable personal snippet library keyed by language and tags.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [code-snippets, snippet-library, markdown-frontmatter, search, cli-tooling]
+    related_skills: [dotfiles-manage, file-organizer]
 ---
 
 # snippet-manager
+
+## Overview
 
 Store, search, and retrieve reusable code snippets. The agent saves snippets with metadata (language, tags, description), searches by keyword or tag, and inserts snippets into files on demand.
 
@@ -157,10 +165,26 @@ def list_snippets(snippet_dir: str = None) -> list:
 3. **Insert**: The user wants to use a snippet → retrieve it and insert into the current file
 4. **List**: Show all saved snippets with metadata
 
-## Pitfalls
+## Common Pitfalls
 
-- **Snippet directory location** — Default is `~/.snippets/`. If the user has a preferred location (e.g., inside a dotfiles repo), set it explicitly.
-- **Name collisions** — Saving a snippet with an existing name overwrites it. Warn the user or append a number.
-- **No syntax validation** — Snippets are stored as-is. The code isn't validated. Test snippets before saving.
-- **Tags format** — Tags in frontmatter use `[tag1, tag2]` format. Ensure consistent comma separation for search to work.
-- **Large snippets** — Files over a few hundred lines make the library unwieldy. Keep snippets focused — one function or pattern per file.
+1. **Assuming `~/.snippets/` without checking.** If the user has a preferred location (e.g.,
+   inside a dotfiles repo they already version-control), set `snippet_dir` explicitly rather than
+   defaulting silently.
+2. **Overwriting on name collision.** `save_snippet` writes `{name}.md` unconditionally — an
+   existing file with the same name is silently clobbered. Check for the file first and warn or
+   append a number.
+3. **Trusting stored code without testing it.** Snippets are saved as-is with no syntax
+   validation; a broken snippet stays broken until someone runs it.
+4. **Malformed tags breaking search.** `search_snippets` matches tags via literal substrings like
+   `tags: [{tag}` or `, {tag}`. Inconsistent spacing (`[tag1,tag2]` vs `[tag1, tag2]`) in the
+   frontmatter you write will cause `search_snippets(tag=...)` to miss it later.
+5. **Letting one file grow past a focused snippet.** Files over a few hundred lines make the
+   library hard to search and defeat the "one function or pattern per file" model — split them.
+
+## Verification Checklist
+
+- [ ] Saved snippet file exists at `<snippet_dir>/<name>.md` with valid YAML frontmatter
+      (`language`, `tags`, `description`, `created`) followed by a fenced code block.
+- [ ] `search_snippets` with the snippet's own tag/language/keyword returns the new entry.
+- [ ] No pre-existing snippet was silently overwritten by the save.
+- [ ] `list_snippets` shows the correct `language` and `description` parsed from frontmatter.

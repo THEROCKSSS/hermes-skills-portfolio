@@ -1,10 +1,18 @@
 ---
 name: ocr-documents
-description: "Extract text from images and scanned documents using OCR — agent + this skill = user gets editable text from any image or scan."
+description: Use when the user has an image, screenshot, or scanned document and wants the text extracted — via Tesseract or EasyOCR — including preprocessing low-quality scans, pulling text with bounding boxes, OCR'ing a PDF page, or handling multi-language/handwritten input.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [ocr, tesseract, easyocr, image-processing, text-extraction, pdf]
+    related_skills: [pdf-extract, markdown-to-pdf]
 ---
 
 # ocr-documents
+
+## Overview
 
 Extract text from images, screenshots, and scanned documents using Tesseract OCR and EasyOCR. The agent handles image preprocessing, OCR execution, and text cleanup.
 
@@ -145,11 +153,19 @@ text = pytesseract.image_to_string(img, lang='eng+fra+deu')
 | Wrong characters | Similar-looking chars (0/O, 1/l) | Post-process with regex replacements |
 | Slow processing | High DPI | Use 300 DPI (sufficient for most text) |
 
-## Pitfalls
+## Common Pitfalls
 
-- **Tesseract path not found** — On Windows, set the tesseract path: `pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'`
-- **Handwriting recognition** — Tesseract is poor at handwriting. Use EasyOCR or TrOCR for handwritten text.
-- **Rotated text** — Tesseract expects horizontal text. Detect and rotate first: `pytesseract.image_to_osd(img)` returns rotation angle.
-- **Multi-column layouts** — Tesseract reads left-to-right, top-to-bottom. Multi-column documents get jumbled. Use `image_to_data` with bounding boxes and sort by column.
-- **Low confidence results** — Filter by confidence score. `image_to_data` returns confidence per word. Anything below 50 is unreliable.
-- **Large images** — Images over 5000px take significant time. Resize to 2000-3000px width before OCR.
+1. **Tesseract path not found on Windows.** Unlike Linux/macOS, the `tesseract` binary isn't on PATH by default. Set it explicitly: `pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'`.
+2. **Handwriting comes back garbled.** Tesseract is trained on printed text and performs poorly on handwriting. Switch to EasyOCR or TrOCR instead of trying to tune Tesseract further.
+3. **Rotated pages produce nonsense text.** Tesseract assumes horizontal text; a sideways or upside-down scan silently returns garbage rather than an error. Detect orientation first with `pytesseract.image_to_osd(img)` and rotate before running OCR.
+4. **Multi-column documents get jumbled.** Tesseract reads left-to-right, top-to-bottom across the whole page, so two-column layouts interleave lines from both columns. Use `image_to_data` with bounding boxes and sort by column (x-position) before reassembling text.
+5. **Trusting low-confidence words.** `image_to_data` returns a per-word confidence score; anything below ~50 is unreliable and should be flagged or dropped rather than trusted verbatim.
+6. **OCR-ing oversized images wastes time for no gain.** Images over 5000px take significant time with no accuracy benefit past ~2000-3000px width — resize down first.
+
+## Verification Checklist
+
+- [ ] Extracted text is non-empty and roughly matches the visible content when spot-checked against the source image
+- [ ] Low-confidence words (below ~50 via `image_to_data`) are flagged or excluded, not silently included
+- [ ] For rotated or scanned pages, orientation was checked/corrected before OCR, not assumed upright
+- [ ] For multi-column layouts, column order in the output matches reading order, not raster scan order
+- [ ] Language pack matches the actual document language (multi-language docs use `lang='eng+fra+...'` as needed)

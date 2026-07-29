@@ -1,10 +1,18 @@
 ---
 name: log-analyzer
-description: "Analyze log files for errors, patterns, and anomalies — agent + this skill = user gets insights from raw logs."
+description: Use when a user wants to find errors in a log file, understand what happened in a service from its logs, count error types, find time-based error spikes, or says "check the logs" / "what went wrong".
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [logs, error-analysis, regex, observability]
+    related_skills: [ntfy-notifier, regex-tester]
 ---
 
 # log-analyzer
+
+## Overview
 
 Parse and analyze log files to find errors, warnings, patterns, and anomalies. The agent handles large log files, extracts structured data, counts error types, finds time-based patterns, and summarizes findings.
 
@@ -178,11 +186,19 @@ def log_summary(log_path: str) -> dict:
 5. Extract specific tracebacks or filtered lines for detail
 6. Report findings: what errors, how many, when, and what types
 
-## Pitfalls
+## Common Pitfalls
 
-- **Large log files** — Reading a 10GB log file line by line into memory will crash. Use the line-by-line iterators (as shown above) — they're memory-efficient. For extremely large files, use `grep` first to pre-filter.
-- **Timestamp format varies** — The default regex assumes ISO 8601. Adjust the pattern for your log format (e.g., `r'(\d{2}:\d{2}):\d{2}'` for `HH:MM:SS`).
-- **Multi-line stack traces** — Error lines span multiple lines. The traceback extractor handles this, but simple line-by-line error counting may miss context.
-- **Rotated logs** — If logs rotate (`app.log.1`, `app.log.2`), analyze all of them. Use `glob.glob("app.log*")` to find all rotation files.
-- **Encoding** — Some logs use non-UTF-8 encoding. Use `errors='ignore'` to skip bad bytes, or detect encoding with `chardet`.
-- **False positives** — The word "error" can appear in non-error contexts (e.g., "error handling module"). Refine patterns to match your log format.
+1. **Large log files.** Reading a 10GB log file line by line into memory will crash. Use the line-by-line iterators (as shown above) — they're memory-efficient. For extremely large files, use `grep` first to pre-filter.
+2. **Timestamp format varies.** The default regex assumes ISO 8601. Adjust the pattern for your log format (e.g., `r'(\d{2}:\d{2}):\d{2}'` for `HH:MM:SS`).
+3. **Multi-line stack traces.** Error lines span multiple lines. The traceback extractor handles this, but simple line-by-line error counting may miss context.
+4. **Rotated logs.** If logs rotate (`app.log.1`, `app.log.2`), analyze all of them. Use `glob.glob("app.log*")` to find all rotation files.
+5. **Encoding.** Some logs use non-UTF-8 encoding. Use `errors='ignore'` to skip bad bytes, or detect encoding with `chardet`.
+6. **False positives.** The word "error" can appear in non-error contexts (e.g., "error handling module"). Refine patterns to match your log format.
+
+## Verification Checklist
+
+- [ ] `log_summary`'s error/warning/info counts are consistent with `total_lines`
+- [ ] All log rotation files (`app.log.1`, `app.log.2`, ...) were included, not just the current file
+- [ ] The timestamp regex was checked against the actual log's format before trusting `errors_by_hour` output
+- [ ] A sample of flagged "error" lines was reviewed for false positives (e.g. "error handling module")
+- [ ] Encoding errors were handled (`errors='ignore'` or detected) rather than the analysis crashing mid-file

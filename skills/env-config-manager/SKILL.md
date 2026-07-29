@@ -1,10 +1,18 @@
 ---
 name: env-config-manager
-description: "Manage environment variables across projects — agent + this skill = user gets organized, validated, documented env config."
+description: "Use when the user needs an `.env.example` generated for a new project, wants an existing `.env` validated against it, or is deploying and needs to confirm all required environment variables are set."
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [environment-variables, dotenv, env-example, config-validation, secrets]
+    related_skills: [dotfiles-manage, generate-dockerfile]
 ---
 
 # env-config-manager
+
+## Overview
 
 Manage environment variables across projects. The agent creates `.env.example` files, validates `.env` files against the example, detects missing or unused variables, and generates documentation.
 
@@ -142,11 +150,18 @@ def generate_env_docs(example_path: str = ".env.example", output: str = "docs/en
 3. Validate the actual `.env` against `.env.example` — report missing and unused vars
 4. Generate markdown documentation listing all env vars
 
-## Pitfalls
+## Common Pitfalls
 
-- **Secrets in .env.example** — Never commit real values. The `create_env_example` function strips values, but double-check before committing.
-- **Comment-based parsing** — Comments after values (`KEY=value  # description`) may be split incorrectly. The parser handles this by splitting on `=` first.
-- **Multi-line values** — Values with `export KEY="multi\nline"` are not handled. Use single-line values or parse quoted strings.
-- **Code scanning misses** — `create_env_example_from_code` only finds `os.getenv` and `os.environ` patterns. Values loaded from config files or env-loading libraries (python-dotenv) won't be detected.
-- **Unused variables** — Variables in `.env` but not in `.env.example` might be intentionally unlisted. Review before removing.
-- **Deployed environments** — On deploy, check with `validate_env()` before starting the app. Missing required vars cause confusing runtime errors.
+1. **Secrets in .env.example** — Never commit real values. The `create_env_example` function strips values, but double-check before committing.
+2. **Comment-based parsing** — Comments after values (`KEY=value  # description`) may be split incorrectly. The parser handles this by splitting on `=` first.
+3. **Multi-line values** — Values with `export KEY="multi\nline"` are not handled. Use single-line values or parse quoted strings.
+4. **Code scanning misses** — `create_env_example_from_code` only finds `os.getenv` and `os.environ` patterns. Values loaded from config files or env-loading libraries (python-dotenv) won't be detected.
+5. **Unused variables** — Variables in `.env` but not in `.env.example` might be intentionally unlisted. Review before removing.
+6. **Deployed environments** — On deploy, check with `validate_env()` before starting the app. Missing required vars cause confusing runtime errors.
+
+## Verification Checklist
+
+- [ ] `.env.example` diffed against `.env` to confirm no real secret values leaked through
+- [ ] `validate_env()` returns `missing: []` before deploy
+- [ ] Generated `docs/env-vars.md` lists every variable the running app actually reads
+- [ ] Code-scan pass (`create_env_example_from_code`) cross-checked against `.env.example` for any variable it missed

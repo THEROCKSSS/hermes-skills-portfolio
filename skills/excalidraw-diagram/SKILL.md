@@ -1,10 +1,18 @@
 ---
 name: excalidraw-diagram
-description: "Generate hand-drawn style diagrams as Excalidraw JSON — agent + this skill = user gets architecture and flow diagrams that look hand-drawn."
+description: "Use when the user wants a hand-drawn-style diagram — architecture, flow chart, sequence diagram, or mind map — as an Excalidraw-compatible JSON file, rather than a polished, corporate-looking diagram."
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [excalidraw, diagrams, architecture-diagram, flowchart, hand-drawn]
+    related_skills: [ascii-art, color-palette-generator]
 ---
 
 # excalidraw-diagram
+
+## Overview
 
 Generate Excalidraw-compatible JSON diagrams in a hand-drawn style. The agent creates architecture diagrams, flow charts, sequence diagrams, and mind maps as Excalidraw files that can be opened in the Excalidraw editor or exported as PNG/SVG.
 
@@ -160,11 +168,18 @@ build_diagram(elements, "flowchart.excalidraw")
 - File → Open → select the `.excalidraw` file
 - Or drag and drop the file onto the Excalidraw window
 
-## Pitfalls
+## Common Pitfalls
 
-- **Coordinate system** — Excalidraw uses a top-left origin, y increases downward. Plan your layout before generating elements.
-- **Text positioning** — Text elements need manual x/y positioning. Center text by offsetting from the box: `x + width/2 - len(label) * fontSize/4`.
-- **Arrow endpoints** — Arrows use `points` relative to the start position `x, y`. `points: [[0, 0], [dx, dy]]` draws from (x, y) to (x+dx, y+dy).
-- **Roughness** — `roughness: 0` = clean, `roughness: 1` = hand-drawn, `roughness: 2.5` = very sketchy. Default to 1 for the hand-drawn aesthetic.
-- **Font family** — `1` = Virgil (hand-drawn), `2` = Helvetica, `3` = Cascadia (mono). Use 1 for the Excalidraw look.
-- **File size** — Large diagrams with many elements produce large JSON. Keep diagrams to under 50 elements for readability.
+1. **Coordinate system** — Excalidraw uses a top-left origin, y increases downward. Plan your layout before generating elements.
+2. **Text positioning** — Text elements need manual x/y positioning. Center text by offsetting from the box: `x + width/2 - len(label) * fontSize/4`.
+3. **Arrow endpoints** — Arrows use `points` relative to the start position `x, y`. `points: [[0, 0], [dx, dy]]` draws from (x, y) to (x+dx, y+dy).
+4. **Roughness** — `roughness: 0` = clean, `roughness: 1` = hand-drawn, `roughness: 2.5` = very sketchy. Default to 1 for the hand-drawn aesthetic.
+5. **Font family** — `1` = Virgil (hand-drawn), `2` = Helvetica, `3` = Cascadia (mono). Use 1 for the Excalidraw look.
+6. **File size** — Large diagrams with many elements produce large JSON. Keep diagrams to under 50 elements for readability.
+
+## Verification Checklist
+
+- [ ] File opens without errors in https://excalidraw.com (File → Open, or drag-and-drop)
+- [ ] Every arrow visually connects its two intended shapes — no floating or misaligned endpoints
+- [ ] Text labels are fully visible, not clipped by or overlapping their container shape
+- [ ] Element count stays under ~50 for a single diagram, split into multiple files otherwise

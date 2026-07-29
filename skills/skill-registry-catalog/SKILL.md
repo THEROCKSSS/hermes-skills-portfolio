@@ -1,10 +1,18 @@
 ---
 name: skill-registry-catalog
-description: "Catalog third-party AI agent skills from public registries — agent + this skill = user gets a categorized, tracked catalog of skills worth evaluating."
+description: Use when the user wants to survey public agent-skill registries (skills.md, skillsmp.com) for a domain and build a categorized, source-cited catalog repo with approved/pending buckets and live ingestion counters — not for organizing skills already adopted into the user's own library.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [skill-registry, cataloging, ci-automation, github-api, forgejo-api, skills-md]
+    related_skills: [skill-publish, portfolio-upkeep, skills-portfolio-scaffold]
 ---
 
 # skill-registry-catalog
+
+## Overview
 
 Build a categorized, source-cited catalog of third-party agent skills harvested from public
 registries. Each skill is separated from your own library so it is easy to triage — approved
@@ -200,18 +208,36 @@ Issue posting uses your git host's REST API with a token. Labels usually require
 (GitHub: `labels: [id,...]`), so fetch the label list first and map `name → id`. Never embed the
 token in source; read it from a CI secret.
 
-## Pitfalls
+## Common Pitfalls
 
-- **skillsmp.com page cap** — 100/page is a hard server limit. Loop until a page is empty or
-  short; do not trust a single `limit=1000` call.
-- **skills.md concatenated response** — slice at the first `}]` before `json.loads`, or you will
-  hit a JSON decode error on the trailing HTML.
-- **No search API on skillsmp.com** — `/api/search?q=` is 404. Pull everything and filter locally.
-- **Approved-match false positives** — bare substring hits (`image`, `write`, `backend`) over-match.
-  Require exact local-name containment or an explicit upgrade map.
-- **Do not self-declare the catalog "done"** — hand the live repo URL to the user for visual
-  verification. The catalog is a living artifact; re-scans keep adding to it.
-- **CI commit loops** — counter workflows that commit must use `[skip ci]` (or an equivalent
-  skip directive) in their commit message, or they retrigger themselves.
-- **Token scope** — repo/issue creation needs write scope on the target repo. A read-only token
-  fails with 403. Use a CI secret, never inline the token.
+1. **Trusting a single `limit=1000` call on skillsmp.com.** The API caps at 100/page regardless
+   of the requested limit. Loop `page=1..N` until a page returns `[]` or fewer than 100 items, or
+   the catalog silently truncates.
+2. **Parsing the skills.md response with a bare `json.loads`.** When multiple candidate URLs are
+   fetched together in one console call, the response can be the JSON array concatenated with
+   `===` plus a trailing HTML error page. Slice at the first `}]` before parsing.
+3. **Calling `/api/search?q=` on skillsmp.com.** There is no text-search endpoint — it 404s. Pull
+   the full paginated `/api/skills` and filter client-side instead.
+4. **Approving on a bare substring match.** Matching `image`, `write`, or `backend` as a
+   substring over-matches unrelated skills. Require exact local-skill-name containment or an
+   explicit `known_upgrades` map before marking a skill `approved`.
+5. **Declaring the catalog "done."** It's a living artifact — re-scans keep adding entries. Hand
+   the live repo URL to the user for visual verification instead of self-certifying completion.
+6. **Letting the counters workflow commit without `[skip ci]`.** A counter-update commit that
+   doesn't skip CI retriggers the same workflow, creating a commit loop.
+7. **Using a read-only token for issue/label creation.** The `rescan.yml` workflow needs write
+   scope on the target repo; a read-only token fails with 403. Labels also usually require
+   numeric IDs — fetch the label list first and map `name → id`.
+
+## Verification Checklist
+
+- [ ] Both registries pulled from their JSON APIs (not scraped HTML), with skillsmp.com paginated
+      to a page returning `[]` or `< 100` items.
+- [ ] Every entry deduped by `(source, name)` before it lands in `CATALOG.md`.
+- [ ] Every `approved` entry has a verified local-skill-name match or an explicit upgrade-map hit
+      — no bare substring approvals.
+- [ ] `CATALOG.md`'s three buckets (Approved / Pending / Other) match the per-skill folders under
+      `skills/approved/` and `skills/pending/`.
+- [ ] The `COUNTERS_START`/`COUNTERS_END` block reflects real git history, not placeholder zeros.
+- [ ] `validate.yml`, `counters.yml`, and `rescan.yml` are present and counter/rescan commits
+      include `[skip ci]`.

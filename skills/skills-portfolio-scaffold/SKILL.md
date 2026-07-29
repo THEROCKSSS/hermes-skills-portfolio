@@ -1,12 +1,20 @@
 ---
-name: hermes-portfolio-template
-description: "Set up a skills portfolio repo with categorized, ranked, sortable skills — agent + this skill = user gets their own publishable skill portfolio structure."
+name: skills-portfolio-scaffold
+description: Use when a user wants to publish their own Hermes skills as a categorized, ranked, sortable skills portfolio — discoverable by both humans (sortable site) and agents (structured index) — or says "set up a skills portfolio" / "make my skills installable".
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [skills-portfolio, scaffolding, skills-index, static-site]
+    related_skills: [hallmark-readme, skill-publish, portfolio-upkeep]
 ---
 
-# hermes-portfolio-template
+# skills-portfolio-scaffold
 
-Scaffold a skills portfolio repository with the three-surface architecture: a monorepo of skills, a `skills-index.json` for agent-parseable metadata, a sortable static site, and CI validation. This is the meta-skill that reproduces the portfolio structure for anyone who wants to publish their own skills.
+## Overview
+
+Scaffold a skills portfolio repository with the three-surface architecture: a monorepo of skills, a `skills-index.json` for agent-parseable metadata, a sortable static site, and CI validation. This is the meta-skill that reproduces the portfolio structure for anyone who wants to publish their own skills — under their own name and branding, never a clone of this one.
 
 ## When to Use
 
@@ -23,6 +31,10 @@ Scaffold a skills portfolio repository with the three-surface architecture: a mo
 - Skills to publish — at least one `SKILL.md` with frontmatter
 
 ## Workflow
+
+### Step 0: Name the portfolio
+
+Before scaffolding anything, ask the user for three things: what they want their portfolio **called** (e.g. "Jane's Automation Skills," not "Hermes Skills Portfolio" — this is their shopfront, not a copy of this one), their **name or handle** as it should appear in the README/site footer, and a one-sentence **tagline**. Use their answers everywhere `portfolio.name` / `portfolio.owner` / `portfolio.tagline` appear in Step 2 — never leave a placeholder value or default to "Hermes" in the generated output.
 
 ### Step 1: Create the repo structure
 
@@ -194,12 +206,20 @@ GitHub Pages only serves from `/` or `/docs`. Deploy:
 
 Each skill entry should include `agent_use`, `user_use`, `skillmd_content`, and `readme_content` fields so the detail page can show all content without fetching individual files.
 
-## Pitfalls
+## Common Pitfalls
 
-- **Index drift** — If you add a skill directory but forget to add an entry to `skills-index.json`, the site won't show it and the CI should warn. Keep them in sync.
-- **Relative links in README** — Links like `../other-skill/` break when a skill is published to its own repo via `skill-publish`. Use absolute URLs for cross-skill references.
-- **Tier inflation** — Don't mark everything `core`. If all skills are core, the tier is meaningless. Reserve `core` for skills that nearly any user benefits from.
-- **No categories** — Every skill must belong to a category. Uncategorized skills break the filter UI and the agent-parseable index.
-- **Invented usage data** — Start all usage counts at 0. Don't fabricate install numbers — they'll be overwritten by real data once the portfolio has traffic, and fake numbers erode trust.
-- **skills-index.json too large** — Embedding full SKILL.md and README.md content in the index makes it large (500KB+ for 50 skills). This is acceptable for a static site — it loads once and enables instant detail page rendering without per-skill fetches.
-- **docs/ vs site/ drift** — When you update site files, always copy them to `docs/` too. The `docs/` directory is what GitHub Pages serves. Use a sync script or the portfolio-upkeep skill.
+1. **Index drift.** If you add a skill directory but forget to add an entry to `skills-index.json`, the site won't show it and the CI should warn. Keep them in sync.
+2. **Relative links in README.** Links like `../other-skill/` break when a skill is published to its own repo via `skill-publish`. Use absolute URLs for cross-skill references.
+3. **Tier inflation.** Don't mark everything `core`. If all skills are core, the tier is meaningless. Reserve `core` for skills that nearly any user benefits from.
+4. **No categories.** Every skill must belong to a category. Uncategorized skills break the filter UI and the agent-parseable index.
+5. **Invented usage data.** Start all usage counts at 0. Don't fabricate install numbers — they'll be overwritten by real data once the portfolio has traffic, and fake numbers erode trust.
+6. **`skills-index.json` too large.** Embedding full SKILL.md and README.md content in the index makes it large (500KB+ for 50 skills). This is acceptable for a static site — it loads once and enables instant detail page rendering without per-skill fetches.
+7. **`docs/` vs `site/` drift.** When you update site files, always copy them to `docs/` too. The `docs/` directory is what GitHub Pages serves. Use a sync script or the portfolio-upkeep skill.
+
+## Verification Checklist
+
+- [ ] `skills-index.json` validates against `skills-index.schema.json` and every skill directory under `skills/` has a matching index entry
+- [ ] Every skill entry has a `tier` (`core`/`featured`/`utility`) and a `category`, and not everything is tagged `core`
+- [ ] `site/` files are mirrored into `docs/` (what GitHub Pages actually serves)
+- [ ] The CI validation workflow runs and fails a skill missing `name:` in its frontmatter
+- [ ] All `usage` counts in newly added entries start at 0 — no fabricated install/star numbers

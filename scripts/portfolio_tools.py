@@ -75,7 +75,10 @@ def render_skill_page(skill, categories, base_url=""):
     """Render a complete self-contained HTML page for a single skill.
 
     Includes unique social metadata (OG, Twitter), server-rendered content,
-    and minimal JS for tab switching. No external dependencies beyond styles.css.
+    and the Cobalt design system (tokens.css + base.css + skill-page.css,
+    common.js + skill-page.js for the theme toggle, cmd-k, tabs, and the
+    install-command copy button). No inline styles or scripts — the page
+    is styled and wired entirely through the shared site/css and site/js.
     """
     name = skill["name"]
     cat_data = categories.get(skill.get("category", ""), {})
@@ -98,18 +101,31 @@ def render_skill_page(skill, categories, base_url=""):
     sa = skill.get("source_attribution")
     source_link_html = ""
     if isinstance(sa, dict) and sa.get("origin_url"):
-        source_link_html = f'<a class="detail-source-link" href="{_escape(sa["origin_url"])}" target="_blank" rel="noopener">View original source ↗</a>'
+        source_link_html = f'<a class="detail-link" href="{_escape(sa["origin_url"])}" target="_blank" rel="noopener">View original source <span aria-hidden="true">&#8599;</span></a>'
     elif isinstance(sa, str) and sa:
-        source_link_html = f'<a class="detail-source-link" href="{_escape(sa)}" target="_blank" rel="noopener">View original source ↗</a>'
+        source_link_html = f'<a class="detail-link" href="{_escape(sa)}" target="_blank" rel="noopener">View original source <span aria-hidden="true">&#8599;</span></a>'
 
     page_url = f"{base_url}/skills/{name}/" if base_url else f"/skills/{name}/"
     meta_desc = build_meta_description(skill)
 
+    recency_html = (
+        f'<span><strong>Updated:</strong> {_escape(recency)}</span>' if recency else ''
+    )
+    install_block_html = f'''
+        <div class="install-block">
+          <h4>Install command</h4>
+          <div class="install-row">
+            <code id="install-cmd">{_escape(install_cmd)}</code>
+            <button class="btn btn-outline btn-sm" id="copy-btn" type="button">Copy</button>
+          </div>
+        </div>
+        ''' if install_cmd else ''
+
     return f"""<!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>{_escape(name)} — Hermes Skill</title>
   <meta name="description" content="{_escape(meta_desc)}">
   <link rel="canonical" href="{_escape(page_url)}">
@@ -122,105 +138,106 @@ def render_skill_page(skill, categories, base_url=""):
   <meta name="twitter:description" content="{_escape(meta_desc)}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/skill-page.css">
 </head>
 <body>
-  <a class="skip-link" href="#skill-content">Skip to content</a>
-  <header class="masthead">
-    <div class="masthead-inner">
-      <div class="masthead-top">
-        <div class="masthead-titles">
-          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
-          <h1>{_escape(name)}</h1>
-          <p class="tagline">{_escape(description)}</p>
-        </div>
-        <div class="masthead-actions">
-          <span class="tier-badge {tier}">{tier_label}</span>
-        </div>
-      </div>
-      <div class="meta-row">
-        <span class="meta-item"><strong>Category:</strong> {_escape(cat_name)}</span>
-        <span class="meta-sep">&middot;</span>
-        <span class="meta-item"><strong>Tier:</strong> {_escape(tier_desc)}</span>
-        <span class="meta-sep">&middot;</span>
-        <span class="meta-item"><strong>Source:</strong> {_escape(source_label)}</span>
-        {f'<span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> {_escape(recency)}</span>' if recency else ''}
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="../../index.html">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
+        Hermes Skills
+      </a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="../../index.html" data-nav="catalog">Catalog</a>
+        <a href="../../bundles.html" data-nav="bundles">Bundles</a>
+        <a href="../../changelog.html" data-nav="changelog">Changelog</a>
+        <a href="../../submit.html" data-nav="submit">Submit a skill</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="cmdk-trigger" id="cmdk-trigger" aria-haspopup="dialog" aria-controls="cmdk-modal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="cmdk-trigger-label">Search skills…</span>
+          <kbd class="cmdk-trigger-kbd">&#8984;K</kbd>
+        </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme (t)">
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a class="github-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">GitHub</a>
       </div>
     </div>
   </header>
 
-  <main id="skill-content" class="skill-detail-main">
-    <div class="skill-detail-inner">
-      <div class="detail-tabs">
-        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
-        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
-        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
-      </div>
+  <main id="main" class="skill-main">
+    <div class="wrap">
+      <div class="skill-shell">
+        <p class="skill-back-link"><a href="../../index.html">&#8592; Back to catalog</a></p>
 
-      <div class="detail-tab-content active" id="tab-overview">
-        <section class="detail-section">
-          <h3>What it does</h3>
-          <p>{_escape(user_use)}</p>
-        </section>
-        <section class="detail-section">
-          <h3>How an agent uses it</h3>
-          {agent_use_html}
-        </section>
-        <section class="detail-section">
-          <h3>What you get</h3>
-          <p>Install this skill and your Hermes agent can {_escape(description.lower())} No manual setup, no scripts to run &mdash; the agent handles it.</p>
-        </section>
-        {f'''
-        <div class="install-block">
-          <h4>Install command</h4>
-          <code id="install-cmd">{_escape(install_cmd)}</code>
-          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+        <header class="detail-header">
+          <div class="detail-titles">
+            <h1>{_escape(name)}</h1>
+            <span class="tier-badge {tier}">{tier_label}</span>
+          </div>
+          <p class="detail-desc">{_escape(description)}</p>
+          <div class="detail-meta-row">
+            <span><strong>Category:</strong> {_escape(cat_name)}</span>
+            <span><strong>Tier:</strong> {_escape(tier_desc)}</span>
+            <span><strong>Source:</strong> {_escape(source_label)}</span>
+            {recency_html}
+          </div>
+        </header>
+
+        <div class="detail-tabs" role="tablist">
+          <button class="detail-tab active" data-tab="overview" role="tab" aria-selected="true">Overview</button>
+          <button class="detail-tab" data-tab="skillmd" role="tab" aria-selected="false">SKILL.md</button>
+          <button class="detail-tab" data-tab="readme" role="tab" aria-selected="false">README</button>
         </div>
-        ''' if install_cmd else ''}
-        <div class="detail-links">
-          <a class="detail-skillmd-link" href="{_escape(install_url)}" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+
+        <div class="detail-tab-content active" id="tab-overview" role="tabpanel">
+          <section class="detail-section">
+            <h3>What it does</h3>
+            <p>{_escape(user_use)}</p>
+          </section>
+          <section class="detail-section">
+            <h3>How an agent uses it</h3>
+            {agent_use_html}
+          </section>
+          <section class="detail-section">
+            <h3>What you get</h3>
+            <p>Install this skill and your Hermes agent can {_escape(description.lower())} No manual setup, no scripts to run &mdash; the agent handles it.</p>
+          </section>
+          {install_block_html}
+          <a class="detail-link" href="{_escape(install_url)}" target="_blank" rel="noopener">View SKILL.md on GitHub <span aria-hidden="true">&#8599;</span></a>
           {source_link_html}
         </div>
-      </div>
 
-      <div class="detail-tab-content" id="tab-skillmd">
-        <pre class="skillmd-viewer">{_escape(skillmd)}</pre>
-      </div>
+        <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
+          <pre class="skillmd-viewer">{_escape(skillmd)}</pre>
+        </div>
 
-      <div class="detail-tab-content" id="tab-readme">
-        <pre class="skillmd-viewer">{_escape(readme)}</pre>
+        <div class="detail-tab-content" id="tab-readme" role="tabpanel">
+          <pre class="skillmd-viewer">{_escape(readme)}</pre>
+        </div>
       </div>
     </div>
   </main>
 
   <footer class="footer">
-    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
-    <p>Install with <code>hermes skills install {_escape(install_url)}</code> or clone the repo.</p>
-    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+    <div class="footer-inner">
+      <span class="footer-word">Hermes Skills — by Owen</span>
+      <span class="footer-sep">&middot;</span>
+      <span>Install one, your agent can now do that for you.</span>
+      <span class="footer-sep">&middot;</span>
+      <span>MIT licensed</span>
+    </div>
   </footer>
 
-  <script>
-  function switchTab(tabName) {{
-    document.querySelectorAll('.detail-tab').forEach(function(t) {{ t.classList.remove('active'); }});
-    document.querySelectorAll('.detail-tab-content').forEach(function(c) {{ c.classList.remove('active'); }});
-    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
-    document.getElementById('tab-' + tabName).classList.add('active');
-  }}
-  function copyInstall() {{
-    var cmd = document.getElementById('install-cmd').textContent;
-    if (navigator.clipboard) {{
-      navigator.clipboard.writeText(cmd).then(function() {{
-        var btn = document.getElementById('copy-btn');
-        btn.textContent = 'Copied!'; btn.classList.add('copied');
-        setTimeout(function() {{ btn.textContent = 'Copy'; btn.classList.remove('copied'); }}, 2000);
-      }});
-    }}
-  }}
-  document.addEventListener('keydown', function(e) {{
-    if (e.key === 'Escape') window.location.href = '../../';
-  }});
-  </script>
+  <script src="../../js/common.js"></script>
+  <script src="../../js/skill-page.js"></script>
 </body>
 </html>"""
 

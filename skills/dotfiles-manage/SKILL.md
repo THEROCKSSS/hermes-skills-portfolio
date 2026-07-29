@@ -1,10 +1,18 @@
 ---
 name: dotfiles-manage
-description: "Version and sync your dotfiles across machines — agent + this skill = user gets their config files in git and deployable to any new machine."
+description: "Use when the user wants their config files (shell, editor, git, tmux) versioned in git and deployable to a new machine in one command, or wants to sync dotfiles across multiple machines."
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [dotfiles, git-bare-repo, gnu-stow, chezmoi, yadm, config-sync]
+    related_skills: [env-config-manager, git-backup]
 ---
 
 # dotfiles-manage
+
+## Overview
 
 Set up dotfiles management — version control for your configuration files (shell config, editor config, git config, etc.) with the ability to deploy them to any new machine in one command.
 
@@ -211,11 +219,18 @@ Never commit plaintext secrets (API keys, tokens, passwords).
 export OPENAI_API_KEY=$(pass openai/api-key)
 ```
 
-## Pitfalls
+## Common Pitfalls
 
-- **Committing secrets** — Before pushing, check for API keys, tokens, and passwords in your dotfiles. Use `git log -p` to review history. If secrets are already pushed, rotate them immediately — git history is forever.
-- **Symlink loops with Stow** — If you stow a directory that contains a symlink pointing back to your home dir, you'll create a loop. Stow will warn you, but check manually.
-- **Bare repo checkout fails** — If files already exist in your home dir, `config checkout` fails. Back up the conflicting files first (the deploy script above handles this).
-- **Different paths on different OSes** — A config that works on Linux (`~/.config/`) may need a different path on macOS (`~/Library/Application Support/`). Use chezmoi for cross-OS setups, or conditional logic in shell configs.
-- **Forgetting to stow/restow** — After adding a new file to a Stow package, you need to re-run `stow <package>` to create the symlink. It's not automatic.
-- **Machine-specific values in git** — If you hardcode a machine-specific value (hostname, IP, path) in a dotfile, it breaks on other machines. Use templates (chezmoi) or conditionals.
+1. **Committing secrets** — Before pushing, check for API keys, tokens, and passwords in your dotfiles. Use `git log -p` to review history. If secrets are already pushed, rotate them immediately — git history is forever.
+2. **Symlink loops with Stow** — If you stow a directory that contains a symlink pointing back to your home dir, you'll create a loop. Stow will warn you, but check manually.
+3. **Bare repo checkout fails** — If files already exist in your home dir, `config checkout` fails. Back up the conflicting files first (the deploy script above handles this).
+4. **Different paths on different OSes** — A config that works on Linux (`~/.config/`) may need a different path on macOS (`~/Library/Application Support/`). Use chezmoi for cross-OS setups, or conditional logic in shell configs.
+5. **Forgetting to stow/restow** — After adding a new file to a Stow package, you need to re-run `stow <package>` to create the symlink. It's not automatic.
+6. **Machine-specific values in git** — If you hardcode a machine-specific value (hostname, IP, path) in a dotfile, it breaks on other machines. Use templates (chezmoi) or conditionals.
+
+## Verification Checklist
+
+- [ ] `config status` / `git -C ~/dotfiles status` (or `stow -n`/`chezmoi diff`) shows no unexpected changes after setup
+- [ ] A clean-machine deploy (fresh clone + checkout/`stow`/`chezmoi apply`) reproduces the expected files or symlinks
+- [ ] `git log -p` reviewed for accidentally committed secrets before the first push
+- [ ] `status.showUntrackedFiles` is set to `no` for the bare-repo approach so `git status`/`config status` in `$HOME` stays quiet

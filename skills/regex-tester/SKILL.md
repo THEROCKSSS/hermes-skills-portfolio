@@ -1,10 +1,18 @@
 ---
 name: regex-tester
-description: "Test and debug regular expressions — agent + this skill = user gets a working regex with match results."
+description: Use when the user wants to test a regex pattern against sample text, needs a regex built from a natural-language description, or has a regex that isn't matching as expected — triggers include "test this regex", "write a regex for", or "why isn't my regex working".
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [regex, pattern-matching, text-processing, debugging]
+    related_skills: [json-formatter, log-analyzer, markdown-linter]
 ---
 
 # regex-tester
+
+## Overview
 
 Test, debug, and build regular expressions. The agent creates regex patterns from descriptions, tests them against sample text, explains what they match, and helps fix patterns that don't work as expected.
 
@@ -153,11 +161,19 @@ def regex_replace(pattern: str, text: str, replacement: str, count: int = 0) -> 
 5. If no matches, debug: explain the pattern and suggest fixes
 6. Return the working pattern and match results
 
-## Pitfalls
+## Common Pitfalls
 
-- **Greedy vs lazy** — `.*` is greedy (matches as much as possible). `.*?` is lazy (matches as little as possible). This is the most common regex bug.
-- **Anchoring** — Without `^` and `$`, the pattern matches anywhere in the string. Use anchors to match the full string.
-- **Escape special characters** — `.` in a pattern matches any character. To match a literal dot, use `\.`.
-- **Catastrophic backtracking** — Nested quantifiers like `(a+)+` can cause exponential matching time on certain inputs. Avoid nested quantifiers.
-- **Character class ranges** — `[a-z]` is lowercase only. `[A-Za-z]` includes both. `[\w]` includes digits and underscore.
-- **Unicode** — `\w` in Python 3 matches Unicode word characters by default. Use `[a-zA-Z0-9_]` for ASCII-only.
+1. **Greedy vs. lazy confusion.** `.*` is greedy (matches as much as possible); `.*?` is lazy (matches as little as possible) — the most common regex bug.
+2. **Missing anchors.** Without `^` and `$`, the pattern matches anywhere in the string, not the whole thing — add anchors when a full-string match is intended.
+3. **Unescaped special characters.** `.` matches any character; to match a literal dot use `\.` — a frequent source of over-broad matches.
+4. **Catastrophic backtracking.** Nested quantifiers like `(a+)+` can cause exponential matching time on certain inputs — avoid nesting quantifiers.
+5. **Character class range mistakes.** `[a-z]` is lowercase only; `[A-Za-z]` covers both cases; `[\w]` also includes digits and underscore.
+6. **Unicode surprises.** `\w` in Python 3 matches Unicode word characters by default — use `[a-zA-Z0-9_]` when ASCII-only matching is required.
+
+## Verification Checklist
+
+- [ ] Pattern compiles without a `re.error`
+- [ ] Tested against both matching and non-matching sample inputs, not just the happy path
+- [ ] Match count and capture groups match what the user described wanting
+- [ ] Checked for catastrophic backtracking risk if the pattern has nested quantifiers
+- [ ] Anchoring (`^`/`$`) behavior matches whether a full-string or partial match was intended

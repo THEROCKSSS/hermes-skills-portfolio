@@ -1,10 +1,18 @@
 ---
 name: email-send
-description: "Send email programmatically via SMTP or API — agent + this skill = user gets a working email sender for their app or scripts."
+description: "Use when the user wants to send email programmatically from an app or script — transactional email, notifications, alerts, or reports — via SMTP or a provider API (Resend, SendGrid, Mailgun, AWS SES, Postmark)."
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [smtp, transactional-email, resend, sendgrid, aws-ses, nodemailer]
+    related_skills: [ntfy-notifier, webhook-receiver, env-config-manager]
 ---
 
 # email-send
+
+## Overview
 
 Set up programmatic email sending via SMTP or a transactional email API. The agent configures the provider, writes the sending code, and tests the connection. You get a working email function for your app, scripts, or agent tasks.
 
@@ -204,12 +212,19 @@ with smtplib.SMTP('smtp.gmail.com', 587) as server:
     server.send_message(msg)
 ```
 
-## Pitfalls
+## Common Pitfalls
 
-- **Gmail blocks less-secure apps** — Use an app-specific password, not your regular password. Regular password auth is blocked by Google for most accounts.
-- **Emails going to spam** — If using a custom domain, set up SPF, DKIM, and DMARC DNS records. Without these, recipient servers will likely mark your emails as spam. Transactional providers (Resend, SendGrid) handle this automatically.
-- **SES sandbox mode** — New AWS SES accounts can only send to verified addresses. You must request production access to send to any address.
-- **Rate limits** — Gmail SMTP limits ~500 emails/day. Resend's free tier is 3k/month. SendGrid is 100/day. For high volume, use a dedicated provider.
-- **HTML in plain text clients** — Always include a plain-text alternative alongside HTML. Some email clients and all automated spam filters check for a text part.
-- **Attachment size** — Most providers limit attachments to 10-25 MB. For larger files, upload to a storage service and send a download link.
-- **Sending domain not verified** — Resend, SendGrid, and Mailgun require you to verify your sending domain (add DNS records). Without verification, emails will fail or be rejected.
+1. **Gmail blocks less-secure apps** — Use an app-specific password, not your regular password. Regular password auth is blocked by Google for most accounts.
+2. **Emails going to spam** — If using a custom domain, set up SPF, DKIM, and DMARC DNS records. Without these, recipient servers will likely mark your emails as spam. Transactional providers (Resend, SendGrid) handle this automatically.
+3. **SES sandbox mode** — New AWS SES accounts can only send to verified addresses. You must request production access to send to any address.
+4. **Rate limits** — Gmail SMTP limits ~500 emails/day. Resend's free tier is 3k/month. SendGrid is 100/day. For high volume, use a dedicated provider.
+5. **HTML in plain text clients** — Always include a plain-text alternative alongside HTML. Some email clients and all automated spam filters check for a text part.
+6. **Attachment size** — Most providers limit attachments to 10-25 MB. For larger files, upload to a storage service and send a download link.
+7. **Sending domain not verified** — Resend, SendGrid, and Mailgun require you to verify your sending domain (add DNS records). Without verification, emails will fail or be rejected.
+
+## Verification Checklist
+
+- [ ] Test send lands in the inbox (not spam) for both the plain-text and HTML parts
+- [ ] SPF/DKIM/DMARC records verified for a custom sending domain, or provider-managed domain (e.g. `onboarding@resend.dev`) confirmed for testing
+- [ ] Attachment (if any) downloads and opens correctly from the received message
+- [ ] Provider account confirmed out of sandbox mode (SES) or within the free-tier/rate limit for the expected send volume

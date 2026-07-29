@@ -1,10 +1,18 @@
 ---
 name: rss-monitor
-description: "Monitor RSS and Atom feeds for new entries — agent + this skill = user gets notified when new content appears on any feed."
+description: Use when the user wants to be notified when a blog, news feed, or other RSS/Atom source publishes new content, or wants to track updates from multiple feeds in one place — triggers include "monitor this RSS feed", "notify me when this blog updates", or "watch for new entries".
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [rss, atom, feed-monitoring, notifications, cron, feedparser]
+    related_skills: [ntfy-notifier, cron-task, email-send, telegram-bot-build, discord-bot-build]
 ---
 
 # rss-monitor
+
+## Overview
 
 Monitor RSS and Atom feeds for new entries. The agent sets up a feed monitoring loop that checks feeds on a schedule, detects new entries, and delivers notifications via your preferred channel (Telegram, Discord, email, ntfy).
 
@@ -186,12 +194,21 @@ def matches_patterns(entry):
 | **Telegram** | Bot API: `requests.post(f"https://api.telegram.org/bot{token}/sendMessage", json={"chat_id": chat_id, "text": f"{title}\n{body}"})` |
 | **Email** | See the `email-send` skill |
 
-## Pitfalls
+## Common Pitfalls
 
-- **Feed URL changes** — Sites sometimes change their feed URL without redirecting. If a feed starts returning 404, check the site for a new feed URL.
-- **Rate limiting** — Don't check feeds too frequently. Most publishers don't update more than a few times per day. Checking every 15-30 minutes is sufficient. Checking every minute may get your IP blocked.
-- **Entry ID instability** — Some feeds don't provide stable entry IDs. If the `id` field changes between checks, you'll get duplicate notifications. Fall back to using the entry link as the ID.
-- **Partial feeds** — Some feeds only include a summary, not the full content. If you need the full text, follow the entry link and scrape the page.
-- **Date parsing** — Feed date formats vary (`published`, `updated`, `created`). Use `feedparser`'s built-in parsing: `entry.published_parsed` returns a `time.struct_time`.
-- **State file corruption** — If the state JSON file gets corrupted, the monitor will re-notify for all entries. Handle JSON decode errors gracefully and start with a fresh state.
-- **Feed requires auth** — Some feeds (private Substack, paid newsletters) require authentication. Use `requests` with auth headers instead of `feedparser` for these, then pass the response text to `feedparser.parse()`.
+1. **Feed URL changes silently.** Sites sometimes change their feed URL without redirecting — a 404 from a previously-working feed means the site needs a new feed URL found.
+2. **Polling too frequently.** Most publishers don't update more than a few times per day — checking every 15-30 minutes is sufficient; checking every minute risks the monitor's IP getting blocked.
+3. **Entry ID instability causing duplicates.** Some feeds don't provide stable entry IDs — if `id` changes between checks, fall back to using the entry link as the dedup key.
+4. **Partial feed content.** Some feeds only include a summary, not the full article — follow the entry link and scrape the page if full text is needed.
+5. **Inconsistent date fields.** Feeds vary between `published`, `updated`, and `created` — use `feedparser`'s parsed fields (`entry.published_parsed`, a `time.struct_time`) rather than string-parsing.
+6. **State file corruption causing re-notification.** A corrupted state JSON makes the monitor treat every entry as new — handle JSON decode errors gracefully and fall back to a fresh state rather than crashing.
+7. **Authenticated feeds.** Private Substacks and paid newsletters require auth headers — fetch with `requests` using auth, then pass the response text to `feedparser.parse()` instead of the URL.
+
+## Verification Checklist
+
+- [ ] Feed URL verified valid with `feedparser.parse()` returning a non-empty `entries` list
+- [ ] State file (`~/.rss-monitor-state.json` or equivalent) created and persists entry IDs across runs
+- [ ] A test run against a feed with a known new entry actually triggers a notification
+- [ ] Polling interval is 15+ minutes (not aggressive enough to risk IP blocking)
+- [ ] Notification channel (ntfy/Discord/Telegram/email) confirmed to deliver by checking for the message
+- [ ] Keyword/regex filters (if used) tested against both matching and non-matching sample entries

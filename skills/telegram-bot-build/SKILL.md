@@ -1,10 +1,18 @@
 ---
 name: telegram-bot-build
-description: "Build a working Telegram bot with slash commands and inline keyboards, in Python (python-telegram-bot) or Node (telegraf). Agent + this skill = user gets a runnable bot they can talk to, not a skeleton."
+description: Use when the user has (or needs) a BotFather token and wants a runnable Telegram bot with slash commands and/or inline keyboards, in Python (python-telegram-bot) or Node (telegraf) — not for MTProto client/account automation or large-scale group moderation tooling.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [telegram, bot, python-telegram-bot, telegraf, botfather, inline-keyboards]
+    related_skills: [discord-bot-build, webhook-receiver, env-config-manager]
 ---
 
 # telegram-bot-build
+
+## Overview
 
 Build a runnable Telegram bot that responds to slash commands and presents inline keyboard menus. The agent wires up the library, registers handlers, defines the keyboard markup, and runs the bot so the user can open a chat and see it work. Reference libraries: **python-telegram-bot** (v20+, async) and **telegraf** (Node).
 
@@ -205,15 +213,26 @@ Guidance:
 - If deploying serverless (Cloud Functions, Workers, Lambda), webhook is the natural fit — `app.post("/webhook", ...)` + `setWebhook`.
 - Never hardcode the webhook URL; read it from env so staging vs prod differs by config.
 
-## Pitfalls
+## Common Pitfalls
 
-- **Token in source / committed to git.** Load from env. A leaked token lets anyone drive your bot; revoke via BotFather `/revoke`.
-- **Forgetting `query.answer()`.** The button shows a perpetual spinner. Every callback handler must answer the query.
-- **callback_data over 64 bytes.** Telegram rejects it silently with an API error. Encode an opaque id, look up the payload server-side.
-- **Polling and webhook simultaneously.** You cannot do both. Switching modes requires deleting the webhook first or updates will never arrive on the other.
-- **Not handling `/setcommands`.** Without it, commands don't autocomplete and the bot feels broken even though it works.
-- **Replying to callback queries with `reply_text` instead of `edit_message_text`.** That sends a *new* message bubble, not an update to the button's message. Use edit for in-place changes.
-- **Crashing on every update.** A single unhandled exception in a handler can kill polling in older setups; wrap external calls (API/DB) in try/except and send a graceful error. python-telegram-bot v20 uses async error handlers (`app.add_error_handler`).
-- **Localized command names.** Commands must be ASCII; don't localize the `/command` itself, localize the reply text.
-- **Long-running work blocking the loop.** Heavy jobs (image gen, API calls) should run in a task/queue, not inline in the handler, or updates back up.
-- **Testing with the real token in CI.** Use a throwaway test bot or mock the update objects; never poll the production bot from a test run.
+1. **Token in source / committed to git.** Load from env. A leaked token lets anyone drive your bot; revoke via BotFather `/revoke`.
+2. **Forgetting `query.answer()` / `ctx.answerCbQuery()`.** The button shows a perpetual spinner. Every callback handler must answer the query.
+3. **`callback_data` over 64 bytes.** Telegram rejects it silently with an API error. Encode an opaque id, look up the payload server-side.
+4. **Polling and webhook simultaneously.** You cannot do both. Switching modes requires deleting the webhook first or updates will never arrive on the other.
+5. **Not handling `/setcommands`.** Without it, commands don't autocomplete and the bot feels broken even though it works.
+6. **Replying to callback queries with `reply_text` instead of `edit_message_text`.** That sends a *new* message bubble, not an update to the button's message. Use edit for in-place changes.
+7. **Crashing on every update.** A single unhandled exception in a handler can kill polling in older setups; wrap external calls (API/DB) in try/except and send a graceful error. python-telegram-bot v20 uses async error handlers (`app.add_error_handler`).
+8. **Localized command names.** Commands must be ASCII; don't localize the `/command` itself, localize the reply text.
+9. **Long-running work blocking the loop.** Heavy jobs (image gen, API calls) should run in a task/queue, not inline in the handler, or updates back up.
+10. **Testing with the real token in CI.** Use a throwaway test bot or mock the update objects; never poll the production bot from a test run.
+
+## Verification Checklist
+
+- [ ] `TELEGRAM_BOT_TOKEN` is read from env/`.env`, absent from source and git history.
+- [ ] `/start` (and every registered command) gets a reply when sent from a real Telegram chat.
+- [ ] Every inline-keyboard callback handler calls `answer()`/`answerCbQuery()` — no button spins
+      indefinitely.
+- [ ] `/setcommands` was sent to BotFather so commands autocomplete in the client.
+- [ ] Only one of polling or webhook is active — `getWebhookInfo` (or equivalent) confirms no
+      stale webhook is set if the bot is running in polling mode.
+- [ ] An unhandled exception in one handler does not crash the whole bot process.

@@ -1,10 +1,18 @@
 ---
 name: youtube-transcript
-description: "Extract transcripts from YouTube videos — agent + this skill = user gets the text of any YouTube video."
+description: Use when the user wants the text content of a YouTube video — the full transcript, timestamped segments, a search for a specific topic within the video, or a summary/quote — from a URL or bare video ID.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [youtube, transcript, captions, youtube-transcript-api, video-text-extraction]
+    related_skills: [csv-toolkit]
 ---
 
 # youtube-transcript
+
+## Overview
 
 Fetch transcripts from YouTube videos. The agent retrieves the video's caption track, cleans the text, and returns it as plain text or structured segments with timestamps.
 
@@ -115,11 +123,30 @@ def get_transcript_any_language(video_id: str) -> str:
     raise ValueError("No transcript available in any language")
 ```
 
-## Pitfalls
+## Common Pitfalls
 
-- **No captions available** — Not all videos have captions. `get_transcript` raises `NoTranscriptFound`. Check with `list_transcripts` first.
-- **Auto-generated captions** — YouTube auto-generates captions for many videos. They're less accurate than manual captions but usually available.
-- **Rate limiting** — YouTube may rate-limit frequent requests. Add delays between multiple video fetches.
-- **Video is private or deleted** — Private or deleted videos have no transcript. The API raises `VideoUnavailable`.
-- **Language not available** — If the requested language isn't available, try `list_transcripts` to see what languages exist. Many videos have auto-translated tracks.
-- **HTML entities in text** — Transcript text may contain HTML entities (`&amp;`, `&#39;`). Use `html.unescape()` to clean them.
+1. **Calling `get_transcript` without a fallback.** Not all videos have captions — it raises
+   `NoTranscriptFound`. Call `list_transcripts` first to check what's actually available before
+   assuming a fixed `lang`.
+2. **Treating auto-generated captions as manual-quality.** YouTube auto-captions are usually
+   available but less accurate (misheard words, no punctuation) — don't present them as a
+   verbatim transcript without noting the source.
+3. **Fetching many videos back-to-back with no delay.** YouTube rate-limits frequent requests;
+   space out multiple fetches or batch jobs will start failing partway through.
+4. **Assuming `VideoUnavailable` means a transient error.** It means the video is private or
+   deleted — retrying won't help; report it as unavailable to the user.
+5. **Hardcoding `languages=["en"]` for non-English content.** If the requested language isn't
+   present, `get_transcript` raises rather than falling back — use `list_transcripts` to discover
+   available (including auto-translated) languages first.
+6. **Returning raw transcript text with HTML entities intact.** Segments can contain `&amp;`,
+   `&#39;`, etc. — run `html.unescape()` before presenting the text.
+
+## Verification Checklist
+
+- [ ] `extract_video_id` correctly parses the actual URL format given (watch, youtu.be, embed, or
+      shorts) before fetching.
+- [ ] `list_transcripts` was checked when the first `get_transcript` call fails, rather than
+      immediately reporting failure to the user.
+- [ ] Returned text has no raw HTML entities (`&amp;`, `&#39;`) left unescaped.
+- [ ] Timestamped output (if requested) has `start`/`end` values that increase monotonically and
+      cover the video's actual duration.

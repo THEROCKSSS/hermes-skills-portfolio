@@ -1,0 +1,341 @@
+{
+  "version": "1.0.0",
+  "sources": [
+    {
+      "proposed_name": "skill-creator",
+      "proposed_category": "meta",
+      "one_liner": "A structured workflow for drafting, testing, and packaging a new agent skill.",
+      "source_repo_url": "https://github.com/anthropics/skills",
+      "source_file_url": "https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md",
+      "source_license": "Apache-2.0",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Reviewed manually — no destructive commands, prompt-injection phrasing, obfuscated code, or exfiltration patterns found. Official Anthropic repository."
+      },
+      "date_proposed": "2026-07-30",
+      "review_recommendation": "recommended"
+    },
+    {
+      "proposed_name": "using-git-worktrees",
+      "proposed_category": "devops",
+      "one_liner": "Sets up isolated git worktree workspaces, detecting existing isolation before creating a new one.",
+      "source_repo_url": "https://github.com/obra/superpowers",
+      "source_file_url": "https://github.com/obra/superpowers/blob/main/skills/using-git-worktrees/SKILL.md",
+      "source_license": "MIT",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Reviewed manually — standard git/package-manager commands only, defensive practices (detects existing state, verifies .gitignore, runs baseline tests before proceeding). No destructive, injection, exfiltration, or obfuscated elements found."
+      },
+      "date_proposed": "2026-07-30",
+      "review_recommendation": "recommended"
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "shadcn-ui-skill",
+      "proposed_category": "frontend",
+      "one_liner": "Gives an agent live project context via the shadcn CLI and enforces shadcn/ui's real component/design-system conventions (semantic tokens, Field composition, ARIA patterns).",
+      "source_repo_url": "https://github.com/shadcn-ui/ui",
+      "source_file_url": "https://github.com/shadcn-ui/ui/blob/main/skills/shadcn/SKILL.md",
+      "source_license": "MIT",
+      "review_recommendation": "recommended",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Official shadcn/ui org repo (120k+ stars, pushed same-day). Content is prose + scoped npx/pnpm CLI calls under its own allowed-tools frontmatter. No destructive commands, injection phrasing, obfuscation, or exfiltration found."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "webapp-testing",
+      "proposed_category": "frontend",
+      "one_liner": "Playwright-based browser testing for local web apps — decision tree for static vs. dynamic apps, a server-lifecycle helper script, DOM-inspection pattern.",
+      "source_repo_url": "https://github.com/anthropics/skills",
+      "source_file_url": "https://github.com/anthropics/skills/blob/main/skills/webapp-testing/SKILL.md",
+      "source_license": "Apache-2.0",
+      "review_recommendation": "needs_review",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Official Anthropic repo, content read in full (including the bundled with_server.py) — standard subprocess/port-polling code, no destructive ops, no exfiltration. Flagged needs-review only because it may overlap with the catalog's existing api-test-suite (browser/UI testing vs. API contract testing) — your call on whether that's distinct enough."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "web-artifacts-builder",
+      "proposed_category": "frontend",
+      "one_liner": "Scaffolds and bundles React + TypeScript + Vite + Tailwind + shadcn/ui artifacts into a single self-contained HTML file, with explicit anti-AI-slop design guidance.",
+      "source_repo_url": "https://github.com/anthropics/skills",
+      "source_file_url": "https://github.com/anthropics/skills/blob/main/skills/web-artifacts-builder/SKILL.md",
+      "source_license": "Apache-2.0",
+      "review_recommendation": "recommended",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Official Anthropic repo. Read init-artifact.sh and bundle-artifact.sh in full — normal pnpm/vite scaffolding scoped to the new project directory, no curl-to-shell, no credential handling. The one bundled binary asset is a packaged shadcn/ui component bundle consistent with the skill's stated purpose."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "frontend-aesthetic-direction",
+      "proposed_category": "frontend",
+      "one_liner": "Aesthetic-direction guidance pushing an agent away from generic 'AI-generated design' defaults, with a two-pass brainstorm-then-critique workflow and a named design-token system.",
+      "source_repo_url": "https://github.com/anthropics/skills",
+      "source_file_url": "https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md",
+      "source_license": "Apache-2.0",
+      "review_recommendation": "needs_review",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Content is pure aesthetic-direction prose, no code execution, no injection, no destructive/obfuscated content, same trust signals as the other anthropics/skills entries. Needs-review purely because it may duplicate the existing frontend-design-toolkit skill's ground — worth diffing the two before approving."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "backend-patterns",
+      "proposed_category": "backend",
+      "one_liner": "Reference guide for REST API design, repository/service-layer architecture, N+1-avoidance, cache-aside caching, centralized error handling with retry/backoff, and JWT/RBAC auth patterns.",
+      "source_repo_url": "https://github.com/affaan-m/ECC",
+      "source_file_url": "https://raw.githubusercontent.com/affaan-m/ECC/main/skills/backend-patterns/SKILL.md",
+      "source_license": "MIT",
+      "review_recommendation": "recommended",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Verified via GitHub API directly (not just a summarizer) — 235k+ stars, active multi-contributor project, not a fork, latest commit GPG-signed. Content is pure documentation/best-practices prose, no destructive operations, no injection phrasing, no obfuscation."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "mysql-performance-patterns",
+      "proposed_category": "backend",
+      "one_liner": "MySQL/InnoDB schema design, indexing, EXPLAIN-driven query tuning, transaction isolation, and online-DDL guidance — requires explicit human approval before any destructive data operation.",
+      "source_repo_url": "https://github.com/planetscale/database-skills",
+      "source_file_url": "https://raw.githubusercontent.com/planetscale/database-skills/main/skills/mysql/SKILL.md",
+      "source_license": "MIT",
+      "review_recommendation": "recommended",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Official PlanetScale org repo, verified via API (566 stars, pushed within days). Content is advisory/documentation and explicitly requires human approval before destructive data operations. Has a soft PlanetScale mention but explicitly defers to the user's own hosting choice."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "graphql-schema-design",
+      "proposed_category": "backend",
+      "one_liner": "GraphQL schema design guide — nullability conventions, input/output type separation, cursor pagination, error modeling, avoiding internal DB schema leakage.",
+      "source_repo_url": "https://github.com/apollographql/skills",
+      "source_file_url": "https://raw.githubusercontent.com/apollographql/skills/main/skills/graphql-schema/SKILL.md",
+      "source_license": "MIT",
+      "review_recommendation": "recommended",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Official Apollo GraphQL org repo, verified via API (pushed same-day as research). Pure schema-design guidance and examples, no destructive commands, no injection phrasing, no obfuscated code."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "neon-postgres-branching",
+      "proposed_category": "backend",
+      "one_liner": "Decision guide for creating/managing Neon Postgres branches for migration testing and CI — branch-reset operations are always gated behind explicit confirmation and backup options.",
+      "source_repo_url": "https://github.com/neondatabase/agent-skills",
+      "source_file_url": "https://raw.githubusercontent.com/neondatabase/agent-skills/main/skills/neon-postgres-branches/SKILL.md",
+      "source_license": "Apache-2.0",
+      "review_recommendation": "recommended",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Official Neon org repo, verified via API (pushed same-day). Read all 291 lines directly via raw fetch after a summarizer gave a vague non-answer. Destructive-sounding operations are always presented with explicit warnings and a --preserve-under-name backup option, never as a casual step."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "vulnerability-scanner",
+      "proposed_category": "security",
+      "one_liner": "8-step reasoning workflow to find SQLi/XSS/SSRF/auth/crypto issues across 7 languages and propose fixes — explicitly requires human review before any patch is applied.",
+      "source_repo_url": "https://github.com/github/awesome-copilot",
+      "source_file_url": "https://github.com/github/awesome-copilot/blob/main/skills/security-review/SKILL.md",
+      "source_license": "MIT",
+      "review_recommendation": "needs_review",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Official GitHub org repo, content read in full — no injection/destructive/obfuscated/exfiltration patterns, explicitly defers patch application to human review. Kept at needs-review rather than recommended as a deliberate default for anything security-flavored, per your instruction to be extra cautious in this category."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "security-code-review",
+      "proposed_category": "security",
+      "one_liner": "Precision-first security code review that requires tracing attacker-controlled input to a real vulnerable sink before reporting anything, to avoid false-alarm noise.",
+      "source_repo_url": "https://github.com/getsentry/skills",
+      "source_file_url": "https://github.com/getsentry/skills/blob/main/skills/security-review/SKILL.md",
+      "source_license": "Apache-2.0",
+      "review_recommendation": "needs_review",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Official Sentry engineering-org repo, used internally by their own team. Content read in full — purely defensive review methodology, no offensive/destructive instructions. Kept at needs-review as the deliberate default for the security category."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "security-audit-toolkit",
+      "proposed_category": "security",
+      "one_liner": "80+ checkpoint audit covering PHP vulnerability patterns, infrastructure-as-code hardening, and OWASP/CWE compliance mapping.",
+      "source_repo_url": "https://github.com/netresearch/security-audit-skill",
+      "source_file_url": "https://github.com/netresearch/security-audit-skill/blob/main/skills/security-audit/SKILL.md",
+      "source_license": "MIT (code/scripts) + CC-BY-SA-4.0 (skill docs)",
+      "review_recommendation": "needs_review",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Content read in full, defensive throughout (e.g. explicit injection-prevention rules for CI workflow syntax). Flagged needs-review for three real reasons: (1) it includes a git-history-rewrite/force-push remediation step — safeguard language is present but worth a human's eyes on exactly how it's invoked; (2) the CC-BY-SA-4.0 share-alike license on the doc text is stricter than pure MIT/Apache and may affect how this catalog can redistribute it; (3) smaller company/repo than the other two security candidates."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "token-efficient-skill-writing",
+      "proposed_category": "meta",
+      "one_liner": "Applies TDD's red-green-refactor discipline to skill-writing itself, with a hard rule that a skill's description states only its trigger conditions (never a workflow summary) plus explicit token budgets.",
+      "source_repo_url": "https://github.com/obra/superpowers",
+      "source_file_url": "https://raw.githubusercontent.com/obra/superpowers/main/skills/writing-skills/SKILL.md",
+      "source_license": "MIT",
+      "review_recommendation": "recommended",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Verified via GitHub API — 263k+ stars, pushed the day before this research. Pure methodology/documentation content, no destructive/injection/obfuscated patterns. Renamed from the source's own 'writing-skills' to avoid confusion with this environment's existing internal skill-authoring references."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "context-optimization",
+      "proposed_category": "meta",
+      "one_liner": "Context-window compression techniques — KV-cache-aware prompt structuring, token budget allocation, and concrete triggers for when to compact (70-80% utilization, not 90%+).",
+      "source_repo_url": "https://github.com/muratcankoylan/Agent-Skills-for-Context-Engineering",
+      "source_file_url": "https://raw.githubusercontent.com/muratcankoylan/Agent-Skills-for-Context-Engineering/main/skills/context-optimization/SKILL.md",
+      "source_license": "MIT",
+      "review_recommendation": "recommended",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Verified via GitHub API — 17.5k stars, 193 commits, pushed within the last two weeks. Legitimate technical guidance, explicitly documents real engineering pitfalls rather than hiding anything. No injection/destructive/exfiltration patterns."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "agent-token-efficiency",
+      "proposed_category": "meta",
+      "one_liner": "Narrowly-scoped efficiency habits for tool use — prefer jq/yq/ast-grep/ripgrep over dumping raw output, diff --stat before full diffs, compare file hashes instead of re-reading unchanged files.",
+      "source_repo_url": "https://github.com/undefdev/token-efficiency",
+      "source_file_url": "https://raw.githubusercontent.com/undefdev/token-efficiency/main/skills/token-efficiency/SKILL.md",
+      "source_license": "MIT",
+      "review_recommendation": "needs_review",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Content is safe (pure operational-efficiency advice, no destructive/injection/obfuscated patterns). Needs-review flag is about traction, not safety: small repo (23 stars, 9 commits) — worth a maintenance re-check in a few months rather than treating it as a fully established source yet."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "tdd-discipline",
+      "proposed_category": "utility",
+      "one_liner": "Enforces a strict red-green-refactor TDD loop with a mandatory verification checklist and an explicit table of rationalizations to reject ('I'll test after', etc.).",
+      "source_repo_url": "https://github.com/obra/superpowers",
+      "source_file_url": "https://raw.githubusercontent.com/obra/superpowers/main/skills/test-driven-development/SKILL.md",
+      "source_license": "MIT",
+      "review_recommendation": "recommended",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Full raw content read verbatim — pure methodology prose and a TypeScript example. No shell commands beyond npm test, no injection phrasing, no destructive ops, no encoded payloads."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "systematic-debugging",
+      "proposed_category": "utility",
+      "one_liner": "Four-phase root-cause debugging discipline (investigate → analyze patterns → hypothesize/test → implement) that rejects symptom-patching, with a bisection helper script.",
+      "source_repo_url": "https://github.com/obra/superpowers",
+      "source_file_url": "https://raw.githubusercontent.com/obra/superpowers/main/skills/systematic-debugging/SKILL.md",
+      "source_license": "MIT",
+      "review_recommendation": "recommended",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Read the bundled find-polluter.sh in full — only runs npm test per file and checks file existence, no rm, no network calls, no eval of untrusted input. SKILL.md content is standard methodology prose."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "verification-before-completion-catalog",
+      "proposed_category": "utility",
+      "one_liner": "Hard gate requiring fresh command-output evidence before any claim of 'done' or 'fixed' — bans hedge words like 'should work'.",
+      "source_repo_url": "https://github.com/obra/superpowers",
+      "source_file_url": "https://raw.githubusercontent.com/obra/superpowers/main/skills/verification-before-completion/SKILL.md",
+      "source_license": "MIT",
+      "review_recommendation": "needs_review",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Full raw text is pure prose/tables, zero executable code, no injection patterns. Flagged needs-review only because this is very likely near-duplicate in spirit to a skill you already use locally in ~/.claude/skills/ of the same name — worth deciding if a public-catalog version is redundant with your own daily-use one before approving."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "code-review-discipline",
+      "proposed_category": "utility",
+      "one_liner": "Paired skill for requesting a scoped, read-only code review from a subagent against a git SHA range, and for receiving feedback without performative agreement — verify before implementing, push back when a reviewer is wrong.",
+      "source_repo_url": "https://github.com/obra/superpowers",
+      "source_file_url": "https://raw.githubusercontent.com/obra/superpowers/main/skills/requesting-code-review/SKILL.md",
+      "source_license": "MIT",
+      "review_recommendation": "recommended",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Read requesting-code-review, receiving-code-review, and the bundled code-reviewer.md prompt template in full. The template explicitly instructs the reviewer to stay read-only (git worktree for any other-revision copy, never move HEAD) — a safety-positive pattern. No injection attempts, no destructive git ops, no exfiltration."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "internal-comms",
+      "proposed_category": "utility",
+      "one_liner": "Drafts internal communications (status updates, newsletters, FAQ answers, incident reports) using structured templates per comm type.",
+      "source_repo_url": "https://github.com/anthropics/skills",
+      "source_file_url": "https://raw.githubusercontent.com/anthropics/skills/main/skills/internal-comms/SKILL.md",
+      "source_license": "Apache-2.0",
+      "review_recommendation": "recommended",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Fully open-source (confirmed via the folder's own LICENSE.txt, not the restricted document-skills variant). Plain routing instruction with no shell commands at all, no injection phrasing."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "brainstorming",
+      "proposed_category": "meta",
+      "one_liner": "One-question-at-a-time interview process that turns a raw idea into an approved design spec before any implementation begins.",
+      "source_repo_url": "https://github.com/obra/superpowers",
+      "source_file_url": "https://raw.githubusercontent.com/obra/superpowers/main/skills/brainstorming/SKILL.md",
+      "source_license": "MIT",
+      "review_recommendation": "recommended",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Full file read — agent-instruction content only, a hard gate against skipping design work. No hidden directives to override system/developer prompts, no destructive commands, no encoded payloads."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "writing-plans",
+      "proposed_category": "meta",
+      "one_liner": "Converts an approved spec into a bite-sized, fully-detailed implementation plan written for someone with zero codebase context — the companion step to brainstorming.",
+      "source_repo_url": "https://github.com/obra/superpowers",
+      "source_file_url": "https://raw.githubusercontent.com/obra/superpowers/main/skills/writing-plans/SKILL.md",
+      "source_license": "MIT",
+      "review_recommendation": "recommended",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Full file read — documentation/planning template and checklist. The only shell shown is illustrative (pytest/git commit inside example plan templates), not something the skill itself executes."
+      }
+    },
+    {
+      "date_proposed": "2026-07-30",
+      "proposed_name": "docx-authoring",
+      "proposed_category": "utility",
+      "one_liner": "Native Word (.docx/.dotx) creation, editing, tracked-changes/redlining, and comment-insertion using docx-js, pandoc, and LibreOffice.",
+      "source_repo_url": "https://github.com/anthropics/skills",
+      "source_file_url": "https://raw.githubusercontent.com/anthropics/skills/main/skills/docx/SKILL.md",
+      "source_license": "All-rights-reserved (Anthropic Consumer/Commercial Terms — NOT Apache/MIT despite being publicly viewable)",
+      "review_recommendation": "needs_review",
+      "safety_scan": {
+        "status": "clear",
+        "notes": "Content itself is clean — no injection/destructive/obfuscated patterns (one line strips symlinks from untrusted docx input before re-zipping, which is a defensive zip-slip prevention, not a risk). Needs-review because the license is genuinely restrictive: it explicitly forbids extracting/reproducing/redistributing the materials, which may be incompatible with copying its text into a redistributed public catalog. This is a real blocker to resolve, not a formality."
+      }
+    }
+  ]
+}

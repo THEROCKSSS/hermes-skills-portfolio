@@ -1,10 +1,18 @@
 ---
 name: invoice-generator
-description: Generate professional PDF invoices from structured line items. Use when a user wants a clean, branded invoice (client details, itemized line items, tax, totals, currency) produced as a downloadable PDF.
+description: Use when a user wants a clean, branded PDF invoice generated from structured line items — client details, itemized line items, tax, totals, and currency — for one-off billing, recurring invoices, or multi-currency clients.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [invoice, pdf, billing, fpdf2, line-items]
+    related_skills: [markdown-to-pdf, resume-builder]
 ---
 
 # invoice-generator
+
+## Overview
 
 Turn structured line items into a polished, print-ready PDF invoice. The agent
 collects client and item details, validates the math, and renders a professional
@@ -227,22 +235,30 @@ The agent should:
   (e.g. "Converted at 1 EUR = 1.08 USD on 2026-07-20").
 - Never mix currencies within one invoice; convert first, then bill in one currency.
 
-## Pitfalls
+## Common Pitfalls
 
-- **Float rounding**: money math in floats is fine for display, but round only at
-  presentation. Accumulate subtotal as a precise sum.
-- **Missing client address** breaks the layout — default to the email if address
-  is absent, and warn the user.
-- **Long descriptions** overflow the cell — truncate to ~60 chars or use
-  `multi_cell` for wrapping.
-- **Page breaks**: set `auto_page_break` (done above) so long item lists don't clip.
-- **Special characters** (€, é, &) — `fpdf2` core fonts are latin-1; for full
-  Unicode, add a TTF font via `pdf.add_font(...)` or sanitize to ASCII.
-- **Date formats**: store ISO `YYYY-MM-DD`; format for display per locale only at
-  render time, never in the source data.
-- **Duplicate numbers**: check before assigning a generated number.
-- **Not saved where the user expects**: return the absolute output path and confirm
-  the filename so the user can find the PDF.
+1. **Float rounding.** Money math in floats is fine for display, but round only at
+   presentation. Accumulate subtotal as a precise sum.
+2. **Missing client address** breaks the layout — default to the email if address
+   is absent, and warn the user.
+3. **Long descriptions** overflow the cell — truncate to ~60 chars or use
+   `multi_cell` for wrapping.
+4. **Page breaks.** Set `auto_page_break` (done above) so long item lists don't clip.
+5. **Special characters** (€, é, &). `fpdf2` core fonts are latin-1; for full
+   Unicode, add a TTF font via `pdf.add_font(...)` or sanitize to ASCII.
+6. **Date formats.** Store ISO `YYYY-MM-DD`; format for display per locale only at
+   render time, never in the source data.
+7. **Duplicate numbers.** Check the sequence before assigning a generated number.
+8. **Not saved where the user expects.** Return the absolute output path and confirm
+   the filename so the user can find the PDF.
+
+## Verification Checklist
+
+- [ ] `subtotal + tax == total`, recomputed independently and matching what's printed on the PDF
+- [ ] Currency symbol and decimal places match the ISO 4217 code (0 decimals for JPY/KRW, else 2)
+- [ ] Invoice number is unique — checked against prior invoices, not blindly incremented
+- [ ] Client/sender address and long line-item descriptions render without truncation or overflow
+- [ ] The absolute output path of the generated PDF was returned and confirmed to the user
 
 ## Install / Source
 

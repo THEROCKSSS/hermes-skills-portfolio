@@ -1,10 +1,18 @@
 ---
 name: api-test-suite
-description: "Generate a runnable API test suite — contract tests, integration tests, and CI config — from an OpenAPI spec or existing API. Agent + this skill = user gets tests that actually run."
+description: Use when a new or existing API needs test coverage before a release or merge, when onboarding to an unfamiliar API codebase and wanting a safety net first, or when an OpenAPI spec/Postman collection exists and should be turned into a runnable pytest/vitest suite with contract and integration tests.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [api-testing, contract-tests, integration-tests, pytest, vitest, ci-cd]
+    related_skills: [openapi-generator, http-api-tester, github-actions-ci]
 ---
 
 # api-test-suite
+
+## Overview
 
 Generate a runnable API test package from an OpenAPI spec, a Postman collection, or by scanning an existing API codebase. The agent produces real, locally-runnable test files — not a hosted-run stub — covering happy path, error cases, and edge cases, then runs the suite and reports pass/fail.
 
@@ -240,12 +248,21 @@ jobs:
 
 For Node, swap the setup step for `actions/setup-node` and the run step for `npx vitest run`.
 
-## Pitfalls
+## Common Pitfalls
 
-- **Mocking the database so tests lie.** Use a real test database or per-test transaction rollback. A test that mocks storage at the wrong boundary passes while the API is broken.
-- **Hardcoding the response shape instead of reading the spec.** Contract tests must derive expectations from the OpenAPI/Postman artifact, or they drift and become noise.
-- **Shared mutable state across tests.** Each test must create and clean up its own data. Seeds that depend on order will flake in CI.
-- **Using a real user's token for auth.** Mint short-lived test tokens scoped to the test tenant; rotate secrets from env, never commit them.
-- **Rate limiting breaking CI.** Hit the API serially in contract runs, or raise the limit for the test tenant. A 429 is a test-harness problem, not an API bug, until proven otherwise.
-- **Treating generated tests as a substitute for reading the spec.** The suite documents behavior; the agent should still confirm the API's intent with the user for ambiguous endpoints.
-- **Flaky network timing.** Add bounded retries only on connection errors, never on assertion failures.
+1. **Mocking the database so tests lie.** Use a real test database or per-test transaction rollback. A test that mocks storage at the wrong boundary passes while the API is broken.
+2. **Hardcoding the response shape instead of reading the spec.** Contract tests must derive expectations from the OpenAPI/Postman artifact, or they drift and become noise.
+3. **Shared mutable state across tests.** Each test must create and clean up its own data. Seeds that depend on order will flake in CI.
+4. **Using a real user's token for auth.** Mint short-lived test tokens scoped to the test tenant; rotate secrets from env, never commit them.
+5. **Rate limiting breaking CI.** Hit the API serially in contract runs, or raise the limit for the test tenant. A 429 is a test-harness problem, not an API bug, until proven otherwise.
+6. **Treating generated tests as a substitute for reading the spec.** The suite documents behavior; the agent should still confirm the API's intent with the user for ambiguous endpoints.
+7. **Flaky network timing.** Add bounded retries only on connection errors, never on assertion failures.
+
+## Verification Checklist
+
+- [ ] The suite runs with a single command (`pytest tests/` or `npx vitest run`) and exits 0, or every failure is a confirmed real API bug
+- [ ] Contract tests read the schema from the OpenAPI/Postman artifact at runtime, not a hardcoded copy
+- [ ] Every endpoint has at least a happy-path test and one auth/validation-failure test
+- [ ] Auth uses minted test tokens, never a real user's credentials
+- [ ] Fixtures that create data also tear it down (no orphaned test records after a run)
+- [ ] CI YAML (if emitted) targets the correct service image/port and uploads the test report artifact

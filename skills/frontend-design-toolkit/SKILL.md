@@ -1,10 +1,18 @@
 ---
 name: frontend-design-toolkit
-description: "Build distinctive frontends using curated real-world design system patterns — agent + this skill = user gets a non-generic UI that doesn't look AI-generated."
+description: "Use when about to write HTML/CSS/JSX for a user-facing frontend, landing page, dashboard, or web app, or when redesigning a UI that reads as generic or AI-generated."
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [frontend-design, anti-ai-slop, design-systems, oklch, typography]
+    related_skills: [color-palette-generator, hallmark-readme]
 ---
 
 # frontend-design-toolkit
+
+## Overview
 
 Build frontends that don't look like an LLM generated them. The agent uses curated design patterns from real, recognizable products (Stripe, Linear, Vercel, Discord, Spotify, Notion, etc.) combined with anti-AI-slop rules to produce UIs with actual design intent.
 
@@ -198,11 +206,18 @@ Re-read the anti-AI-slop rules. Check every section against the banned patterns 
 ### Step 7: Test responsive
 Test at 320px, 375px, 414px, 768px. Fix any horizontal scroll or broken layouts.
 
-## Pitfalls
+## Common Pitfalls
 
-- **Defaulting to the same style every time** — Don't always reach for Stripe-style. Match the design system to the project type.
-- **Copying a design system too literally** — Use the patterns and principles, not the exact colors. Stripe's indigo doesn't work for every SaaS.
-- **Skipping the font pairing** — A single-font page is an AI tell. Always pair a display face with a body face.
-- **Forgetting mobile** — Test at 320px. If the layout breaks, fix it before shipping.
-- **Too many animations** — Animate `transform` and `opacity` only. Most pages have too much motion, not too little.
-- **Ignoring the slop check** — The anti-AI-slop rules are not optional. Run the check before shipping.
+1. **Defaulting to the same style every time** — Don't always reach for Stripe-style. Match the design system to the project type.
+2. **Copying a design system too literally** — Use the patterns and principles, not the exact colors. Stripe's indigo doesn't work for every SaaS.
+3. **Skipping the font pairing** — A single-font page is an AI tell. Always pair a display face with a body face.
+4. **Forgetting mobile** — Test at 320px. If the layout breaks, fix it before shipping.
+5. **Too many animations** — Animate `transform` and `opacity` only. Most pages have too much motion, not too little.
+6. **Ignoring the slop check** — The anti-AI-slop rules are not optional. Run the check before shipping.
+
+## Verification Checklist
+
+- [ ] Every section checked against the banned-patterns table (no gradient hero, no 3-equal-card grid, no emoji-as-icon)
+- [ ] Two distinct fonts confirmed applied (display + body), not a single font for everything
+- [ ] Colors defined as OKLCH CSS custom properties at `:root`, not raw hex scattered through the CSS
+- [ ] Page tested at 320px, 375px, 414px, and 768px with no horizontal scroll

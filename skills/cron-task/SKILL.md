@@ -1,10 +1,18 @@
 ---
 name: cron-task
-description: "Set up scheduled agent tasks with delivery to messaging platforms — agent + this skill = user gets recurring automated work that reports back."
+description: Use when the user wants a recurring task (daily summary, weekly report, hourly check), wants to be notified on a schedule (server health check, price alert, feed monitor), or says "run this every day", "schedule a task", "check this hourly", or "send me a daily summary".
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [scheduled-tasks, cron, automation, recurring-jobs, delivery]
+    related_skills: [ntfy-notifier, telegram-bot-build, rss-monitor]
 ---
 
 # cron-task
+
+## Overview
 
 Create scheduled tasks that run an agent or script on a recurring schedule and deliver results to a messaging platform (Telegram, Discord, Slack, email). The task runs autonomously — no human needs to be present.
 
@@ -137,12 +145,21 @@ hermes cron run <id>      # trigger immediately for testing
 | Price alert | `*/30m` | Script | `price_check.py` — silent unless threshold hit |
 | Feed monitor | `1h` | Agent | "Check the RSS feed for new entries, notify if any" |
 
-## Pitfalls
+## Common Pitfalls
 
-- **Silent failures** — A script that crashes with a non-zero exit code sends an error alert. But a script that runs successfully but produces wrong output won't alert. Test scripts before scheduling.
-- **Rate limits** — Messaging platforms have rate limits. A task running every minute that sends a message every time will hit Telegram's rate limit within an hour. Only deliver when there's something to say.
-- **Long-running tasks** — There's a 3-minute hard interrupt per run. If your prompt or script takes longer, it gets killed. Break long work into chunks or use a background process.
-- **Timezone confusion** — Cron expressions run in the host's local timezone by default. Confirm the timezone with the user if the schedule needs to be exact.
-- **Duplicate ticks** — A lock file prevents duplicate runs across processes. Don't try to work around it — if a tick is locked, the previous run is still going.
-- **Delivering to the wrong chat** — The delivery target must be configured in the gateway. Verify the target exists before scheduling. A misconfigured delivery silently fails.
-- **Context bloat in chained jobs** — `context_from` injects the full output of the upstream job. If the upstream produces a large report, the downstream job's prompt gets inflated. Keep upstream outputs concise.
+1. **Silent failures on bad output, not just bad exit codes.** A script that crashes with a non-zero exit code sends an error alert. But a script that runs successfully and produces wrong output won't alert anyone. Test scripts manually before scheduling them.
+2. **Hitting platform rate limits.** A task running every minute that sends a message every time will hit Telegram's rate limit within an hour. Only deliver when there's something to say — use the silent-on-no-news pattern.
+3. **Long-running tasks get killed.** There's a 3-minute hard interrupt per run. If your prompt or script takes longer, it gets killed mid-run. Break long work into chunks or use a background process instead.
+4. **Timezone confusion in cron expressions.** Cron expressions run in the host's local timezone by default, not UTC and not the user's timezone. Confirm the timezone with the user if the schedule needs to land at an exact wall-clock time.
+5. **Fighting the duplicate-tick lock.** A lock file prevents duplicate runs across processes. Don't try to work around it — if a tick is locked, the previous run is still in progress, not stuck.
+6. **Delivering to a misconfigured target.** The delivery target must already be configured in the gateway. A target that doesn't exist fails silently — verify the platform/channel is reachable before scheduling, not after the first missed delivery.
+7. **Context bloat in chained jobs.** `context_from` injects the *full* output of the upstream job into the downstream prompt. If the upstream produces a large report, the downstream job's prompt gets inflated every run. Keep upstream outputs concise by design.
+
+## Verification Checklist
+
+- [ ] `hermes cron run <id>` was used to trigger the job once manually and confirmed it delivers correctly before relying on the schedule
+- [ ] Script-only jobs were tested standalone (`python scripts/health_check.py`) to confirm stdout behavior on both success and failure
+- [ ] Delivery target (Telegram chat, Discord channel, etc.) is already configured in the gateway, not just assumed to exist
+- [ ] Schedule's timezone matches what the user expects (confirmed, not assumed to be UTC or local)
+- [ ] `hermes cron list` shows the new job with the correct schedule string
+- [ ] Chained jobs' upstream output is short enough not to bloat the downstream prompt on every run

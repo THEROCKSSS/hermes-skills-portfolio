@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>generate-dockerfile — Hermes Skill</title>
   <meta name="description" content="What it does: `generate-dockerfile` reads a project&#x27;s manifests (`package.json`, `requirements.txt`, `go.mod`, `Cargo.toml`, `pyproject.toml`, `uv.lock`, …), figures out what runtime it uses, and writes a multi-stage `Dockerfile` plus the files that make the build safe and reproducible:...">
   <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/generate-dockerfile/">
@@ -15,73 +15,96 @@
   <meta name="twitter:description" content="What it does: `generate-dockerfile` reads a project&#x27;s manifests (`package.json`, `requirements.txt`, `go.mod`, `Cargo.toml`, `pyproject.toml`, `uv.lock`, …), figures out what runtime it uses, and writes a multi-stage `Dockerfile` plus the files that make the build safe and reproducible:...">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/skill-page.css">
 </head>
 <body>
-  <a class="skip-link" href="#skill-content">Skip to content</a>
-  <header class="masthead">
-    <div class="masthead-inner">
-      <div class="masthead-top">
-        <div class="masthead-titles">
-          <p class="detail-back-link"><a href="../../">&#8592; Back to portfolio</a></p>
-          <h1>generate-dockerfile</h1>
-          <p class="tagline">Generate an optimized multi-stage Dockerfile for your detected project stack.</p>
-        </div>
-        <div class="masthead-actions">
-          <span class="tier-badge core">Core</span>
-        </div>
-      </div>
-      <div class="meta-row">
-        <span class="meta-item"><strong>Category:</strong> Backend</span>
-        <span class="meta-sep">&middot;</span>
-        <span class="meta-item"><strong>Tier:</strong> Broadly empowering, nearly any user benefits</span>
-        <span class="meta-sep">&middot;</span>
-        <span class="meta-item"><strong>Source:</strong> Generalized from existing</span>
-        <span class="meta-sep">&middot;</span><span class="meta-item"><strong>Updated:</strong> 2026-07-20</span>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="../../index.html">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
+        Hermes Skills
+      </a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="../../index.html" data-nav="catalog">Catalog</a>
+        <a href="../../bundles.html" data-nav="bundles">Bundles</a>
+        <a href="../../changelog.html" data-nav="changelog">Changelog</a>
+        <a href="../../submit.html" data-nav="submit">Submit a skill</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="cmdk-trigger" id="cmdk-trigger" aria-haspopup="dialog" aria-controls="cmdk-modal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="cmdk-trigger-label">Search skills…</span>
+          <kbd class="cmdk-trigger-kbd">&#8984;K</kbd>
+        </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme (t)">
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a class="github-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">GitHub</a>
       </div>
     </div>
   </header>
 
-  <main id="skill-content" class="skill-detail-main">
-    <div class="skill-detail-inner">
-      <div class="detail-tabs">
-        <button class="detail-tab active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
-        <button class="detail-tab" data-tab="skillmd" onclick="switchTab('skillmd')">SKILL.md</button>
-        <button class="detail-tab" data-tab="readme" onclick="switchTab('readme')">README</button>
-      </div>
+  <main id="main" class="skill-main">
+    <div class="wrap">
+      <div class="skill-shell">
+        <p class="skill-back-link"><a href="../../index.html">&#8592; Back to catalog</a></p>
 
-      <div class="detail-tab-content active" id="tab-overview">
-        <section class="detail-section">
-          <h3>What it does</h3>
-          <p>`generate-dockerfile` reads a project&#x27;s manifests (`package.json`, `requirements.txt`, `go.mod`, `Cargo.toml`, `pyproject.toml`, `uv.lock`, …), figures out what runtime it uses, and writes a multi-stage `Dockerfile` plus the files that make the build safe and reproducible: `.dockerignore`, `.env.example`, and a `docker-compose.yml` when the service has dependencies. The agent runs the detection and writes the files; the skill supplies the rules and the templates. It covers Python (pip/poetry/uv), Node.js (npm/yarn/pnpm), Go, Rust, and static sites.</p>
-        </section>
-        <section class="detail-section">
-          <h3>How an agent uses it</h3>
-          <ul><li>The user says &quot;dockerize this&quot;, &quot;write a Dockerfile&quot;, or &quot;containerize my app&quot;.</li><li>You are scaffolding a new project and it will be deployed as a container.</li><li>An existing project has no Dockerfile, or has one that copies source before</li></ul>
+        <header class="detail-header">
+          <div class="detail-titles">
+            <h1>generate-dockerfile</h1>
+            <span class="tier-badge core">Core</span>
+          </div>
+          <p class="detail-desc">Generate an optimized multi-stage Dockerfile for your detected project stack.</p>
+          <div class="detail-meta-row">
+            <span><strong>Category:</strong> Backend</span>
+            <span><strong>Tier:</strong> Broadly empowering, nearly any user benefits</span>
+            <span><strong>Source:</strong> Generalized from existing</span>
+            <span><strong>Updated:</strong> 2026-07-20</span>
+          </div>
+        </header>
+
+        <div class="detail-tabs" role="tablist">
+          <button class="detail-tab active" data-tab="overview" role="tab" aria-selected="true">Overview</button>
+          <button class="detail-tab" data-tab="skillmd" role="tab" aria-selected="false">SKILL.md</button>
+          <button class="detail-tab" data-tab="readme" role="tab" aria-selected="false">README</button>
+        </div>
+
+        <div class="detail-tab-content active" id="tab-overview" role="tabpanel">
+          <section class="detail-section">
+            <h3>What it does</h3>
+            <p>`generate-dockerfile` reads a project&#x27;s manifests (`package.json`, `requirements.txt`, `go.mod`, `Cargo.toml`, `pyproject.toml`, `uv.lock`, …), figures out what runtime it uses, and writes a multi-stage `Dockerfile` plus the files that make the build safe and reproducible: `.dockerignore`, `.env.example`, and a `docker-compose.yml` when the service has dependencies. The agent runs the detection and writes the files; the skill supplies the rules and the templates. It covers Python (pip/poetry/uv), Node.js (npm/yarn/pnpm), Go, Rust, and static sites.</p>
+          </section>
+          <section class="detail-section">
+            <h3>How an agent uses it</h3>
+            <ul><li>The user says &quot;dockerize this&quot;, &quot;write a Dockerfile&quot;, or &quot;containerize my app&quot;.</li><li>You are scaffolding a new project and it will be deployed as a container.</li><li>An existing project has no Dockerfile, or has one that copies source before</li></ul>
 <p>dependencies, runs as root, or ships a single oversized stage.</p>
 <ul><li>You are setting up local development with multiple services (app + database +</li></ul>
 <p>cache) and need a `docker-compose.yml`.</p>
-        </section>
-        <section class="detail-section">
-          <h3>What you get</h3>
-          <p>Install this skill and your Hermes agent can generate an optimized multi-stage dockerfile for your detected project stack. No manual setup, no scripts to run &mdash; the agent handles it.</p>
-        </section>
-        
+          </section>
+          <section class="detail-section">
+            <h3>What you get</h3>
+            <p>Install this skill and your Hermes agent can generate an optimized multi-stage dockerfile for your detected project stack. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+          </section>
+          
         <div class="install-block">
           <h4>Install command</h4>
-          <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/generate-dockerfile/SKILL.md</code>
-          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">Copy</button>
+          <div class="install-row">
+            <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/generate-dockerfile/SKILL.md</code>
+            <button class="btn btn-outline btn-sm" id="copy-btn" type="button">Copy</button>
+          </div>
         </div>
         
-        <div class="detail-links">
-          <a class="detail-skillmd-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/generate-dockerfile/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub &#8599;</a>
+          <a class="detail-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/generate-dockerfile/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub <span aria-hidden="true">&#8599;</span></a>
           
         </div>
-      </div>
 
-      <div class="detail-tab-content" id="tab-skillmd">
-        <pre class="skillmd-viewer">---
+        <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
+          <pre class="skillmd-viewer">---
 name: generate-dockerfile
 description: &quot;Generate an optimized multi-stage Dockerfile for a detected project stack — agent + this skill = user gets a production-ready Docker setup.&quot;
 version: 1.0.0
@@ -396,10 +419,10 @@ volumes:
 - Confirm no `.env` is in the image: `docker run --rm &lt;svc&gt; ls -la` and inspect
   the build context.
 </pre>
-      </div>
+        </div>
 
-      <div class="detail-tab-content" id="tab-readme">
-        <pre class="skillmd-viewer"># generate-dockerfile
+        <div class="detail-tab-content" id="tab-readme" role="tabpanel">
+          <pre class="skillmd-viewer"># generate-dockerfile
 
 Detect a project&#x27;s stack and generate an optimized multi-stage Dockerfile with the supporting files for a reproducible, non-root build.
 
@@ -480,36 +503,22 @@ docker compose up --build
 
 The full templates for every stack live in `SKILL.md`.
 </pre>
+        </div>
       </div>
     </div>
   </main>
 
   <footer class="footer">
-    <p><a href="../../">&#8592; Back to Hermes Skills Portfolio</a></p>
-    <p>Install with <code>hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/generate-dockerfile/SKILL.md</code> or clone the repo.</p>
-    <p class="keyboard-hints">Keyboard: <kbd>Esc</kbd> go back</p>
+    <div class="footer-inner">
+      <span class="footer-word">Hermes Skills — by Owen</span>
+      <span class="footer-sep">&middot;</span>
+      <span>Install one, your agent can now do that for you.</span>
+      <span class="footer-sep">&middot;</span>
+      <span>MIT licensed</span>
+    </div>
   </footer>
 
-  <script>
-  function switchTab(tabName) {
-    document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
-    document.querySelectorAll('.detail-tab-content').forEach(function(c) { c.classList.remove('active'); });
-    document.querySelector('.detail-tab[data-tab="' + tabName + '"]').classList.add('active');
-    document.getElementById('tab-' + tabName).classList.add('active');
-  }
-  function copyInstall() {
-    var cmd = document.getElementById('install-cmd').textContent;
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(cmd).then(function() {
-        var btn = document.getElementById('copy-btn');
-        btn.textContent = 'Copied!'; btn.classList.add('copied');
-        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-      });
-    }
-  }
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') window.location.href = '../../';
-  });
-  </script>
+  <script src="../../js/common.js"></script>
+  <script src="../../js/skill-page.js"></script>
 </body>
 </html>

@@ -1,10 +1,18 @@
 ---
 name: generate-dockerfile
-description: "Generate an optimized multi-stage Dockerfile for a detected project stack — agent + this skill = user gets a production-ready Docker setup."
+description: "Use when the user asks to dockerize, containerize, or write a Dockerfile for a project, or an existing project has no Dockerfile — or has one that copies source before dependencies, runs as root, or ships a single oversized stage."
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [dockerfile, multi-stage-build, docker-compose, containerization, non-root-user]
+    related_skills: [docker-umbrella, env-config-manager, github-actions-ci]
 ---
 
 # generate-dockerfile
+
+## Overview
 
 Read a project, detect its stack, and emit a multi-stage Dockerfile plus the
 supporting files (`.dockerignore`, `.env.example`, `docker-compose.yml`) needed
@@ -276,39 +284,36 @@ volumes:
 - When you `COPY` source after creating the user, pass `--chown=app:app` (or the
   distroless `nonroot`) so the runtime user can read it.
 
-## Pitfalls
-- **`npm install` instead of `npm ci`.** `npm ci` requires a lockfile and
+## Common Pitfalls
+1. **`npm install` instead of `npm ci`.** `npm ci` requires a lockfile and
   installs exactly what it pins — reproducible. `npm install` can drift. Use
   `npm ci`, `yarn install --frozen-lockfile`, or `pnpm install --frozen-lockfile`.
-- **Lifecycle scripts.** Plain `npm ci` runs `postinstall` scripts from
+2. **Lifecycle scripts.** Plain `npm ci` runs `postinstall` scripts from
   dependencies. Default to `--ignore-scripts` and only enable it for a specific
   package you have inspected.
-- **Copying source before dependencies.** If `COPY . .` comes before the dep
+3. **Copying source before dependencies.** If `COPY . .` comes before the dep
   install, every source edit invalidates the dependency layer and re-downloads
   everything. Copy the manifest, install, then copy source.
-- **Missing `.dockerignore`.** Without it, `node_modules`, `.git`, and `.env`
+4. **Missing `.dockerignore`.** Without it, `node_modules`, `.git`, and `.env`
   get sent as build context and can be baked into the image.
-- **Running as root.** The default container user is root; add a non-root user
+5. **Running as root.** The default container user is root; add a non-root user
   in the runtime stage.
-- **`--latest` base tags.** Pin (`python:3.12-slim`, `node:20-alpine`). Unpinned
+6. **`--latest` base tags.** Pin (`python:3.12-slim`, `node:20-alpine`). Unpinned
   builds break unpredictably when upstream moves.
-- **SPA `__dirname` layout mismatch.** A Node server that resolves a sibling
+7. **SPA `__dirname` layout mismatch.** A Node server that resolves a sibling
   `frontend/` via `path.join(__dirname, '..', 'frontend')` breaks when the
   Dockerfile copies the backend to `/app` and the frontend elsewhere — every
   static asset 404s while `/api/*` still works. Copy the frontend into the same
   directory the server expects and have the resolver try both candidate paths.
-- **Host loopback on some setups.** When testing from the host, prefer
+8. **Host loopback on some setups.** When testing from the host, prefer
   `http://127.0.0.1:<port>` over `localhost` — on some systems `localhost`
   resolves to IPv6 `::1` first and the request hangs even though the container
   is healthy. Confirm the app is alive from inside the container
   (`docker compose exec app wget -q -O - http://127.0.0.1:8000/health`) before
   blaming the code.
 
-## Verification
-- Run `docker build -t <svc> .` (or `docker compose build`) and confirm it
-  succeeds and the final image is small.
-- Run the container and hit the health endpoint from inside it.
-- Confirm it does not run as root: `docker run --rm <svc> id` should report a
-  non-zero uid.
-- Confirm no `.env` is in the image: `docker run --rm <svc> ls -la` and inspect
-  the build context.
+## Verification Checklist
+- [ ] `docker build -t <svc> .` (or `docker compose build`) succeeds and the final image is small
+- [ ] Container runs and the health endpoint responds from inside it
+- [ ] `docker run --rm <svc> id` reports a non-zero uid (not running as root)
+- [ ] `docker run --rm <svc> ls -la` (or a build-context review) confirms no `.env` landed in the image

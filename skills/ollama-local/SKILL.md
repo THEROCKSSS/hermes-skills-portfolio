@@ -1,10 +1,18 @@
 ---
 name: ollama-local
-description: "Run local LLMs with Ollama — agent + this skill = user gets a private, offline LLM running on their machine."
+description: Use when the user wants to run an LLM locally without cloud API costs or data leaving their machine — installing Ollama, pulling/managing models, calling the REST API (generate, chat, embeddings, streaming), picking a model for their RAM budget, or wiring Ollama into Hermes as a provider.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [ollama, local-llm, self-hosted, embeddings, offline-ai]
+    related_skills: [http-api-tester]
 ---
 
 # ollama-local
+
+## Overview
 
 Set up and use Ollama for running large language models locally. Ollama runs models on your machine — no API keys, no cloud, no per-token costs. The agent installs Ollama, pulls models, and shows you how to use them via the REST API or command line.
 
@@ -189,11 +197,19 @@ hermes config set auxiliary.compression.model llama3.2:3b
 - **Keep models loaded** — Ollama keeps models in memory for 5 minutes after last use by default. Increase this with `OLLAMA_KEEP_ALIVE` env var if you're making frequent requests.
 - **Quantization** — Ollama uses 4-bit quantization by default, which reduces memory usage by ~70% with minimal quality loss. No configuration needed.
 
-## Pitfalls
+## Common Pitfalls
 
-- **Out of memory** — If the model is larger than your available RAM, Ollama will try to use disk swap and performance will be unusable. Use a smaller model or add RAM.
-- **First run is slow** — The first time you pull a model, it downloads the full model file. Subsequent runs are instant (model is cached).
-- **Port conflicts** — Ollama uses port 11434 by default. If another service uses it, set `OLLAMA_HOST=0.0.0.0:11435` before starting.
-- **No GPU detected** — On Linux, ensure NVIDIA drivers and CUDA toolkit are installed. On Windows, ensure the NVIDIA driver is up to date. On Mac, Apple Silicon is auto-detected.
-- **Context length limits** — Local models have smaller context windows than cloud models. Llama 3.1 supports 128k tokens, but running at full context requires massive RAM. Keep prompts under 8k tokens for 8B models.
-- **Concurrent requests** — Ollama processes requests sequentially by default. If you need concurrency, set `OLLAMA_NUM_PARALLEL` env var.
+1. **Model larger than available RAM.** Ollama will fall back to disk swap and performance becomes unusable rather than failing outright — check `ollama ps` to confirm the model is fully resident in memory, and use a smaller model or add RAM if not.
+2. **First pull looks "stuck".** The first `ollama pull` downloads the full model file (multiple GB); this can take minutes on a slow connection. Subsequent runs use the cached model and start instantly — don't kill the process assuming it's hung.
+3. **Port conflict on 11434.** If another service already binds Ollama's default port, the server fails to start silently in some setups. Set `OLLAMA_HOST=0.0.0.0:11435` before starting and update client URLs to match.
+4. **GPU not detected.** On Linux, missing NVIDIA drivers/CUDA toolkit means Ollama silently falls back to CPU (much slower) instead of erroring. Verify with `nvidia-smi` before assuming GPU is in use.
+5. **Prompts exceed local context comfortably.** Local models advertise large context windows (e.g., 128k for Llama 3.1) but running at full context requires far more RAM than the base model size suggests. Keep prompts under ~8k tokens for 8B-class models in practice.
+6. **Requests queue instead of running in parallel.** Ollama processes requests sequentially by default, so concurrent callers block each other. Set `OLLAMA_NUM_PARALLEL` if concurrency is needed.
+
+## Verification Checklist
+
+- [ ] `ollama --version` succeeds and `ollama list` shows the pulled model
+- [ ] `ollama ps` confirms the model is loaded and shows a reasonable memory footprint (not swapping)
+- [ ] A test `curl http://localhost:11434/api/generate` call returns a non-empty `response` field
+- [ ] If GPU acceleration was expected, `ollama ps` or system GPU monitor (`nvidia-smi`) confirms it's actually being used
+- [ ] If wired into Hermes as a provider, `hermes config get model.base_url` reflects the correct local URL and a real Hermes call round-trips successfully

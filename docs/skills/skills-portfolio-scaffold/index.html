@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>skills-portfolio-scaffold — Hermes Skill</title>
+  <meta name="description" content="What it does: The agent asks what you want your portfolio called, then creates a portfolio repo structure for your skills: a monorepo with one directory per skill, a  that serves as the single source of truth (for both humans and agents), a sortable static site, CI validation, and a...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/skills-portfolio-scaffold/">
+  <meta property="og:title" content="skills-portfolio-scaffold — Hermes Skill">
+  <meta property="og:description" content="What it does: The agent asks what you want your portfolio called, then creates a portfolio repo structure for your skills: a monorepo with one directory per skill, a  that serves as the single source of truth (for both humans and agents), a sortable static site, CI validation, and a...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/skills-portfolio-scaffold/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="skills-portfolio-scaffold — Hermes Skill">
+  <meta name="twitter:description" content="What it does: The agent asks what you want your portfolio called, then creates a portfolio repo structure for your skills: a monorepo with one directory per skill, a  that serves as the single source of truth (for both humans and agents), a sortable static site, CI validation, and a...">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/skill-page.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="../../index.html">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
+        Hermes Skills
+      </a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="../../index.html" data-nav="catalog">Catalog</a>
+        <a href="../../bundles.html" data-nav="bundles">Bundles</a>
+        <a href="../../changelog.html" data-nav="changelog">Changelog</a>
+        <a href="../../submit.html" data-nav="submit">Submit a skill</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="cmdk-trigger" id="cmdk-trigger" aria-haspopup="dialog" aria-controls="cmdk-modal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="cmdk-trigger-label">Search skills…</span>
+          <kbd class="cmdk-trigger-kbd">&#8984;K</kbd>
+        </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme (t)">
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a class="github-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="skill-main">
+    <div class="wrap">
+      <div class="skill-shell">
+        <p class="skill-back-link"><a href="../../index.html">&#8592; Back to catalog</a></p>
+
+        <header class="detail-header">
+          <div class="detail-titles">
+            <h1>skills-portfolio-scaffold</h1>
+            <span class="tier-badge core">Core</span>
+          </div>
+          <p class="detail-desc">Set up a skills portfolio repo with categorized, ranked, sortable skills — the meta-skill for publishing portfolios.</p>
+          <div class="detail-meta-row">
+            <span><strong>Category:</strong> Meta</span>
+            <span><strong>Tier:</strong> Broadly empowering, nearly any user benefits</span>
+            <span><strong>Source:</strong> Newly authored</span>
+            <span><strong>Updated:</strong> 2026-07-20</span>
+          </div>
+        </header>
+
+        <div class="detail-tabs" role="tablist">
+          <button class="detail-tab active" data-tab="overview" role="tab" aria-selected="true">Overview</button>
+          <button class="detail-tab" data-tab="skillmd" role="tab" aria-selected="false">SKILL.md</button>
+          <button class="detail-tab" data-tab="readme" role="tab" aria-selected="false">README</button>
+        </div>
+
+        <div class="detail-tab-content active" id="tab-overview" role="tabpanel">
+          <section class="detail-section">
+            <h3>What it does</h3>
+            <p>The agent asks what you want your portfolio called, then creates a portfolio repo structure for your skills: a monorepo with one directory per skill, a  that serves as the single source of truth (for both humans and agents), a sortable static site, CI validation, and a Hallmark-quality README. This is the meta-skill that reproduces the portfolio structure so anyone can publish their own skills the same way — under their own name, not a clone of this one.</p>
+          </section>
+          <section class="detail-section">
+            <h3>How an agent uses it</h3>
+            <ul><li>The user wants to publish their own Hermes skills as a portfolio.</li><li>The user wants a structured, categorized, ranked collection of skills (not just a flat directory).</li><li>The user wants their skills to be discoverable by both humans (sortable site) and agents (structured index).</li><li>The user says &quot;set up a skills portfolio&quot;, &quot;I want to publish my skills&quot;, or &quot;make my skills installable&quot;.</li></ul>
+          </section>
+          <section class="detail-section">
+            <h3>What you get</h3>
+            <p>Install this skill and your Hermes agent can set up a skills portfolio repo with categorized, ranked, sortable skills — the meta-skill for publishing portfolios. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+          </section>
+          
+        <div class="install-block">
+          <h4>Install command</h4>
+          <div class="install-row">
+            <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/skills-portfolio-scaffold/SKILL.md</code>
+            <button class="btn btn-outline btn-sm" id="copy-btn" type="button">Copy</button>
+          </div>
+        </div>
+        
+          <a class="detail-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/skills-portfolio-scaffold/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub <span aria-hidden="true">&#8599;</span></a>
+          
+        </div>
+
+        <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
+          <pre class="skillmd-viewer">---
+name: skills-portfolio-scaffold
+description: Use when a user wants to publish their own Hermes skills as a categorized, ranked, sortable skills portfolio — discoverable by both humans (sortable site) and agents (structured index) — or says &quot;set up a skills portfolio&quot; / &quot;make my skills installable&quot;.
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [skills-portfolio, scaffolding, skills-index, static-site]
+    related_skills: [hallmark-readme, skill-publish, portfolio-upkeep]
+---
+
+# skills-portfolio-scaffold
+
+## Overview
+
+Scaffold a skills portfolio repository with the three-surface architecture: a monorepo of skills, a `skills-index.json` for agent-parseable metadata, a sortable static site, and CI validation. This is the meta-skill that reproduces the portfolio structure for anyone who wants to publish their own skills — under their own name and branding, never a clone of this one.
+
+## When to Use
+
+- The user wants to publish their own Hermes skills as a portfolio.
+- The user wants a structured, categorized, ranked collection of skills (not just a flat directory).
+- The user wants their skills to be discoverable by both humans (sortable site) and agents (structured index).
+- The user says &quot;set up a skills portfolio&quot;, &quot;I want to publish my skills&quot;, or &quot;make my skills installable&quot;.
+
+## Prerequisites
+
+- Git installed and configured
+- A GitHub account (for the public shopfront)
+- Hermes Agent installed (for `hermes skills install` to work for end users)
+- Skills to publish — at least one `SKILL.md` with frontmatter
+
+## Workflow
+
+### Step 0: Name the portfolio
+
+Before scaffolding anything, ask the user for three things: what they want their portfolio **called** (e.g. &quot;Jane&#x27;s Automation Skills,&quot; not &quot;Hermes Skills Portfolio&quot; — this is their shopfront, not a copy of this one), their **name or handle** as it should appear in the README/site footer, and a one-sentence **tagline**. Use their answers everywhere `portfolio.name` / `portfolio.owner` / `portfolio.tagline` appear in Step 2 — never leave a placeholder value or default to &quot;Hermes&quot; in the generated output.
+
+### Step 1: Create the repo structure
+
+```
+&lt;portfolio-name&gt;/
+├── README.md                    ← the shopfront (Hallmark quality)
+├── skills-index.json            ← single source of truth
+├── skills-index.schema.json     ← schema for the index
+├── LICENSE                      ← MIT recommended
+├── .gitignore
+├── docs/adr/                    ← architecture decisions
+├── skills/                      ← one directory per skill
+│   └── &lt;skill-name&gt;/
+│       ├── SKILL.md
+│       └── README.md
+└── site/                        ← sortable static site
+    ├── index.html
+    ├── styles.css
+    └── app.js
+```
+
+### Step 2: Create skills-index.json
+
+The index is the single source of truth. Both the README and the static site render from it. Schema:
+
+```json
+{
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;generated_at&quot;: &quot;ISO-8601 timestamp&quot;,
+  &quot;portfolio&quot;: {
+    &quot;name&quot;: &quot;Your Portfolio Name&quot;,
+    &quot;owner&quot;: &quot;Your Name&quot;,
+    &quot;tagline&quot;: &quot;One sentence. No filler.&quot;,
+    &quot;total_skills&quot;: 0,
+    &quot;github_url&quot;: &quot;https://github.com/your-user/your-portfolio&quot;
+  },
+  &quot;categories&quot;: {
+    &quot;devops&quot;: { &quot;name&quot;: &quot;DevOps&quot;, &quot;description&quot;: &quot;...&quot;, &quot;skill_count&quot;: 0 },
+    &quot;frontend&quot;: { &quot;name&quot;: &quot;Frontend&quot;, &quot;description&quot;: &quot;...&quot;, &quot;skill_count&quot;: 0 }
+  },
+  &quot;skills&quot;: [
+    {
+      &quot;name&quot;: &quot;skill-name&quot;,
+      &quot;category&quot;: &quot;devops&quot;,
+      &quot;tier&quot;: &quot;core&quot;,
+      &quot;description&quot;: &quot;One line. What agent + skill delivers.&quot;,
+      &quot;install_url&quot;: &quot;https://github.com/your-user/your-portfolio/blob/main/skills/skill-name/SKILL.md&quot;,
+      &quot;path&quot;: &quot;skills/skill-name&quot;,
+      &quot;usage&quot;: { &quot;hub_installs&quot;: 0, &quot;github_clones&quot;: 0, &quot;stars&quot;: 0 },
+      &quot;recency&quot;: &quot;2026-01-01&quot;,
+      &quot;source&quot;: &quot;new&quot;,
+      &quot;source_attribution&quot;: &quot;&quot;
+    }
+  ]
+}
+```
+
+### Step 3: Assign usefulness tiers
+
+Every skill gets one of three tiers at publish time:
+
+| Tier | Meaning |
+|---|---|
+| `core` | Broadly empowering, nearly any user benefits |
+| `featured` | Highly useful within a category |
+| `utility` | Useful for specific workflows |
+
+This is a curated judgment, not a metric. It&#x27;s the day-one ranking — usage data enriches it later but never replaces it.
+
+### Step 4: Create the static site
+
+The `site/` directory contains a self-contained HTML/CSS/JS app that:
+- Fetches `skills-index.json` on page load
+- Renders skill cards in a responsive grid
+- Supports sorting (tier-then-usage default, plus usage/recency/category/alphabetical)
+- Supports filtering (category, tier) and search
+- Uses OKLCH colors, a real font pairing, no AI-slop patterns
+
+See the portfolio&#x27;s own `site/` directory for a working reference implementation.
+
+### Step 5: Add CI validation
+
+Create `.github/workflows/validate.yml` (or `.forgejo/workflows/validate.yml` for Forgejo):
+
+```yaml
+name: validate
+on: push
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate SKILL.md frontmatter
+        run: |
+          for skill_md in skills/*/SKILL.md; do
+            name=$(grep -m1 &#x27;^name:&#x27; &quot;$skill_md&quot; | sed &#x27;s/^name:[[:space:]]*//&#x27;)
+            [ -z &quot;$name&quot; ] &amp;&amp; echo &quot;FAIL: $skill_md missing name&quot; &amp;&amp; exit 1
+          done
+```
+
+### Step 6: Write the README
+
+The portfolio README is the shopfront. It should include:
+- A one-sentence tagline (no filler)
+- Install instructions for individual skills
+- A categories table
+- The ranking explanation (tiers + usage)
+- The repo structure
+- Links to ADRs (if any)
+- License info
+
+### Step 7: Publish
+
+```bash
+git init
+git add -A
+git commit -m &quot;Initial portfolio scaffold&quot;
+git remote add origin https://github.com/&lt;user&gt;/&lt;portfolio-name&gt;.git
+git push -u origin main
+```
+
+### Step 8: Add skills incrementally
+
+Each new skill:
+1. Create `skills/&lt;skill-name&gt;/SKILL.md` with frontmatter
+2. Create `skills/&lt;skill-name&gt;/README.md` (Hallmark quality)
+3. Add an entry to `skills-index.json`
+4. Commit and push
+5. The CI validates the frontmatter
+
+## Skill Entry Requirements
+
+Every skill in the portfolio must have:
+
+| Requirement | Where | Notes |
+|---|---|---|
+| `SKILL.md` with frontmatter | `skills/&lt;name&gt;/SKILL.md` | `name`, `description`, `version` minimum |
+| `README.md` | `skills/&lt;name&gt;/README.md` | What it does, install, how to use, example |
+| Index entry | `skills-index.json` | name, category, tier, description, install_url, path, source |
+
+## Site Features
+
+The portfolio static site includes:
+- Dark mode default with light toggle (localStorage persistence)
+- Sortable skill cards (by tier+usage, usage, recency, category, alphabetical)
+- Category and tier filters with filter chips
+- Search with keyboard shortcut (`/`)
+- **Detail page overlay**: clicking a skill opens a full page with:
+  - &quot;What it does&quot; (user-facing description)
+  - &quot;How an agent uses it&quot; (agent-facing use cases)
+  - SKILL.md tab (raw markdown rendered for reading)
+  - README tab (raw markdown rendered for reading)
+  - Install command with copy-to-clipboard
+  - Close button (X icon), Esc key, click-outside-to-close
+  - Shareable URL hash: `#skill/&lt;name&gt;`
+- Category distribution bar
+- Back-to-top button
+- Toast notifications
+- Keyboard: `/` search, `Esc` close detail, `t` toggle theme
+
+### GitHub Pages deployment
+
+GitHub Pages only serves from `/` or `/docs`. Deploy:
+1. Copy site files + skills-index.json into `docs/`
+2. Settings → Pages → Source → Deploy from branch → `main` → `/docs`
+3. Site live at `https://&lt;username&gt;.github.io/&lt;repo-name&gt;/`
+
+### skills-index.json enrichment
+
+Each skill entry should include `agent_use`, `user_use`, `skillmd_content`, and `readme_content` fields so the detail page can show all content without fetching individual files.
+
+## Common Pitfalls
+
+1. **Index drift.** If you add a skill directory but forget to add an entry to `skills-index.json`, the site won&#x27;t show it and the CI should warn. Keep them in sync.
+2. **Relative links in README.** Links like `../other-skill/` break when a skill is published to its own repo via `skill-publish`. Use absolute URLs for cross-skill references.
+3. **Tier inflation.** Don&#x27;t mark everything `core`. If all skills are core, the tier is meaningless. Reserve `core` for skills that nearly any user benefits from.
+4. **No categories.** Every skill must belong to a category. Uncategorized skills break the filter UI and the agent-parseable index.
+5. **Invented usage data.** Start all usage counts at 0. Don&#x27;t fabricate install numbers — they&#x27;ll be overwritten by real data once the portfolio has traffic, and fake numbers erode trust.
+6. **`skills-index.json` too large.** Embedding full SKILL.md and README.md content in the index makes it large (500KB+ for 50 skills). This is acceptable for a static site — it loads once and enables instant detail page rendering without per-skill fetches.
+7. **`docs/` vs `site/` drift.** When you update site files, always copy them to `docs/` too. The `docs/` directory is what GitHub Pages serves. Use a sync script or the portfolio-upkeep skill.
+
+## Verification Checklist
+
+- [ ] `skills-index.json` validates against `skills-index.schema.json` and every skill directory under `skills/` has a matching index entry
+- [ ] Every skill entry has a `tier` (`core`/`featured`/`utility`) and a `category`, and not everything is tagged `core`
+- [ ] `site/` files are mirrored into `docs/` (what GitHub Pages actually serves)
+- [ ] The CI validation workflow runs and fails a skill missing `name:` in its frontmatter
+- [ ] All `usage` counts in newly added entries start at 0 — no fabricated install/star numbers
+</pre>
+        </div>
+
+        <div class="detail-tab-content" id="tab-readme" role="tabpanel">
+          <pre class="skillmd-viewer"># skills-portfolio-scaffold
+
+Scaffold a publishable skills portfolio with categorized, ranked, sortable skills and a static site — named and branded as *your own*, not a copy of this one.
+
+## What it does
+
+The agent asks what you want your portfolio called, then creates a portfolio repo structure for your skills: a monorepo with one directory per skill, a `skills-index.json` that serves as the single source of truth (for both humans and agents), a sortable static site, CI validation, and a Hallmark-quality README. This is the meta-skill that reproduces the portfolio structure so anyone can publish their own skills the same way — under their own name.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/skills-portfolio-scaffold/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Set up a skills portfolio for my Hermes skills&quot;
+```
+
+The agent:
+1. Creates the repo structure (README, skills-index.json, site/, docs/adr/, skills/, CI workflow)
+2. Sets up the JSON schema for the index
+3. Generates the sortable static site (HTML/CSS/JS)
+4. Creates the CI validation workflow
+5. Shows you how to add skills incrementally
+
+## What you get
+
+| Component | Purpose |
+|---|---|
+| `skills-index.json` | Single source of truth — agents parse this, the site renders from it |
+| `site/` | Sortable, filterable static site (sort by tier, usage, category, recency) |
+| `skills/&lt;name&gt;/` | One directory per skill, each with SKILL.md + README.md |
+| CI workflow | Validates every SKILL.md has required frontmatter |
+| README.md | The shopfront — install instructions, categories, ranking explanation |
+
+## The ranking model
+
+Every skill gets a usefulness tier at publish time:
+
+- **Core** — broadly empowering, nearly any user benefits
+- **Featured** — highly useful within a category
+- **Utility** — useful for specific workflows
+
+Default sort: tier (Core → Featured → Utility), then usage within tier. Usage data accumulates over time from hub installs and GitHub clones.
+
+## Example
+
+```
+User: &quot;I have 15 Hermes skills I want to publish as a portfolio.&quot;
+
+Agent:
+  1. Creates the repo structure with skills-index.json schema
+  2. Generates the sortable static site
+  3. For each of the 15 skills: creates skills/&lt;name&gt;/ with SKILL.md + README.md
+  4. Adds each skill to skills-index.json with category + tier
+  5. Creates the CI workflow
+  6. Returns: &quot;Portfolio scaffolded. Push to GitHub when ready.&quot;
+
+User pushes to GitHub → strangers can browse the site, install individual skills,
+and agents can read skills-index.json to recommend skills.
+```
+</pre>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="footer-word">Hermes Skills — by Owen</span>
+      <span class="footer-sep">&middot;</span>
+      <span>Install one, your agent can now do that for you.</span>
+      <span class="footer-sep">&middot;</span>
+      <span>MIT licensed</span>
+    </div>
+  </footer>
+
+  <script src="../../js/common.js"></script>
+  <script src="../../js/skill-page.js"></script>
+</body>
+</html>

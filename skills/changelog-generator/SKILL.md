@@ -1,10 +1,18 @@
 ---
 name: changelog-generator
-description: "Generate a changelog from git commits — agent + this skill = user gets a formatted changelog from project history."
+description: Use when the user wants a changelog for their project, wants release notes generated from git history, or asks "make a changelog", "generate release notes", or "what changed since v1.0" — requires a git repo with conventional commit messages (feat:, fix:, refactor:, docs:).
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [changelog, git-log, conventional-commits, release-notes]
+    related_skills: [github-actions-ci, git-backup]
 ---
 
 # changelog-generator
+
+## Overview
 
 Generate a formatted changelog from git commit history. The agent reads commits, categorizes them by type (feat, fix, refactor, docs), and produces a Keep a Changelog-format document.
 
@@ -93,7 +101,7 @@ def generate_changelog(since: str = "", repo_path: str = ".") -> str:
                 changelog += f"- {scope}{item['description']} ({item['hash']})\n"
             changelog += "\n"
 
-    return changangelog
+    return changelog
 ```
 
 ## Conventional Commit Types
@@ -116,10 +124,18 @@ def generate_changelog(since: str = "", repo_path: str = ".") -> str:
 4. Format as a Keep a Changelog document
 5. Write to `CHANGELOG.md` or return as string
 
-## Pitfalls
+## Common Pitfalls
 
-- **Non-conventional commits** — Commits without `feat:`/`fix:` prefixes go into "Other". Encourage the team to use conventional commits for better categorization.
-- **Merge commits** — Merge commits clutter the changelog. Filter them with `--no-merges` in the git log command.
-- **Squashed commits** — Squash commits lose individual messages. The changelog reflects the squash message, not the original commits.
-- **Date range** — `since` should be a tag name (`v1.0.0`), a commit hash, or a date. Using a tag is most common for release notes.
-- **Duplicate entries** — If commits are cherry-picked between branches, they may appear twice. Deduplicate by commit message.
+1. **Non-conventional commits fall into "Other".** Commits without `feat:`/`fix:` prefixes get dumped in the catch-all bucket. Encourage the team to use conventional commits for better categorization, or the changelog will be mostly "Other".
+2. **Merge commits clutter the output.** Merge commit messages (e.g. "Merge branch 'main'") add noise. Filter them with `--no-merges` in the `git log` command before categorizing.
+3. **Squashed commits lose their history.** A squash-merged PR collapses many commits into one message; the changelog reflects only the squash message, not the individual changes.
+4. **`since` must be a valid git ref.** Pass a tag name (`v1.0.0`), a commit hash, or a date — an arbitrary string that isn't a real ref makes `git log` silently return the full history instead of erroring.
+5. **Cherry-picked commits appear twice.** If the same commit is cherry-picked across branches, it has a different hash on each branch and shows up as a duplicate entry. Deduplicate by commit message text, not hash, when merging changelogs across branches.
+
+## Verification Checklist
+
+- [ ] `generate_changelog()` was actually run against the target repo and returned non-empty output (not just defined)
+- [ ] The `since` argument, if provided, is a real tag/commit/date confirmed to exist in the repo
+- [ ] Merge commits were excluded (`--no-merges`) unless the user wants them included
+- [ ] Output was spot-checked against `git log --oneline` for the same range to confirm no commits were silently dropped
+- [ ] Written output file (if any) matches Keep a Changelog section ordering: Added, Fixed, Changed, Performance, Documentation, Testing, Maintenance, Other

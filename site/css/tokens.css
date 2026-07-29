@@ -1,0 +1,132 @@
+/* Hermes Skills Portfolio — design tokens
+ * Locked by design.md. Every page imports this file and references tokens
+ * by name — no inline OKLCH, no inline font-family, anywhere downstream.
+ */
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Paper / surfaces — cool engineered near-white, never pure #fff */
+  --color-paper:    oklch(98.5% 0.004 250);
+  --color-paper-2:  oklch(96% 0.006 250);
+  --color-paper-3:  oklch(93% 0.008 250);
+
+  /* Ink — cool charcoal, never pure #000 */
+  --color-ink:      oklch(24% 0.020 258);
+  --color-ink-2:    oklch(34% 0.018 257);
+  --color-ink-3:    oklch(50% 0.014 257);
+  --color-ink-4:    oklch(68% 0.010 255);
+
+  /* Hairlines */
+  --color-rule:     oklch(90% 0.006 250);
+  --color-rule-2:   oklch(85% 0.008 250);
+
+  /* The one signal */
+  --color-accent:      oklch(58% 0.20 256);
+  --color-accent-ink:  oklch(99% 0.004 250);
+  --color-accent-soft: oklch(93% 0.03 256);
+  --color-focus:       oklch(58% 0.20 256);
+
+  /* Dark graphite band + code card — Cobalt's one dark beat */
+  --color-graphite:    oklch(22% 0.016 260);
+  --color-graphite-2:  oklch(27% 0.018 260);
+  --color-graphite-ink:   oklch(94% 0.010 258);
+  --color-graphite-ink-2: oklch(78% 0.020 258);
+  --color-graphite-rule:  oklch(34% 0.018 260);
+
+  /* Tier signal — core gets the one accent; others stay neutral ink */
+  --tier-core-bg:      var(--color-accent-soft);
+  --tier-core-ink:     var(--color-accent);
+  --tier-featured-bg:  var(--color-paper-3);
+  --tier-featured-ink: var(--color-ink-2);
+  --tier-utility-bg:   var(--color-paper-2);
+  --tier-utility-ink:  var(--color-ink-3);
+
+  --color-success: var(--color-accent);
+
+  --shadow-whisper:  0 1px 2px oklch(24% 0.02 258 / 0.06);
+  --shadow-hairline: 0 0 0 1px oklch(30% 0.02 258 / 0.07);
+
+  /* Type */
+  --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+
+  --text-xs:  0.75rem;
+  --text-sm:  0.8125rem;
+  --text-md:  1rem;
+  --text-lg:  1.1875rem;
+  --text-xl:  1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.75rem;
+  --text-display:   clamp(2.25rem, 1.7rem + 2vw, 3.5rem);
+  --text-display-s: clamp(1.75rem, 1.45rem + 1.2vw, 2.25rem);
+
+  /* Space — 4pt scale, named by role */
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-sm:  0.75rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --space-4xl: 9rem;
+
+  --radius-control: 6px;
+  --radius-card:    10px;
+
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:     cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long:  420ms;
+
+  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-paper:    oklch(15% 0.010 258);
+  --color-paper-2:  oklch(19% 0.012 258);
+  --color-paper-3:  oklch(23% 0.014 258);
+
+  --color-ink:      oklch(93% 0.010 258);
+  --color-ink-2:    oklch(80% 0.014 257);
+  --color-ink-3:    oklch(62% 0.014 257);
+  --color-ink-4:    oklch(44% 0.012 256);
+
+  --color-rule:     oklch(28% 0.010 258);
+  --color-rule-2:   oklch(34% 0.012 258);
+
+  --color-accent:      oklch(66% 0.17 256);
+  --color-accent-ink:  oklch(16% 0.020 258);
+  --color-accent-soft: oklch(26% 0.05 256);
+  --color-focus:       oklch(66% 0.17 256);
+
+  --color-graphite:    oklch(11% 0.014 260);
+  --color-graphite-2:  oklch(15% 0.016 260);
+  --color-graphite-ink:   oklch(93% 0.010 258);
+  --color-graphite-ink-2: oklch(74% 0.018 258);
+  --color-graphite-rule:  oklch(24% 0.016 260);
+
+  --tier-core-bg:      var(--color-accent-soft);
+  --tier-core-ink:     var(--color-accent);
+  --tier-featured-bg:  var(--color-paper-3);
+  --tier-featured-ink: var(--color-ink-2);
+  --tier-utility-bg:   var(--color-paper-2);
+  --tier-utility-ink:  var(--color-ink-3);
+
+  --color-success: var(--color-accent);
+
+  --shadow-whisper:  0 1px 2px oklch(0% 0 0 / 0.35);
+  --shadow-hairline: 0 0 0 1px oklch(70% 0.02 258 / 0.10);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-micro: 1ms; --dur-short: 1ms; --dur-long: 1ms; }
+}

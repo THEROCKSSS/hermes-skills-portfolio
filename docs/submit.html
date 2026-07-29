@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit a skill — Hermes Skills Portfolio</title>
+  <meta name="description" content="How a new skill goes from a GitHub issue to a live entry in the Hermes Skills Portfolio catalog — the real process, stage by stage.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/submit.css">
+  <script src="js/common.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="./index.html">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
+        Hermes Skills
+      </a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="./index.html" data-nav="catalog">Catalog</a>
+        <a href="./bundles.html" data-nav="bundles">Bundles</a>
+        <a href="./changelog.html" data-nav="changelog">Changelog</a>
+        <a href="./submit.html" data-nav="submit" aria-current="page">Submit a skill</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="cmdk-trigger" id="cmdk-trigger" aria-haspopup="dialog" aria-controls="cmdk-modal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="cmdk-trigger-label">Search skills…</span>
+          <kbd class="cmdk-trigger-kbd">&#8984;K</kbd>
+        </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme (t)">
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a class="github-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="submit">
+    <section class="submit-hero reveal">
+      <h1>From request to release</h1>
+      <p class="lede">Four stages, and today two of them are done by a person reading your issue — not a pipeline. Here is exactly what happens when you propose a skill for this catalog.</p>
+      <p class="submit-meta mono"><span id="catalog-count">—</span> skills live in the catalog right now · every one arrived through this same process</p>
+    </section>
+
+    <section class="quality-bar reveal" aria-labelledby="quality-bar-title">
+      <h2 id="quality-bar-title">Before you write anything</h2>
+      <p class="quality-intro">Every accepted skill is checked against the same five-item bar. Read it first — it saves a review round-trip.</p>
+      <dl class="quality-list">
+        <div class="quality-item">
+          <dt class="quality-term mono">Empowering</dt>
+          <dd class="quality-desc">Helps a user or agent accomplish a real task — not a novelty.</dd>
+        </div>
+        <div class="quality-item">
+          <dt class="quality-term mono">Self-contained</dt>
+          <dd class="quality-desc">No dependency on private infrastructure or internal tools.</dd>
+        </div>
+        <div class="quality-item">
+          <dt class="quality-term mono">Runnable</dt>
+          <dd class="quality-desc">The instructions produce a working result, not just a description of one.</dd>
+        </div>
+        <div class="quality-item">
+          <dt class="quality-term mono">Honest</dt>
+          <dd class="quality-desc">No invented metrics, no fabricated testimonials, no AI-slop phrasing.</dd>
+        </div>
+        <div class="quality-item">
+          <dt class="quality-term mono">Attributed</dt>
+          <dd class="quality-desc">If it's adapted from another source, the source is credited.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <ol class="stages">
+      <li class="stage reveal">
+        <h2 class="stage-title"><span class="stage-num mono">1.0</span>Open a request</h2>
+        <div class="stage-body">
+          <p>Open a Skill Request issue on GitHub. It asks for the skill name, a one-paragraph purpose, why it's empowering, a suggested category and tier, and any similar skills already in the catalog.</p>
+        </div>
+        <div class="stage-actions">
+          <a class="btn btn-primary" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/issues/new?template=skill_request.md" target="_blank" rel="noopener">Open a skill request</a>
+        </div>
+      </li>
+
+      <li class="stage reveal">
+        <h2 class="stage-title"><span class="stage-num mono">2.0</span>Review</h2>
+        <div class="stage-body">
+          <p>The repo owner reads the issue and checks it against the quality bar above. This is a person reading and deciding, today — not an automated triage step.</p>
+        </div>
+      </li>
+
+      <li class="stage reveal">
+        <h2 class="stage-title"><span class="stage-num mono">3.0</span>Build</h2>
+        <div class="stage-body">
+          <p>If it's approved, the owner or a contributor writes the actual skill files — <code class="mono">SKILL.md</code>, <code class="mono">README.md</code>, and the <code class="mono">skills-index.json</code> entry — and opens a pull request. Someone builds it; nothing generates it on its own yet.</p>
+        </div>
+      </li>
+
+      <li class="stage reveal">
+        <h2 class="stage-title"><span class="stage-num mono">4.0</span>Merge &amp; live</h2>
+        <div class="stage-body">
+          <p>CI validates the frontmatter, checks that <code class="mono">skills-index.json</code> is in sync, and confirms the per-skill page exists. Once the owner merges, GitHub Pages rebuilds from the merged branch on its own — that part really is automatic, and the skill is live in the catalog.</p>
+        </div>
+      </li>
+    </ol>
+
+    <section class="submit-note reveal" aria-labelledby="submit-note-title">
+      <h2 id="submit-note-title">What's automated today, and what isn't</h2>
+      <p>Stage 4's rebuild is automatic — GitHub Pages redeploys from <code class="mono">main</code> without anyone touching a button. Stages 2 and 3 are manual: a person reviews the issue, and a person (or a contributor) writes the files and opens the pull request. A faster, more automated review-to-PR pipeline is on the roadmap, but it is not built yet — nothing here files a PR for you.</p>
+    </section>
+
+    <section class="pending-sources reveal" aria-labelledby="pending-sources-title">
+      <h2 id="pending-sources-title">Pending external sources</h2>
+      <p class="pending-intro">Separately from the request pipeline above, Owen sometimes finds skill-like content in other public repos and proposes adapting it into this catalog. Each one below is awaiting his individual review and approval — none of it is part of the catalog yet, and none of it gets the "adapted from / credited to" treatment an approved skill gets until that review happens.</p>
+      <p class="pending-summary mono" id="pending-summary" aria-live="polite"></p>
+      <ul class="pending-list" id="pending-list" aria-live="polite">
+        <li class="pending-loading">Loading pending sources…</li>
+      </ul>
+    </section>
+
+    <section class="submit-foot reveal">
+      <h2>Ready to propose one?</h2>
+      <p>Start at stage one — the issue template asks for everything the review needs.</p>
+      <a class="btn btn-outline" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/issues/new?template=skill_request.md" target="_blank" rel="noopener">Start at stage 1 →</a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="footer-word">Hermes Skills — by Owen</span>
+      <span class="footer-sep">&middot;</span>
+      <span>Install one, your agent can now do that for you.</span>
+      <span class="footer-sep">&middot;</span>
+      <span>MIT licensed</span>
+    </div>
+  </footer>
+
+  <script src="js/submit.js"></script>
+</body>
+</html>

@@ -1,10 +1,18 @@
 ---
 name: password-generator
-description: "Generate secure passwords and passphrases — agent + this skill = user gets cryptographically strong credentials."
+description: Use when the user needs a strong password, a memorable passphrase, an API key/token, or a hex/URL-safe token generated — cryptographically secure via Python's `secrets` module, with optional strength checking or batch generation.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [password, passphrase, secrets, api-key, token-generation, security]
+    related_skills: [env-config-manager]
 ---
 
 # password-generator
+
+## Overview
 
 Generate secure passwords, passphrases, and API keys. The agent creates random passwords with configurable complexity, memorable passphrases from word lists, and API tokens with specific character sets.
 
@@ -157,11 +165,19 @@ def generate_batch(count: int = 10, length: int = 16) -> list:
 6. Optionally check strength
 7. Return the credential(s)
 
-## Pitfalls
+## Common Pitfalls
 
-- **Never use `random` for passwords** — The `random` module is not cryptographically secure. Always use `secrets` (Python 3.6+).
-- **Similar characters** — Characters like `0/O`, `l/1/I` cause confusion. Use `exclude_similar=True` for passwords that will be typed manually.
-- **Short passphrases** — A 2-word passphrase is weaker than a 12-char random password. Use at least 4 words for adequate entropy.
-- **Word list size** — A small word list reduces passphrase entropy. The built-in list has 40 words; for higher security, use a larger list (e.g., EFF's 7776-word list).
-- **Password in process args** — Don't pass generated passwords as command-line arguments (visible in `ps`). Write to a file or stdout instead.
-- **Logging** — Never log generated passwords. Print them once and let the user copy them.
+1. **Using `random` instead of `secrets`.** The `random` module is not cryptographically secure — its output is predictable given enough samples. Always use `secrets` (Python 3.6+) for anything security-sensitive.
+2. **Confusable characters in manually-typed passwords.** Characters like `0/O` and `l/1/I` cause transcription errors when a human has to type the password. Use `exclude_similar=True` for passwords meant to be typed rather than pasted.
+3. **Short passphrases feel secure but aren't.** A 2-word passphrase has less entropy than a 12-character random password despite looking longer. Use at least 4 words from a reasonably large list for adequate entropy.
+4. **Small word list caps entropy regardless of word count.** The built-in `WORD_LIST` here has only 40 words — even a 4-word passphrase from it has far less entropy than 4 words from EFF's 7776-word list. Swap in a larger list for anything beyond casual use.
+5. **Passing generated passwords as CLI arguments.** Command-line arguments are visible to any other process via `ps` or `/proc`. Write the password to a file, stdin, or return it directly instead.
+6. **Logging generated credentials.** Never write a generated password/token to a log file or persistent history — print or return it once and let the user capture it themselves.
+
+## Verification Checklist
+
+- [ ] Generation used `secrets` (not `random`) for every code path that touches password/token output
+- [ ] Generated password satisfies every requested character-class constraint (contains at least one of each requested type)
+- [ ] Passphrase word count and entropy are adequate for the stated use (4+ words for anything beyond a throwaway)
+- [ ] No generated credential appears in a log file, shell history, or process argument list
+- [ ] If strength-checked, `check_strength()` rating matches the complexity actually requested (a "weak" result on a supposedly strong password flags a bug in the generation parameters)

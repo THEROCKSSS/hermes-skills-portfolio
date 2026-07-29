@@ -1,10 +1,18 @@
 ---
 name: searxng-self-host
-description: "Self-host a private SearXNG meta-search engine — agent + this skill = user gets their own search engine that queries Google, Bing, DuckDuckGo without tracking."
+description: Use when the user wants to self-host a private, meta-search engine that aggregates results from Google, Bing, DuckDuckGo, Wikipedia, etc. without tracking — triggers include "set up SearXNG", "self-host my search", or "I want private search".
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [searxng, self-hosting, docker, meta-search, privacy, reverse-proxy]
+    related_skills: [caddy-reverse-proxy, docker-umbrella, forgejo-self-host, uptime-kuma-self-host]
 ---
 
 # searxng-self-host
+
+## Overview
 
 Deploy a self-hosted SearXNG instance with Docker. SearXNG is a privacy-focused meta-search engine that aggregates results from multiple search engines (Google, Bing, DuckDuckGo, Wikipedia, etc.) without tracking users or sharing search queries.
 
@@ -203,11 +211,20 @@ for result in results['results'][:5]:
     print(f"{result['title']} — {result['url']}")
 ```
 
-## Pitfalls
+## Common Pitfalls
 
-- **Secret key not set** — The `secret_key` in settings.yml must be changed from the default. Generate a random one: `openssl rand -hex 32`.
-- **JSON API disabled by default** — The `json` format must be listed under `search.formats` in settings.yml for the API to work.
-- **Google rate limiting** — Google will rate-limit or block your instance if you search too frequently. SearXNG rotates engines, but heavy use from one IP will get noticed. Use multiple engines to distribute load.
-- **No HTTPS by default** — SearXNG serves HTTP by default. Use a reverse proxy (Caddy/nginx) for HTTPS. Without HTTPS, search queries are visible on the network.
-- **Bot detection** — Some search engines (Google especially) may show CAPTCHAs if they detect automated queries. SearXNG has built-in anti-bot measures, but aggressive use can still trigger blocks.
-- **Container permissions** — The SearXNG container needs `CHOWN`, `SETGID`, `SETUID` capabilities to write to the settings directory. Don't run with `--privileged` — the specific caps in the compose file are sufficient.
+1. **Default secret key left unchanged.** `secret_key` in settings.yml must be replaced — generate one with `openssl rand -hex 32` before exposing the instance.
+2. **JSON API disabled by default.** The `json` format must be explicitly listed under `search.formats` in settings.yml, or API requests return HTML instead of JSON.
+3. **Google rate limiting.** Searching too frequently from one IP gets noticed and blocked — distribute load across multiple engines rather than hammering one.
+4. **No HTTPS by default.** SearXNG serves plain HTTP — queries are visible on the network until a reverse proxy (Caddy/nginx) terminates TLS in front of it.
+5. **Bot detection / CAPTCHAs.** Aggressive automated querying can trigger CAPTCHAs from upstream engines (Google especially) despite SearXNG's built-in anti-bot measures.
+6. **Missing container capabilities.** The container needs `CHOWN`, `SETGID`, `SETUID` to write to the settings directory — don't reach for `--privileged`; the specific caps in the compose file are sufficient and safer.
+
+## Verification Checklist
+
+- [ ] `secret_key` in settings.yml changed from the placeholder default
+- [ ] `curl http://localhost:8080/search?q=test&format=json` returns valid JSON, not an error page
+- [ ] Web UI loads at `http://localhost:8080` (or the reverse-proxied domain) with search results rendering
+- [ ] At least 2-3 engines enabled and returning results (not all disabled/erroring)
+- [ ] HTTPS confirmed working if a reverse proxy was configured
+- [ ] Container running with only the specific capabilities listed (`CHOWN`, `SETGID`, `SETUID`), not `--privileged`

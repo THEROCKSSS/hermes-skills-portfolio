@@ -1,10 +1,18 @@
 ---
 name: resume-builder
-description: Generate a professional, print-ready resume in HTML and PDF from structured YAML/JSON data. Use when a user wants to turn their CV, work history, skills, and education into a polished single-page or multi-page resume with selectable templates and reliable PDF export.
+description: Use when the user wants to turn structured career data (YAML/JSON work history, education, skills, projects, certifications) into a polished resume — a styled HTML page, a PDF export, or a re-themed (minimal/modern/classic) version of an existing resume — for job applications or an ATS-friendly document.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [resume, pdf-export, html-templates, weasyprint, puppeteer, cv]
+    related_skills: [markdown-to-pdf, invoice-generator, color-palette-generator]
 ---
 
 # resume-builder
+
+## Overview
 
 Turn structured career data into a clean, professional resume rendered as HTML
 and exported to PDF. The skill owns the data model, three visual templates, and
@@ -155,20 +163,22 @@ without touching markup:
   sizes, trim `summary`, and cap `highlights` to 3–4 per role rather than
   dropping sections.
 
-## Pitfalls
+## Common Pitfalls
 
-- **Missing `end` date** → render `Present`, never leave a blank range.
-- **WeasyPrint missing system libs** (Pango/cairo) on minimal Linux images →
-  install `libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0` first, or
-  fall back to puppeteer.
-- **Fonts not embedded in PDF** → use system font stacks; web fonts loaded via
-  `<link>` may not print. Inline `@font-face` only if the user supplies files.
-- **Print background stripped** → without `printBackground:true` /
-  `print-color-adjust:exact`, accent bands disappear. This is the #1 "my PDF
-  looks blank" bug.
-- **ATS parsing** → keep real text (no text-in-images, no columns-splitting
-  names). The minimal/modern templates are ATS-safe; heavy two-column sidebars
-  can confuse parsers.
-- **Non-ISO dates** → normalize `Mar 2021` → `2021-03` before rendering.
-- **Long URLs in `highlights`** → wrap or shorten; raw URLs break line layout.
-- **Over-styling for one page** → don't shrink below 9pt; prefer content edits.
+1. **Missing `end` date rendered as blank.** Always render `Present` for an open-ended role — never leave the date range blank.
+2. **WeasyPrint missing system libs.** On minimal Linux images, Pango/cairo aren't present — install `libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0` first, or fall back to puppeteer.
+3. **Fonts not embedded in PDF.** Web fonts loaded via `<link>` may not print — use system font stacks, or inline `@font-face` only if the user supplies font files.
+4. **Print background stripped.** Without `printBackground:true` (puppeteer) or `print-color-adjust:exact` (weasyprint), accent bands disappear — the #1 "my PDF looks blank" bug.
+5. **ATS parsing broken by layout.** Text-in-images or heavy two-column sidebars can confuse ATS parsers — the minimal/modern templates are ATS-safe; flag the risk if the user demands a dense two-column layout.
+6. **Non-ISO dates left unnormalized.** Convert `Mar 2021` → `2021-03` before rendering, or date ranges sort/display incorrectly.
+7. **Long URLs in `highlights` breaking layout.** Wrap or shorten raw URLs in bullet points rather than letting them overflow the line.
+8. **Over-styling to force one page.** Don't shrink below 9pt to fit — trim `summary` and cap highlights to 3-4 per role instead.
+
+## Verification Checklist
+
+- [ ] Required fields present: `basics.name` and at least one `work` or `education` entry
+- [ ] All dates rendered as `YYYY-MM` ranges (or `Present` for open-ended roles), no raw blanks
+- [ ] Rendered HTML opens correctly with no external network requests (fonts/styles are self-contained)
+- [ ] PDF export includes background colors/accent bands (`printBackground`/`print-color-adjust` was set)
+- [ ] PDF page size matches the user's expected paper size (A4 vs Letter)
+- [ ] Resume fits the requested page count without text below 9pt

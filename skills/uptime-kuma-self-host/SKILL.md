@@ -1,10 +1,18 @@
 ---
 name: uptime-kuma-self-host
-description: "Self-host an uptime monitoring dashboard — agent + this skill = user gets a visual monitoring panel for their services."
+description: Use when the user wants to self-host uptime monitoring for their services (HTTP, TCP, DNS, ping) with alerting to Discord/Slack/email/webhook, or wants a public status page, or says "set up uptime monitoring" / "I want to know when my site goes down".
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [uptime-kuma, uptime-monitoring, docker, status-page, alerting]
+    related_skills: [ntfy-notifier, caddy-reverse-proxy, docker-umbrella]
 ---
 
 # uptime-kuma-self-host
+
+## Overview
 
 Deploy Uptime Kuma — a self-hosted monitoring tool that tracks the uptime of your services (HTTP, TCP, DNS, ping) and sends alerts when something goes down. It runs as a Docker container with a web UI for managing monitors and viewing status pages.
 
@@ -128,11 +136,33 @@ services:
 
 Then add a "Docker Container" monitor type pointing to the container name.
 
-## Pitfalls
+## Common Pitfalls
 
-- **Port 3001 conflicts** — If another service uses 3001 (like Forgejo on some setups), change the port mapping in docker-compose.yml.
-- **Data volume is the backup** — All monitor configs, history, and settings are in the `uptime-kuma-data` volume. Back it up regularly.
-- **No built-in HTTPS** — Uptime Kuma serves HTTP. For HTTPS, put it behind Caddy or a reverse proxy.
-- **False positives on HTTP monitors** — A 3xx redirect is not a failure by default, but a 5xx is. Configure the "Accepted Status Codes" field if you need custom thresholds.
-- **Notification spam on flapping** — If a service goes up and down rapidly, you'll get many notifications. Set a "Retry" count (e.g., retry 2 times before sending a down notification) to reduce flapping alerts.
-- **Push monitor interval** — If your service stops pushing, Kuma waits for the full interval before marking it down. Set the interval to match how often your service checks in.
+1. **Port 3001 collides with another service.** Forgejo and some other self-hosted tools default
+   to nearby ports. Check `docker ps` / `netstat` first and remap in `docker-compose.yml` if
+   3001 is taken.
+2. **Treating the data volume as disposable.** All monitor configs, history, and notification
+   settings live only in the `uptime-kuma-data` volume — there's no external config file to
+   fall back on. Back it up regularly.
+3. **Assuming HTTPS is built in.** Uptime Kuma serves plain HTTP. Put it behind Caddy or another
+   reverse proxy if the status page or dashboard needs to be reachable over TLS.
+4. **Not configuring "Accepted Status Codes."** A 3xx redirect is treated as healthy by default;
+   only 5xx (and non-matching codes outside the accepted set) count as down. Set this explicitly
+   if the monitored service redirects normally.
+5. **Leaving "Retry" at its default on a flapping service.** A service that goes up/down rapidly
+   sends one notification per transition. Raise the retry count (e.g., 2 failed checks before
+   alerting) to suppress flap noise.
+6. **Setting a push-monitor interval shorter than the service's real check-in cadence.** Kuma
+   waits the full interval before marking a push monitor down — if the interval doesn't match how
+   often the service actually pushes, you get false "down" alerts or delayed detection.
+
+## Verification Checklist
+
+- [ ] `docker compose ps` shows `uptime-kuma` running and `http://localhost:3001` loads the
+      dashboard.
+- [ ] Admin account created (one-time setup completed, not left on the setup screen).
+- [ ] At least one monitor added and showing a status (up/down/pending), not stuck on "PENDING".
+- [ ] Test notification sent successfully from Settings → Notifications before assigning it to
+      monitors.
+- [ ] `uptime-kuma-data` volume confirmed present (`docker volume inspect`) and included in the
+      user's backup plan.

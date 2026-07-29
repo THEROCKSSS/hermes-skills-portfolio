@@ -1,12 +1,20 @@
 ---
 name: json-formatter
-description: "Format, validate, and transform JSON — agent + this skill = user gets clean, readable, valid JSON."
+description: Use when a user has messy or minified JSON that needs formatting, wants to validate a JSON file, extract specific fields from nested JSON, or convert a JSON array of objects to CSV.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [json, validation, jsonpath, csv-conversion]
+    related_skills: [csv-toolkit, regex-tester]
 ---
 
 # json-formatter
 
-Format, validate, minify, and transform JSON. The agent handles malformed JSON, pretty-prints messy output, extracts specific fields with JSONPath, and converts between JSON and other formats.
+## Overview
+
+Format, validate, minify, and transform JSON. The agent handles malformed JSON, pretty-prints messy output, extracts specific fields with dot-notation paths, and converts between JSON and other formats.
 
 ## When to Use
 
@@ -151,11 +159,19 @@ import re
 5. If converting to CSV, flatten the array
 6. Return the formatted/validated/extracted result
 
-## Pitfalls
+## Common Pitfalls
 
-- **Trailing commas** — Standard JSON doesn't allow trailing commas. `fix_json` removes them, but validate first to know if there's an issue.
-- **Single quotes** — JSON requires double quotes. JSON5 allows single quotes, but standard parsers reject them.
-- **Comments in JSON** — Standard JSON doesn't allow comments. JSONC and JSON5 do. `fix_json` strips comments for standard compatibility.
-- **Large JSON files** — `json.load()` loads the entire file into memory. For files over 100MB, use `ijson` for streaming parsing.
-- **Unicode** — Use `ensure_ascii=False` to keep Unicode characters readable. With `ensure_ascii=True` (default), they become `\uXXXX` escapes.
-- **Nested arrays** — `json_to_csv` only flattens one level. Deeply nested objects need manual flattening before CSV conversion.
+1. **Trailing commas.** Standard JSON doesn't allow trailing commas. `fix_json` removes them, but validate first to know if there's an issue.
+2. **Single quotes.** JSON requires double quotes. JSON5 allows single quotes, but standard parsers reject them.
+3. **Comments in JSON.** Standard JSON doesn't allow comments. JSONC and JSON5 do. `fix_json` strips comments for standard compatibility.
+4. **Large JSON files.** `json.load()` loads the entire file into memory. For files over 100MB, use `ijson` for streaming parsing.
+5. **Unicode.** Use `ensure_ascii=False` to keep Unicode characters readable. With `ensure_ascii=True` (default), they become `\uXXXX` escapes.
+6. **Nested arrays.** `json_to_csv` only flattens one level. Deeply nested objects need manual flattening before CSV conversion.
+
+## Verification Checklist
+
+- [ ] `validate_json` reports valid before any downstream transform (extract/CSV/minify) is trusted
+- [ ] Output uses `ensure_ascii=False` when Unicode readability matters
+- [ ] `fix_json` output is re-validated with `json.loads` before being treated as fixed
+- [ ] CSV conversion confirms the source resolves to a flat array of objects (not nested) before running
+- [ ] Files over 100MB use a streaming parser (`ijson`), not `json.load`

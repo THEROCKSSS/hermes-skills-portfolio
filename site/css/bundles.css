@@ -1,0 +1,59 @@
+/* Hallmark · macrostructure: Index-First · genre: modern-minimal · theme: Cobalt (system-managed, design.md)
+ * page: Bundles · nav: shared bordered bar + cmd-k (design.md) · footer: Ft2 inline
+ * enrichment: none (typography + hairlines only, per design.md's content-page allowance)
+ * Imports tokens.css + base.css first. Page-specific rules only. No inline OKLCH/hex/font-family below.
+ */
+
+.bundles-page { max-width: 760px; padding-block: var(--space-2xl) var(--space-3xl); }
+.bundles-head { margin-bottom: var(--space-xl); }
+.bundles-title { font-size: var(--text-display-s); margin-bottom: var(--space-sm); }
+.bundles-intro { font-size: var(--text-md); color: var(--color-ink-3); max-width: 62ch; }
+
+.bundles-loading { color: var(--color-ink-3); font-size: var(--text-sm); }
+
+.bundles-list { display: flex; flex-direction: column; }
+
+.bundle-item { border-top: 1px solid var(--color-rule); padding-block: var(--space-lg); }
+.bundle-item:last-child { border-bottom: 1px solid var(--color-rule); }
+
+.bundle-head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-md);
+  cursor: pointer; background: none; border: none; width: 100%; text-align: left; padding: 0;
+  font-family: inherit; color: inherit;
+}
+.bundle-head:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.bundle-heading-text { min-width: 0; }
+.bundle-name { font-family: var(--font-display); font-weight: 600; font-size: var(--text-lg); color: var(--color-ink); overflow-wrap: anywhere; }
+.bundle-oneliner { font-size: var(--text-sm); color: var(--color-ink-3); margin-top: var(--space-3xs); max-width: 58ch; }
+.bundle-count { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; margin-top: var(--space-3xs); }
+
+.bundle-chevron {
+  flex-shrink: 0; color: var(--color-ink-3); transition: transform var(--dur-short) var(--ease-out);
+  margin-top: var(--space-3xs);
+}
+.bundle-item.is-open .bundle-chevron { transform: rotate(180deg); }
+
+.bundle-body {
+  display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--dur-long) var(--ease-in-out);
+}
+.bundle-item.is-open .bundle-body { grid-template-rows: 1fr; }
+.bundle-body-inner { overflow: hidden; }
+.bundle-skills { list-style: none; margin: var(--space-md) 0 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2xs); }
+.bundle-skill-row {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm); border: 1px solid var(--color-rule); border-radius: var(--radius-control);
+  text-decoration: none; color: inherit;
+  transition: border-color var(--dur-micro) var(--ease-out);
+}
+.bundle-skill-row:hover, .bundle-skill-row:focus-visible { border-color: var(--color-accent); }
+.bundle-skill-row:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.bundle-skill-name { font-weight: 600; color: var(--color-ink); font-size: var(--text-sm); }
+.bundle-skill-desc { font-size: var(--text-xs); color: var(--color-ink-3); text-align: right; overflow-wrap: anywhere; }
+
+.bundle-actions { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-md); }
+
+@media (max-width: 40rem) {
+  .bundle-skill-row { flex-direction: column; align-items: flex-start; gap: var(--space-3xs); }
+  .bundle-skill-desc { text-align: left; }
+  .bundle-head { flex-direction: column; gap: var(--space-2xs); }
+}

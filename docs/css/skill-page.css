@@ -1,0 +1,88 @@
+/* Hallmark · pre-emit critique: P5 H4 E5 S4 R5 V4
+ * macrostructure: Docs Detail (Cobalt's docs-home / detail-page affinity) · genre: modern-minimal
+ * theme: Cobalt (locked by design.md) · mode: light-default (dark toggle)
+ * Per-skill static reference page — typography + hairlines only, no enrichment,
+ * no dark graphite band (content/reference page, not a marketing surface).
+ * Reuses the same component language as the catalog's detail overlay
+ * (.detail-header / .detail-tabs / .detail-section / .install-block / .skillmd-viewer)
+ * so the static page and the in-catalog overlay read as one component, not two.
+ * Imports tokens.css + base.css (unmodified) — adds only page-specific rules.
+ */
+
+.skill-main { padding-block: var(--space-xl) var(--space-3xl); }
+
+.skill-shell { max-width: 46rem; }
+
+.skill-back-link { margin-bottom: var(--space-lg); }
+.skill-back-link a {
+  display: inline-flex; align-items: center; gap: var(--space-2xs);
+  font-size: var(--text-sm); font-weight: 500; color: var(--color-ink-3); text-decoration: none;
+  transition: color var(--dur-micro) var(--ease-out);
+}
+.skill-back-link a:hover, .skill-back-link a:focus-visible { color: var(--color-accent); }
+
+/* ============ TIER BADGE (shared shape with the catalog + overlay) ============ */
+.tier-badge {
+  display: inline-flex; align-items: center; font-size: var(--text-xs); font-weight: 600;
+  padding: var(--space-3xs) var(--space-xs); border-radius: 999px; white-space: nowrap;
+  text-transform: uppercase; letter-spacing: 0.03em; width: fit-content;
+}
+.tier-badge.core { background: var(--tier-core-bg); color: var(--tier-core-ink); }
+.tier-badge.featured { background: var(--tier-featured-bg); color: var(--tier-featured-ink); }
+.tier-badge.utility { background: var(--tier-utility-bg); color: var(--tier-utility-ink); }
+
+/* ============ DETAIL HEADER (matches the catalog overlay's header) ============ */
+.detail-header { border-bottom: 1px solid var(--color-rule); padding-bottom: var(--space-lg); margin-bottom: var(--space-lg); }
+.detail-titles { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm); min-width: 0; }
+.detail-titles h1 { font-size: var(--text-3xl); overflow-wrap: anywhere; min-width: 0; }
+.detail-desc { color: var(--color-ink-3); margin-top: var(--space-sm); font-size: var(--text-lg); }
+.detail-meta-row { display: flex; flex-wrap: wrap; gap: var(--space-md); margin-top: var(--space-md); font-size: var(--text-sm); color: var(--color-ink-3); }
+.detail-meta-row strong { color: var(--color-ink-2); }
+
+/* ============ TABS (byte-for-byte the same shape as the overlay's tabs) ============ */
+.detail-tabs { display: flex; gap: var(--space-lg); border-bottom: 1px solid var(--color-rule); margin-bottom: var(--space-lg); overflow-x: auto; }
+.detail-tab {
+  background: none; border: none; padding: var(--space-sm) 0; font-size: var(--text-sm); font-weight: 600;
+  color: var(--color-ink-3); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap;
+  transition: color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out);
+}
+.detail-tab:hover { color: var(--color-ink); }
+.detail-tab.active { color: var(--color-accent); border-bottom-color: var(--color-accent); }
+.detail-tab:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.detail-tab:active { color: var(--color-accent); }
+
+.detail-tab-content { display: none; }
+.detail-tab-content.active { display: block; }
+.detail-section { margin-bottom: var(--space-lg); }
+.detail-section h3 { font-size: var(--text-md); margin-bottom: var(--space-xs); }
+.detail-section ul { margin: 0; padding-left: 1.2em; color: var(--color-ink-2); }
+.detail-section li { margin-bottom: var(--space-2xs); }
+
+/* ============ INSTALL BLOCK ============ */
+.install-block { margin-bottom: var(--space-lg); }
+.install-block h4 { font-size: var(--text-sm); color: var(--color-ink-3); margin-bottom: var(--space-xs); font-weight: 600; }
+.install-row { display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; }
+.install-row code {
+  flex: 1 1 auto; min-width: 0; background: var(--color-graphite); color: var(--color-graphite-ink);
+  border-radius: var(--radius-control); padding: var(--space-sm); font-size: var(--text-xs); overflow-x: auto; white-space: nowrap;
+}
+
+.detail-link { display: block; font-size: var(--text-sm); color: var(--color-accent); text-decoration: none; margin-bottom: var(--space-xs); width: fit-content; max-width: 100%; overflow-wrap: anywhere; }
+.detail-link:hover, .detail-link:focus-visible { text-decoration: underline; }
+
+/* ============ SKILL.md / README VIEWER — a hairline card, not the graphite band ============ */
+.skillmd-viewer {
+  background: var(--color-paper-2); color: var(--color-ink-2); border: 1px solid var(--color-rule);
+  border-radius: var(--radius-control); padding: var(--space-md); font-size: var(--text-xs); font-family: var(--font-mono);
+  white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow-y: auto; line-height: 1.7;
+}
+
+.btn-sm { height: 36px; padding-inline: var(--space-sm); font-size: var(--text-xs); }
+
+/* ============ MOBILE — verified 320/375/414/768 ============ */
+@media (max-width: 40rem) {
+  .detail-titles h1 { font-size: var(--text-2xl); }
+  .install-row { flex-direction: column; align-items: stretch; }
+  .install-row code { white-space: pre-wrap; word-break: break-word; }
+  .install-row .btn { width: 100%; }
+}

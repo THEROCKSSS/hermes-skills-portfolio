@@ -1,10 +1,18 @@
 ---
 name: git-backup
-description: Automate offsite backups of local git repositories to a remote. Covers mirror clones, bundles, scheduled jobs (cron / systemd), remote targets (GitHub, Forgejo, GitLab, S3), verification, and restore. Use when a user wants a hands-off, repeatable backup of one or many git repos.
+description: Use when a user wants a hands-off, repeatable backup of local git repositories to a remote — mirror clones, bundles, scheduled cron/systemd jobs, or restoring from a mirror/bundle to GitHub, Forgejo, GitLab, or S3.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [git, backup, mirror-clone, cron, disaster-recovery]
+    related_skills: [cron-task, forgejo-self-host, dotfiles-manage]
 ---
 
 # git-backup
+
+## Overview
 
 Give an agent this skill and it will set up an automated, verifiable backup of
 the user's git repositories to a remote destination — with no manual `git push`
@@ -168,7 +176,7 @@ rclone copy repo-$(date +%F).bundle remote:bucket/git/
 ```
 Set lifecycle rules to expire very old bundles after N copies exist.
 
-## Verification
+## Backup Verification
 
 A backup you never check is a hope, not a backup. After every run:
 
@@ -204,25 +212,6 @@ git clone repo-2026-07-20.bundle restored-repo
 Then re-point remotes to the live host and push normally. If the original host
 is gone, the mirror/bundle *is* the source of truth.
 
-## Pitfalls
-
-- **`git push` (not `--mirror`) loses tags/branches.** Always use `--mirror` for
-  full-fidelity copies, or `git push --tags` plus every branch explicitly.
-- **Non-bare mirrors drift.** Use `git clone --mirror` (bare) or `remote update
-  --prune`; a normal clone accumulates conflicts on repeated fetches.
-- **Credentials expire.** Use SSH keys or a token stored in the OS keychain, not
-  inline in scripts. On CI, use scoped deploy keys.
-- **Unverified bundles rot silently.** A truncated bundle fails only on clone —
-  always `git bundle verify` immediately after creation.
-- **Clock skew / timezones** in dated filenames cause confusing overwrites;
-  use UTC (`date -u +%FT%TZ`) for filenames.
-- **Huge repos + daily full bundles** waste space; switch to incremental
-  bundles (`--since`) or keep only the mirror for those.
-- **Silent failures.** If the script has no alert path, a broken backup looks
-  identical to a working one. Always log + heartbeat + alert.
-- **Symlinks / submodules.** `git bundle` does not follow submodules; back them
-  up separately or use `git submodule` foreach.
-
 ## Minimal script skeleton (`git-backup.sh`)
 
 ```bash
@@ -234,3 +223,30 @@ git -C "$SRC" bundle create "$BAK/bundles/$NAME-$STAMP.bundle" --all
 git bundle verify "$BAK/bundles/$NAME-$STAMP.bundle"
 echo "$(date -u) $NAME OK" >> /var/log/gb-heartbeat
 ```
+
+## Common Pitfalls
+
+1. **`git push` (not `--mirror`) loses tags/branches.** Always use `--mirror` for
+   full-fidelity copies, or `git push --tags` plus every branch explicitly.
+2. **Non-bare mirrors drift.** Use `git clone --mirror` (bare) or `remote update
+   --prune`; a normal clone accumulates conflicts on repeated fetches.
+3. **Credentials expire.** Use SSH keys or a token stored in the OS keychain, not
+   inline in scripts. On CI, use scoped deploy keys.
+4. **Unverified bundles rot silently.** A truncated bundle fails only on clone —
+   always `git bundle verify` immediately after creation.
+5. **Clock skew / timezones** in dated filenames cause confusing overwrites;
+   use UTC (`date -u +%FT%TZ`) for filenames.
+6. **Huge repos + daily full bundles** waste space; switch to incremental
+   bundles (`--since`) or keep only the mirror for those.
+7. **Silent failures.** If the script has no alert path, a broken backup looks
+   identical to a working one. Always log + heartbeat + alert.
+8. **Symlinks / submodules.** `git bundle` does not follow submodules; back them
+   up separately or use `git submodule` foreach.
+
+## Verification Checklist
+
+- [ ] `git bundle verify <file>` (or `git fsck --connectivity-only` for mirrors) returns success after the backup run
+- [ ] The destination remote's ref list matches the source (`git ls-remote` compared, or a clone/unbundle into a temp dir confirms `git log -1` works)
+- [ ] The backup used `--mirror` (not a plain `git push`), so all branches, tags, and notes were captured
+- [ ] The scheduled job (cron/systemd timer) is enabled, and the heartbeat file has a timestamp within the expected window
+- [ ] Credentials are stored via SSH key or OS keychain/token — not hardcoded in the script

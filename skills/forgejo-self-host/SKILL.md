@@ -1,10 +1,18 @@
 ---
 name: forgejo-self-host
-description: "Set up a self-hosted Forgejo instance with repos, issues, and CI — agent + this skill = user gets their own private Git server running locally."
+description: "Use when the user wants a self-hosted, private Git server (repos, issues, pull requests, CI, wiki) running locally via Docker instead of relying on GitHub or GitLab."
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [forgejo, self-hosted-git, docker-compose, ci-cd, gitea-fork]
+    related_skills: [caddy-reverse-proxy, git-backup, github-actions-ci]
 ---
 
 # forgejo-self-host
+
+## Overview
 
 Deploy a self-hosted Forgejo instance using Docker. Forgejo is a lightweight, self-hosted Git server (a soft fork of Gitea) with repos, issues, pull requests, Actions CI, and a wiki. This skill gets it running on the user's machine in minutes.
 
@@ -183,11 +191,18 @@ docker run --rm -v forgejo-data:/data -v $(pwd):/backup ubuntu \
   tar czf /backup/forgejo-backup-$(date +%Y%m%d).tar.gz /data
 ```
 
-## Pitfalls
+## Common Pitfalls
 
-- **Port 3000 in use** — If another service uses port 3000, change the port mapping in docker-compose.yml (e.g., `"3001:3000"`) and access Forgejo at `http://localhost:3001`.
-- **Default branch is `main` for new repos** — Created via the web UI or API, new repos default to `main` (not `master`). Push to `main`.
-- **Admin password via CLI sets must_change_password** — On some Forgejo builds, creating a user via CLI sets a "must change password" flag that locks the user out of admin APIs. If this happens, change the password once via the web UI to clear the flag.
-- **Runner can't connect** — The runner needs to reach Forgejo. If running in Docker, use `http://host.docker.internal:3000` (not `localhost:3000` — that's the runner's own localhost).
-- **SQLite is fine for small setups** — For single-user or small-team use, SQLite is sufficient. Switch to PostgreSQL only if you have many concurrent users.
-- **HTTPS/TLS** — Forgejo serves HTTP by default. For HTTPS, put it behind a reverse proxy (Caddy, nginx, Traefik) with TLS termination.
+1. **Port 3000 in use** — If another service uses port 3000, change the port mapping in docker-compose.yml (e.g., `"3001:3000"`) and access Forgejo at `http://localhost:3001`.
+2. **Default branch is `main` for new repos** — Created via the web UI or API, new repos default to `main` (not `master`). Push to `main`.
+3. **Admin password via CLI sets must_change_password** — On some Forgejo builds, creating a user via CLI sets a "must change password" flag that locks the user out of admin APIs. If this happens, change the password once via the web UI to clear the flag.
+4. **Runner can't connect** — The runner needs to reach Forgejo. If running in Docker, use `http://host.docker.internal:3000` (not `localhost:3000` — that's the runner's own localhost).
+5. **SQLite is fine for small setups** — For single-user or small-team use, SQLite is sufficient. Switch to PostgreSQL only if you have many concurrent users.
+6. **HTTPS/TLS** — Forgejo serves HTTP by default. For HTTPS, put it behind a reverse proxy (Caddy, nginx, Traefik) with TLS termination.
+
+## Verification Checklist
+
+- [ ] `curl -s http://localhost:3000/api/v1/version` returns a version string
+- [ ] Admin login succeeds via the web UI at `http://localhost:3000`
+- [ ] A test repo pushes successfully over the configured remote (HTTPS token or SSH on port 2222)
+- [ ] If Actions was configured: the runner shows as connected under Site Administration → Actions → Runners, and the sample `.forgejo/workflows/ci.yml` run succeeds
