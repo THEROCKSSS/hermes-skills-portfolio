@@ -103,11 +103,19 @@
         <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
           <pre class="skillmd-viewer">---
 name: ollama-local
-description: &quot;Run local LLMs with Ollama — agent + this skill = user gets a private, offline LLM running on their machine.&quot;
+description: Use when the user wants to run an LLM locally without cloud API costs or data leaving their machine — installing Ollama, pulling/managing models, calling the REST API (generate, chat, embeddings, streaming), picking a model for their RAM budget, or wiring Ollama into Hermes as a provider.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [ollama, local-llm, self-hosted, embeddings, offline-ai]
+    related_skills: [http-api-tester]
 ---
 
 # ollama-local
+
+## Overview
 
 Set up and use Ollama for running large language models locally. Ollama runs models on your machine — no API keys, no cloud, no per-token costs. The agent installs Ollama, pulls models, and shows you how to use them via the REST API or command line.
 
@@ -292,69 +300,77 @@ hermes config set auxiliary.compression.model llama3.2:3b
 - **Keep models loaded** — Ollama keeps models in memory for 5 minutes after last use by default. Increase this with `OLLAMA_KEEP_ALIVE` env var if you&#x27;re making frequent requests.
 - **Quantization** — Ollama uses 4-bit quantization by default, which reduces memory usage by ~70% with minimal quality loss. No configuration needed.
 
-## Pitfalls
+## Common Pitfalls
 
-- **Out of memory** — If the model is larger than your available RAM, Ollama will try to use disk swap and performance will be unusable. Use a smaller model or add RAM.
-- **First run is slow** — The first time you pull a model, it downloads the full model file. Subsequent runs are instant (model is cached).
-- **Port conflicts** — Ollama uses port 11434 by default. If another service uses it, set `OLLAMA_HOST=0.0.0.0:11435` before starting.
-- **No GPU detected** — On Linux, ensure NVIDIA drivers and CUDA toolkit are installed. On Windows, ensure the NVIDIA driver is up to date. On Mac, Apple Silicon is auto-detected.
-- **Context length limits** — Local models have smaller context windows than cloud models. Llama 3.1 supports 128k tokens, but running at full context requires massive RAM. Keep prompts under 8k tokens for 8B models.
-- **Concurrent requests** — Ollama processes requests sequentially by default. If you need concurrency, set `OLLAMA_NUM_PARALLEL` env var.
+1. **Model larger than available RAM.** Ollama will fall back to disk swap and performance becomes unusable rather than failing outright — check `ollama ps` to confirm the model is fully resident in memory, and use a smaller model or add RAM if not.
+2. **First pull looks &quot;stuck&quot;.** The first `ollama pull` downloads the full model file (multiple GB); this can take minutes on a slow connection. Subsequent runs use the cached model and start instantly — don&#x27;t kill the process assuming it&#x27;s hung.
+3. **Port conflict on 11434.** If another service already binds Ollama&#x27;s default port, the server fails to start silently in some setups. Set `OLLAMA_HOST=0.0.0.0:11435` before starting and update client URLs to match.
+4. **GPU not detected.** On Linux, missing NVIDIA drivers/CUDA toolkit means Ollama silently falls back to CPU (much slower) instead of erroring. Verify with `nvidia-smi` before assuming GPU is in use.
+5. **Prompts exceed local context comfortably.** Local models advertise large context windows (e.g., 128k for Llama 3.1) but running at full context requires far more RAM than the base model size suggests. Keep prompts under ~8k tokens for 8B-class models in practice.
+6. **Requests queue instead of running in parallel.** Ollama processes requests sequentially by default, so concurrent callers block each other. Set `OLLAMA_NUM_PARALLEL` if concurrency is needed.
+
+## Verification Checklist
+
+- [ ] `ollama --version` succeeds and `ollama list` shows the pulled model
+- [ ] `ollama ps` confirms the model is loaded and shows a reasonable memory footprint (not swapping)
+- [ ] A test `curl http://localhost:11434/api/generate` call returns a non-empty `response` field
+- [ ] If GPU acceleration was expected, `ollama ps` or system GPU monitor (`nvidia-smi`) confirms it&#x27;s actually being used
+- [ ] If wired into Hermes as a provider, `hermes config get model.base_url` reflects the correct local URL and a real Hermes call round-trips successfully
 </pre>
         </div>
 
         <div class="detail-tab-content" id="tab-readme" role="tabpanel">
-          <pre class="skillmd-viewer"># ollama-local
-
-Run large language models locally with Ollama — no API keys, no cloud, no per-token costs.
-
-## What it does
-
-The agent installs Ollama, pulls a model that fits your hardware, and shows you how to use it via the command line or REST API. Models run entirely on your machine — nothing leaves your network. You can use the local model for chat, code generation, embeddings, or as a provider for Hermes Agent.
-
-## Install
-
-```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ollama-local/SKILL.md
-```
-
-## How to use
-
-```
-&quot;Set up Ollama with a model that fits my 16GB RAM laptop&quot;
-```
-
-The agent:
-1. Installs Ollama (or verifies it&#x27;s installed)
-2. Recommends a model based on your RAM (llama3.1:8b for 16GB)
-3. Pulls the model: `ollama pull llama3.1:8b`
-4. Tests it: `ollama run llama3.1:8b &quot;Hello&quot;`
-5. Shows you the REST API endpoint at http://localhost:11434
-
-## Model selection
-
-| Model | RAM needed | Best for |
-|---|---|---|
-| llama3.2:3b | 4 GB | Fast, simple tasks |
-| llama3.1:8b | 8 GB | General purpose |
-| qwen2.5-coder:7b | 8 GB | Code generation |
-| llama3.1:70b | 64 GB | Complex reasoning |
-
-## Example
-
-```
-User: &quot;I want to use a local model for my Hermes agent instead of paying for API calls&quot;
-
-Agent:
-  1. Checks RAM: 16 GB available
-  2. Recommends: llama3.1:8b (fits in RAM, good quality)
-  3. Pulls: ollama pull llama3.1:8b
-  4. Configures Hermes:
-     hermes config set model.provider custom
-     hermes config set model.base_url http://localhost:11434/v1
-     hermes config set model.default llama3.1:8b
-  5. Returns: &quot;Hermes is now using your local model. No API costs.&quot;
-```
+          <pre class="skillmd-viewer"># ollama-local
+
+Run large language models locally with Ollama — no API keys, no cloud, no per-token costs.
+
+## What it does
+
+The agent installs Ollama, pulls a model that fits your hardware, and shows you how to use it via the command line or REST API. Models run entirely on your machine — nothing leaves your network. You can use the local model for chat, code generation, embeddings, or as a provider for Hermes Agent.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ollama-local/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Set up Ollama with a model that fits my 16GB RAM laptop&quot;
+```
+
+The agent:
+1. Installs Ollama (or verifies it&#x27;s installed)
+2. Recommends a model based on your RAM (llama3.1:8b for 16GB)
+3. Pulls the model: `ollama pull llama3.1:8b`
+4. Tests it: `ollama run llama3.1:8b &quot;Hello&quot;`
+5. Shows you the REST API endpoint at http://localhost:11434
+
+## Model selection
+
+| Model | RAM needed | Best for |
+|---|---|---|
+| llama3.2:3b | 4 GB | Fast, simple tasks |
+| llama3.1:8b | 8 GB | General purpose |
+| qwen2.5-coder:7b | 8 GB | Code generation |
+| llama3.1:70b | 64 GB | Complex reasoning |
+
+## Example
+
+```
+User: &quot;I want to use a local model for my Hermes agent instead of paying for API calls&quot;
+
+Agent:
+  1. Checks RAM: 16 GB available
+  2. Recommends: llama3.1:8b (fits in RAM, good quality)
+  3. Pulls: ollama pull llama3.1:8b
+  4. Configures Hermes:
+     hermes config set model.provider custom
+     hermes config set model.base_url http://localhost:11434/v1
+     hermes config set model.default llama3.1:8b
+  5. Returns: &quot;Hermes is now using your local model. No API costs.&quot;
+```
 </pre>
         </div>
       </div>

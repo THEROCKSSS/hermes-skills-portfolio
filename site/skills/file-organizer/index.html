@@ -101,207 +101,222 @@
         </div>
 
         <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
-          <pre class="skillmd-viewer">---
-name: file-organizer
-description: &quot;Organize files by type, date, or pattern — agent + this skill = user gets a clean directory structure.&quot;
-version: 1.0.0
----
-
-# file-organizer
-
-Organize files in a directory by type, date, or custom patterns. The agent scans a directory, categorizes files, and moves them into a structured layout. Supports dry-run mode to preview before moving.
-
-## When to Use
-
-- The user has a messy directory (Downloads, Desktop) and wants it organized.
-- The user wants to sort files by type, date, or name pattern.
-- The user wants to find and remove duplicate files.
-- The user says &quot;organize my downloads&quot;, &quot;clean up this folder&quot;, or &quot;sort these files&quot;.
-
-## Organize by Type
-
-```python
-import os
-import shutil
-from pathlib import Path
-
-CATEGORY_MAP = {
-    &quot;Images&quot;: [&quot;.jpg&quot;, &quot;.jpeg&quot;, &quot;.png&quot;, &quot;.gif&quot;, &quot;.bmp&quot;, &quot;.webp&quot;, &quot;.svg&quot;, &quot;.heic&quot;],
-    &quot;Videos&quot;: [&quot;.mp4&quot;, &quot;.avi&quot;, &quot;.mov&quot;, &quot;.mkv&quot;, &quot;.wmv&quot;, &quot;.flv&quot;, &quot;.webm&quot;],
-    &quot;Audio&quot;: [&quot;.mp3&quot;, &quot;.wav&quot;, &quot;.flac&quot;, &quot;.aac&quot;, &quot;.ogg&quot;, &quot;.m4a&quot;],
-    &quot;Documents&quot;: [&quot;.pdf&quot;, &quot;.doc&quot;, &quot;.docx&quot;, &quot;.txt&quot;, &quot;.md&quot;, &quot;.odt&quot;, &quot;.rtf&quot;, &quot;.pages&quot;],
-    &quot;Spreadsheets&quot;: [&quot;.xls&quot;, &quot;.xlsx&quot;, &quot;.csv&quot;, &quot;.ods&quot;, &quot;.numbers&quot;],
-    &quot;Presentations&quot;: [&quot;.ppt&quot;, &quot;.pptx&quot;, &quot;.key&quot;, &quot;.odp&quot;],
-    &quot;Archives&quot;: [&quot;.zip&quot;, &quot;.tar&quot;, &quot;.gz&quot;, &quot;.rar&quot;, &quot;.7z&quot;, &quot;.bz2&quot;, &quot;.xz&quot;],
-    &quot;Code&quot;: [&quot;.py&quot;, &quot;.js&quot;, &quot;.ts&quot;, &quot;.jsx&quot;, &quot;.tsx&quot;, &quot;.java&quot;, &quot;.cpp&quot;, &quot;.c&quot;, &quot;.h&quot;, &quot;.go&quot;, &quot;.rs&quot;, &quot;.rb&quot;, &quot;.php&quot;, &quot;.sh&quot;, &quot;.html&quot;, &quot;.css&quot;, &quot;.json&quot;, &quot;.xml&quot;, &quot;.yaml&quot;, &quot;.yml&quot;],
-    &quot;Executables&quot;: [&quot;.exe&quot;, &quot;.msi&quot;, &quot;.deb&quot;, &quot;.rpm&quot;, &quot;.dmg&quot;, &quot;.app&quot;, &quot;.apk&quot;],
-    &quot;Fonts&quot;: [&quot;.ttf&quot;, &quot;.otf&quot;, &quot;.woff&quot;, &quot;.woff2&quot;, &quot;.eot&quot;],
-    &quot;Data&quot;: [&quot;.db&quot;, &quot;.sqlite&quot;, &quot;.sql&quot;, &quot;.json&quot;, &quot;.csv&quot;],
-}
-
-def organize_by_type(directory: str, dry_run: bool = True) -&gt; dict:
-    &quot;&quot;&quot;Organize files into subdirectories by category.&quot;&quot;&quot;
-    moved = {}
-    skipped = []
-
-    for item in Path(directory).iterdir():
-        if item.is_dir():
-            continue
-
-        ext = item.suffix.lower()
-        category = &quot;Misc&quot;
-        for cat, extensions in CATEGORY_MAP.items():
-            if ext in extensions:
-                category = cat
-                break
-
-        target_dir = Path(directory) / category
-        target_path = target_dir / item.name
-
-        if dry_run:
-            moved[str(item)] = str(target_path)
-        else:
-            target_dir.mkdir(exist_ok=True)
-            if target_path.exists():
-                # Append number to avoid overwriting
-                stem = item.stem
-                i = 1
-                while target_path.exists():
-                    target_path = target_dir / f&quot;{stem}_{i}{item.suffix}&quot;
-                    i += 1
-            shutil.move(str(item), str(target_path))
-            moved[str(item)] = str(target_path)
-
-    return {&quot;moved&quot;: moved, &quot;count&quot;: len(moved), &quot;dry_run&quot;: dry_run}
-```
-
-## Organize by Date
-
-```python
-import datetime
-
-def organize_by_date(directory: str, dry_run: bool = True) -&gt; dict:
-    &quot;&quot;&quot;Organize files into year/month subdirectories by modification date.&quot;&quot;&quot;
-    moved = {}
-
-    for item in Path(directory).iterdir():
-        if item.is_dir():
-            continue
-
-        mtime = datetime.datetime.fromtimestamp(item.stat().st_mtime)
-        year = str(mtime.year)
-        month = mtime.strftime(&quot;%m-%B&quot;)
-
-        target_dir = Path(directory) / year / month
-        target_path = target_dir / item.name
-
-        if dry_run:
-            moved[str(item)] = str(target_path)
-        else:
-            target_dir.mkdir(parents=True, exist_ok=True)
-            shutil.move(str(item), str(target_path))
-            moved[str(item)] = str(target_path)
-
-    return {&quot;moved&quot;: moved, &quot;count&quot;: len(moved), &quot;dry_run&quot;: dry_run}
-```
-
-## Find Duplicates
-
-```python
-import hashlib
-
-def find_duplicates(directory: str) -&gt; dict:
-    &quot;&quot;&quot;Find duplicate files by content hash.&quot;&quot;&quot;
-    hashes = {}
-    duplicates = {}
-
-    for item in Path(directory).rglob(&quot;*&quot;):
-        if item.is_file():
-            h = hashlib.sha256(item.read_bytes()).hexdigest()
-            if h in hashes:
-                if h not in duplicates:
-                    duplicates[h] = [hashes[h]]
-                duplicates[h].append(str(item))
-            else:
-                hashes[h] = str(item)
-
-    return {
-        &quot;total_files&quot;: len(hashes) + sum(len(v) - 1 for v in duplicates.values()),
-        &quot;duplicate_groups&quot;: len(duplicates),
-        &quot;duplicates&quot;: duplicates,
-    }
-```
-
-## Workflow
-
-1. Identify the directory to organize
-2. Run in dry-run mode first to show what would move where
-3. Show the user the proposed organization
-4. If approved, run without dry-run to actually move files
-5. Report: files moved, categories created, any duplicates found
-
-## Pitfalls
-
-- **Always dry-run first** — Never move files without showing the user what will happen. A wrong category mapping could scatter files unexpectedly.
-- **Name collisions** — Files with the same name in different categories will collide. The code handles this by appending `_1`, `_2`, etc.
-- **Symlinks** — `Path.iterdir()` includes symlinks. Moving a symlink moves the link, not the target. Handle symlinks separately if needed.
-- **Hidden files** — Files starting with `.` (`.gitignore`, `.env`) are included by default. Filter them out if the user doesn&#x27;t want them moved.
-- **Permission errors** — Moving files requires write permission on both the source and target. On Windows, files in use can&#x27;t be moved.
-- **Large directories** — `find_duplicates` reads every file to hash it. For directories with thousands of large files, this is slow. Consider hashing only files above a size threshold first.
+          <pre class="skillmd-viewer">---
+name: file-organizer
+description: &quot;Use when the user has a messy directory (Downloads, Desktop) and wants files organized by type or date, or wants duplicate files found — with a dry-run preview shown before anything actually moves.&quot;
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [file-management, deduplication, directory-cleanup, dry-run, file-sorting]
+    related_skills: [csv-toolkit, pdf-extract]
+---
+
+# file-organizer
+
+## Overview
+
+Organize files in a directory by type, date, or custom patterns. The agent scans a directory, categorizes files, and moves them into a structured layout. Supports dry-run mode to preview before moving.
+
+## When to Use
+
+- The user has a messy directory (Downloads, Desktop) and wants it organized.
+- The user wants to sort files by type, date, or name pattern.
+- The user wants to find and remove duplicate files.
+- The user says &quot;organize my downloads&quot;, &quot;clean up this folder&quot;, or &quot;sort these files&quot;.
+
+## Organize by Type
+
+```python
+import os
+import shutil
+from pathlib import Path
+
+CATEGORY_MAP = {
+    &quot;Images&quot;: [&quot;.jpg&quot;, &quot;.jpeg&quot;, &quot;.png&quot;, &quot;.gif&quot;, &quot;.bmp&quot;, &quot;.webp&quot;, &quot;.svg&quot;, &quot;.heic&quot;],
+    &quot;Videos&quot;: [&quot;.mp4&quot;, &quot;.avi&quot;, &quot;.mov&quot;, &quot;.mkv&quot;, &quot;.wmv&quot;, &quot;.flv&quot;, &quot;.webm&quot;],
+    &quot;Audio&quot;: [&quot;.mp3&quot;, &quot;.wav&quot;, &quot;.flac&quot;, &quot;.aac&quot;, &quot;.ogg&quot;, &quot;.m4a&quot;],
+    &quot;Documents&quot;: [&quot;.pdf&quot;, &quot;.doc&quot;, &quot;.docx&quot;, &quot;.txt&quot;, &quot;.md&quot;, &quot;.odt&quot;, &quot;.rtf&quot;, &quot;.pages&quot;],
+    &quot;Spreadsheets&quot;: [&quot;.xls&quot;, &quot;.xlsx&quot;, &quot;.csv&quot;, &quot;.ods&quot;, &quot;.numbers&quot;],
+    &quot;Presentations&quot;: [&quot;.ppt&quot;, &quot;.pptx&quot;, &quot;.key&quot;, &quot;.odp&quot;],
+    &quot;Archives&quot;: [&quot;.zip&quot;, &quot;.tar&quot;, &quot;.gz&quot;, &quot;.rar&quot;, &quot;.7z&quot;, &quot;.bz2&quot;, &quot;.xz&quot;],
+    &quot;Code&quot;: [&quot;.py&quot;, &quot;.js&quot;, &quot;.ts&quot;, &quot;.jsx&quot;, &quot;.tsx&quot;, &quot;.java&quot;, &quot;.cpp&quot;, &quot;.c&quot;, &quot;.h&quot;, &quot;.go&quot;, &quot;.rs&quot;, &quot;.rb&quot;, &quot;.php&quot;, &quot;.sh&quot;, &quot;.html&quot;, &quot;.css&quot;, &quot;.json&quot;, &quot;.xml&quot;, &quot;.yaml&quot;, &quot;.yml&quot;],
+    &quot;Executables&quot;: [&quot;.exe&quot;, &quot;.msi&quot;, &quot;.deb&quot;, &quot;.rpm&quot;, &quot;.dmg&quot;, &quot;.app&quot;, &quot;.apk&quot;],
+    &quot;Fonts&quot;: [&quot;.ttf&quot;, &quot;.otf&quot;, &quot;.woff&quot;, &quot;.woff2&quot;, &quot;.eot&quot;],
+    &quot;Data&quot;: [&quot;.db&quot;, &quot;.sqlite&quot;, &quot;.sql&quot;, &quot;.json&quot;, &quot;.csv&quot;],
+}
+
+def organize_by_type(directory: str, dry_run: bool = True) -&gt; dict:
+    &quot;&quot;&quot;Organize files into subdirectories by category.&quot;&quot;&quot;
+    moved = {}
+    skipped = []
+
+    for item in Path(directory).iterdir():
+        if item.is_dir():
+            continue
+
+        ext = item.suffix.lower()
+        category = &quot;Misc&quot;
+        for cat, extensions in CATEGORY_MAP.items():
+            if ext in extensions:
+                category = cat
+                break
+
+        target_dir = Path(directory) / category
+        target_path = target_dir / item.name
+
+        if dry_run:
+            moved[str(item)] = str(target_path)
+        else:
+            target_dir.mkdir(exist_ok=True)
+            if target_path.exists():
+                # Append number to avoid overwriting
+                stem = item.stem
+                i = 1
+                while target_path.exists():
+                    target_path = target_dir / f&quot;{stem}_{i}{item.suffix}&quot;
+                    i += 1
+            shutil.move(str(item), str(target_path))
+            moved[str(item)] = str(target_path)
+
+    return {&quot;moved&quot;: moved, &quot;count&quot;: len(moved), &quot;dry_run&quot;: dry_run}
+```
+
+## Organize by Date
+
+```python
+import datetime
+
+def organize_by_date(directory: str, dry_run: bool = True) -&gt; dict:
+    &quot;&quot;&quot;Organize files into year/month subdirectories by modification date.&quot;&quot;&quot;
+    moved = {}
+
+    for item in Path(directory).iterdir():
+        if item.is_dir():
+            continue
+
+        mtime = datetime.datetime.fromtimestamp(item.stat().st_mtime)
+        year = str(mtime.year)
+        month = mtime.strftime(&quot;%m-%B&quot;)
+
+        target_dir = Path(directory) / year / month
+        target_path = target_dir / item.name
+
+        if dry_run:
+            moved[str(item)] = str(target_path)
+        else:
+            target_dir.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(item), str(target_path))
+            moved[str(item)] = str(target_path)
+
+    return {&quot;moved&quot;: moved, &quot;count&quot;: len(moved), &quot;dry_run&quot;: dry_run}
+```
+
+## Find Duplicates
+
+```python
+import hashlib
+
+def find_duplicates(directory: str) -&gt; dict:
+    &quot;&quot;&quot;Find duplicate files by content hash.&quot;&quot;&quot;
+    hashes = {}
+    duplicates = {}
+
+    for item in Path(directory).rglob(&quot;*&quot;):
+        if item.is_file():
+            h = hashlib.sha256(item.read_bytes()).hexdigest()
+            if h in hashes:
+                if h not in duplicates:
+                    duplicates[h] = [hashes[h]]
+                duplicates[h].append(str(item))
+            else:
+                hashes[h] = str(item)
+
+    return {
+        &quot;total_files&quot;: len(hashes) + sum(len(v) - 1 for v in duplicates.values()),
+        &quot;duplicate_groups&quot;: len(duplicates),
+        &quot;duplicates&quot;: duplicates,
+    }
+```
+
+## Workflow
+
+1. Identify the directory to organize
+2. Run in dry-run mode first to show what would move where
+3. Show the user the proposed organization
+4. If approved, run without dry-run to actually move files
+5. Report: files moved, categories created, any duplicates found
+
+## Common Pitfalls
+
+1. **Always dry-run first** — Never move files without showing the user what will happen. A wrong category mapping could scatter files unexpectedly.
+2. **Name collisions** — Files with the same name in different categories will collide. The code handles this by appending `_1`, `_2`, etc.
+3. **Symlinks** — `Path.iterdir()` includes symlinks. Moving a symlink moves the link, not the target. Handle symlinks separately if needed.
+4. **Hidden files** — Files starting with `.` (`.gitignore`, `.env`) are included by default. Filter them out if the user doesn&#x27;t want them moved.
+5. **Permission errors** — Moving files requires write permission on both the source and target. On Windows, files in use can&#x27;t be moved.
+6. **Large directories** — `find_duplicates` reads every file to hash it. For directories with thousands of large files, this is slow. Consider hashing only files above a size threshold first.
+
+## Verification Checklist
+
+- [ ] Dry-run output was shown to and approved by the user before any real move ran
+- [ ] Post-move file count matches pre-move count — nothing was lost or silently overwritten
+- [ ] Any name-collision case produced a `_1`/`_2` suffixed file instead of overwriting the original
+- [ ] `find_duplicates` groups spot-checked (same hash, same actual content) before deleting anything
 </pre>
         </div>
 
         <div class="detail-tab-content" id="tab-readme" role="tabpanel">
-          <pre class="skillmd-viewer"># file-organizer
-
-Organize files by type, date, or content — clean up messy directories automatically.
-
-## What it does
-
-The agent scans a directory and organizes files into subdirectories by category (Images, Videos, Documents, Code, etc.) or by modification date (Year/Month). Includes dry-run mode to preview before moving, and a duplicate finder that identifies files with identical content by hash.
-
-## Install
-
-```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/file-organizer/SKILL.md
-```
-
-## How to use
-
-```
-&quot;Organize my Downloads folder by file type&quot;
-```
-
-The agent:
-1. Scans the directory
-2. Runs in dry-run mode first — shows you what would move where
-3. If approved, creates category folders and moves files
-4. Reports: &quot;Moved 47 files into 8 categories&quot;
-
-## Organize modes
-
-| Mode | How it sorts |
-|---|---|
-| By type | Images/, Videos/, Documents/, Code/, etc. |
-| By date | 2026/07-July/, 2026/08-August/, etc. |
-| Duplicates | Finds files with identical content by SHA-256 |
-
-## Example
-
-```
-User: &quot;Clean up my Desktop, but show me what you&#x27;ll do first&quot;
-
-Agent:
-  1. Dry run on ~/Desktop
-  2. Shows: &quot;Would move 23 files:
-     screenshot.png → Images/
-     report.pdf → Documents/
-     app.py → Code/
-     vacation.mp4 → Videos/&quot;
-  3. User approves
-  4. Moves files, creates category folders
-  5. Returns: &quot;Done. 23 files organized into 6 categories.&quot;
-```
+          <pre class="skillmd-viewer"># file-organizer
+
+Organize files by type, date, or content — clean up messy directories automatically.
+
+## What it does
+
+The agent scans a directory and organizes files into subdirectories by category (Images, Videos, Documents, Code, etc.) or by modification date (Year/Month). Includes dry-run mode to preview before moving, and a duplicate finder that identifies files with identical content by hash.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/file-organizer/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Organize my Downloads folder by file type&quot;
+```
+
+The agent:
+1. Scans the directory
+2. Runs in dry-run mode first — shows you what would move where
+3. If approved, creates category folders and moves files
+4. Reports: &quot;Moved 47 files into 8 categories&quot;
+
+## Organize modes
+
+| Mode | How it sorts |
+|---|---|
+| By type | Images/, Videos/, Documents/, Code/, etc. |
+| By date | 2026/07-July/, 2026/08-August/, etc. |
+| Duplicates | Finds files with identical content by SHA-256 |
+
+## Example
+
+```
+User: &quot;Clean up my Desktop, but show me what you&#x27;ll do first&quot;
+
+Agent:
+  1. Dry run on ~/Desktop
+  2. Shows: &quot;Would move 23 files:
+     screenshot.png → Images/
+     report.pdf → Documents/
+     app.py → Code/
+     vacation.mp4 → Videos/&quot;
+  3. User approves
+  4. Moves files, creates category folders
+  5. Returns: &quot;Done. 23 files organized into 6 categories.&quot;
+```
 </pre>
         </div>
       </div>

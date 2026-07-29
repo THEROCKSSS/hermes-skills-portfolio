@@ -4,6 +4,8 @@ All notable changes to the Hermes Skills Portfolio. Generated from real git hist
 
 ## 2026-07-29
 
+- `21772ec` Fixes CI: stops quoting the forbidden-reference patterns inside AGENTS.md, which had been tripping the same check it was describing.
+- `7232b74` Adds project foundation docs (CLAUDE.md, ARCHITECTURE.md, CHANGELOG.md) and fixes a reveal-on-scroll bug that kept the Submit page's pending-sources section permanently invisible.
 - `3fe43b7` Redesigns the entire site with the Cobalt design system across four pages (Catalog, Bundles, Changelog, Submit), rewrites all 51 skill docs to the real Hermes skill schema, and adds a curated-bundles page plus an external-sourcing review pipeline.
 
 ## 2026-07-20

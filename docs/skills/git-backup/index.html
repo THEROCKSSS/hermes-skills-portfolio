@@ -131,11 +131,19 @@
         <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
           <pre class="skillmd-viewer">---
 name: git-backup
-description: Automate offsite backups of local git repositories to a remote. Covers mirror clones, bundles, scheduled jobs (cron / systemd), remote targets (GitHub, Forgejo, GitLab, S3), verification, and restore. Use when a user wants a hands-off, repeatable backup of one or many git repos.
+description: Use when a user wants a hands-off, repeatable backup of local git repositories to a remote — mirror clones, bundles, scheduled cron/systemd jobs, or restoring from a mirror/bundle to GitHub, Forgejo, GitLab, or S3.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [git, backup, mirror-clone, cron, disaster-recovery]
+    related_skills: [cron-task, forgejo-self-host, dotfiles-manage]
 ---
 
 # git-backup
+
+## Overview
 
 Give an agent this skill and it will set up an automated, verifiable backup of
 the user&#x27;s git repositories to a remote destination — with no manual `git push`
@@ -299,7 +307,7 @@ rclone copy repo-$(date +%F).bundle remote:bucket/git/
 ```
 Set lifecycle rules to expire very old bundles after N copies exist.
 
-## Verification
+## Backup Verification
 
 A backup you never check is a hope, not a backup. After every run:
 
@@ -335,25 +343,6 @@ git clone repo-2026-07-20.bundle restored-repo
 Then re-point remotes to the live host and push normally. If the original host
 is gone, the mirror/bundle *is* the source of truth.
 
-## Pitfalls
-
-- **`git push` (not `--mirror`) loses tags/branches.** Always use `--mirror` for
-  full-fidelity copies, or `git push --tags` plus every branch explicitly.
-- **Non-bare mirrors drift.** Use `git clone --mirror` (bare) or `remote update
-  --prune`; a normal clone accumulates conflicts on repeated fetches.
-- **Credentials expire.** Use SSH keys or a token stored in the OS keychain, not
-  inline in scripts. On CI, use scoped deploy keys.
-- **Unverified bundles rot silently.** A truncated bundle fails only on clone —
-  always `git bundle verify` immediately after creation.
-- **Clock skew / timezones** in dated filenames cause confusing overwrites;
-  use UTC (`date -u +%FT%TZ`) for filenames.
-- **Huge repos + daily full bundles** waste space; switch to incremental
-  bundles (`--since`) or keep only the mirror for those.
-- **Silent failures.** If the script has no alert path, a broken backup looks
-  identical to a working one. Always log + heartbeat + alert.
-- **Symlinks / submodules.** `git bundle` does not follow submodules; back them
-  up separately or use `git submodule` foreach.
-
 ## Minimal script skeleton (`git-backup.sh`)
 
 ```bash
@@ -365,76 +354,103 @@ git -C &quot;$SRC&quot; bundle create &quot;$BAK/bundles/$NAME-$STAMP.bundle&quo
 git bundle verify &quot;$BAK/bundles/$NAME-$STAMP.bundle&quot;
 echo &quot;$(date -u) $NAME OK&quot; &gt;&gt; /var/log/gb-heartbeat
 ```
+
+## Common Pitfalls
+
+1. **`git push` (not `--mirror`) loses tags/branches.** Always use `--mirror` for
+   full-fidelity copies, or `git push --tags` plus every branch explicitly.
+2. **Non-bare mirrors drift.** Use `git clone --mirror` (bare) or `remote update
+   --prune`; a normal clone accumulates conflicts on repeated fetches.
+3. **Credentials expire.** Use SSH keys or a token stored in the OS keychain, not
+   inline in scripts. On CI, use scoped deploy keys.
+4. **Unverified bundles rot silently.** A truncated bundle fails only on clone —
+   always `git bundle verify` immediately after creation.
+5. **Clock skew / timezones** in dated filenames cause confusing overwrites;
+   use UTC (`date -u +%FT%TZ`) for filenames.
+6. **Huge repos + daily full bundles** waste space; switch to incremental
+   bundles (`--since`) or keep only the mirror for those.
+7. **Silent failures.** If the script has no alert path, a broken backup looks
+   identical to a working one. Always log + heartbeat + alert.
+8. **Symlinks / submodules.** `git bundle` does not follow submodules; back them
+   up separately or use `git submodule` foreach.
+
+## Verification Checklist
+
+- [ ] `git bundle verify &lt;file&gt;` (or `git fsck --connectivity-only` for mirrors) returns success after the backup run
+- [ ] The destination remote&#x27;s ref list matches the source (`git ls-remote` compared, or a clone/unbundle into a temp dir confirms `git log -1` works)
+- [ ] The backup used `--mirror` (not a plain `git push`), so all branches, tags, and notes were captured
+- [ ] The scheduled job (cron/systemd timer) is enabled, and the heartbeat file has a timestamp within the expected window
+- [ ] Credentials are stored via SSH key or OS keychain/token — not hardcoded in the script
 </pre>
         </div>
 
         <div class="detail-tab-content" id="tab-readme" role="tabpanel">
-          <pre class="skillmd-viewer"># git-backup
-
-&gt; A Hermes skill that gives the agent everything it needs to set up **automatic,
-&gt; verifiable, restorable backups** of your git repositories to an offsite remote.
-
-Part of the [Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
-by Owen.
-
----
-
-## Why
-
-A local repo is one spilled coffee away from gone. `git-backup` turns &quot;I should
-really push that&quot; into a scheduled, hands-off job that you can prove works.
-
-Backups are only real when they are **automatic**, **verified**, and
-**restorable**. This skill is built around all three.
-
-## What it does
-
-- **Three strategies**, matched to your setup:
-  - **Mirror clone** — compact bare mirror of every ref, ready to push to a host.
-  - **Bundle** — one self-contained `.bundle` file for cold/portable storage.
-  - **Bundle + push** — both, for a 3-2-1-grade safety net.
-- **Scheduling** out of the box: `cron` or a `systemd` timer (Windows via Task
-  Scheduler / WSL).
-- **Any remote**: GitHub, Forgejo/Gitea, GitLab, or S3-compatible object storage
-  (incl. Backblaze B2, Wasabi, MinIO via `rclone`).
-- **Verification** built in: `git bundle verify`, `git fsck`, push exit codes,
-  and a weekly spot-restore check plus a heartbeat alert.
-- **Restore** in three lines, from mirror, bundle, or bucket.
-
-## Install
-
-Point Hermes at the skill file:
-
-```
-https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/git-backup/SKILL.md
-```
-
-Or copy the `git-backup` folder into your Hermes skills directory.
-
-## Quick start
-
-Tell the agent:
-
-&gt; &quot;Back up my `~/code` repos to a private GitHub repo every night, and also drop
-&gt; a weekly bundle in my S3 bucket. Verify each backup and warn me if one fails.&quot;
-
-The agent will pick the mirror + bundle strategy, wire up a `systemd` timer (or
-`cron`), add verification + a heartbeat, and hand you the restore commands.
-
-## Example
-
-```bash
-# One self-contained, verified snapshot
-git bundle create repo-2026-07-20.bundle --all
-git bundle verify repo-2026-07-20.bundle
-
-# Restore it anywhere
-git clone repo-2026-07-20.bundle restored-repo
-```
-
-## License
-
-MIT — use it, fork it, ship it.
+          <pre class="skillmd-viewer"># git-backup
+
+&gt; A Hermes skill that gives the agent everything it needs to set up **automatic,
+&gt; verifiable, restorable backups** of your git repositories to an offsite remote.
+
+Part of the [Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
+by Alex.
+
+---
+
+## Why
+
+A local repo is one spilled coffee away from gone. `git-backup` turns &quot;I should
+really push that&quot; into a scheduled, hands-off job that you can prove works.
+
+Backups are only real when they are **automatic**, **verified**, and
+**restorable**. This skill is built around all three.
+
+## What it does
+
+- **Three strategies**, matched to your setup:
+  - **Mirror clone** — compact bare mirror of every ref, ready to push to a host.
+  - **Bundle** — one self-contained `.bundle` file for cold/portable storage.
+  - **Bundle + push** — both, for a 3-2-1-grade safety net.
+- **Scheduling** out of the box: `cron` or a `systemd` timer (Windows via Task
+  Scheduler / WSL).
+- **Any remote**: GitHub, Forgejo/Gitea, GitLab, or S3-compatible object storage
+  (incl. Backblaze B2, Wasabi, MinIO via `rclone`).
+- **Verification** built in: `git bundle verify`, `git fsck`, push exit codes,
+  and a weekly spot-restore check plus a heartbeat alert.
+- **Restore** in three lines, from mirror, bundle, or bucket.
+
+## Install
+
+Point Hermes at the skill file:
+
+```
+https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/git-backup/SKILL.md
+```
+
+Or copy the `git-backup` folder into your Hermes skills directory.
+
+## Quick start
+
+Tell the agent:
+
+&gt; &quot;Back up my `~/code` repos to a private GitHub repo every night, and also drop
+&gt; a weekly bundle in my S3 bucket. Verify each backup and warn me if one fails.&quot;
+
+The agent will pick the mirror + bundle strategy, wire up a `systemd` timer (or
+`cron`), add verification + a heartbeat, and hand you the restore commands.
+
+## Example
+
+```bash
+# One self-contained, verified snapshot
+git bundle create repo-2026-07-20.bundle --all
+git bundle verify repo-2026-07-20.bundle
+
+# Restore it anywhere
+git clone repo-2026-07-20.bundle restored-repo
+```
+
+## License
+
+MIT — use it, fork it, ship it.
 </pre>
         </div>
       </div>

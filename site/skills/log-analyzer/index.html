@@ -103,11 +103,19 @@
         <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
           <pre class="skillmd-viewer">---
 name: log-analyzer
-description: &quot;Analyze log files for errors, patterns, and anomalies — agent + this skill = user gets insights from raw logs.&quot;
+description: Use when a user wants to find errors in a log file, understand what happened in a service from its logs, count error types, find time-based error spikes, or says &quot;check the logs&quot; / &quot;what went wrong&quot;.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [logs, error-analysis, regex, observability]
+    related_skills: [ntfy-notifier, regex-tester]
 ---
 
 # log-analyzer
+
+## Overview
 
 Parse and analyze log files to find errors, warnings, patterns, and anomalies. The agent handles large log files, extracts structured data, counts error types, finds time-based patterns, and summarizes findings.
 
@@ -281,58 +289,66 @@ def log_summary(log_path: str) -&gt; dict:
 5. Extract specific tracebacks or filtered lines for detail
 6. Report findings: what errors, how many, when, and what types
 
-## Pitfalls
+## Common Pitfalls
 
-- **Large log files** — Reading a 10GB log file line by line into memory will crash. Use the line-by-line iterators (as shown above) — they&#x27;re memory-efficient. For extremely large files, use `grep` first to pre-filter.
-- **Timestamp format varies** — The default regex assumes ISO 8601. Adjust the pattern for your log format (e.g., `r&#x27;(\d{2}:\d{2}):\d{2}&#x27;` for `HH:MM:SS`).
-- **Multi-line stack traces** — Error lines span multiple lines. The traceback extractor handles this, but simple line-by-line error counting may miss context.
-- **Rotated logs** — If logs rotate (`app.log.1`, `app.log.2`), analyze all of them. Use `glob.glob(&quot;app.log*&quot;)` to find all rotation files.
-- **Encoding** — Some logs use non-UTF-8 encoding. Use `errors=&#x27;ignore&#x27;` to skip bad bytes, or detect encoding with `chardet`.
-- **False positives** — The word &quot;error&quot; can appear in non-error contexts (e.g., &quot;error handling module&quot;). Refine patterns to match your log format.
+1. **Large log files.** Reading a 10GB log file line by line into memory will crash. Use the line-by-line iterators (as shown above) — they&#x27;re memory-efficient. For extremely large files, use `grep` first to pre-filter.
+2. **Timestamp format varies.** The default regex assumes ISO 8601. Adjust the pattern for your log format (e.g., `r&#x27;(\d{2}:\d{2}):\d{2}&#x27;` for `HH:MM:SS`).
+3. **Multi-line stack traces.** Error lines span multiple lines. The traceback extractor handles this, but simple line-by-line error counting may miss context.
+4. **Rotated logs.** If logs rotate (`app.log.1`, `app.log.2`), analyze all of them. Use `glob.glob(&quot;app.log*&quot;)` to find all rotation files.
+5. **Encoding.** Some logs use non-UTF-8 encoding. Use `errors=&#x27;ignore&#x27;` to skip bad bytes, or detect encoding with `chardet`.
+6. **False positives.** The word &quot;error&quot; can appear in non-error contexts (e.g., &quot;error handling module&quot;). Refine patterns to match your log format.
+
+## Verification Checklist
+
+- [ ] `log_summary`&#x27;s error/warning/info counts are consistent with `total_lines`
+- [ ] All log rotation files (`app.log.1`, `app.log.2`, ...) were included, not just the current file
+- [ ] The timestamp regex was checked against the actual log&#x27;s format before trusting `errors_by_hour` output
+- [ ] A sample of flagged &quot;error&quot; lines was reviewed for false positives (e.g. &quot;error handling module&quot;)
+- [ ] Encoding errors were handled (`errors=&#x27;ignore&#x27;` or detected) rather than the analysis crashing mid-file
 </pre>
         </div>
 
         <div class="detail-tab-content" id="tab-readme" role="tabpanel">
-          <pre class="skillmd-viewer"># log-analyzer
-
-Parse log files to find errors, count error types, detect spikes, and extract stack traces.
-
-## What it does
-
-The agent reads a log file and produces a structured analysis: total lines, error count, error types categorized (connection failures, timeouts, auth errors, etc.), errors by hour to find spikes, and full stack trace extraction. You get a summary of what went wrong without manually scrolling through thousands of log lines.
-
-## Install
-
-```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/log-analyzer/SKILL.md
-```
-
-## How to use
-
-```
-&quot;Check app.log for errors and tell me what went wrong&quot;
-```
-
-The agent:
-1. Runs a log summary (total lines, errors, warnings)
-2. Categorizes errors by type
-3. Shows errors by hour to find spikes
-4. Extracts the most recent stack traces
-5. Reports: &quot;23 errors, mostly timeouts between 2-4 AM&quot;
-
-## Example
-
-```
-User: &quot;Why did my service crash last night?&quot;
-
-Agent:
-  1. Analyzes service.log (450k lines)
-  2. Finds 15 ERROR lines, 3 FATAL
-  3. Error types: 8 timeouts, 4 connection refused, 3 OOM
-  4. Spikes at 3:00-3:15 AM
-  5. Extracts traceback: &quot;OutOfMemoryError: heap space&quot;
-  6. Returns: &quot;Service ran out of memory at 3 AM. 8 timeouts cascaded from the OOM event.&quot;
-```
+          <pre class="skillmd-viewer"># log-analyzer
+
+Parse log files to find errors, count error types, detect spikes, and extract stack traces.
+
+## What it does
+
+The agent reads a log file and produces a structured analysis: total lines, error count, error types categorized (connection failures, timeouts, auth errors, etc.), errors by hour to find spikes, and full stack trace extraction. You get a summary of what went wrong without manually scrolling through thousands of log lines.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/log-analyzer/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Check app.log for errors and tell me what went wrong&quot;
+```
+
+The agent:
+1. Runs a log summary (total lines, errors, warnings)
+2. Categorizes errors by type
+3. Shows errors by hour to find spikes
+4. Extracts the most recent stack traces
+5. Reports: &quot;23 errors, mostly timeouts between 2-4 AM&quot;
+
+## Example
+
+```
+User: &quot;Why did my service crash last night?&quot;
+
+Agent:
+  1. Analyzes service.log (450k lines)
+  2. Finds 15 ERROR lines, 3 FATAL
+  3. Error types: 8 timeouts, 4 connection refused, 3 OOM
+  4. Spikes at 3:00-3:15 AM
+  5. Extracts traceback: &quot;OutOfMemoryError: heap space&quot;
+  6. Returns: &quot;Service ran out of memory at 3 AM. 8 timeouts cascaded from the OOM event.&quot;
+```
 </pre>
         </div>
       </div>

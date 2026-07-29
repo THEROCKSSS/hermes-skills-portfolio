@@ -101,171 +101,198 @@
         </div>
 
         <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
-          <pre class="skillmd-viewer">---
-name: youtube-transcript
-description: &quot;Extract transcripts from YouTube videos — agent + this skill = user gets the text of any YouTube video.&quot;
-version: 1.0.0
----
-
-# youtube-transcript
-
-Fetch transcripts from YouTube videos. The agent retrieves the video&#x27;s caption track, cleans the text, and returns it as plain text or structured segments with timestamps.
-
-## When to Use
-
-- The user wants the text content of a YouTube video.
-- The user wants to search for a specific topic within a video.
-- The user wants to summarize or quote a video.
-- The user says &quot;get the transcript&quot;, &quot;what does this video say&quot;, or &quot;extract the captions&quot;.
-
-## Prerequisites
-
-```bash
-pip install youtube-transcript-api
-```
-
-## Basic Transcript
-
-```python
-from youtube_transcript_api import YouTubeTranscriptApi
-
-def get_transcript(video_id: str, lang: str = &quot;en&quot;) -&gt; str:
-    &quot;&quot;&quot;Get the full transcript as plain text.&quot;&quot;&quot;
-    transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[lang])
-    return &quot; &quot;.join([snippet[&quot;text&quot;] for snippet in transcript])
-```
-
-## With Timestamps
-
-```python
-def get_transcript_with_timestamps(video_id: str, lang: str = &quot;en&quot;) -&gt; list:
-    &quot;&quot;&quot;Get transcript as a list of {start, duration, text} dicts.&quot;&quot;&quot;
-    transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[lang])
-    return [
-        {
-            &quot;start&quot;: snippet[&quot;start&quot;],
-            &quot;end&quot;: snippet[&quot;start&quot;] + snippet[&quot;duration&quot;],
-            &quot;text&quot;: snippet[&quot;text&quot;]
-        }
-        for snippet in transcript
-    ]
-```
-
-## Extract Video ID from URL
-
-```python
-import re
-
-def extract_video_id(url: str) -&gt; str:
-    patterns = [
-        r&quot;(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/)([a-zA-Z0-9_-]{11})&quot;,
-        r&quot;youtube\.com/shorts/([a-zA-Z0-9_-]{11})&quot;,
-    ]
-    for pattern in patterns:
-        match = re.search(pattern, url)
-        if match:
-            return match.group(1)
-    # Maybe it&#x27;s already just the ID
-    if re.match(r&quot;^[a-zA-Z0-9_-]{11}$&quot;, url):
-        return url
-    raise ValueError(f&quot;Could not extract video ID from: {url}&quot;)
-```
-
-## Full Workflow
-
-```python
-# 1. Get video ID from URL
-video_id = extract_video_id(&quot;https://www.youtube.com/watch?v=dQw4w9WgXcQ&quot;)
-
-# 2. Get transcript
-transcript = get_transcript(video_id)
-
-# 3. Optionally save to file
-with open(&quot;transcript.txt&quot;, &quot;w&quot;) as f:
-    f.write(transcript)
-```
-
-## Search Within Transcript
-
-```python
-def search_transcript(video_id: str, query: str, lang: str = &quot;en&quot;) -&gt; list:
-    &quot;&quot;&quot;Find segments containing a query string.&quot;&quot;&quot;
-    transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[lang])
-    query_lower = query.lower()
-    matches = []
-    for snippet in transcript:
-        if query_lower in snippet[&quot;text&quot;].lower():
-            matches.append({
-                &quot;timestamp&quot;: snippet[&quot;start&quot;],
-                &quot;text&quot;: snippet[&quot;text&quot;]
-            })
-    return matches
-```
-
-## Translate Non-English Transcripts
-
-```python
-from youtube_transcript_api import YouTubeTranscriptApi
-
-def get_transcript_any_language(video_id: str) -&gt; str:
-    &quot;&quot;&quot;Get transcript in any available language.&quot;&quot;&quot;
-    transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
-    for transcript in transcript_list:
-        try:
-            return &quot; &quot;.join([s[&quot;text&quot;] for s in transcript.fetch()])
-        except:
-            continue
-    raise ValueError(&quot;No transcript available in any language&quot;)
-```
-
-## Pitfalls
-
-- **No captions available** — Not all videos have captions. `get_transcript` raises `NoTranscriptFound`. Check with `list_transcripts` first.
-- **Auto-generated captions** — YouTube auto-generates captions for many videos. They&#x27;re less accurate than manual captions but usually available.
-- **Rate limiting** — YouTube may rate-limit frequent requests. Add delays between multiple video fetches.
-- **Video is private or deleted** — Private or deleted videos have no transcript. The API raises `VideoUnavailable`.
-- **Language not available** — If the requested language isn&#x27;t available, try `list_transcripts` to see what languages exist. Many videos have auto-translated tracks.
-- **HTML entities in text** — Transcript text may contain HTML entities (`&amp;amp;`, `&amp;#39;`). Use `html.unescape()` to clean them.
+          <pre class="skillmd-viewer">---
+name: youtube-transcript
+description: Use when the user wants the text content of a YouTube video — the full transcript, timestamped segments, a search for a specific topic within the video, or a summary/quote — from a URL or bare video ID.
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [youtube, transcript, captions, youtube-transcript-api, video-text-extraction]
+    related_skills: [csv-toolkit]
+---
+
+# youtube-transcript
+
+## Overview
+
+Fetch transcripts from YouTube videos. The agent retrieves the video&#x27;s caption track, cleans the text, and returns it as plain text or structured segments with timestamps.
+
+## When to Use
+
+- The user wants the text content of a YouTube video.
+- The user wants to search for a specific topic within a video.
+- The user wants to summarize or quote a video.
+- The user says &quot;get the transcript&quot;, &quot;what does this video say&quot;, or &quot;extract the captions&quot;.
+
+## Prerequisites
+
+```bash
+pip install youtube-transcript-api
+```
+
+## Basic Transcript
+
+```python
+from youtube_transcript_api import YouTubeTranscriptApi
+
+def get_transcript(video_id: str, lang: str = &quot;en&quot;) -&gt; str:
+    &quot;&quot;&quot;Get the full transcript as plain text.&quot;&quot;&quot;
+    transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[lang])
+    return &quot; &quot;.join([snippet[&quot;text&quot;] for snippet in transcript])
+```
+
+## With Timestamps
+
+```python
+def get_transcript_with_timestamps(video_id: str, lang: str = &quot;en&quot;) -&gt; list:
+    &quot;&quot;&quot;Get transcript as a list of {start, duration, text} dicts.&quot;&quot;&quot;
+    transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[lang])
+    return [
+        {
+            &quot;start&quot;: snippet[&quot;start&quot;],
+            &quot;end&quot;: snippet[&quot;start&quot;] + snippet[&quot;duration&quot;],
+            &quot;text&quot;: snippet[&quot;text&quot;]
+        }
+        for snippet in transcript
+    ]
+```
+
+## Extract Video ID from URL
+
+```python
+import re
+
+def extract_video_id(url: str) -&gt; str:
+    patterns = [
+        r&quot;(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/)([a-zA-Z0-9_-]{11})&quot;,
+        r&quot;youtube\.com/shorts/([a-zA-Z0-9_-]{11})&quot;,
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, url)
+        if match:
+            return match.group(1)
+    # Maybe it&#x27;s already just the ID
+    if re.match(r&quot;^[a-zA-Z0-9_-]{11}$&quot;, url):
+        return url
+    raise ValueError(f&quot;Could not extract video ID from: {url}&quot;)
+```
+
+## Full Workflow
+
+```python
+# 1. Get video ID from URL
+video_id = extract_video_id(&quot;https://www.youtube.com/watch?v=dQw4w9WgXcQ&quot;)
+
+# 2. Get transcript
+transcript = get_transcript(video_id)
+
+# 3. Optionally save to file
+with open(&quot;transcript.txt&quot;, &quot;w&quot;) as f:
+    f.write(transcript)
+```
+
+## Search Within Transcript
+
+```python
+def search_transcript(video_id: str, query: str, lang: str = &quot;en&quot;) -&gt; list:
+    &quot;&quot;&quot;Find segments containing a query string.&quot;&quot;&quot;
+    transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[lang])
+    query_lower = query.lower()
+    matches = []
+    for snippet in transcript:
+        if query_lower in snippet[&quot;text&quot;].lower():
+            matches.append({
+                &quot;timestamp&quot;: snippet[&quot;start&quot;],
+                &quot;text&quot;: snippet[&quot;text&quot;]
+            })
+    return matches
+```
+
+## Translate Non-English Transcripts
+
+```python
+from youtube_transcript_api import YouTubeTranscriptApi
+
+def get_transcript_any_language(video_id: str) -&gt; str:
+    &quot;&quot;&quot;Get transcript in any available language.&quot;&quot;&quot;
+    transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+    for transcript in transcript_list:
+        try:
+            return &quot; &quot;.join([s[&quot;text&quot;] for s in transcript.fetch()])
+        except:
+            continue
+    raise ValueError(&quot;No transcript available in any language&quot;)
+```
+
+## Common Pitfalls
+
+1. **Calling `get_transcript` without a fallback.** Not all videos have captions — it raises
+   `NoTranscriptFound`. Call `list_transcripts` first to check what&#x27;s actually available before
+   assuming a fixed `lang`.
+2. **Treating auto-generated captions as manual-quality.** YouTube auto-captions are usually
+   available but less accurate (misheard words, no punctuation) — don&#x27;t present them as a
+   verbatim transcript without noting the source.
+3. **Fetching many videos back-to-back with no delay.** YouTube rate-limits frequent requests;
+   space out multiple fetches or batch jobs will start failing partway through.
+4. **Assuming `VideoUnavailable` means a transient error.** It means the video is private or
+   deleted — retrying won&#x27;t help; report it as unavailable to the user.
+5. **Hardcoding `languages=[&quot;en&quot;]` for non-English content.** If the requested language isn&#x27;t
+   present, `get_transcript` raises rather than falling back — use `list_transcripts` to discover
+   available (including auto-translated) languages first.
+6. **Returning raw transcript text with HTML entities intact.** Segments can contain `&amp;amp;`,
+   `&amp;#39;`, etc. — run `html.unescape()` before presenting the text.
+
+## Verification Checklist
+
+- [ ] `extract_video_id` correctly parses the actual URL format given (watch, youtu.be, embed, or
+      shorts) before fetching.
+- [ ] `list_transcripts` was checked when the first `get_transcript` call fails, rather than
+      immediately reporting failure to the user.
+- [ ] Returned text has no raw HTML entities (`&amp;amp;`, `&amp;#39;`) left unescaped.
+- [ ] Timestamped output (if requested) has `start`/`end` values that increase monotonically and
+      cover the video&#x27;s actual duration.
 </pre>
         </div>
 
         <div class="detail-tab-content" id="tab-readme" role="tabpanel">
-          <pre class="skillmd-viewer"># youtube-transcript
-
-Extract the transcript from any YouTube video that has captions.
-
-## What it does
-
-The agent fetches the caption track from a YouTube video and returns it as plain text or timestamped segments. Works with manual captions and auto-generated captions. You get the text content of a video without watching it.
-
-## Install
-
-```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/youtube-transcript/SKILL.md
-```
-
-## How to use
-
-```
-&quot;Get the transcript from https://www.youtube.com/watch?v=...&quot;
-```
-
-The agent:
-1. Extracts the video ID from the URL
-2. Fetches the transcript via the YouTube Transcript API
-3. Returns the text (optionally with timestamps)
-
-## Example
-
-```
-User: &quot;What does this video say about machine learning? https://youtu.be/...&quot;
-
-Agent:
-  1. Extracts video ID
-  2. Gets transcript with timestamps
-  3. Searches for &quot;machine learning&quot; in the text
-  4. Returns: &quot;At 3:42, the speaker says: &#x27;Machine learning is...&#x27;&quot;
-```
+          <pre class="skillmd-viewer"># youtube-transcript
+
+Extract the transcript from any YouTube video that has captions.
+
+## What it does
+
+The agent fetches the caption track from a YouTube video and returns it as plain text or timestamped segments. Works with manual captions and auto-generated captions. You get the text content of a video without watching it.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/youtube-transcript/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Get the transcript from https://www.youtube.com/watch?v=...&quot;
+```
+
+The agent:
+1. Extracts the video ID from the URL
+2. Fetches the transcript via the YouTube Transcript API
+3. Returns the text (optionally with timestamps)
+
+## Example
+
+```
+User: &quot;What does this video say about machine learning? https://youtu.be/...&quot;
+
+Agent:
+  1. Extracts video ID
+  2. Gets transcript with timestamps
+  3. Searches for &quot;machine learning&quot; in the text
+  4. Returns: &quot;At 3:42, the speaker says: &#x27;Machine learning is...&#x27;&quot;
+```
 </pre>
         </div>
       </div>

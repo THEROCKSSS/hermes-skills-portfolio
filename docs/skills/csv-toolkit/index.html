@@ -103,11 +103,19 @@
         <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
           <pre class="skillmd-viewer">---
 name: csv-toolkit
-description: &quot;Process CSV files — filter, transform, merge, and analyze — agent + this skill = user gets structured data operations without Excel.&quot;
+description: Use when the user wants to filter or transform a CSV file, merge multiple CSVs, compute summary statistics from CSV data, or says &quot;process this CSV&quot;, &quot;filter this data&quot;, or &quot;merge these CSVs&quot;.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [csv, pandas, data-transformation, data-merge, aggregation]
+    related_skills: [sqlite-dashboard, json-formatter]
 ---
 
 # csv-toolkit
+
+## Overview
 
 Process CSV files with Python. Filter rows, transform columns, merge files, compute aggregates, and export results. The agent handles CSV reading, manipulation, and writing without needing Excel or a database.
 
@@ -250,55 +258,65 @@ def simple_filter(path: str, output: str, column: str, value: str):
                 writer.writerow(row)
 ```
 
-## Pitfalls
+## Common Pitfalls
 
-- **Encoding issues** — CSVs from Excel may use Windows-1252 encoding. Use `pd.read_csv(path, encoding=&#x27;latin1&#x27;)` if UTF-8 fails.
-- **Large CSVs** — pandas loads the entire file into memory. For files over 1GB, use `chunksize` parameter or `polars` instead.
-- **Delimiter detection** — Some CSVs use semicolons or tabs. Use `pd.read_csv(path, sep=&#x27;;&#x27;)` or `engine=&#x27;python&#x27;` for auto-detection.
-- **Quoting** — Fields with commas should be quoted. pandas handles this, but the `csv` module needs `quoting=csv.QUOTE_MINIMAL`.
-- **Date parsing** — Date columns are read as strings by default. Use `pd.read_csv(path, parse_dates=[&#x27;date_column&#x27;])`.
-- **NaN vs empty** — Empty cells become NaN in pandas, not empty strings. Use `df.fillna(&#x27;&#x27;)` to convert back.
+1. **UTF-8 read fails on Excel-exported CSVs.** Files saved from Excel are often Windows-1252, not UTF-8. Use `pd.read_csv(path, encoding=&#x27;latin1&#x27;)` if the default UTF-8 read raises a `UnicodeDecodeError`.
+2. **Loading a huge file blows up memory.** pandas reads the entire file into memory. For files over ~1GB, use the `chunksize` parameter to stream, or switch to `polars`.
+3. **Wrong delimiter assumed.** Some CSVs use semicolons or tabs instead of commas. Pass `sep=&#x27;;&#x27;` explicitly, or `engine=&#x27;python&#x27;` with `sep=None` for auto-detection — don&#x27;t assume comma.
+4. **Unquoted commas inside fields break parsing.** pandas handles RFC-4180 quoting automatically, but the plain `csv` module needs `quoting=csv.QUOTE_MINIMAL` (or matching the source file&#x27;s quoting) or embedded commas will split a field in two.
+5. **Date columns silently stay strings.** `pd.read_csv` does not parse dates by default — a &quot;date&quot; column read without `parse_dates=[&#x27;date_column&#x27;]` stays a string, and sort/filter operations on it behave lexicographically instead of chronologically.
+6. **NaN and empty string are not the same.** Empty cells become `NaN` in pandas, not `&#x27;&#x27;`. Downstream string operations or JSON export may need `df.fillna(&#x27;&#x27;)` first, or `NaN` will show up as `null`/`nan` unexpectedly.
+7. **`df.eval()` transforms silently produce NaN on a typo.** A misspelled column name in a `transforms` expression doesn&#x27;t always raise — check the output column for unexpected `NaN` after `transform_csv`.
+
+## Verification Checklist
+
+- [ ] `inspect_csv()` (or equivalent) was run on the output file to confirm expected row/column counts
+- [ ] Row counts before/after filtering or deduplication were compared and match expectations (no silent full-table drop)
+- [ ] Encoding was confirmed (UTF-8 succeeded, or `latin1`/other encoding was explicitly used after a decode failure)
+- [ ] Delimiter was verified against the actual file (opened a few raw lines) rather than assumed to be a comma
+- [ ] Date columns intended for sorting/filtering were parsed with `parse_dates`, not left as strings
+- [ ] Output CSV was opened/read back to confirm it&#x27;s valid and matches the expected schema
 </pre>
         </div>
 
         <div class="detail-tab-content" id="tab-readme" role="tabpanel">
-          <pre class="skillmd-viewer"># csv-toolkit
-
-Process CSV files — filter, transform, merge, and analyze without Excel.
-
-## What it does
-
-The agent reads CSV files and performs data operations: filtering rows, transforming columns, merging multiple files, computing group-by aggregates, sorting, and deduplicating. Uses pandas for heavy operations and the built-in csv module for simple ones. You get structured data processing without opening Excel.
-
-## Install
-
-```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/csv-toolkit/SKILL.md
-```
-
-## How to use
-
-```
-&quot;Filter sales.csv to only show rows where revenue &gt; 1000&quot;
-```
-
-The agent:
-1. Reads the CSV with pandas
-2. Applies the filter: `df.query(&quot;revenue &gt; 1000&quot;)`
-3. Writes the result to a new CSV
-4. Returns the row counts
-
-## Example
-
-```
-User: &quot;Merge customer.csv and orders.csv on customer_id&quot;
-
-Agent:
-  1. Reads both CSVs
-  2. Merges: pd.merge(customers, orders, on=&quot;customer_id&quot;)
-  3. Writes merged.csv (2,500 rows, 12 columns)
-  4. Returns: &quot;Merged to merged.csv — 2,500 rows&quot;
-```
+          <pre class="skillmd-viewer"># csv-toolkit
+
+Process CSV files — filter, transform, merge, and analyze without Excel.
+
+## What it does
+
+The agent reads CSV files and performs data operations: filtering rows, transforming columns, merging multiple files, computing group-by aggregates, sorting, and deduplicating. Uses pandas for heavy operations and the built-in csv module for simple ones. You get structured data processing without opening Excel.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/csv-toolkit/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Filter sales.csv to only show rows where revenue &gt; 1000&quot;
+```
+
+The agent:
+1. Reads the CSV with pandas
+2. Applies the filter: `df.query(&quot;revenue &gt; 1000&quot;)`
+3. Writes the result to a new CSV
+4. Returns the row counts
+
+## Example
+
+```
+User: &quot;Merge customer.csv and orders.csv on customer_id&quot;
+
+Agent:
+  1. Reads both CSVs
+  2. Merges: pd.merge(customers, orders, on=&quot;customer_id&quot;)
+  3. Writes merged.csv (2,500 rows, 12 columns)
+  4. Returns: &quot;Merged to merged.csv — 2,500 rows&quot;
+```
 </pre>
         </div>
       </div>

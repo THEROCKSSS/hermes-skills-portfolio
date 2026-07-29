@@ -103,11 +103,19 @@
         <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
           <pre class="skillmd-viewer">---
 name: http-api-tester
-description: &quot;Test HTTP APIs from the command line — agent + this skill = user gets quick API verification without Postman.&quot;
+description: Use when a user wants to test or debug an HTTP API endpoint quickly from the command line or Python, verify an API is working after deployment, or says &quot;test this API&quot; / &quot;check this endpoint&quot; / &quot;is my API working&quot; — without a Postman-style GUI.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [http, api-testing, curl, python-requests]
+    related_skills: [api-test-suite, openapi-generator, webhook-receiver]
 ---
 
 # http-api-tester
+
+## Overview
 
 Test HTTP APIs quickly from the command line or Python. The agent makes requests, checks responses, and reports results — no Postman or GUI needed.
 
@@ -268,56 +276,64 @@ def inspect_response(url: str, method: str = &quot;GET&quot;, headers=None):
 5. Check status code and response body
 6. Report pass/fail with timing
 
-## Pitfalls
+## Common Pitfalls
 
-- **HTTPS certificate errors** — Self-signed certs fail by default. Use `verify=False` for testing (not production): `requests.get(url, verify=False)`.
-- **Timeout** — Default timeout is 30s. For slow APIs, increase it. For health checks, use 5s so you know quickly if something is wrong.
-- **Rate limiting** — Rapid requests may hit rate limits. Add `time.sleep(1)` between requests if testing the same endpoint repeatedly.
-- **Response parsing** — Not all APIs return JSON. Check `content-type` header before calling `.json()`. Fall back to `.text` for non-JSON responses.
-- **Following redirects** — `requests` follows redirects by default. Use `allow_redirects=False` if you want to see the 3xx response itself.
-- **Sensitive headers** — Don&#x27;t log auth headers in test output. Strip them before printing or storing results.
+1. **HTTPS certificate errors.** Self-signed certs fail by default. Use `verify=False` for testing (not production): `requests.get(url, verify=False)`.
+2. **Timeout.** Default timeout is 30s. For slow APIs, increase it. For health checks, use 5s so you know quickly if something is wrong.
+3. **Rate limiting.** Rapid requests may hit rate limits. Add `time.sleep(1)` between requests if testing the same endpoint repeatedly.
+4. **Response parsing.** Not all APIs return JSON. Check `content-type` header before calling `.json()`. Fall back to `.text` for non-JSON responses.
+5. **Following redirects.** `requests` follows redirects by default. Use `allow_redirects=False` if you want to see the 3xx response itself.
+6. **Sensitive headers.** Don&#x27;t log auth headers in test output. Strip them before printing or storing results.
+
+## Verification Checklist
+
+- [ ] Each test reports both status code and response time, not just pass/fail
+- [ ] Auth headers (Authorization, X-API-Key) are excluded from any logged or printed output
+- [ ] Non-2xx responses are checked against the test&#x27;s `expected_status`, not assumed to be failures
+- [ ] `content-type` is checked before calling `.json()` on a response
+- [ ] A batch test suite reports pass/fail per named test, not just raw request output
 </pre>
         </div>
 
         <div class="detail-tab-content" id="tab-readme" role="tabpanel">
-          <pre class="skillmd-viewer"># http-api-tester
-
-Test HTTP APIs from the command line — quick verification without Postman or a GUI.
-
-## What it does
-
-The agent makes HTTP requests to your API endpoints, checks the response status and body, and reports pass/fail with timing. Supports GET, POST, PUT, DELETE with auth headers, JSON bodies, and batch test suites. Useful for quick debugging, post-deploy verification, and API smoke testing.
-
-## Install
-
-```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/http-api-tester/SKILL.md
-```
-
-## How to use
-
-```
-&quot;Test my API at https://api.example.com/health&quot;
-```
-
-The agent:
-1. Makes a GET request to the endpoint
-2. Checks the status code
-3. Reports: status, response time, body
-
-## Example
-
-```
-User: &quot;Run a smoke test on my API after deploy&quot;
-
-Agent runs a test suite:
-  PASS: Health check — 200 (45ms)
-  PASS: Get users — 200 (120ms)
-  PASS: Create user — 201 (89ms)
-  PASS: Unauthorized — 401 (12ms)
-
-  4/4 passed. API is healthy.
-```
+          <pre class="skillmd-viewer"># http-api-tester
+
+Test HTTP APIs from the command line — quick verification without Postman or a GUI.
+
+## What it does
+
+The agent makes HTTP requests to your API endpoints, checks the response status and body, and reports pass/fail with timing. Supports GET, POST, PUT, DELETE with auth headers, JSON bodies, and batch test suites. Useful for quick debugging, post-deploy verification, and API smoke testing.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/http-api-tester/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Test my API at https://api.example.com/health&quot;
+```
+
+The agent:
+1. Makes a GET request to the endpoint
+2. Checks the status code
+3. Reports: status, response time, body
+
+## Example
+
+```
+User: &quot;Run a smoke test on my API after deploy&quot;
+
+Agent runs a test suite:
+  PASS: Health check — 200 (45ms)
+  PASS: Get users — 200 (120ms)
+  PASS: Create user — 201 (89ms)
+  PASS: Unauthorized — 401 (12ms)
+
+  4/4 passed. API is healthy.
+```
 </pre>
         </div>
       </div>

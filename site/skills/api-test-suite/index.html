@@ -106,11 +106,19 @@ This is a generator, not a hosted runner. The output is real files in your repo 
         <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
           <pre class="skillmd-viewer">---
 name: api-test-suite
-description: &quot;Generate a runnable API test suite — contract tests, integration tests, and CI config — from an OpenAPI spec or existing API. Agent + this skill = user gets tests that actually run.&quot;
+description: Use when a new or existing API needs test coverage before a release or merge, when onboarding to an unfamiliar API codebase and wanting a safety net first, or when an OpenAPI spec/Postman collection exists and should be turned into a runnable pytest/vitest suite with contract and integration tests.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [api-testing, contract-tests, integration-tests, pytest, vitest, ci-cd]
+    related_skills: [openapi-generator, http-api-tester, github-actions-ci]
 ---
 
 # api-test-suite
+
+## Overview
 
 Generate a runnable API test package from an OpenAPI spec, a Postman collection, or by scanning an existing API codebase. The agent produces real, locally-runnable test files — not a hosted-run stub — covering happy path, error cases, and edge cases, then runs the suite and reports pass/fail.
 
@@ -346,236 +354,245 @@ jobs:
 
 For Node, swap the setup step for `actions/setup-node` and the run step for `npx vitest run`.
 
-## Pitfalls
+## Common Pitfalls
 
-- **Mocking the database so tests lie.** Use a real test database or per-test transaction rollback. A test that mocks storage at the wrong boundary passes while the API is broken.
-- **Hardcoding the response shape instead of reading the spec.** Contract tests must derive expectations from the OpenAPI/Postman artifact, or they drift and become noise.
-- **Shared mutable state across tests.** Each test must create and clean up its own data. Seeds that depend on order will flake in CI.
-- **Using a real user&#x27;s token for auth.** Mint short-lived test tokens scoped to the test tenant; rotate secrets from env, never commit them.
-- **Rate limiting breaking CI.** Hit the API serially in contract runs, or raise the limit for the test tenant. A 429 is a test-harness problem, not an API bug, until proven otherwise.
-- **Treating generated tests as a substitute for reading the spec.** The suite documents behavior; the agent should still confirm the API&#x27;s intent with the user for ambiguous endpoints.
-- **Flaky network timing.** Add bounded retries only on connection errors, never on assertion failures.
+1. **Mocking the database so tests lie.** Use a real test database or per-test transaction rollback. A test that mocks storage at the wrong boundary passes while the API is broken.
+2. **Hardcoding the response shape instead of reading the spec.** Contract tests must derive expectations from the OpenAPI/Postman artifact, or they drift and become noise.
+3. **Shared mutable state across tests.** Each test must create and clean up its own data. Seeds that depend on order will flake in CI.
+4. **Using a real user&#x27;s token for auth.** Mint short-lived test tokens scoped to the test tenant; rotate secrets from env, never commit them.
+5. **Rate limiting breaking CI.** Hit the API serially in contract runs, or raise the limit for the test tenant. A 429 is a test-harness problem, not an API bug, until proven otherwise.
+6. **Treating generated tests as a substitute for reading the spec.** The suite documents behavior; the agent should still confirm the API&#x27;s intent with the user for ambiguous endpoints.
+7. **Flaky network timing.** Add bounded retries only on connection errors, never on assertion failures.
+
+## Verification Checklist
+
+- [ ] The suite runs with a single command (`pytest tests/` or `npx vitest run`) and exits 0, or every failure is a confirmed real API bug
+- [ ] Contract tests read the schema from the OpenAPI/Postman artifact at runtime, not a hardcoded copy
+- [ ] Every endpoint has at least a happy-path test and one auth/validation-failure test
+- [ ] Auth uses minted test tokens, never a real user&#x27;s credentials
+- [ ] Fixtures that create data also tear it down (no orphaned test records after a run)
+- [ ] CI YAML (if emitted) targets the correct service image/port and uploads the test report artifact
 </pre>
         </div>
 
         <div class="detail-tab-content" id="tab-readme" role="tabpanel">
-          <pre class="skillmd-viewer"># api-test-suite
-
-Turn an API into a runnable test suite — contract tests, integration tests, and CI config — generated from an OpenAPI spec, a Postman collection, or an existing API codebase.
-
-## What it does
-
-The agent reads your API&#x27;s source of truth (a spec file or the route code itself) and writes a test package you can run locally and wire into CI. It covers the happy path, the obvious error cases (auth, validation, not-found), and the edge cases people forget (empty bodies, malformed input, rate limits). Then it runs the suite and tells you what passed, what failed, and whether the failure is a bug in your API or a wrong expectation in the test.
-
-This is a generator, not a hosted runner. The output is real files in your repo that you own and can edit.
-
-## Install
-
-```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/api-test-suite/SKILL.md
-```
-
-## Inputs
-
-The skill accepts any one of these as the source of truth:
-
-| Input | Example | What it drives |
-|---|---|---|
-| OpenAPI / Swagger spec | `openapi.yaml`, `swagger.json` | Endpoint list, shapes, response codes |
-| Postman collection | `collection.json` | Endpoint list, example requests |
-| API codebase | FastAPI, Express, Flask, Nest | Route scans, auth schemes |
-
-If you have a spec, that wins — it is the contract. If you only have code, the agent scans route definitions and infers auth and shapes, then asks you to confirm anything ambiguous.
-
-## What you get
-
-```
-tests/
-  conftest.py            # pytest fixtures: base_url, auth_headers, cleanup
-  contract/
-    test_contract.py     # schema-conformance checks (spec-driven)
-    test_shapes.py
-  integration/
-    test_orders.py       # real HTTP happy / error / edge cases
-helpers/
-  http.py                # shared client, base URL from env
-  auth.py                # test-token minting
-openapi.json             # spec under test (if you provided one)
-pytest.ini
-```
-
-Node/TS projects get the same shape with `vitest.config.ts` and `*.test.ts` / `*.spec.ts` files, plus a `helpers/http.ts` and `helpers/auth.ts`.
-
-## Contract tests
-
-Contract tests assert the live API&#x27;s responses conform to the published schema. They catch drift between what you documented and what you shipped.
-
-```python
-# tests/contract/test_shapes.py
-import json
-import httpx
-from jsonschema import Draft202012Validator
-
-spec = json.load(open(&quot;openapi.json&quot;))
-schema = (
-    spec[&quot;paths&quot;][&quot;/markets&quot;][&quot;get&quot;][&quot;responses&quot;][&quot;200&quot;][&quot;content&quot;]
-    [&quot;application/json&quot;][&quot;schema&quot;]
-)
-
-def test_markets_shape(base_url):
-    r = httpx.get(f&quot;{base_url}/markets?limit=10&quot;)
-    assert r.status_code == 200
-    Draft202012Validator(schema).validate(r.json())
-```
-
-The rule that makes this worth having: the expectation is read from the spec, not copied into the test. A hardcoded copy silently rots; a spec-derived check fails the moment the API and the contract disagree, which is the whole point.
-
-For deeper coverage, `schemathesis` generates requests from the spec and validates every response against it automatically:
-
-```python
-import schemathesis
-schema = schemathesis.from_uri(&quot;http://localhost:8000/openapi.json&quot;)
-
-@schema.parametrize()
-def test_api_contract(case, base_url):
-    response = case.call(base_url)
-    case.validate_response(response)
-```
-
-## Integration tests
-
-Integration tests exercise real HTTP behavior against a running server (or an in-process app) with auth, test data, and cleanup. Fixtures create their own data and tear it down, so tests stay isolated.
-
-```python
-# tests/integration/test_orders.py
-import pytest, httpx
-
-@pytest.fixture
-def auth_headers():
-    return {&quot;Authorization&quot;: f&quot;Bearer {mint_test_token(scopes=[&#x27;orders:write&#x27;])}&quot;}
-
-@pytest.fixture
-def created_order(base_url, auth_headers):
-    r = httpx.post(f&quot;{base_url}/orders&quot;, json={&quot;item&quot;: &quot;widget&quot;, &quot;qty&quot;: 1},
-                   headers=auth_headers)
-    assert r.status_code == 201
-    yield r.json()[&quot;id&quot;]
-    httpx.delete(f&quot;{base_url}/orders/{r.json()[&#x27;id&#x27;]}&quot;, headers=auth_headers)
-
-def test_create_order_happy(base_url, auth_headers, created_order):
-    assert isinstance(created_order, str)
-
-def test_create_order_requires_auth(base_url):
-    r = httpx.post(f&quot;{base_url}/orders&quot;, json={&quot;item&quot;: &quot;widget&quot;})
-    assert r.status_code == 401
-
-def test_create_order_empty_body(base_url, auth_headers):
-    r = httpx.post(f&quot;{base_url}/orders&quot;, json={}, headers=auth_headers)
-    assert r.status_code == 400
-```
-
-Node/TS, in-process with `supertest`:
-
-```ts
-// tests/integration/orders.test.ts
-import request from &#x27;supertest&#x27;
-import { app } from &#x27;../../src/app&#x27;
-import { testToken } from &#x27;../helpers/auth&#x27;
-
-describe(&#x27;POST /orders&#x27;, () =&gt; {
-  it(&#x27;creates an order with valid auth&#x27;, async () =&gt; {
-    const r = await request(app)
-      .post(&#x27;/orders&#x27;)
-      .set(&#x27;Authorization&#x27;, `Bearer ${testToken()}`)
-      .send({ item: &#x27;widget&#x27;, qty: 1 })
-    expect(r.status).toBe(201)
-  })
-
-  it(&#x27;rejects missing auth&#x27;, async () =&gt; {
-    const r = await request(app).post(&#x27;/orders&#x27;).send({ item: &#x27;widget&#x27; })
-    expect(r.status).toBe(401)
-  })
-})
-```
-
-## Test runner setup
-
-**Python** — `pip install pytest httpx schemathesis`, then `pytest.ini`:
-
-```ini
-[pytest]
-testpaths = tests
-addopts = -q --tb=short
-env =
-  BASE_URL=http://localhost:8000
-```
-
-**Node/TS** — `npm i -D vitest supertest`, then `vitest.config.ts`:
-
-```ts
-import { defineConfig } from &#x27;vitest/config&#x27;
-export default defineConfig({
-  test: { globals: true, environment: &#x27;node&#x27;,
-          include: [&#x27;tests/**/*.test.ts&#x27;, &#x27;tests/**/*.spec.ts&#x27;] },
-})
-```
-
-## CI integration
-
-Run the suite against a service the pipeline spins up. This YAML works in both GitHub Actions and Forgejo Actions:
-
-```yaml
-name: api-tests
-on: [push, pull_request]
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    services:
-      api:
-        image: ghcr.io/your-org/your-api:ci
-        ports: [&quot;8000:8000&quot;]
-        options: &gt;-
-          --health-cmd &quot;curl -f http://localhost:8000/health&quot;
-          --health-interval 10s --health-timeout 5s --health-retries 5
-    env:
-      BASE_URL: http://localhost:8000
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with: { python-version: &quot;3.12&quot; }
-      - run: pip install pytest httpx schemathesis
-      - run: pytest tests/ --junitxml=report.xml
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with: { name: api-test-report, path: report.xml }
-```
-
-Swap the setup/run steps for `actions/setup-node` and `npx vitest run` on a Node project.
-
-## Coverage matrix
-
-The agent generates at least one case per endpoint from each row:
-
-| Category | Case | Expected |
-|---|---|---|
-| Happy path | Valid request, valid auth | 2xx, shape matches spec |
-| Auth | Missing / invalid token | 401 / 403 |
-| Validation | Missing required field, bad type | 400, documented error shape |
-| Not found | Unknown ID | 404 |
-| Edge | Empty body, malformed JSON, oversized input | 400 / 413 |
-| Edge | Pagination bounds (`limit=0`, `limit=1000`) | 200 or 422, sane clamping |
-| Edge | Rate limit (burst) | 429 with retry header |
-
-## Honest limitations
-
-- The suite documents observed behavior. For ambiguous endpoints the agent confirms intent with you rather than guessing the &quot;right&quot; contract.
-- Contract tests check shape and codes; they do not prove business logic correctness. Pair them with a few hand-written behavior tests for your critical paths.
-- Generated fixtures use a test tenant and short-lived tokens. You must wire real secret injection (`BASE_URL`, token minting) for your environment — the skill scaffolds it, it does not know your auth system.
-- Rate-limited APIs will 429 under load; the skill serializes contract runs and raises the limit for the test tenant instead of masking failures.
-
-## Part of
-
-[Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio) — empowering skills for the Hermes agent.
+          <pre class="skillmd-viewer"># api-test-suite
+
+Turn an API into a runnable test suite — contract tests, integration tests, and CI config — generated from an OpenAPI spec, a Postman collection, or an existing API codebase.
+
+## What it does
+
+The agent reads your API&#x27;s source of truth (a spec file or the route code itself) and writes a test package you can run locally and wire into CI. It covers the happy path, the obvious error cases (auth, validation, not-found), and the edge cases people forget (empty bodies, malformed input, rate limits). Then it runs the suite and tells you what passed, what failed, and whether the failure is a bug in your API or a wrong expectation in the test.
+
+This is a generator, not a hosted runner. The output is real files in your repo that you own and can edit.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/api-test-suite/SKILL.md
+```
+
+## Inputs
+
+The skill accepts any one of these as the source of truth:
+
+| Input | Example | What it drives |
+|---|---|---|
+| OpenAPI / Swagger spec | `openapi.yaml`, `swagger.json` | Endpoint list, shapes, response codes |
+| Postman collection | `collection.json` | Endpoint list, example requests |
+| API codebase | FastAPI, Express, Flask, Nest | Route scans, auth schemes |
+
+If you have a spec, that wins — it is the contract. If you only have code, the agent scans route definitions and infers auth and shapes, then asks you to confirm anything ambiguous.
+
+## What you get
+
+```
+tests/
+  conftest.py            # pytest fixtures: base_url, auth_headers, cleanup
+  contract/
+    test_contract.py     # schema-conformance checks (spec-driven)
+    test_shapes.py
+  integration/
+    test_orders.py       # real HTTP happy / error / edge cases
+helpers/
+  http.py                # shared client, base URL from env
+  auth.py                # test-token minting
+openapi.json             # spec under test (if you provided one)
+pytest.ini
+```
+
+Node/TS projects get the same shape with `vitest.config.ts` and `*.test.ts` / `*.spec.ts` files, plus a `helpers/http.ts` and `helpers/auth.ts`.
+
+## Contract tests
+
+Contract tests assert the live API&#x27;s responses conform to the published schema. They catch drift between what you documented and what you shipped.
+
+```python
+# tests/contract/test_shapes.py
+import json
+import httpx
+from jsonschema import Draft202012Validator
+
+spec = json.load(open(&quot;openapi.json&quot;))
+schema = (
+    spec[&quot;paths&quot;][&quot;/markets&quot;][&quot;get&quot;][&quot;responses&quot;][&quot;200&quot;][&quot;content&quot;]
+    [&quot;application/json&quot;][&quot;schema&quot;]
+)
+
+def test_markets_shape(base_url):
+    r = httpx.get(f&quot;{base_url}/markets?limit=10&quot;)
+    assert r.status_code == 200
+    Draft202012Validator(schema).validate(r.json())
+```
+
+The rule that makes this worth having: the expectation is read from the spec, not copied into the test. A hardcoded copy silently rots; a spec-derived check fails the moment the API and the contract disagree, which is the whole point.
+
+For deeper coverage, `schemathesis` generates requests from the spec and validates every response against it automatically:
+
+```python
+import schemathesis
+schema = schemathesis.from_uri(&quot;http://localhost:8000/openapi.json&quot;)
+
+@schema.parametrize()
+def test_api_contract(case, base_url):
+    response = case.call(base_url)
+    case.validate_response(response)
+```
+
+## Integration tests
+
+Integration tests exercise real HTTP behavior against a running server (or an in-process app) with auth, test data, and cleanup. Fixtures create their own data and tear it down, so tests stay isolated.
+
+```python
+# tests/integration/test_orders.py
+import pytest, httpx
+
+@pytest.fixture
+def auth_headers():
+    return {&quot;Authorization&quot;: f&quot;Bearer {mint_test_token(scopes=[&#x27;orders:write&#x27;])}&quot;}
+
+@pytest.fixture
+def created_order(base_url, auth_headers):
+    r = httpx.post(f&quot;{base_url}/orders&quot;, json={&quot;item&quot;: &quot;widget&quot;, &quot;qty&quot;: 1},
+                   headers=auth_headers)
+    assert r.status_code == 201
+    yield r.json()[&quot;id&quot;]
+    httpx.delete(f&quot;{base_url}/orders/{r.json()[&#x27;id&#x27;]}&quot;, headers=auth_headers)
+
+def test_create_order_happy(base_url, auth_headers, created_order):
+    assert isinstance(created_order, str)
+
+def test_create_order_requires_auth(base_url):
+    r = httpx.post(f&quot;{base_url}/orders&quot;, json={&quot;item&quot;: &quot;widget&quot;})
+    assert r.status_code == 401
+
+def test_create_order_empty_body(base_url, auth_headers):
+    r = httpx.post(f&quot;{base_url}/orders&quot;, json={}, headers=auth_headers)
+    assert r.status_code == 400
+```
+
+Node/TS, in-process with `supertest`:
+
+```ts
+// tests/integration/orders.test.ts
+import request from &#x27;supertest&#x27;
+import { app } from &#x27;../../src/app&#x27;
+import { testToken } from &#x27;../helpers/auth&#x27;
+
+describe(&#x27;POST /orders&#x27;, () =&gt; {
+  it(&#x27;creates an order with valid auth&#x27;, async () =&gt; {
+    const r = await request(app)
+      .post(&#x27;/orders&#x27;)
+      .set(&#x27;Authorization&#x27;, `Bearer ${testToken()}`)
+      .send({ item: &#x27;widget&#x27;, qty: 1 })
+    expect(r.status).toBe(201)
+  })
+
+  it(&#x27;rejects missing auth&#x27;, async () =&gt; {
+    const r = await request(app).post(&#x27;/orders&#x27;).send({ item: &#x27;widget&#x27; })
+    expect(r.status).toBe(401)
+  })
+})
+```
+
+## Test runner setup
+
+**Python** — `pip install pytest httpx schemathesis`, then `pytest.ini`:
+
+```ini
+[pytest]
+testpaths = tests
+addopts = -q --tb=short
+env =
+  BASE_URL=http://localhost:8000
+```
+
+**Node/TS** — `npm i -D vitest supertest`, then `vitest.config.ts`:
+
+```ts
+import { defineConfig } from &#x27;vitest/config&#x27;
+export default defineConfig({
+  test: { globals: true, environment: &#x27;node&#x27;,
+          include: [&#x27;tests/**/*.test.ts&#x27;, &#x27;tests/**/*.spec.ts&#x27;] },
+})
+```
+
+## CI integration
+
+Run the suite against a service the pipeline spins up. This YAML works in both GitHub Actions and Forgejo Actions:
+
+```yaml
+name: api-tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      api:
+        image: ghcr.io/your-org/your-api:ci
+        ports: [&quot;8000:8000&quot;]
+        options: &gt;-
+          --health-cmd &quot;curl -f http://localhost:8000/health&quot;
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      BASE_URL: http://localhost:8000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: &quot;3.12&quot; }
+      - run: pip install pytest httpx schemathesis
+      - run: pytest tests/ --junitxml=report.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: api-test-report, path: report.xml }
+```
+
+Swap the setup/run steps for `actions/setup-node` and `npx vitest run` on a Node project.
+
+## Coverage matrix
+
+The agent generates at least one case per endpoint from each row:
+
+| Category | Case | Expected |
+|---|---|---|
+| Happy path | Valid request, valid auth | 2xx, shape matches spec |
+| Auth | Missing / invalid token | 401 / 403 |
+| Validation | Missing required field, bad type | 400, documented error shape |
+| Not found | Unknown ID | 404 |
+| Edge | Empty body, malformed JSON, oversized input | 400 / 413 |
+| Edge | Pagination bounds (`limit=0`, `limit=1000`) | 200 or 422, sane clamping |
+| Edge | Rate limit (burst) | 429 with retry header |
+
+## Honest limitations
+
+- The suite documents observed behavior. For ambiguous endpoints the agent confirms intent with you rather than guessing the &quot;right&quot; contract.
+- Contract tests check shape and codes; they do not prove business logic correctness. Pair them with a few hand-written behavior tests for your critical paths.
+- Generated fixtures use a test tenant and short-lived tokens. You must wire real secret injection (`BASE_URL`, token minting) for your environment — the skill scaffolds it, it does not know your auth system.
+- Rate-limited APIs will 429 under load; the skill serializes contract runs and raises the limit for the test tenant instead of masking failures.
+
+## Part of
+
+[Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio) — empowering skills for the Hermes agent.
 </pre>
         </div>
       </div>

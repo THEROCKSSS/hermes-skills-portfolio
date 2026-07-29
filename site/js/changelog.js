@@ -20,6 +20,10 @@
   // names already listed in that same subject line — no names added beyond what the
   // commit itself named).
   var COMMITS = [
+    { date: "2026-07-29", time: "17:19", hash: "21772ec",
+      text: "Fixes CI: stops quoting the forbidden-reference patterns inside AGENTS.md, which had been tripping the same check it was describing." },
+    { date: "2026-07-29", time: "17:18", hash: "7232b74",
+      text: "Adds project foundation docs (CLAUDE.md, ARCHITECTURE.md, CHANGELOG.md) and fixes a reveal-on-scroll bug that kept the Submit page's pending-sources section permanently invisible." },
     { date: "2026-07-29", time: "16:58", hash: "3fe43b7",
       text: "Redesigns the entire site with the Cobalt design system across four pages (Catalog, Bundles, Changelog, Submit), rewrites all 51 skill docs to the real Hermes skill schema, and adds a curated-bundles page plus an external-sourcing review pipeline." },
     { date: "2026-07-20", time: "23:49", hash: "37761f6",

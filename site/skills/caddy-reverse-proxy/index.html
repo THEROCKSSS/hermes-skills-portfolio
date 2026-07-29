@@ -103,11 +103,19 @@
         <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
           <pre class="skillmd-viewer">---
 name: caddy-reverse-proxy
-description: &quot;Set up a Caddy reverse proxy with automatic HTTPS — agent + this skill = user gets a production-grade proxy that manages TLS certificates for them.&quot;
+description: Use when the user wants to expose a local service over HTTPS with a real domain, proxy multiple services through one server with TLS, get automatic certificate management without certbot or manual renewal, or says &quot;set up a reverse proxy&quot;, &quot;I need HTTPS for my service&quot;, or &quot;proxy my Docker services&quot;.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [caddy, reverse-proxy, tls, lets-encrypt, caddyfile, docker]
+    related_skills: [docker-umbrella]
 ---
 
 # caddy-reverse-proxy
+
+## Overview
 
 Set up Caddy as a reverse proxy with automatic HTTPS. Caddy obtains and renews Let&#x27;s Encrypt certificates automatically, handles HTTP-to-HTTPS redirects, and proxies requests to your backend services. No manual certificate management.
 
@@ -317,79 +325,88 @@ volumes:
 
 Use `host.docker.internal` in the Caddyfile to proxy to services running on the host (not in Docker).
 
-## Pitfalls
+## Common Pitfalls
 
-- **No domain name** — Caddy&#x27;s automatic HTTPS requires a domain name pointing to your server. Without a domain, Caddy can&#x27;t obtain certificates. For local-only HTTPS, use Caddy&#x27;s internal CA: `localhost:8080 { reverse_proxy localhost:3000 }` (generates a self-signed cert).
-- **Ports 80/443 not open** — Let&#x27;s Encrypt uses the HTTP-01 challenge, which requires port 80 to be reachable. If your firewall blocks port 80, certificate issuance fails.
-- **Rate limits** — Let&#x27;s Encrypt has rate limits (50 certificates per domain per week). Don&#x27;t repeatedly restart Caddy with new domains in testing — you&#x27;ll hit the limit.
-- **Docker networking** — If Caddy runs in Docker and your backend runs on the host, use `host.docker.internal` (with `extra_hosts` in compose). If both are in Docker, put them on the same network and use the container name.
-- **Caddyfile reload vs restart** — Use `caddy reload` (or `systemctl reload caddy`) to apply config changes without dropping connections. `caddy stop` + `caddy start` drops active connections.
-- **Large uploads** — Caddy has a default body size limit. For large file uploads: `request_body { max_size 100MB }` in the site block.
+1. **No domain name.** Caddy&#x27;s automatic HTTPS requires a domain name pointing to your server. Without a domain, Caddy can&#x27;t obtain certificates. For local-only HTTPS, use Caddy&#x27;s internal CA: `localhost:8080 { reverse_proxy localhost:3000 }` (generates a self-signed cert).
+2. **Ports 80/443 not open.** Let&#x27;s Encrypt uses the HTTP-01 challenge, which requires port 80 to be reachable. If your firewall blocks port 80, certificate issuance fails.
+3. **Hitting Let&#x27;s Encrypt rate limits.** Let&#x27;s Encrypt allows 50 certificates per domain per week. Don&#x27;t repeatedly restart Caddy with new domains in testing — you&#x27;ll hit the limit and have to wait it out.
+4. **Wrong host resolution in Docker.** If Caddy runs in Docker and your backend runs on the host, use `host.docker.internal` (with `extra_hosts` in compose). If both are in Docker, put them on the same network and use the container name instead.
+5. **Restarting instead of reloading.** Use `caddy reload` (or `systemctl reload caddy`) to apply config changes without dropping connections. `caddy stop` + `caddy start` drops active connections.
+6. **Large uploads silently rejected.** Caddy has a default body size limit. For large file uploads, set `request_body { max_size 100MB }` in the site block.
+
+## Verification Checklist
+
+- [ ] `curl -I https://&lt;domain&gt;` returns a valid certificate (no `-k` needed) and the expected backend response
+- [ ] HTTP requests to the same domain redirect to HTTPS (`curl -I http://&lt;domain&gt;` shows a 301/308)
+- [ ] `caddy validate --config Caddyfile` (or `docker exec caddy caddy validate`) passes before reload
+- [ ] Config changes were applied with `caddy reload`, not a hard restart, if connections needed to stay up
+- [ ] WebSocket-dependent backends were tested with an actual upgrade request, not just a plain GET
+- [ ] Domain&#x27;s A record resolves to the server&#x27;s public IP before expecting certificate issuance to succeed
 </pre>
         </div>
 
         <div class="detail-tab-content" id="tab-readme" role="tabpanel">
-          <pre class="skillmd-viewer"># caddy-reverse-proxy
-
-Set up a Caddy reverse proxy with automatic HTTPS — no certbot, no manual certificate renewal.
-
-## What it does
-
-The agent installs Caddy, writes a Caddyfile for your services, and starts the proxy. Caddy automatically obtains Let&#x27;s Encrypt TLS certificates, redirects HTTP to HTTPS, and proxies requests to your backend services. You get production-grade HTTPS without managing certificates.
-
-## Install
-
-```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/caddy-reverse-proxy/SKILL.md
-```
-
-## How to use
-
-```
-&quot;Proxy my API at api.mysite.com to localhost:3000 with HTTPS&quot;
-```
-
-The agent:
-1. Installs Caddy (or uses Docker)
-2. Writes a Caddyfile:
-   ```
-   api.mysite.com {
-       reverse_proxy localhost:3000
-   }
-   ```
-3. Starts Caddy
-4. Verifies: `curl https://api.mysite.com/health` returns 200
-
-## Prerequisites
-
-- A server with a public IP
-- A domain name pointing to your server (A record)
-- Ports 80 and 443 open
-
-## What you get
-
-| Feature | Automatic? |
-|---|---|
-| TLS certificate issuance | Yes — Let&#x27;s Encrypt |
-| Certificate renewal | Yes — 30 days before expiry |
-| HTTP→HTTPS redirect | Yes |
-| WebSocket proxying | Yes — no config needed |
-| Multiple sites | Yes — one block per domain |
-
-## Example
-
-```
-User: &quot;I have three services: a web app on :5173, an API on :3000, and docs on :8080. I want them all under my domain with HTTPS.&quot;
-
-Agent:
-  1. Writes Caddyfile:
-     mysite.com { reverse_proxy localhost:5173 }
-     api.mysite.com { reverse_proxy localhost:3000 }
-     docs.mysite.com { reverse_proxy localhost:8080 }
-  2. Starts Caddy via Docker Compose
-  3. Verifies all three domains return 200 over HTTPS
-  4. Returns: &quot;All three services are live with HTTPS.&quot;
-```
+          <pre class="skillmd-viewer"># caddy-reverse-proxy
+
+Set up a Caddy reverse proxy with automatic HTTPS — no certbot, no manual certificate renewal.
+
+## What it does
+
+The agent installs Caddy, writes a Caddyfile for your services, and starts the proxy. Caddy automatically obtains Let&#x27;s Encrypt TLS certificates, redirects HTTP to HTTPS, and proxies requests to your backend services. You get production-grade HTTPS without managing certificates.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/caddy-reverse-proxy/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Proxy my API at api.mysite.com to localhost:3000 with HTTPS&quot;
+```
+
+The agent:
+1. Installs Caddy (or uses Docker)
+2. Writes a Caddyfile:
+   ```
+   api.mysite.com {
+       reverse_proxy localhost:3000
+   }
+   ```
+3. Starts Caddy
+4. Verifies: `curl https://api.mysite.com/health` returns 200
+
+## Prerequisites
+
+- A server with a public IP
+- A domain name pointing to your server (A record)
+- Ports 80 and 443 open
+
+## What you get
+
+| Feature | Automatic? |
+|---|---|
+| TLS certificate issuance | Yes — Let&#x27;s Encrypt |
+| Certificate renewal | Yes — 30 days before expiry |
+| HTTP→HTTPS redirect | Yes |
+| WebSocket proxying | Yes — no config needed |
+| Multiple sites | Yes — one block per domain |
+
+## Example
+
+```
+User: &quot;I have three services: a web app on :5173, an API on :3000, and docs on :8080. I want them all under my domain with HTTPS.&quot;
+
+Agent:
+  1. Writes Caddyfile:
+     mysite.com { reverse_proxy localhost:5173 }
+     api.mysite.com { reverse_proxy localhost:3000 }
+     docs.mysite.com { reverse_proxy localhost:8080 }
+  2. Starts Caddy via Docker Compose
+  3. Verifies all three domains return 200 over HTTPS
+  4. Returns: &quot;All three services are live with HTTPS.&quot;
+```
 </pre>
         </div>
       </div>

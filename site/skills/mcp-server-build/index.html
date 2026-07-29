@@ -103,11 +103,19 @@
         <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
           <pre class="skillmd-viewer">---
 name: mcp-server-build
-description: &quot;Build a working MCP server that exposes your tools to AI agents — agent + this skill = user gets a functional Model Context Protocol server.&quot;
+description: Use when the user wants to expose their tools, APIs, or data to an AI agent via the Model Context Protocol — building a new MCP server (tools/resources/prompts), choosing stdio vs HTTP transport, writing tool JSON Schemas, or connecting a built server to Hermes or another MCP client.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [mcp, model-context-protocol, tool-schema, server, agent-integration]
+    related_skills: [openapi-generator, webhook-receiver]
 ---
 
 # mcp-server-build
+
+## Overview
 
 Build a Model Context Protocol (MCP) server that exposes your tools, resources, and prompts to AI agents. MCP is an open protocol that lets AI assistants interact with external systems through a standardized interface.
 
@@ -323,72 +331,81 @@ hermes mcp test file-search
 hermes mcp list
 ```
 
-## Pitfalls
+## Common Pitfalls
 
-- **Vague tool descriptions** — The agent decides whether to call a tool based on its description. &quot;Searches stuff&quot; won&#x27;t be called. &quot;Searches the database for records matching a query string, returns up to N results as JSON&quot; will.
-- **No error handling** — Tools that crash on bad input will break the agent&#x27;s workflow. Always return error messages as strings, never raise unhandled exceptions.
-- **Returning too much data** — Agents have context limits. Cap returns at a reasonable size (10k chars, 50 results) and let the agent ask for more if needed.
-- **No input validation** — Validate paths, queries, and parameters before processing. Don&#x27;t trust the agent to send valid input.
-- **Blocking operations** — MCP handlers should be async. If you have blocking I/O (file reads, database queries), run them in a thread executor.
-- **Transport mismatch** — stdio servers are launched by the agent process. HTTP servers need to be running independently. Don&#x27;t try to serve HTTP over stdio or vice versa.
+1. **Vague tool descriptions.** The agent decides whether to call a tool based on its description alone. &quot;Searches stuff&quot; won&#x27;t get called. &quot;Searches the database for records matching a query string, returns up to N results as JSON&quot; will.
+2. **No error handling.** Tools that crash on bad input break the agent&#x27;s whole turn. Always catch exceptions and return error messages as strings — never let a handler raise unhandled.
+3. **Returning too much data.** Agents have context limits. Cap returns at a reasonable size (10k chars, 50 results as shown above) and let the agent ask for more if needed.
+4. **No input validation.** Validate paths, queries, and parameters before processing. Don&#x27;t trust the agent to send valid input — it will occasionally pass malformed or out-of-range values.
+5. **Blocking operations inside async handlers.** MCP handlers should be async. Blocking I/O (file reads, database queries) run inline stalls the whole server; run them in a thread executor.
+6. **Transport mismatch.** stdio servers are launched by the agent process and read/write over the process pipes; HTTP servers must be running independently before the agent connects. Don&#x27;t try to serve HTTP over stdio or vice versa.
+7. **Forgetting the session is cached.** After adding a new tool to a running server, some MCP clients (including Hermes) cache the tool list from initial connection — reconnect or restart the client to see new tools.
+
+## Verification Checklist
+
+- [ ] `mcp inspect python my_server.py` (or equivalent) lists every tool with its schema and description
+- [ ] Each tool returns a string/structured result for both valid and invalid input — no unhandled exception in the server logs
+- [ ] stdio servers are invoked by the client&#x27;s own command (not left running as an orphan process); HTTP servers are confirmed reachable with `curl` before wiring into the client
+- [ ] `hermes mcp test &lt;name&gt;` (or the equivalent client-side test) succeeds and the tool list matches what the server defines
+- [ ] A sample call to at least one tool returns the expected data end-to-end, not just a schema-level pass
 </pre>
         </div>
 
         <div class="detail-tab-content" id="tab-readme" role="tabpanel">
-          <pre class="skillmd-viewer"># mcp-server-build
-
-Build a working MCP server that exposes your tools to AI agents.
-
-## What it does
-
-The agent creates a Model Context Protocol (MCP) server that exposes your tools, resources, and prompts to AI assistants. MCP is an open protocol — any agent that supports it (Hermes, Claude Desktop, etc.) can call your tools through a standardized interface. You define the tools, implement the handlers, and the agent handles the rest.
-
-## Install
-
-```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/mcp-server-build/SKILL.md
-```
-
-## How to use
-
-```
-&quot;Build an MCP server that lets my agent search my codebase&quot;
-```
-
-The agent:
-1. Defines the tool (name, description, parameter schema)
-2. Implements the handler (the function that runs when the agent calls it)
-3. Chooses a transport (stdio for local, HTTP for remote)
-4. Tests the connection
-5. Shows you how to wire it into Hermes or Claude Desktop
-
-## Example
-
-```
-User: &quot;I want my agent to query my Postgres database via MCP&quot;
-
-Agent:
-  1. Defines tool: query_database(sql: str, limit: int) -&gt; str
-  2. Implements handler with psycopg2, caps results at 100 rows
-  3. Runs as a stdio server
-  4. Connects: hermes mcp add pg-server --command &quot;python pg_server.py&quot;
-  5. Tests: hermes mcp test pg-server → &quot;Connected, 1 tool available&quot;
-```
-
-## Transports
-
-| Transport | When to use |
-|---|---|
-| stdio | Local servers, launched by the agent |
-| HTTP | Remote servers, accessible over network |
-
-## Connecting to Hermes
-
-```bash
-hermes mcp add my-server --command &quot;python my_server.py&quot;   # stdio
-hermes mcp add my-server --url http://localhost:8080        # HTTP
-hermes mcp test my-server                                    # verify
-```
+          <pre class="skillmd-viewer"># mcp-server-build
+
+Build a working MCP server that exposes your tools to AI agents.
+
+## What it does
+
+The agent creates a Model Context Protocol (MCP) server that exposes your tools, resources, and prompts to AI assistants. MCP is an open protocol — any agent that supports it (Hermes, Claude Desktop, etc.) can call your tools through a standardized interface. You define the tools, implement the handlers, and the agent handles the rest.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/mcp-server-build/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Build an MCP server that lets my agent search my codebase&quot;
+```
+
+The agent:
+1. Defines the tool (name, description, parameter schema)
+2. Implements the handler (the function that runs when the agent calls it)
+3. Chooses a transport (stdio for local, HTTP for remote)
+4. Tests the connection
+5. Shows you how to wire it into Hermes or Claude Desktop
+
+## Example
+
+```
+User: &quot;I want my agent to query my Postgres database via MCP&quot;
+
+Agent:
+  1. Defines tool: query_database(sql: str, limit: int) -&gt; str
+  2. Implements handler with psycopg2, caps results at 100 rows
+  3. Runs as a stdio server
+  4. Connects: hermes mcp add pg-server --command &quot;python pg_server.py&quot;
+  5. Tests: hermes mcp test pg-server → &quot;Connected, 1 tool available&quot;
+```
+
+## Transports
+
+| Transport | When to use |
+|---|---|
+| stdio | Local servers, launched by the agent |
+| HTTP | Remote servers, accessible over network |
+
+## Connecting to Hermes
+
+```bash
+hermes mcp add my-server --command &quot;python my_server.py&quot;   # stdio
+hermes mcp add my-server --url http://localhost:8080        # HTTP
+hermes mcp test my-server                                    # verify
+```
 </pre>
         </div>
       </div>

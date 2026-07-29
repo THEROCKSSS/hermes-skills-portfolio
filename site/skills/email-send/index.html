@@ -101,272 +101,287 @@
         </div>
 
         <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
-          <pre class="skillmd-viewer">---
-name: email-send
-description: &quot;Send email programmatically via SMTP or API — agent + this skill = user gets a working email sender for their app or scripts.&quot;
-version: 1.0.0
----
-
-# email-send
-
-Set up programmatic email sending via SMTP or a transactional email API. The agent configures the provider, writes the sending code, and tests the connection. You get a working email function for your app, scripts, or agent tasks.
-
-## When to Use
-
-- The user wants to send email from their app or script.
-- The user wants to send notifications, alerts, or reports via email.
-- The user wants to set up a transactional email provider.
-- The user says &quot;send email from my app&quot;, &quot;set up email notifications&quot;, or &quot;I need to email users&quot;.
-
-## Provider Comparison
-
-| Provider | Free tier | Setup | Best for |
-|---|---|---|---|
-| **SMTP (Gmail, etc.)** | Limited | SMTP creds | Personal scripts, low volume |
-| **Resend** | 3k/month free | API key | Modern apps, developer-friendly |
-| **SendGrid** | 100/day free | API key | Established apps, high volume |
-| **Mailgun** | 5k/month (3mo) | API key | EU hosting, routing |
-| **AWS SES** | 62k free (from EC2) | IAM creds | AWS-native, cheapest at scale |
-| **Postmark** | 100/month free | API key | High deliverability, transactional |
-
-## Setup: SMTP
-
-Simplest for low-volume personal use. Works with any email provider that supports SMTP.
-
-### Python (smtplib)
-
-```python
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-
-def send_email(to: str, subject: str, body: str, html: bool = False):
-    msg = MIMEMultipart()
-    msg[&#x27;From&#x27;] = &#x27;you@example.com&#x27;
-    msg[&#x27;To&#x27;] = to
-    msg[&#x27;Subject&#x27;] = subject
-    msg.attach(MIMEText(body, &#x27;html&#x27; if html else &#x27;plain&#x27;))
-
-    with smtplib.SMTP(&#x27;smtp.gmail.com&#x27;, 587) as server:
-        server.starttls()
-        server.login(&#x27;you@example.com&#x27;, &#x27;your-app-password&#x27;)
-        server.send_message(msg)
-    return &quot;Sent&quot;
-```
-
-### Node.js (nodemailer)
-
-```javascript
-const nodemailer = require(&#x27;nodemailer&#x27;);
-
-const transporter = nodemailer.createTransport({
-    host: &#x27;smtp.gmail.com&#x27;,
-    port: 587,
-    secure: false,
-    auth: {
-        user: &#x27;you@example.com&#x27;,
-        pass: &#x27;your-app-password&#x27;
-    }
-});
-
-async function sendEmail(to, subject, body) {
-    await transporter.sendMail({
-        from: &#x27;you@example.com&#x27;,
-        to,
-        subject,
-        html: body
-    });
-    return &#x27;Sent&#x27;;
-}
-```
-
-### Gmail app password
-
-For Gmail SMTP, you need an app-specific password (not your regular password):
-1. Enable 2FA on your Google account
-2. Go to https://myaccount.google.com/apppasswords
-3. Generate an app password for &quot;Mail&quot;
-4. Use that 16-character password in your SMTP config
-
-## Setup: Resend (API, recommended for apps)
-
-```bash
-pip install resend
-# or
-npm install resend
-```
-
-```python
-import resend
-resend.api_key = &quot;re_xxxxxxx&quot;
-
-params = {
-    &quot;from&quot;: &quot;alerts@yourdomain.com&quot;,
-    &quot;to&quot;: [&quot;user@example.com&quot;],
-    &quot;subject&quot;: &quot;Build complete&quot;,
-    &quot;html&quot;: &quot;&lt;p&gt;Your build finished successfully.&lt;/p&gt;&quot;
-}
-email = resend.Emails.send(params)
-```
-
-```javascript
-const Resend = require(&#x27;resend&#x27;);
-const resend = new Resend(&#x27;re_xxxxxxx&#x27;);
-
-await resend.emails.send({
-    from: &#x27;alerts@yourdomain.com&#x27;,
-    to: &#x27;user@example.com&#x27;,
-    subject: &#x27;Build complete&#x27;,
-    html: &#x27;&lt;p&gt;Your build finished successfully.&lt;/p&gt;&#x27;
-});
-```
-
-**Note:** Resend requires verifying your sending domain (add DNS records). For testing without a domain, use `onboarding@resend.dev` as the from address.
-
-## Setup: AWS SES
-
-```python
-import boto3
-
-ses = boto3.client(&#x27;ses&#x27;, region_name=&#x27;us-east-1&#x27;,
-    aws_access_key_id=&#x27;YOUR_KEY&#x27;,
-    aws_secret_access_key=&#x27;YOUR_SECRET&#x27;
-)
-
-ses.send_email(
-    Source=&#x27;alerts@yourdomain.com&#x27;,
-    Destination={&#x27;ToAddresses&#x27;: [&#x27;user@example.com&#x27;]},
-    Message={
-        &#x27;Subject&#x27;: {&#x27;Data&#x27;: &#x27;Alert&#x27;},
-        &#x27;Body&#x27;: {&#x27;Html&#x27;: {&#x27;Data&#x27;: &#x27;&lt;p&gt;Server down&lt;/p&gt;&#x27;}}
-    }
-)
-```
-
-**Note:** New SES accounts are in &quot;sandbox&quot; mode — you can only send to verified email addresses. Request production access to send to anyone.
-
-## Templating
-
-### Simple HTML template
-
-```python
-def build_report_email(title: str, metrics: dict) -&gt; str:
-    rows = &quot;&quot;.join(f&quot;&lt;tr&gt;&lt;td&gt;{k}&lt;/td&gt;&lt;td&gt;{v}&lt;/td&gt;&lt;/tr&gt;&quot; for k, v in metrics.items())
-    return f&quot;&quot;&quot;
-    &lt;html&gt;&lt;body&gt;
-    &lt;h2&gt;{title}&lt;/h2&gt;
-    &lt;table border=&quot;1&quot; cellpadding=&quot;8&quot; style=&quot;border-collapse:collapse;&quot;&gt;
-    &lt;tr&gt;&lt;th&gt;Metric&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
-    {rows}
-    &lt;/table&gt;
-    &lt;p style=&quot;color:#888;font-size:12px;margin-top:20px;&quot;&gt;
-    Sent by automated system. Do not reply.
-    &lt;/p&gt;
-    &lt;/body&gt;&lt;/html&gt;
-    &quot;&quot;&quot;
-```
-
-### Jinja2 template
-
-```python
-from jinja2 import Template
-
-template = Template(&quot;&quot;&quot;
-&lt;h2&gt;{{ title }}&lt;/h2&gt;
-&lt;ul&gt;
-{% for item in items %}
-  &lt;li&gt;{{ item.name }}: {{ item.value }}&lt;/li&gt;
-{% endfor %}
-&lt;/ul&gt;
-&quot;&quot;&quot;)
-
-html = template.render(title=&quot;Daily Report&quot;, items=data)
-```
-
-## Attachments
-
-```python
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
-
-msg = MIMEMultipart()
-msg[&#x27;Subject&#x27;] = &#x27;Report with attachment&#x27;
-
-with open(&#x27;report.pdf&#x27;, &#x27;rb&#x27;) as f:
-    part = MIMEBase(&#x27;application&#x27;, &#x27;octet-stream&#x27;)
-    part.set_payload(f.read())
-    encoders.encode_base64(part)
-    part.add_header(&#x27;Content-Disposition&#x27;, &#x27;attachment; filename=&quot;report.pdf&quot;&#x27;)
-    msg.attach(part)
-
-with smtplib.SMTP(&#x27;smtp.gmail.com&#x27;, 587) as server:
-    server.starttls()
-    server.login(&#x27;you@example.com&#x27;, &#x27;password&#x27;)
-    server.send_message(msg)
-```
-
-## Pitfalls
-
-- **Gmail blocks less-secure apps** — Use an app-specific password, not your regular password. Regular password auth is blocked by Google for most accounts.
-- **Emails going to spam** — If using a custom domain, set up SPF, DKIM, and DMARC DNS records. Without these, recipient servers will likely mark your emails as spam. Transactional providers (Resend, SendGrid) handle this automatically.
-- **SES sandbox mode** — New AWS SES accounts can only send to verified addresses. You must request production access to send to any address.
-- **Rate limits** — Gmail SMTP limits ~500 emails/day. Resend&#x27;s free tier is 3k/month. SendGrid is 100/day. For high volume, use a dedicated provider.
-- **HTML in plain text clients** — Always include a plain-text alternative alongside HTML. Some email clients and all automated spam filters check for a text part.
-- **Attachment size** — Most providers limit attachments to 10-25 MB. For larger files, upload to a storage service and send a download link.
-- **Sending domain not verified** — Resend, SendGrid, and Mailgun require you to verify your sending domain (add DNS records). Without verification, emails will fail or be rejected.
+          <pre class="skillmd-viewer">---
+name: email-send
+description: &quot;Use when the user wants to send email programmatically from an app or script — transactional email, notifications, alerts, or reports — via SMTP or a provider API (Resend, SendGrid, Mailgun, AWS SES, Postmark).&quot;
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [smtp, transactional-email, resend, sendgrid, aws-ses, nodemailer]
+    related_skills: [ntfy-notifier, webhook-receiver, env-config-manager]
+---
+
+# email-send
+
+## Overview
+
+Set up programmatic email sending via SMTP or a transactional email API. The agent configures the provider, writes the sending code, and tests the connection. You get a working email function for your app, scripts, or agent tasks.
+
+## When to Use
+
+- The user wants to send email from their app or script.
+- The user wants to send notifications, alerts, or reports via email.
+- The user wants to set up a transactional email provider.
+- The user says &quot;send email from my app&quot;, &quot;set up email notifications&quot;, or &quot;I need to email users&quot;.
+
+## Provider Comparison
+
+| Provider | Free tier | Setup | Best for |
+|---|---|---|---|
+| **SMTP (Gmail, etc.)** | Limited | SMTP creds | Personal scripts, low volume |
+| **Resend** | 3k/month free | API key | Modern apps, developer-friendly |
+| **SendGrid** | 100/day free | API key | Established apps, high volume |
+| **Mailgun** | 5k/month (3mo) | API key | EU hosting, routing |
+| **AWS SES** | 62k free (from EC2) | IAM creds | AWS-native, cheapest at scale |
+| **Postmark** | 100/month free | API key | High deliverability, transactional |
+
+## Setup: SMTP
+
+Simplest for low-volume personal use. Works with any email provider that supports SMTP.
+
+### Python (smtplib)
+
+```python
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+def send_email(to: str, subject: str, body: str, html: bool = False):
+    msg = MIMEMultipart()
+    msg[&#x27;From&#x27;] = &#x27;you@example.com&#x27;
+    msg[&#x27;To&#x27;] = to
+    msg[&#x27;Subject&#x27;] = subject
+    msg.attach(MIMEText(body, &#x27;html&#x27; if html else &#x27;plain&#x27;))
+
+    with smtplib.SMTP(&#x27;smtp.gmail.com&#x27;, 587) as server:
+        server.starttls()
+        server.login(&#x27;you@example.com&#x27;, &#x27;your-app-password&#x27;)
+        server.send_message(msg)
+    return &quot;Sent&quot;
+```
+
+### Node.js (nodemailer)
+
+```javascript
+const nodemailer = require(&#x27;nodemailer&#x27;);
+
+const transporter = nodemailer.createTransport({
+    host: &#x27;smtp.gmail.com&#x27;,
+    port: 587,
+    secure: false,
+    auth: {
+        user: &#x27;you@example.com&#x27;,
+        pass: &#x27;your-app-password&#x27;
+    }
+});
+
+async function sendEmail(to, subject, body) {
+    await transporter.sendMail({
+        from: &#x27;you@example.com&#x27;,
+        to,
+        subject,
+        html: body
+    });
+    return &#x27;Sent&#x27;;
+}
+```
+
+### Gmail app password
+
+For Gmail SMTP, you need an app-specific password (not your regular password):
+1. Enable 2FA on your Google account
+2. Go to https://myaccount.google.com/apppasswords
+3. Generate an app password for &quot;Mail&quot;
+4. Use that 16-character password in your SMTP config
+
+## Setup: Resend (API, recommended for apps)
+
+```bash
+pip install resend
+# or
+npm install resend
+```
+
+```python
+import resend
+resend.api_key = &quot;re_xxxxxxx&quot;
+
+params = {
+    &quot;from&quot;: &quot;alerts@yourdomain.com&quot;,
+    &quot;to&quot;: [&quot;user@example.com&quot;],
+    &quot;subject&quot;: &quot;Build complete&quot;,
+    &quot;html&quot;: &quot;&lt;p&gt;Your build finished successfully.&lt;/p&gt;&quot;
+}
+email = resend.Emails.send(params)
+```
+
+```javascript
+const Resend = require(&#x27;resend&#x27;);
+const resend = new Resend(&#x27;re_xxxxxxx&#x27;);
+
+await resend.emails.send({
+    from: &#x27;alerts@yourdomain.com&#x27;,
+    to: &#x27;user@example.com&#x27;,
+    subject: &#x27;Build complete&#x27;,
+    html: &#x27;&lt;p&gt;Your build finished successfully.&lt;/p&gt;&#x27;
+});
+```
+
+**Note:** Resend requires verifying your sending domain (add DNS records). For testing without a domain, use `onboarding@resend.dev` as the from address.
+
+## Setup: AWS SES
+
+```python
+import boto3
+
+ses = boto3.client(&#x27;ses&#x27;, region_name=&#x27;us-east-1&#x27;,
+    aws_access_key_id=&#x27;YOUR_KEY&#x27;,
+    aws_secret_access_key=&#x27;YOUR_SECRET&#x27;
+)
+
+ses.send_email(
+    Source=&#x27;alerts@yourdomain.com&#x27;,
+    Destination={&#x27;ToAddresses&#x27;: [&#x27;user@example.com&#x27;]},
+    Message={
+        &#x27;Subject&#x27;: {&#x27;Data&#x27;: &#x27;Alert&#x27;},
+        &#x27;Body&#x27;: {&#x27;Html&#x27;: {&#x27;Data&#x27;: &#x27;&lt;p&gt;Server down&lt;/p&gt;&#x27;}}
+    }
+)
+```
+
+**Note:** New SES accounts are in &quot;sandbox&quot; mode — you can only send to verified email addresses. Request production access to send to anyone.
+
+## Templating
+
+### Simple HTML template
+
+```python
+def build_report_email(title: str, metrics: dict) -&gt; str:
+    rows = &quot;&quot;.join(f&quot;&lt;tr&gt;&lt;td&gt;{k}&lt;/td&gt;&lt;td&gt;{v}&lt;/td&gt;&lt;/tr&gt;&quot; for k, v in metrics.items())
+    return f&quot;&quot;&quot;
+    &lt;html&gt;&lt;body&gt;
+    &lt;h2&gt;{title}&lt;/h2&gt;
+    &lt;table border=&quot;1&quot; cellpadding=&quot;8&quot; style=&quot;border-collapse:collapse;&quot;&gt;
+    &lt;tr&gt;&lt;th&gt;Metric&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+    {rows}
+    &lt;/table&gt;
+    &lt;p style=&quot;color:#888;font-size:12px;margin-top:20px;&quot;&gt;
+    Sent by automated system. Do not reply.
+    &lt;/p&gt;
+    &lt;/body&gt;&lt;/html&gt;
+    &quot;&quot;&quot;
+```
+
+### Jinja2 template
+
+```python
+from jinja2 import Template
+
+template = Template(&quot;&quot;&quot;
+&lt;h2&gt;{{ title }}&lt;/h2&gt;
+&lt;ul&gt;
+{% for item in items %}
+  &lt;li&gt;{{ item.name }}: {{ item.value }}&lt;/li&gt;
+{% endfor %}
+&lt;/ul&gt;
+&quot;&quot;&quot;)
+
+html = template.render(title=&quot;Daily Report&quot;, items=data)
+```
+
+## Attachments
+
+```python
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
+
+msg = MIMEMultipart()
+msg[&#x27;Subject&#x27;] = &#x27;Report with attachment&#x27;
+
+with open(&#x27;report.pdf&#x27;, &#x27;rb&#x27;) as f:
+    part = MIMEBase(&#x27;application&#x27;, &#x27;octet-stream&#x27;)
+    part.set_payload(f.read())
+    encoders.encode_base64(part)
+    part.add_header(&#x27;Content-Disposition&#x27;, &#x27;attachment; filename=&quot;report.pdf&quot;&#x27;)
+    msg.attach(part)
+
+with smtplib.SMTP(&#x27;smtp.gmail.com&#x27;, 587) as server:
+    server.starttls()
+    server.login(&#x27;you@example.com&#x27;, &#x27;password&#x27;)
+    server.send_message(msg)
+```
+
+## Common Pitfalls
+
+1. **Gmail blocks less-secure apps** — Use an app-specific password, not your regular password. Regular password auth is blocked by Google for most accounts.
+2. **Emails going to spam** — If using a custom domain, set up SPF, DKIM, and DMARC DNS records. Without these, recipient servers will likely mark your emails as spam. Transactional providers (Resend, SendGrid) handle this automatically.
+3. **SES sandbox mode** — New AWS SES accounts can only send to verified addresses. You must request production access to send to any address.
+4. **Rate limits** — Gmail SMTP limits ~500 emails/day. Resend&#x27;s free tier is 3k/month. SendGrid is 100/day. For high volume, use a dedicated provider.
+5. **HTML in plain text clients** — Always include a plain-text alternative alongside HTML. Some email clients and all automated spam filters check for a text part.
+6. **Attachment size** — Most providers limit attachments to 10-25 MB. For larger files, upload to a storage service and send a download link.
+7. **Sending domain not verified** — Resend, SendGrid, and Mailgun require you to verify your sending domain (add DNS records). Without verification, emails will fail or be rejected.
+
+## Verification Checklist
+
+- [ ] Test send lands in the inbox (not spam) for both the plain-text and HTML parts
+- [ ] SPF/DKIM/DMARC records verified for a custom sending domain, or provider-managed domain (e.g. `onboarding@resend.dev`) confirmed for testing
+- [ ] Attachment (if any) downloads and opens correctly from the received message
+- [ ] Provider account confirmed out of sandbox mode (SES) or within the free-tier/rate limit for the expected send volume
 </pre>
         </div>
 
         <div class="detail-tab-content" id="tab-readme" role="tabpanel">
-          <pre class="skillmd-viewer"># email-send
-
-Send email programmatically via SMTP or a transactional email API.
-
-## What it does
-
-The agent configures an email provider (SMTP, Resend, SendGrid, Mailgun, or AWS SES), writes the sending code in your language, and tests the connection. You get a working email function for your app, scripts, or agent tasks — notifications, alerts, reports, or transactional emails.
-
-## Install
-
-```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/email-send/SKILL.md
-```
-
-## How to use
-
-```
-&quot;Set up email notifications for my app using Resend&quot;
-```
-
-The agent:
-1. Helps you create a Resend account and get an API key
-2. Writes the sending code in Python or Node.js
-3. Tests by sending a test email to your address
-4. Integrates into your app or script
-
-## Providers
-
-| Provider | Free tier | Best for |
-|---|---|---|
-| SMTP (Gmail) | 500/day | Personal scripts |
-| Resend | 3k/month | Modern apps |
-| SendGrid | 100/day | High volume |
-| AWS SES | 62k (from EC2) | Cheapest at scale |
-| Mailgun | 5k/month (3mo) | EU hosting |
-
-## Example
-
-```
-User: &quot;Send me an email when my cron job fails&quot;
-
-Agent:
-  1. Sets up Resend with your API key
-  2. Writes: send_email(&quot;you@example.com&quot;, &quot;Job Failed&quot;, &quot;&lt;p&gt;Backup failed at 3AM&lt;/p&gt;&quot;)
-  3. Tests: sends a test email → you receive it
-  4. Adds the call to your cron job&#x27;s error handler
-```
+          <pre class="skillmd-viewer"># email-send
+
+Send email programmatically via SMTP or a transactional email API.
+
+## What it does
+
+The agent configures an email provider (SMTP, Resend, SendGrid, Mailgun, or AWS SES), writes the sending code in your language, and tests the connection. You get a working email function for your app, scripts, or agent tasks — notifications, alerts, reports, or transactional emails.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/email-send/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Set up email notifications for my app using Resend&quot;
+```
+
+The agent:
+1. Helps you create a Resend account and get an API key
+2. Writes the sending code in Python or Node.js
+3. Tests by sending a test email to your address
+4. Integrates into your app or script
+
+## Providers
+
+| Provider | Free tier | Best for |
+|---|---|---|
+| SMTP (Gmail) | 500/day | Personal scripts |
+| Resend | 3k/month | Modern apps |
+| SendGrid | 100/day | High volume |
+| AWS SES | 62k (from EC2) | Cheapest at scale |
+| Mailgun | 5k/month (3mo) | EU hosting |
+
+## Example
+
+```
+User: &quot;Send me an email when my cron job fails&quot;
+
+Agent:
+  1. Sets up Resend with your API key
+  2. Writes: send_email(&quot;you@example.com&quot;, &quot;Job Failed&quot;, &quot;&lt;p&gt;Backup failed at 3AM&lt;/p&gt;&quot;)
+  3. Tests: sends a test email → you receive it
+  4. Adds the call to your cron job&#x27;s error handler
+```
 </pre>
         </div>
       </div>

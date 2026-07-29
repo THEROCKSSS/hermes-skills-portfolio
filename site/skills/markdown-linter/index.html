@@ -103,11 +103,19 @@
         <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
           <pre class="skillmd-viewer">---
 name: markdown-linter
-description: &quot;Lint markdown files for consistency and common issues — agent + this skill = user gets clean, consistent documentation.&quot;
+description: Use when a user wants to check markdown files for issues (inconsistent heading levels, broken links, missing alt text, formatting inconsistencies) before publishing docs, or says &quot;check my markdown&quot; / &quot;lint this doc&quot; / &quot;fix markdown issues&quot;.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [markdown, linting, documentation-quality]
+    related_skills: [markdown-to-pdf, markdown-to-slides, hallmark-readme]
 ---
 
 # markdown-linter
+
+## Overview
 
 Check markdown files for common issues: inconsistent heading levels, broken links, missing alt text, trailing whitespace, and formatting inconsistencies. The agent scans markdown files and reports a fixable punch list.
 
@@ -268,70 +276,77 @@ def fix_markdown(filepath: str) -&gt; dict:
 4. For other issues, show the line and suggested fix
 5. Let the user decide which to fix
 
-## Pitfalls
+## Common Pitfalls
 
-- **Frontmatter** — YAML frontmatter (between `---` lines) is not markdown. Skip it during linting.
-- **Tables** — Table rows can be long. The line-length check skips lines starting with `|`.
-- **URLs** — Long URLs make lines long. The check skips lines containing `http`.
-- **Nested code blocks** — Code blocks inside code blocks (quarto, mdx) can confuse the parser. The `in_code_block` toggle handles simple cases.
-- **Auto-fix is conservative** — Only fixes whitespace and list markers. Heading levels, alt text, and link text require manual judgment.
+1. **Frontmatter.** YAML frontmatter (between `---` lines) is not markdown. Skip it during linting.
+2. **Tables.** Table rows can be long. The line-length check skips lines starting with `|`.
+3. **URLs.** Long URLs make lines long. The check skips lines containing `http`.
+4. **Nested code blocks.** Code blocks inside code blocks (quarto, mdx) can confuse the parser. The `in_code_block` toggle handles simple cases.
+5. **Auto-fix is conservative.** Only fixes whitespace and list markers. Heading levels, alt text, and link text require manual judgment.
+
+## Verification Checklist
+
+- [ ] `lint_markdown` was run and its full issue list — not just a sample — was reported, sorted by line number
+- [ ] YAML frontmatter block was excluded from line-length and heading checks
+- [ ] `fix_markdown` was only applied to whitespace/list-marker issues; heading levels, alt text, and link text were left for manual review
+- [ ] Re-running `lint_markdown` after fixes shows the fixed issue count reduced accordingly
 </pre>
         </div>
 
         <div class="detail-tab-content" id="tab-readme" role="tabpanel">
-          <pre class="skillmd-viewer"># markdown-linter
-
-Check markdown files for consistency, broken links, missing alt text, and common formatting issues.
-
-## What it does
-
-The agent scans a markdown file and checks for 8 common issues: heading level skips, multiple h1s, trailing whitespace, missing image alt text, empty link text, mixed list markers, code blocks without language, and lines over 120 chars. Reports a sorted punch list with line numbers. Can auto-fix trailing whitespace and normalize list markers.
-
-## Install
-
-```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-linter/SKILL.md
-```
-
-## How to use
-
-```
-&quot;Lint my README.md&quot;
-```
-
-The agent:
-1. Runs all 8 checks
-2. Reports issues sorted by line number
-3. Offers to auto-fix trailing whitespace and list markers
-
-## Checks
-
-| Rule | What it catches |
-|---|---|
-| heading-skip | h1 → h3 (skipping h2) |
-| multiple-h1 | More than one # heading |
-| trailing-whitespace | Spaces at end of lines |
-| missing-alt-text | Images without alt text |
-| empty-link-text | Links with no display text |
-| mixed-list-markers | Mixing - and * for lists |
-| missing-code-language | Code blocks without a language |
-| line-too-long | Lines over 120 characters |
-
-## Example
-
-```
-User: &quot;Check my docs for markdown issues&quot;
-
-Agent:
-  1. Lints docs.md
-  2. Finds:
-     Line 12: trailing-whitespace
-     Line 34: missing-alt-text (image)
-     Line 45: mixed-list-markers (mixing - and *)
-     Line 67: missing-code-language
-  3. Offers: &quot;Auto-fix 2 issues (whitespace, list markers)?&quot;
-  4. User approves → fixes applied
-```
+          <pre class="skillmd-viewer"># markdown-linter
+
+Check markdown files for consistency, broken links, missing alt text, and common formatting issues.
+
+## What it does
+
+The agent scans a markdown file and checks for 8 common issues: heading level skips, multiple h1s, trailing whitespace, missing image alt text, empty link text, mixed list markers, code blocks without language, and lines over 120 chars. Reports a sorted punch list with line numbers. Can auto-fix trailing whitespace and normalize list markers.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/markdown-linter/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Lint my README.md&quot;
+```
+
+The agent:
+1. Runs all 8 checks
+2. Reports issues sorted by line number
+3. Offers to auto-fix trailing whitespace and list markers
+
+## Checks
+
+| Rule | What it catches |
+|---|---|
+| heading-skip | h1 → h3 (skipping h2) |
+| multiple-h1 | More than one # heading |
+| trailing-whitespace | Spaces at end of lines |
+| missing-alt-text | Images without alt text |
+| empty-link-text | Links with no display text |
+| mixed-list-markers | Mixing - and * for lists |
+| missing-code-language | Code blocks without a language |
+| line-too-long | Lines over 120 characters |
+
+## Example
+
+```
+User: &quot;Check my docs for markdown issues&quot;
+
+Agent:
+  1. Lints docs.md
+  2. Finds:
+     Line 12: trailing-whitespace
+     Line 34: missing-alt-text (image)
+     Line 45: mixed-list-markers (mixing - and *)
+     Line 67: missing-code-language
+  3. Offers: &quot;Auto-fix 2 issues (whitespace, list markers)?&quot;
+  4. User approves → fixes applied
+```
 </pre>
         </div>
       </div>

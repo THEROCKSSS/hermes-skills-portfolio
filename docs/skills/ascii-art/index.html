@@ -103,11 +103,19 @@
         <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
           <pre class="skillmd-viewer">---
 name: ascii-art
-description: &quot;Generate ASCII art from text and images — agent + this skill = user gets text-based art for terminals, docs, and comments.&quot;
+description: Use when the user wants a text banner or logo for a CLI tool/README, wants an image converted to ASCII art, wants decorative ASCII for a terminal output or code comment, or explicitly says &quot;make ASCII art&quot;, &quot;generate a banner&quot;, or &quot;convert this image to ASCII&quot;.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [ascii-art, text-banner, image-to-ascii, pyfiglet, terminal-art]
+    related_skills: [color-palette-generator, qr-code-generator]
 ---
 
 # ascii-art
+
+## Overview
 
 Generate ASCII art from text (banners, logos) and images (photo-to-ASCII conversion). The agent creates text banners, converts images to ASCII, and produces decorative art for terminals, documentation, and code comments.
 
@@ -224,59 +232,67 @@ def box_text(text: str, style: str = &quot;single&quot;) -&gt; str:
 3. For images: resize to terminal width, convert to grayscale, map to ASCII ramp
 4. Return the ASCII art as a string
 
-## Pitfalls
+## Common Pitfalls
 
-- **Banners too wide** — pyfiglet banners can be 100+ chars wide. Check the terminal width and pick a narrower font (small, mini, thin) for narrow terminals.
-- **Image ASCII looks wrong** — Terminal characters are ~2x taller than wide. Adjust the aspect ratio with `height = int(aspect * width * 0.5)`.
-- **Font not found** — Not all pyfiglet fonts are installed by default. Check `pyfiglet.FigletFont.getFonts()` for available fonts.
-- **Color** — ASCII art in a terminal can use ANSI color codes. Add color with `\033[91m` (red) etc., but it won&#x27;t render in plain text files.
-- **Very large images** — Don&#x27;t try to convert a 4000px image. Resize to 80-120 chars wide first. Larger widths produce unreadable ASCII.
+1. **Banners too wide.** pyfiglet banners can be 100+ chars wide. Check the terminal width and pick a narrower font (small, mini, thin) for narrow terminals.
+2. **Image ASCII looks squashed or stretched.** Terminal characters are ~2x taller than wide. Adjust the aspect ratio with `height = int(aspect * width * 0.5)` — skipping this factor distorts the output.
+3. **Requested font not installed.** Not all pyfiglet fonts ship by default. Check `pyfiglet.FigletFont.getFonts()` for what&#x27;s actually available before promising a specific font.
+4. **Color codes leaking into plain-text output.** ANSI color codes (`\033[91m`) render correctly in a terminal but show as garbage escape sequences in a README or plain text file — only add color when the target is a live terminal.
+5. **Converting an oversized image directly.** A 4000px image produces an unreadable wall of characters. Resize to 80-120 chars wide before mapping to the ASCII ramp, not after.
+
+## Verification Checklist
+
+- [ ] Text banner output was actually printed/reviewed at the target line width (not assumed to fit)
+- [ ] Chosen pyfiglet font was confirmed present via `pyfiglet.FigletFont.getFonts()` before use
+- [ ] Image-to-ASCII output used the aspect-ratio correction (`* 0.5`) so the result isn&#x27;t vertically stretched
+- [ ] Source image was resized to ≤120 chars wide before conversion
+- [ ] If ANSI color was added, confirmed the output target is a terminal, not a file meant to stay plain text
 </pre>
         </div>
 
         <div class="detail-tab-content" id="tab-readme" role="tabpanel">
-          <pre class="skillmd-viewer"># ascii-art
-
-Generate ASCII art from text and images — banners, image conversions, and decorative text for terminals and docs.
-
-## What it does
-
-The agent creates ASCII art in three modes: text banners (pyfiglet, 500+ fonts), image-to-ASCII conversion (photo to text art), and decorative boxes/cowsay for terminal output. Useful for CLI tool headers, README decorations, and fun terminal output.
-
-## Install
-
-```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ascii-art/SKILL.md
-```
-
-## How to use
-
-**Text banner:**
-```
-&quot;Make an ASCII banner that says MY TOOL&quot;
-```
-
-**Image to ASCII:**
-```
-&quot;Convert logo.png to ASCII art&quot;
-```
-
-The agent generates the ASCII art and returns it as text.
-
-## Example
-
-```
-User: &quot;Make a banner for my CLI tool called DEPLOY&quot;
-
-Agent (using pyfiglet with &#x27;slant&#x27; font):
-    ___       __           ___     ___
-   /   | ____/ /________  /   |   /   |
-  / /| |/ __  / ___/ __ \/ /| |  / /| |
- / ___ / /_/ / /  / /_/ / ___ | / ___ |
-/_/  |_\__,_/_/   \____/_/  |_|/_/  |_|
-
-Returns the ASCII banner as text.
-```
+          <pre class="skillmd-viewer"># ascii-art
+
+Generate ASCII art from text and images — banners, image conversions, and decorative text for terminals and docs.
+
+## What it does
+
+The agent creates ASCII art in three modes: text banners (pyfiglet, 500+ fonts), image-to-ASCII conversion (photo to text art), and decorative boxes/cowsay for terminal output. Useful for CLI tool headers, README decorations, and fun terminal output.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ascii-art/SKILL.md
+```
+
+## How to use
+
+**Text banner:**
+```
+&quot;Make an ASCII banner that says MY TOOL&quot;
+```
+
+**Image to ASCII:**
+```
+&quot;Convert logo.png to ASCII art&quot;
+```
+
+The agent generates the ASCII art and returns it as text.
+
+## Example
+
+```
+User: &quot;Make a banner for my CLI tool called DEPLOY&quot;
+
+Agent (using pyfiglet with &#x27;slant&#x27; font):
+    ___       __           ___     ___
+   /   | ____/ /________  /   |   /   |
+  / /| |/ __  / ___/ __ \/ /| |  / /| |
+ / ___ / /_/ / /  / /_/ / ___ | / ___ |
+/_/  |_\__,_/_/   \____/_/  |_|/_/  |_|
+
+Returns the ASCII banner as text.
+```
 </pre>
         </div>
       </div>

@@ -103,11 +103,19 @@
         <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
           <pre class="skillmd-viewer">---
 name: discord-bot-build
-description: &quot;Build a working Discord bot with slash commands, events, and moderation — agent + this skill = user gets a bot running in their server.&quot;
+description: Use when the user wants a Discord bot for their server, wants to automate moderation/announcements/custom commands, or says &quot;build a Discord bot&quot;, &quot;make a bot for my server&quot;, or &quot;I need a Discord mod bot&quot;.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [discord-bot, discordjs, slash-commands, moderation-bot, gateway-intents]
+    related_skills: [telegram-bot-build, env-config-manager]
 ---
 
 # discord-bot-build
+
+## Overview
 
 Build a Discord bot with slash commands, event handlers, and moderation capabilities using discord.js. The bot runs as a Node.js process and connects to Discord via the Gateway.
 
@@ -314,72 +322,81 @@ COPY . .
 CMD [&quot;node&quot;, &quot;index.js&quot;]
 ```
 
-## Pitfalls
+## Common Pitfalls
 
-- **Message Content Intent not enabled** — The bot can&#x27;t read message text without this. Enable it in the Developer Portal under &quot;Privileged Gateway Intents&quot;. Without it, `message.content` is always empty.
-- **Token in public code** — Never commit the `.env` file. Add it to `.gitignore`. If the token leaks, regenerate it immediately in the Developer Portal.
-- **Commands not appearing** — Global commands take up to 1 hour to propagate. Use guild commands for testing (instant). Run `deploy-commands.js` after adding new commands.
-- **Bot can&#x27;t kick/ban** — The bot&#x27;s role must be higher in the role hierarchy than the target user&#x27;s role. Also check that the bot has Kick/Ban permissions in the server settings.
-- **Rate limits** — Discord enforces rate limits on API calls. Bulk operations (mass ban, mass delete) should use `bulkDelete` and respect rate limits. The library handles rate limits automatically, but pushing too hard will still cause delays.
-- **No error handling on commands** — Always wrap command logic in try/catch. An unhandled error crashes the bot. Reply with the error message so the user knows what went wrong.
+1. **Message Content Intent not enabled.** The bot can&#x27;t read message text without this. Enable it in the Developer Portal under &quot;Privileged Gateway Intents&quot; — without it, `message.content` is always empty even though the event still fires.
+2. **Token committed or leaked.** Never commit the `.env` file — add it to `.gitignore`. If the token leaks, regenerate it immediately in the Developer Portal; a leaked token gives full control of the bot.
+3. **Commands not appearing after deploy.** Global commands take up to 1 hour to propagate. Use guild commands (`applicationGuildCommands`) for testing since they&#x27;re instant. Also re-run `deploy-commands.js` after adding or changing any command definition — editing `index.js` alone doesn&#x27;t re-register them.
+4. **Bot can&#x27;t kick/ban despite having the permission.** The bot&#x27;s role must sit higher in the role hierarchy than the target user&#x27;s highest role, in addition to having the Kick/Ban permission — Discord enforces hierarchy regardless of permission flags.
+5. **Rate limits on bulk operations.** Discord enforces per-route rate limits. Bulk operations (mass ban, mass delete) should use `bulkDelete` and expect the library&#x27;s automatic rate-limit handling to introduce delays — don&#x27;t assume every call completes instantly.
+6. **No error handling crashes the whole bot.** An unhandled exception inside an interaction handler can crash the process if not caught. Always wrap command logic in try/catch and reply with the error so the user gets feedback instead of a silently dead bot.
+
+## Verification Checklist
+
+- [ ] `node index.js` logs &quot;Logged in as ...&quot; with no uncaught errors on startup
+- [ ] `deploy-commands.js` was run and slash commands appear in Discord (guild commands show instantly; confirm before assuming global propagation)
+- [ ] Message Content Intent is enabled in the Developer Portal if any command reads `message.content`
+- [ ] `.env` is listed in `.gitignore` and the token was never committed
+- [ ] Moderation commands (`/kick`, `/ban`, etc.) were tested against a low-permission test account, confirming both the permission check and the Discord role-hierarchy behavior
+- [ ] Every interaction handler has a try/catch that replies with an error message instead of leaving the interaction unanswered
 </pre>
         </div>
 
         <div class="detail-tab-content" id="tab-readme" role="tabpanel">
-          <pre class="skillmd-viewer"># discord-bot-build
-
-Build a working Discord bot with slash commands, event handlers, and moderation tools.
-
-## What it does
-
-The agent creates a Discord bot using discord.js — sets up the project, registers slash commands, implements event handlers, and adds moderation commands (kick, ban, mute, purge). The bot connects to your server and responds to commands in real time.
-
-## Install
-
-```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/discord-bot-build/SKILL.md
-```
-
-## How to use
-
-```
-&quot;Build a Discord bot for my server with kick, ban, and a ping command&quot;
-```
-
-The agent:
-1. Initializes a Node.js project with discord.js
-2. Creates the bot file with slash commands and event handlers
-3. Creates the command deployment script
-4. Shows you how to invite the bot and start it
-
-## Prerequisites
-
-- Node.js 18+
-- A Discord bot token from https://discord.com/developers/applications
-- Message Content Intent enabled in the Developer Portal
-
-## Example
-
-```
-User: &quot;I need a Discord bot that welcomes new members and has a /purge command&quot;
-
-Agent:
-  1. npm init + npm install discord.js dotenv
-  2. Creates index.js:
-     - GuildMemberAdd event → sends welcome message
-     - /purge command → deletes N messages (requires ManageMessages)
-  3. Creates deploy-commands.js
-  4. Returns: &quot;Run `node deploy-commands.js` to register commands, then `node index.js` to start the bot.&quot;
-```
-
-## Commands included
-
-| Command | Action | Permission |
-|---|---|---|
-| `/ping` | Replies &quot;Pong!&quot; | None |
-| `/kick @user [reason]` | Kicks a member | KickMembers |
-| `/ban @user [reason]` | Bans a member | BanMembers |
-| `/purge &lt;count&gt;` | Deletes recent messages | ManageMessages |
+          <pre class="skillmd-viewer"># discord-bot-build
+
+Build a working Discord bot with slash commands, event handlers, and moderation tools.
+
+## What it does
+
+The agent creates a Discord bot using discord.js — sets up the project, registers slash commands, implements event handlers, and adds moderation commands (kick, ban, mute, purge). The bot connects to your server and responds to commands in real time.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/discord-bot-build/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Build a Discord bot for my server with kick, ban, and a ping command&quot;
+```
+
+The agent:
+1. Initializes a Node.js project with discord.js
+2. Creates the bot file with slash commands and event handlers
+3. Creates the command deployment script
+4. Shows you how to invite the bot and start it
+
+## Prerequisites
+
+- Node.js 18+
+- A Discord bot token from https://discord.com/developers/applications
+- Message Content Intent enabled in the Developer Portal
+
+## Example
+
+```
+User: &quot;I need a Discord bot that welcomes new members and has a /purge command&quot;
+
+Agent:
+  1. npm init + npm install discord.js dotenv
+  2. Creates index.js:
+     - GuildMemberAdd event → sends welcome message
+     - /purge command → deletes N messages (requires ManageMessages)
+  3. Creates deploy-commands.js
+  4. Returns: &quot;Run `node deploy-commands.js` to register commands, then `node index.js` to start the bot.&quot;
+```
+
+## Commands included
+
+| Command | Action | Permission |
+|---|---|---|
+| `/ping` | Replies &quot;Pong!&quot; | None |
+| `/kick @user [reason]` | Kicks a member | KickMembers |
+| `/ban @user [reason]` | Bans a member | BanMembers |
+| `/purge &lt;count&gt;` | Deletes recent messages | ManageMessages |
 </pre>
         </div>
       </div>

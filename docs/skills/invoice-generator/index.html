@@ -112,11 +112,19 @@ A user needs recurring or one-off invoices...">
         <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
           <pre class="skillmd-viewer">---
 name: invoice-generator
-description: Generate professional PDF invoices from structured line items. Use when a user wants a clean, branded invoice (client details, itemized line items, tax, totals, currency) produced as a downloadable PDF.
+description: Use when a user wants a clean, branded PDF invoice generated from structured line items — client details, itemized line items, tax, totals, and currency — for one-off billing, recurring invoices, or multi-currency clients.
 version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [invoice, pdf, billing, fpdf2, line-items]
+    related_skills: [markdown-to-pdf, resume-builder]
 ---
 
 # invoice-generator
+
+## Overview
 
 Turn structured line items into a polished, print-ready PDF invoice. The agent
 collects client and item details, validates the math, and renders a professional
@@ -148,7 +156,7 @@ invoice:
   tax_rate: 0.20          # 20% VAT/GST; 0 if tax-exempt
   notes: &quot;Payment due within 30 days. Bank transfer preferred.&quot;
   sender:
-    name: Owen
+    name: Alex
     company: Amano Studio LLC
     email: billing@amano.studio
     address: &quot;12 Birch Lane, Suite 4\nPortland, OR 97201&quot;
@@ -339,113 +347,121 @@ The agent should:
   (e.g. &quot;Converted at 1 EUR = 1.08 USD on 2026-07-20&quot;).
 - Never mix currencies within one invoice; convert first, then bill in one currency.
 
-## Pitfalls
+## Common Pitfalls
 
-- **Float rounding**: money math in floats is fine for display, but round only at
-  presentation. Accumulate subtotal as a precise sum.
-- **Missing client address** breaks the layout — default to the email if address
-  is absent, and warn the user.
-- **Long descriptions** overflow the cell — truncate to ~60 chars or use
-  `multi_cell` for wrapping.
-- **Page breaks**: set `auto_page_break` (done above) so long item lists don&#x27;t clip.
-- **Special characters** (€, é, &amp;) — `fpdf2` core fonts are latin-1; for full
-  Unicode, add a TTF font via `pdf.add_font(...)` or sanitize to ASCII.
-- **Date formats**: store ISO `YYYY-MM-DD`; format for display per locale only at
-  render time, never in the source data.
-- **Duplicate numbers**: check before assigning a generated number.
-- **Not saved where the user expects**: return the absolute output path and confirm
-  the filename so the user can find the PDF.
+1. **Float rounding.** Money math in floats is fine for display, but round only at
+   presentation. Accumulate subtotal as a precise sum.
+2. **Missing client address** breaks the layout — default to the email if address
+   is absent, and warn the user.
+3. **Long descriptions** overflow the cell — truncate to ~60 chars or use
+   `multi_cell` for wrapping.
+4. **Page breaks.** Set `auto_page_break` (done above) so long item lists don&#x27;t clip.
+5. **Special characters** (€, é, &amp;). `fpdf2` core fonts are latin-1; for full
+   Unicode, add a TTF font via `pdf.add_font(...)` or sanitize to ASCII.
+6. **Date formats.** Store ISO `YYYY-MM-DD`; format for display per locale only at
+   render time, never in the source data.
+7. **Duplicate numbers.** Check the sequence before assigning a generated number.
+8. **Not saved where the user expects.** Return the absolute output path and confirm
+   the filename so the user can find the PDF.
+
+## Verification Checklist
+
+- [ ] `subtotal + tax == total`, recomputed independently and matching what&#x27;s printed on the PDF
+- [ ] Currency symbol and decimal places match the ISO 4217 code (0 decimals for JPY/KRW, else 2)
+- [ ] Invoice number is unique — checked against prior invoices, not blindly incremented
+- [ ] Client/sender address and long line-item descriptions render without truncation or overflow
+- [ ] The absolute output path of the generated PDF was returned and confirmed to the user
 
 ## Install / Source
 
-Public portfolio (Owen):
+Public portfolio (Alex):
 https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/invoice-generator/SKILL.md
 </pre>
         </div>
 
         <div class="detail-tab-content" id="tab-readme" role="tabpanel">
-          <pre class="skillmd-viewer"># invoice-generator
-
-A public [Hermes](https://github.com/NousResearch/hermes) skill that turns
-structured line items into a clean, professional **PDF invoice** — with client
-details, itemized rows, tax, totals, and multi-currency support.
-
-&gt; &quot;Agent + skill = the user gets a branded invoice PDF without touching a
-&gt; spreadsheet.&quot;
-
-## Why
-
-Invoicing is repetitive, error-prone, and easy to get wrong on tax and totals.
-This skill standardizes the input, validates the math, and renders a
-print-ready document every time.
-
-## Install
-
-Point Hermes at the skill file:
-
-```
-https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/invoice-generator/SKILL.md
-```
-
-Or copy the `invoice-generator/` folder into your Hermes skills directory.
-
-The PDF engine uses [`fpdf2`](https://pypi.org/project/fpdf2/) (pure Python):
-
-```bash
-pip install fpdf2
-```
-
-## Usage
-
-Tell the agent what you sold. Provide the details as a YAML block, or just
-describe the job and let the agent assemble it:
-
-```yaml
-invoice:
-  number: INV-2026-0042
-  issue_date: 2026-07-20
-  currency: USD
-  tax_rate: 0.20
-  sender:
-    name: Owen
-    company: Amano Studio LLC
-    email: billing@amano.studio
-  client:
-    name: Jordan Reeves
-    company: Reeves &amp; Co.
-    email: accounts@reeves.co
-  items:
-    - description: &quot;Brand identity design&quot;
-      quantity: 1
-      unit_price: 2400.00
-    - description: &quot;Logo suite&quot;
-      quantity: 2
-      unit_price: 350.00
-```
-
-The agent returns a saved `invoice.pdf` path.
-
-## Features
-
-- **Clean template** — header, From/Bill-To blocks, itemized table, totals.
-- **Tax handling** — subtotal × rate, shown as its own line; exempt-aware.
-- **Numbering** — explicit or auto `INV-&lt;YYYY&gt;-&lt;seq&gt;`.
-- **Multi-currency** — ISO 4217 codes, correct symbols, JPY/KRW zero-decimal.
-- **Safe math** — precise accumulation, rounding only at display.
-
-## What it is not
-
-Quotes/estimates, cash receipts, and timesheets without a billing step are
-out of scope — adapt the title and status if you reuse it for those.
-
-## License
-
-MIT — free to use, fork, and ship in your own portfolio.
-
----
-
-Part of the [hermes-skills-portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
-by Owen.
+          <pre class="skillmd-viewer"># invoice-generator
+
+A public [Hermes](https://github.com/NousResearch/hermes) skill that turns
+structured line items into a clean, professional **PDF invoice** — with client
+details, itemized rows, tax, totals, and multi-currency support.
+
+&gt; &quot;Agent + skill = the user gets a branded invoice PDF without touching a
+&gt; spreadsheet.&quot;
+
+## Why
+
+Invoicing is repetitive, error-prone, and easy to get wrong on tax and totals.
+This skill standardizes the input, validates the math, and renders a
+print-ready document every time.
+
+## Install
+
+Point Hermes at the skill file:
+
+```
+https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/invoice-generator/SKILL.md
+```
+
+Or copy the `invoice-generator/` folder into your Hermes skills directory.
+
+The PDF engine uses [`fpdf2`](https://pypi.org/project/fpdf2/) (pure Python):
+
+```bash
+pip install fpdf2
+```
+
+## Usage
+
+Tell the agent what you sold. Provide the details as a YAML block, or just
+describe the job and let the agent assemble it:
+
+```yaml
+invoice:
+  number: INV-2026-0042
+  issue_date: 2026-07-20
+  currency: USD
+  tax_rate: 0.20
+  sender:
+    name: Alex
+    company: Amano Studio LLC
+    email: billing@amano.studio
+  client:
+    name: Jordan Reeves
+    company: Reeves &amp; Co.
+    email: accounts@reeves.co
+  items:
+    - description: &quot;Brand identity design&quot;
+      quantity: 1
+      unit_price: 2400.00
+    - description: &quot;Logo suite&quot;
+      quantity: 2
+      unit_price: 350.00
+```
+
+The agent returns a saved `invoice.pdf` path.
+
+## Features
+
+- **Clean template** — header, From/Bill-To blocks, itemized table, totals.
+- **Tax handling** — subtotal × rate, shown as its own line; exempt-aware.
+- **Numbering** — explicit or auto `INV-&lt;YYYY&gt;-&lt;seq&gt;`.
+- **Multi-currency** — ISO 4217 codes, correct symbols, JPY/KRW zero-decimal.
+- **Safe math** — precise accumulation, rounding only at display.
+
+## What it is not
+
+Quotes/estimates, cash receipts, and timesheets without a billing step are
+out of scope — adapt the title and status if you reuse it for those.
+
+## License
+
+MIT — free to use, fork, and ship in your own portfolio.
+
+---
+
+Part of the [hermes-skills-portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio)
+by Alex.
 </pre>
         </div>
       </div>

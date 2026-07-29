@@ -101,211 +101,241 @@
         </div>
 
         <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
-          <pre class="skillmd-viewer">---
-name: uptime-kuma-self-host
-description: &quot;Self-host an uptime monitoring dashboard — agent + this skill = user gets a visual monitoring panel for their services.&quot;
-version: 1.0.0
----
-
-# uptime-kuma-self-host
-
-Deploy Uptime Kuma — a self-hosted monitoring tool that tracks the uptime of your services (HTTP, TCP, DNS, ping) and sends alerts when something goes down. It runs as a Docker container with a web UI for managing monitors and viewing status pages.
-
-## When to Use
-
-- The user wants to monitor their self-hosted services.
-- The user wants uptime alerts sent to Discord, Slack, email, or webhook.
-- The user wants a public status page for their services.
-- The user says &quot;set up uptime monitoring&quot;, &quot;I want to know when my site goes down&quot;, or &quot;monitor my services&quot;.
-
-## Prerequisites
-
-- Docker and Docker Compose installed
-- A free port (default: 3001)
-
-## Docker Deployment
-
-### Step 1: Create the deployment
-
-```yaml
-# docker-compose.yml
-version: &quot;3&quot;
-services:
-  uptime-kuma:
-    image: louislam/uptime-kuma:latest
-    container_name: uptime-kuma
-    restart: unless-stopped
-    ports:
-      - &quot;3001:3001&quot;
-    volumes:
-      - uptime-kuma-data:/app/data
-
-volumes:
-  uptime-kuma-data:
-```
-
-### Step 2: Start
-
-```bash
-docker compose up -d
-```
-
-### Step 3: Initial setup
-
-Open `http://localhost:3001` in a browser. Create an admin account (username + password). This is a one-time setup.
-
-### Step 4: Add monitors via the UI
-
-1. Click &quot;Add New Monitor&quot;
-2. Choose a monitor type
-3. Enter the target URL/host
-4. Set the check interval
-5. Save
-
-### Step 5: Add notifications
-
-1. Go to Settings → Notifications
-2. Add a notification channel (Discord webhook, Slack webhook, email, etc.)
-3. Test the notification
-4. Assign the notification to monitors
-
-## Monitor Types
-
-| Type | What it checks | Example |
-|---|---|---|
-| HTTP(s) | Is a URL responding with 2xx? | `https://mysite.com` |
-| HTTP(s) - Keyword | Does the response contain a keyword? | `https://mysite.com` looking for &quot;OK&quot; |
-| TCP Port | Is a TCP port open? | `mysite.com:5432` |
-| DNS | Does a domain resolve? | `mysite.com` → A record |
-| Ping | Does a host respond to ICMP? | `192.168.1.1` |
-| Push | Wait for a push (passive monitor) | `https://kuma:3001/api/push/STATUS?msg=OK&amp;ping=100` |
-| Docker Container | Is a Docker container running? | Container name via Docker socket |
-
-## Notification Channels
-
-| Channel | Setup |
-|---|---|
-| Discord | Webhook URL from Discord channel settings |
-| Slack | Webhook URL from Slack app config |
-| Email | SMTP server + credentials |
-| Webhook | Custom HTTP POST on status change |
-| Telegram | Bot token + chat ID |
-| ntfy | ntfy.sh topic URL |
-| Signal | via signal-cli-rest-api |
-| Pushover | User key + app key |
-
-## Status Pages
-
-Uptime Kuma can generate public status pages showing the uptime of your services:
-
-1. Go to Status Pages → Add Status Page
-2. Name it (e.g., &quot;My Services&quot;)
-3. Add monitors to display
-4. Set a custom domain (optional)
-5. Share the URL: `http://localhost:3001/status/my-services`
-
-## API (Push Monitors)
-
-Push monitors are passive — they wait for your service to &quot;check in&quot;:
-
-```bash
-# Your service calls this URL on a schedule
-# If Kuma doesn&#x27;t hear from it within the interval, it&#x27;s marked down
-curl &quot;http://localhost:3001/api/push/ABCD1234?msg=OK&amp;ping=42&quot;
-```
-
-Use this for services behind firewalls that Kuma can&#x27;t reach directly.
-
-## Monitoring a Docker Host
-
-To monitor Docker containers on the host, bind-mount the Docker socket:
-
-```yaml
-services:
-  uptime-kuma:
-    image: louislam/uptime-kuma:latest
-    volumes:
-      - uptime-kuma-data:/app/data
-      - /var/run/docker.sock:/var/run/docker.sock  # for container monitoring
-```
-
-Then add a &quot;Docker Container&quot; monitor type pointing to the container name.
-
-## Pitfalls
-
-- **Port 3001 conflicts** — If another service uses 3001 (like Forgejo on some setups), change the port mapping in docker-compose.yml.
-- **Data volume is the backup** — All monitor configs, history, and settings are in the `uptime-kuma-data` volume. Back it up regularly.
-- **No built-in HTTPS** — Uptime Kuma serves HTTP. For HTTPS, put it behind Caddy or a reverse proxy.
-- **False positives on HTTP monitors** — A 3xx redirect is not a failure by default, but a 5xx is. Configure the &quot;Accepted Status Codes&quot; field if you need custom thresholds.
-- **Notification spam on flapping** — If a service goes up and down rapidly, you&#x27;ll get many notifications. Set a &quot;Retry&quot; count (e.g., retry 2 times before sending a down notification) to reduce flapping alerts.
-- **Push monitor interval** — If your service stops pushing, Kuma waits for the full interval before marking it down. Set the interval to match how often your service checks in.
+          <pre class="skillmd-viewer">---
+name: uptime-kuma-self-host
+description: Use when the user wants to self-host uptime monitoring for their services (HTTP, TCP, DNS, ping) with alerting to Discord/Slack/email/webhook, or wants a public status page, or says &quot;set up uptime monitoring&quot; / &quot;I want to know when my site goes down&quot;.
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [uptime-kuma, uptime-monitoring, docker, status-page, alerting]
+    related_skills: [ntfy-notifier, caddy-reverse-proxy, docker-umbrella]
+---
+
+# uptime-kuma-self-host
+
+## Overview
+
+Deploy Uptime Kuma — a self-hosted monitoring tool that tracks the uptime of your services (HTTP, TCP, DNS, ping) and sends alerts when something goes down. It runs as a Docker container with a web UI for managing monitors and viewing status pages.
+
+## When to Use
+
+- The user wants to monitor their self-hosted services.
+- The user wants uptime alerts sent to Discord, Slack, email, or webhook.
+- The user wants a public status page for their services.
+- The user says &quot;set up uptime monitoring&quot;, &quot;I want to know when my site goes down&quot;, or &quot;monitor my services&quot;.
+
+## Prerequisites
+
+- Docker and Docker Compose installed
+- A free port (default: 3001)
+
+## Docker Deployment
+
+### Step 1: Create the deployment
+
+```yaml
+# docker-compose.yml
+version: &quot;3&quot;
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    restart: unless-stopped
+    ports:
+      - &quot;3001:3001&quot;
+    volumes:
+      - uptime-kuma-data:/app/data
+
+volumes:
+  uptime-kuma-data:
+```
+
+### Step 2: Start
+
+```bash
+docker compose up -d
+```
+
+### Step 3: Initial setup
+
+Open `http://localhost:3001` in a browser. Create an admin account (username + password). This is a one-time setup.
+
+### Step 4: Add monitors via the UI
+
+1. Click &quot;Add New Monitor&quot;
+2. Choose a monitor type
+3. Enter the target URL/host
+4. Set the check interval
+5. Save
+
+### Step 5: Add notifications
+
+1. Go to Settings → Notifications
+2. Add a notification channel (Discord webhook, Slack webhook, email, etc.)
+3. Test the notification
+4. Assign the notification to monitors
+
+## Monitor Types
+
+| Type | What it checks | Example |
+|---|---|---|
+| HTTP(s) | Is a URL responding with 2xx? | `https://mysite.com` |
+| HTTP(s) - Keyword | Does the response contain a keyword? | `https://mysite.com` looking for &quot;OK&quot; |
+| TCP Port | Is a TCP port open? | `mysite.com:5432` |
+| DNS | Does a domain resolve? | `mysite.com` → A record |
+| Ping | Does a host respond to ICMP? | `192.168.1.1` |
+| Push | Wait for a push (passive monitor) | `https://kuma:3001/api/push/STATUS?msg=OK&amp;ping=100` |
+| Docker Container | Is a Docker container running? | Container name via Docker socket |
+
+## Notification Channels
+
+| Channel | Setup |
+|---|---|
+| Discord | Webhook URL from Discord channel settings |
+| Slack | Webhook URL from Slack app config |
+| Email | SMTP server + credentials |
+| Webhook | Custom HTTP POST on status change |
+| Telegram | Bot token + chat ID |
+| ntfy | ntfy.sh topic URL |
+| Signal | via signal-cli-rest-api |
+| Pushover | User key + app key |
+
+## Status Pages
+
+Uptime Kuma can generate public status pages showing the uptime of your services:
+
+1. Go to Status Pages → Add Status Page
+2. Name it (e.g., &quot;My Services&quot;)
+3. Add monitors to display
+4. Set a custom domain (optional)
+5. Share the URL: `http://localhost:3001/status/my-services`
+
+## API (Push Monitors)
+
+Push monitors are passive — they wait for your service to &quot;check in&quot;:
+
+```bash
+# Your service calls this URL on a schedule
+# If Kuma doesn&#x27;t hear from it within the interval, it&#x27;s marked down
+curl &quot;http://localhost:3001/api/push/ABCD1234?msg=OK&amp;ping=42&quot;
+```
+
+Use this for services behind firewalls that Kuma can&#x27;t reach directly.
+
+## Monitoring a Docker Host
+
+To monitor Docker containers on the host, bind-mount the Docker socket:
+
+```yaml
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    volumes:
+      - uptime-kuma-data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock  # for container monitoring
+```
+
+Then add a &quot;Docker Container&quot; monitor type pointing to the container name.
+
+## Common Pitfalls
+
+1. **Port 3001 collides with another service.** Forgejo and some other self-hosted tools default
+   to nearby ports. Check `docker ps` / `netstat` first and remap in `docker-compose.yml` if
+   3001 is taken.
+2. **Treating the data volume as disposable.** All monitor configs, history, and notification
+   settings live only in the `uptime-kuma-data` volume — there&#x27;s no external config file to
+   fall back on. Back it up regularly.
+3. **Assuming HTTPS is built in.** Uptime Kuma serves plain HTTP. Put it behind Caddy or another
+   reverse proxy if the status page or dashboard needs to be reachable over TLS.
+4. **Not configuring &quot;Accepted Status Codes.&quot;** A 3xx redirect is treated as healthy by default;
+   only 5xx (and non-matching codes outside the accepted set) count as down. Set this explicitly
+   if the monitored service redirects normally.
+5. **Leaving &quot;Retry&quot; at its default on a flapping service.** A service that goes up/down rapidly
+   sends one notification per transition. Raise the retry count (e.g., 2 failed checks before
+   alerting) to suppress flap noise.
+6. **Setting a push-monitor interval shorter than the service&#x27;s real check-in cadence.** Kuma
+   waits the full interval before marking a push monitor down — if the interval doesn&#x27;t match how
+   often the service actually pushes, you get false &quot;down&quot; alerts or delayed detection.
+
+## Verification Checklist
+
+- [ ] `docker compose ps` shows `uptime-kuma` running and `http://localhost:3001` loads the
+      dashboard.
+- [ ] Admin account created (one-time setup completed, not left on the setup screen).
+- [ ] At least one monitor added and showing a status (up/down/pending), not stuck on &quot;PENDING&quot;.
+- [ ] Test notification sent successfully from Settings → Notifications before assigning it to
+      monitors.
+- [ ] `uptime-kuma-data` volume confirmed present (`docker volume inspect`) and included in the
+      user&#x27;s backup plan.
 </pre>
         </div>
 
         <div class="detail-tab-content" id="tab-readme" role="tabpanel">
-          <pre class="skillmd-viewer"># uptime-kuma-self-host
-
-Self-host an uptime monitoring dashboard that tracks your services and alerts you when they go down.
-
-## What it does
-
-The agent deploys Uptime Kuma with Docker, creates an admin account, and helps you add monitors for your services. You get a web UI showing real-time status, historical uptime, and response times. Alerts go to Discord, Slack, email, Telegram, or a webhook when a service goes down or comes back up.
-
-## Install
-
-```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/uptime-kuma-self-host/SKILL.md
-```
-
-## How to use
-
-```
-&quot;Set up uptime monitoring for my three web services with Discord alerts&quot;
-```
-
-The agent:
-1. Creates a docker-compose.yml with Uptime Kuma
-2. Starts the container on port 3001
-3. Opens the setup page for your admin account
-4. Adds HTTP monitors for your services
-5. Configures Discord webhook notifications
-
-## Prerequisites
-
-- Docker and Docker Compose
-- A free port (default: 3001)
-
-## What you get
-
-| Component | URL | Notes |
-|---|---|---|
-| Dashboard | `http://localhost:3001` | Web UI for all monitors |
-| Status page | `http://localhost:3001/status/&lt;name&gt;` | Public uptime page |
-| Push API | `http://localhost:3001/api/push/&lt;id&gt;` | For passive monitors |
-
-## Monitor types
-
-| Type | Example |
-|---|---|
-| HTTP(s) | `https://mysite.com` — checks for 2xx response |
-| TCP Port | `mysite.com:5432` — checks port is open |
-| Ping | `192.168.1.1` — ICMP echo |
-| DNS | `mysite.com` — checks resolution |
-| Push | Passive — your service calls Kuma&#x27;s API |
-| Docker | Container running check via Docker socket |
-
-## Example
-
-```
-User: &quot;Monitor my blog and API, alert me on Discord if either goes down&quot;
-
-Agent:
-  1. Deploys Uptime Kuma on port 3001
-  2. Adds HTTP monitor: https://myblog.com (check every 60s)
-  3. Adds HTTP monitor: https://api.myblog.com/health (check every 30s)
-  4. Adds Discord notification webhook
-  5. Returns: &quot;Monitoring started. Dashboard at http://localhost:3001&quot;
-```
+          <pre class="skillmd-viewer"># uptime-kuma-self-host
+
+Self-host an uptime monitoring dashboard that tracks your services and alerts you when they go down.
+
+## What it does
+
+The agent deploys Uptime Kuma with Docker, creates an admin account, and helps you add monitors for your services. You get a web UI showing real-time status, historical uptime, and response times. Alerts go to Discord, Slack, email, Telegram, or a webhook when a service goes down or comes back up.
+
+## Install
+
+```bash
+hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/uptime-kuma-self-host/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Set up uptime monitoring for my three web services with Discord alerts&quot;
+```
+
+The agent:
+1. Creates a docker-compose.yml with Uptime Kuma
+2. Starts the container on port 3001
+3. Opens the setup page for your admin account
+4. Adds HTTP monitors for your services
+5. Configures Discord webhook notifications
+
+## Prerequisites
+
+- Docker and Docker Compose
+- A free port (default: 3001)
+
+## What you get
+
+| Component | URL | Notes |
+|---|---|---|
+| Dashboard | `http://localhost:3001` | Web UI for all monitors |
+| Status page | `http://localhost:3001/status/&lt;name&gt;` | Public uptime page |
+| Push API | `http://localhost:3001/api/push/&lt;id&gt;` | For passive monitors |
+
+## Monitor types
+
+| Type | Example |
+|---|---|
+| HTTP(s) | `https://mysite.com` — checks for 2xx response |
+| TCP Port | `mysite.com:5432` — checks port is open |
+| Ping | `192.168.1.1` — ICMP echo |
+| DNS | `mysite.com` — checks resolution |
+| Push | Passive — your service calls Kuma&#x27;s API |
+| Docker | Container running check via Docker socket |
+
+## Example
+
+```
+User: &quot;Monitor my blog and API, alert me on Discord if either goes down&quot;
+
+Agent:
+  1. Deploys Uptime Kuma on port 3001
+  2. Adds HTTP monitor: https://myblog.com (check every 60s)
+  3. Adds HTTP monitor: https://api.myblog.com/health (check every 30s)
+  4. Adds Discord notification webhook
+  5. Returns: &quot;Monitoring started. Dashboard at http://localhost:3001&quot;
+```
 </pre>
         </div>
       </div>
