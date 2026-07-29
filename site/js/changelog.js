@@ -20,6 +20,8 @@
   // names already listed in that same subject line — no names added beyond what the
   // commit itself named).
   var COMMITS = [
+    { date: "2026-07-29", time: "17:57", hash: "649bda9",
+      text: "Fixes CI to check every real file instead of 4 hardcoded ones (2 already dead), deletes the dead files, adds a real site-to-docs sync script, and consolidates a fetch-with-fallback pattern that was duplicated in three files." },
     { date: "2026-07-29", time: "17:19", hash: "21772ec",
       text: "Fixes CI: stops quoting the forbidden-reference patterns inside AGENTS.md, which had been tripping the same check it was describing." },
     { date: "2026-07-29", time: "17:18", hash: "7232b74",

@@ -10,14 +10,12 @@
 
 ## Current state
 
-Local `main` is at commit `3692246`, **one commit ahead of `origin/main` (`21772ec`) — not yet pushed.** That local-only commit refreshes the skill-content cache and adds two changelog entries (see below); it has not been reviewed/approved for push yet.
-
-Everything through `21772ec` is live and confirmed working:
-- CI green, GitHub Pages built and serving from `/docs`
-- 51 skills, all schema-compliant (author/license/metadata/Common Pitfalls/Verification Checklist)
+`main` is pushed through the architecture-fix commit. CI green, GitHub Pages built and serving from `/docs`. Confirmed live:
+- 51 skills, all schema-compliant (author/license/metadata/Common Pitfalls/Verification Checklist), content cache refreshed and matching the real files
 - Four pages sharing one Cobalt design system: Catalog, Bundles, Changelog, Submit
 - `hermes-portfolio-template` renamed to `skills-portfolio-scaffold`, confirmed via live search and old-URL-404 check
 - 24 entries in the external-sourcing pending queue (16 recommended, 8 needs-review), all independently safety-vetted
+- CI's site/docs parity check now globs every real file (was 4 hardcoded names, 2 already dead); `scripts/sync_site.py` replaces the manual per-file `cp`; the fetch-with-fallback pattern that was duplicated in `common.js`/`bundles.js`/`submit.js` is now one function (`HermesCommon.loadJsonWithFallback`)
 
 ## What was done (this session)
 
@@ -30,18 +28,15 @@ Everything through `21772ec` is live and confirmed working:
 7. **Project docs added**: `CLAUDE.md`, `ARCHITECTURE.md`, rewrote `AGENTS.md` (was describing the old dark-default single-page site), `CHANGELOG.md` generated programmatically from real `git log` + `skills-index.json`.
 8. **Live browser-tested** (subagent, Playwright) — found and fixed two real bugs: a stuck-invisible `IntersectionObserver` reveal (threshold `0.15` can never be satisfied by a section taller than ~6-7 viewport heights — now `threshold: 0`), and a self-inflicted CI failure (AGENTS.md quoted the exact strings its own forbidden-reference check scans for).
 9. **New Claude Code skill**: `~/.claude/skills/project-foundation-docs/SKILL.md` — generates/refreshes this same five-doc set for any project, reuses `codebase-onboarding`'s reconnaissance rather than duplicating it.
-10. **Architecture review** (`/improve-codebase-architecture`, run manually since it's user-invoke-only) — an Explore-agent survey found 6 real friction points. Two were live, currently-wrong bugs, fixed immediately (not deepening opportunities, just drift): `skills-index.json`'s cached skill content was stale for 46/51 skills; `changelog.js` was missing its two newest real commits. The other four are genuine architecture candidates, presented as an HTML report (sent to you, and opened locally) — **none implemented yet, awaiting your pick.**
+10. **Architecture review** (`/improve-codebase-architecture`, run manually since it's user-invoke-only) — an Explore-agent survey found 6 real friction points. Two were live, currently-wrong bugs, fixed immediately (not deepening opportunities, just drift): `skills-index.json`'s cached skill content was stale for 46/51 skills; `changelog.js` was missing its two newest real commits. Presented the other four as an HTML report (sent to you, and opened locally).
+11. **Implemented candidates A and B** from that report: fixed CI to glob-diff every real file instead of 4 hardcoded ones (2 already dead — deleted them), added `scripts/sync_site.py`, and consolidated the triplicated fetch-with-fallback pattern into `HermesCommon.loadJsonWithFallback`. **Candidates C and D deliberately not touched** — both need a design decision, not just code (see below).
 
 ## What's NOT done (the gap)
 
-- **The local-only commit (`3692246`) is not pushed.** Ask before pushing — it's a real fix but hasn't been reviewed.
 - **24 pending-sources entries await your individual approval.** None are live-credited. Promoting one means: add real `skills/<name>/SKILL.md`+`README.md`, add the `skills-index.json` entry with `source: "adapted"` + `source_attribution`, remove it from `pending-sources.json`, regenerate pages.
-- **Four architecture candidates, none picked yet** (see the HTML report sent this session, or `.claude/jobs/fa6b4be0/tmp/architecture-review-hermes-skills-portfolio.html` if that job dir still exists):
-  - **A — CI checks the wrong files** (Strong, top recommendation — checks 2 dead files, misses most of the real site)
-  - **B — fetch-with-fallback duplicated 3×** (Strong, purely mechanical)
-  - **C — SKILL.md→site cache has no owner** (Worth exploring — the exact class of bug already fixed once this session)
-  - **D — nav/footer hand-copied in 5 places** (Speculative — hasn't drifted yet, flagged with a real tension against the project's "no build step" value, worth an explicit decision either way)
-- **`site/`↔`docs/` sync is still a manual `cp` per file** — no sync script exists (this is candidate-A-adjacent but not the same fix).
+- **Architecture candidates C and D, not implemented — need your input first:**
+  - **C — SKILL.md→site cache has no automated staleness check** (the exact bug that already hit 46/51 skills once this session). Open question: how strict should the check be — fail CI on any drift, or just warn? See `ARCHITECTURE.md`'s "Deliberately not automated yet" section.
+  - **D — nav/footer hand-copied in 5 places** (design.md, 4 pages, `portfolio_tools.py`), no mechanical enforcement. Hasn't drifted yet. Real tension: any fix (even a verification-only CI check) is a small step away from this project's own stated "no build step" value — worth an explicit decision, not a silent call.
 - **`docker-umbrella` label wraps awkwardly** on the Bundles page at some widths — minor, not investigated further.
 - Two Anthropic-sourced pending candidates (`webapp-testing`, `frontend-aesthetic-direction`) are flagged needs-review specifically because they might duplicate existing catalog skills (`api-test-suite`, `frontend-design-toolkit`) — that overlap call hasn't been made.
 - The `docx-authoring` pending candidate has a real license question (Anthropic's actual terms are more restrictive than "source-available" implies) that needs resolving before any approval.
