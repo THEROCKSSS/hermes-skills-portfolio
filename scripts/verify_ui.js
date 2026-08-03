@@ -89,6 +89,22 @@ function check(name, ok, detail) {
   const newsCount = await page.locator(".whatsnew-item").count();
   check("what's-new feed has real entries", newsCount > 0, `${newsCount} entries`);
 
+  // [hidden] is display:none by UA stylesheet only, so any component rule that
+  // sets `display` outranks it and the element renders while the script and the
+  // a11y tree both believe it's hidden. Assert on computed style, not on the
+  // attribute — the attribute was correct in both bugs this caught.
+  await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
+  await page.waitForSelector(".poster");
+  await page.waitForTimeout(400);
+  const leaks = await page.evaluate(() =>
+    [...document.querySelectorAll("[hidden]")]
+      .filter((el) => getComputedStyle(el).display !== "none" &&
+                      el.getBoundingClientRect().height > 0)
+      .map((el) => el.id || el.tagName)
+  );
+  check("nothing marked [hidden] is actually rendering", leaks.length === 0,
+        leaks.length ? `leaking: ${leaks.join(", ")}` : `${await page.locator("[hidden]").count()} hidden element(s) all truly hidden`);
+
   // ---------- Search ----------
   console.log("\nSearch");
   await page.fill("#search-input", "dockr");

@@ -9,6 +9,14 @@
  */
 
 *, *::before, *::after { box-sizing: border-box; }
+/* The `hidden` attribute is only display:none by UA stylesheet, which any
+ * component rule setting `display` silently outranks — the element stays
+ * visible while every script and a11y tree believes it is hidden. This caught
+ * two real ones: #no-results rendered "No skills match those filters" under a
+ * full 57-card grid, and #back-to-top sat on screen at scroll 0. Both toggle
+ * via el.hidden, so nothing in the JS looked wrong. Keep this above the
+ * component layers. */
+[hidden] { display: none !important; }
 /* clip, never hidden — `hidden` on the root breaks position:sticky */
 html, body { overflow-x: clip; }
 html { scroll-behavior: auto; }
