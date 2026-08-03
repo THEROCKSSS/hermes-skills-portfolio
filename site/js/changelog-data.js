@@ -12,6 +12,8 @@
   // commit itself named).
 window.HermesChangelog = {
   COMMITS: [
+    { date: "2026-08-03", time: "16:27", hash: "fde09ae",
+      text: "Re-themes the site to Dusk with a persistent sidebar-filter catalog, adds a submission and review pipeline, and makes the stale-content-cache check blocking in CI. Catalog reaches 57 skills." },
     { date: "2026-07-29", time: "17:57", hash: "649bda9",
       text: "Fixes CI to check every real file instead of 4 hardcoded ones (2 already dead), deletes the dead files, adds a real site-to-docs sync script, and consolidates a fetch-with-fallback pattern that was duplicated in three files." },
     { date: "2026-07-29", time: "17:19", hash: "21772ec",

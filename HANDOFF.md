@@ -1,71 +1,59 @@
 # Hermes Skills Portfolio — Handoff Document
 
 ## Session
-- Session date: 2026-07-29 → 2026-07-30
-- Agent: Claude Sonnet 5 (Claude Code), session `01JN2cT8SN8UKoPwsqYrunjL`
-- Prior sessions: none — this was the first full session on the Cobalt redesign
+- Session date: 2026-08-03 (commit session for work performed 2026-08-02)
+- Agent: Claude Opus 5 (Claude Code)
+- Prior sessions: 2026-07-29 → 07-30 (Cobalt redesign, Claude Sonnet 5, session `01JN2cT8SN8UKoPwsqYrunjL`)
 - Repo: https://github.com/THEROCKSSS/hermes-skills-portfolio
 - Live URL: https://therocksss.github.io/hermes-skills-portfolio/
-- Local dev URL: `http://127.0.0.1:8092/` (serving `site/`), also reachable at `http://owens-pc-vpn.tailff2683.ts.net:8092/` over Tailscale — a detached `python -m http.server` process (started via PowerShell `Start-Process`, not a harness-tracked background task, since those kept dying unexpectedly in this session)
+- Canonical checkout: `repos/hermes-skills-portfolio-canonical` — **not** `projects/hermes-skills-portfolio`, which was an unconnected stale duplicate and is now archived (see below)
 
 ## Current state
 
-`main` is pushed through the architecture-fix commit. CI green, GitHub Pages built and serving from `/docs`. Confirmed live:
-- 51 skills, all schema-compliant (author/license/metadata/Common Pitfalls/Verification Checklist), content cache refreshed and matching the real files
-- Four pages sharing one Cobalt design system: Catalog, Bundles, Changelog, Submit
-- `hermes-portfolio-template` renamed to `skills-portfolio-scaffold`, confirmed via live search and old-URL-404 check
-- 24 entries in the external-sourcing pending queue (16 recommended, 8 needs-review), all independently safety-vetted
-- CI's site/docs parity check now globs every real file (was 4 hardcoded names, 2 already dead); `scripts/sync_site.py` replaces the manual per-file `cp`; the fetch-with-fallback pattern that was duplicated in `common.js`/`bundles.js`/`submit.js` is now one function (`HermesCommon.loadJsonWithFallback`)
+`main` is committed through `fde09ae` and **not yet pushed** — the live site still serves the 2026-07-29 Cobalt build. Local verification before the commit: 193 tests pass, and every blocking CI gate was run by hand and passed (frontmatter YAML parse, install-URL installability, sitemap/feed currency, invented-metric lint, content-cache staleness, index/directory sync, forbidden references, site↔docs parity, per-skill pages, provenance).
 
-## What was done (this session)
+- 57 skills, all schema-compliant, content cache verified in sync
+- Site themed **Dusk** with a persistent sidebar-filter catalog; `design.md` is the locked source of truth
+- Submission/review pipeline defined in `REVIEW.md` and three workflows
+- 24 entries still pending in the external-sourcing queue, none live-credited
 
-1. **Full Cobalt/Hallmark redesign** — locked a `design.md` design system, built four pages (Catalog = Ecosystem Index, Bundles = Index-First, Changelog = Index-First, Submit = Narrative Workflow) sharing `tokens.css`/`base.css`/`common.js`. Verified via real Playwright screenshots (no Camoufox tool available in this environment — used Playwright + Chromium instead, confirmed working).
-2. **All 51 `SKILL.md` files rewritten** to the real Hermes agent skill schema (`author`/`license`/`metadata.hermes.{tags,related_skills}`, "Use when…" descriptions, `Common Pitfalls`, `Verification Checklist`) — done via 6 parallel subagents in disjoint batches, independently re-verified.
-3. **Renamed** `hermes-portfolio-template` → `skills-portfolio-scaffold`, added an explicit "ask the user to name their own portfolio" step, updated all 4 cross-referencing skills and cached index content.
-4. **Bundles page** — 6 real curated groupings of existing skills, each expandable with bulk install-command copy.
-5. **External-sourcing pipeline** — researched 6 categories (frontend, backend, security, token-efficiency, testing/QA, productivity) via parallel research agents; added 22 vetted candidates to `pending-sources.json` (16 recommended, 8 needs-review with specific reasons) — **nothing here is merged into the live catalog; each entry needs your individual approval before it's credited/added.**
-6. **Real mobile fixes** found via actual scroll-simulated screenshots: a permanently-stuck "Loading the full index…" placeholder, an unreadable/overflowing install command, tightened category-card spacing.
-7. **Project docs added**: `CLAUDE.md`, `ARCHITECTURE.md`, rewrote `AGENTS.md` (was describing the old dark-default single-page site), `CHANGELOG.md` generated programmatically from real `git log` + `skills-index.json`.
-8. **Live browser-tested** (subagent, Playwright) — found and fixed two real bugs: a stuck-invisible `IntersectionObserver` reveal (threshold `0.15` can never be satisfied by a section taller than ~6-7 viewport heights — now `threshold: 0`), and a self-inflicted CI failure (AGENTS.md quoted the exact strings its own forbidden-reference check scans for).
-9. **New Claude Code skill**: `~/.claude/skills/project-foundation-docs/SKILL.md` — generates/refreshes this same five-doc set for any project, reuses `codebase-onboarding`'s reconnaissance rather than duplicating it.
-10. **Architecture review** (`/improve-codebase-architecture`, run manually since it's user-invoke-only) — an Explore-agent survey found 6 real friction points. Two were live, currently-wrong bugs, fixed immediately (not deepening opportunities, just drift): `skills-index.json`'s cached skill content was stale for 46/51 skills; `changelog.js` was missing its two newest real commits. Presented the other four as an HTML report (sent to you, and opened locally).
-11. **Implemented candidates A and B** from that report: fixed CI to glob-diff every real file instead of 4 hardcoded ones (2 already dead — deleted them), added `scripts/sync_site.py`, and consolidated the triplicated fetch-with-fallback pattern into `HermesCommon.loadJsonWithFallback`. **Candidates C and D deliberately not touched** — both need a design decision, not just code (see below).
+## What was done
+
+**2026-08-02 (the work), committed 2026-08-03 as `fde09ae`:**
+
+1. **Dusk re-theme.** A prototype put 10 layouts × 5 skins = 50 combinations on one route against the real `skills-index.json`, so density and copy length stayed honest. Owen picked **L4 sidebar filter + S5 Dusk**. Rewritten for production rather than promoted as-is; `design.md` records it. The separate distribution charts were dropped — sidebar facet counts are the same numbers, so each facet row now draws a proportional bar and one surface answers both "filter this" and "how is the catalog shaped". Prototype preserved at `.backups/hermes-skills-portfolio-catalog-prototype-2026-08-02` with its `VERDICT.md`.
+2. **Stale duplicate archived.** `projects/hermes-skills-portfolio` held 301 generated skill dirs against this repo's 51 real ones, had no git remote, used a pre-Cobalt design, and documented broken `blob/` install URLs. Verified unreferenced by `docker/`, `config/`, `scripts/`, `cron-jobs/`, `links.json`, `snapshot.json`, then moved to `.backups/hermes-skills-portfolio-STALE-DUPLICATE-2026-08-02` with restore instructions in its `ARCHIVED.md`.
+3. **Submission pipeline.** `REVIEW.md` (5 states, 6 `decline:<reason>` labels, each saying what would change the answer), a `skill_request.yml` issue form, and `quality.yml` / `skill-review.yml` / `skill-submission.yml`.
+4. **Architecture candidate C closed.** CI now runs `refresh_content_cache.py --check` — the drift that once hit 46/51 skills now fails the build. Frontmatter is now a real YAML parse (the old grep passed a file with an unquoted colon in its description), install URLs are proven raw rather than blob, sitemap/feed are proven current, and invented metrics are linted.
+5. **Catalog 51 → 57**, media domain: `tmdb-metadata`, `media-id-mapping`, `movie-catalogue-site`, `movie-night-calendar`, `streaming-provider-embeds`, `watchlist-sync`.
+6. **Changelog deduplicated** into `changelog-data.js`, read by both the catalog's "What's new" and the changelog page.
+7. **Generated discovery surface**: `feed.xml`, `sitemap.xml`, `robots.txt`. **Docker**: `Dockerfile`, `docker-compose.yml`, `deploy/`. **Ten scripts** with six test files.
 
 ## What's NOT done (the gap)
 
-- **24 pending-sources entries await your individual approval.** None are live-credited. Promoting one means: add real `skills/<name>/SKILL.md`+`README.md`, add the `skills-index.json` entry with `source: "adapted"` + `source_attribution`, remove it from `pending-sources.json`, regenerate pages.
-- **Architecture candidates C and D, not implemented — need your input first:**
-  - **C — SKILL.md→site cache has no automated staleness check** (the exact bug that already hit 46/51 skills once this session). Open question: how strict should the check be — fail CI on any drift, or just warn? See `ARCHITECTURE.md`'s "Deliberately not automated yet" section.
-  - **D — nav/footer hand-copied in 5 places** (design.md, 4 pages, `portfolio_tools.py`), no mechanical enforcement. Hasn't drifted yet. Real tension: any fix (even a verification-only CI check) is a small step away from this project's own stated "no build step" value — worth an explicit decision, not a silent call.
-- **`docker-umbrella` label wraps awkwardly** on the Bundles page at some widths — minor, not investigated further.
-- Two Anthropic-sourced pending candidates (`webapp-testing`, `frontend-aesthetic-direction`) are flagged needs-review specifically because they might duplicate existing catalog skills (`api-test-suite`, `frontend-design-toolkit`) — that overlap call hasn't been made.
-- The `docx-authoring` pending candidate has a real license question (Anthropic's actual terms are more restrictive than "source-available" implies) that needs resolving before any approval.
+- **Nothing is pushed.** `fde09ae` and the changelog commit are local only. Pushing needs Owen's explicit go-ahead per this repo's `CLAUDE.md`.
+- **24 pending-sources entries await individual approval.** Promoting one means: add real `skills/<name>/SKILL.md`+`README.md`, add the `skills-index.json` entry with `source: "adapted"` + `source_attribution`, remove from `pending-sources.json`, regenerate. Specific open questions: `docx-authoring` has a real licensing question (Anthropic's terms are more restrictive than "source-available" implies); `webapp-testing` and `frontend-aesthetic-direction` may duplicate `api-test-suite` and `frontend-design-toolkit`.
+- **Architecture candidate D — nav/footer hand-copied in 5 places** (design.md, 4 pages, `portfolio_tools.py`), still no mechanical enforcement, still undecided. The real tension: any fix, even a verification-only CI check, is a step toward a build step this project deliberately doesn't have. Needs an explicit decision, not a silent call.
+- **3 advisory tier-consistency items** (`tailscale-deploy`, `forgejo-self-host`, `api-test-suite` are `tier=core` with tool-scoped descriptions). Pre-existing, non-blocking, judgment call not yet made.
+- **`docker-umbrella` label wraps awkwardly** on Bundles at some widths — minor, uninvestigated.
+- **The Dusk site has not been browser-verified since the re-theme.** It passed structural CI, not a real visual pass.
 
 ## How to resume
 
-1. Clone/pull: `git -C "C:\Users\User\Documents\Hermes stuff\hermes workspace\repos\hermes-skills-portfolio-canonical" pull` (or just `cd` there — it's a live checkout).
-2. Local server, if not already running: check `curl http://127.0.0.1:8092/`; if dead, restart with:
-   ```
-   powershell -Command "Start-Process 'C:\Users\User\AppData\Local\hermes\hermes-agent\venv\Scripts\python.exe' -ArgumentList '-m http.server 8092 --directory \"C:\Users\User\Documents\Hermes stuff\hermes workspace\repos\hermes-skills-portfolio-canonical\site\" --bind 0.0.0.0' -WindowStyle Hidden"
-   ```
-3. Regenerate per-skill pages after any skill/template change: `python scripts/generate_skill_pages.py` (uses the hermes-agent venv Python, not plain `python`).
-4. Run tests before pushing: `python -m pytest tests/`.
-5. Push only after explicit go-ahead: `git push origin main`, then poll `gh api repos/THEROCKSSS/hermes-skills-portfolio/pages --jq '.status'` until `built`.
+1. `cd "C:\Users\User\Documents\Hermes stuff\hermes workspace\repos\hermes-skills-portfolio-canonical"` — it's a live checkout.
+2. Local server: `python -m http.server 8092 --directory site --bind 0.0.0.0`. Bind `0.0.0.0`, not `127.0.0.1`, and report the Tailscale URL (`tailscale status` for the hostname) alongside localhost — Owen tests from his phone.
+3. Regenerate per-skill pages after any skill/template change: `python scripts/generate_skill_pages.py`. Use the venv interpreter (`C:\Users\User\AppData\Local\hermes\hermes-agent\venv\Scripts\python`), not plain `python`.
+4. After changing skills or changelog data, regenerate derived files: `generate_feed.py`, `generate_sitemap.py`, then `sync_site.py`.
+5. Before pushing: `python -m pytest tests/`, then push only on explicit go-ahead, then poll `gh api repos/THEROCKSSS/hermes-skills-portfolio/pages --jq '.status'` until `built`.
 
 ## Credentials / config
 
-- GitHub: `gh` CLI already authenticated as `THEROCKSSS` (Owen's own account) — no separate token needed.
-- No secrets live in this repo; nothing to configure beyond the venv Python path above.
+- GitHub: `gh` authenticated as `THEROCKSSS`; repo-local git identity already matches. No separate token needed.
+- No secrets in this repo. The staged diff was scanned for token/key patterns before committing — clean.
 
 ## Known issues / blockers
 
-- Background Bash-tool processes (`run_in_background: true`) were observed dying unexpectedly multiple times this session, unrelated to disk space (confirmed — disk had 49GB free when it happened). Workaround that held: launch via PowerShell `Start-Process -WindowStyle Hidden` instead — a real OS process, not tracked by the harness's background-task bookkeeping.
-- No Camoufox or other browser-automation MCP tool is registered in this environment. Playwright + Chromium (`npm install playwright && npx playwright install chromium`) worked reliably all session and is the fallback.
-- `page.screenshot({ fullPage: true })` does not trigger real scroll events — any `IntersectionObserver`-gated reveal can look broken in the screenshot even when it works for a real visitor. Verify with real incremental `window.scrollTo` simulation before trusting a "blank section" finding.
-
-## Build order (if picking up the architecture candidates)
-
-1. Candidate A (CI file-check fix) — cheapest, protects B/C/D from going unnoticed later.
-2. Candidate B (fetch-with-fallback consolidation) — mechanical, low risk.
-3. Candidate C (cache-staleness invariant) — needs a short design conversation (grilling) on how strict the check should be.
-4. Candidate D (nav/footer enforcement) — needs the "no build step" tension resolved first; don't implement without that conversation.
+- Inline `python -c "... open(...)"` one-liners fail on this Windows box with `UnicodeDecodeError: 'charmap' codec` against `skills-index.json` — Python defaults to cp1252 locally. CI runs on ubuntu-latest where the default is UTF-8, so `ci.yml`'s inline steps are fine as written; pass `encoding='utf-8'` when reproducing those checks locally.
+- Background Bash-tool processes (`run_in_background: true`) were observed dying unexpectedly in the July session, unrelated to disk space. Workaround that held: PowerShell `Start-Process -WindowStyle Hidden`.
+- `page.screenshot({ fullPage: true })` does not trigger real scroll events, so `IntersectionObserver` reveals can look broken in a screenshot that works fine for a real visitor. Scroll incrementally with `window.scrollTo` before asserting. `deviceScaleFactor: 2` inflates PNG pixel height, not real CSS height — divide before treating it as scroll height.
+- No Camoufox/browser MCP tool is registered here. Playwright + Chromium (`npm install playwright && npx playwright install chromium`) works.

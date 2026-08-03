@@ -9,13 +9,21 @@
   <id>https://therocksss.github.io/hermes-skills-portfolio/feed.xml</id>
   <link rel="self" type="application/atom+xml" href="https://therocksss.github.io/hermes-skills-portfolio/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://therocksss.github.io/hermes-skills-portfolio/changelog.html"/>
-  <updated>2026-07-29T17:57:00Z</updated>
+  <updated>2026-08-03T16:27:00Z</updated>
   <author>
     <name>Owen</name>
     <uri>https://github.com/THEROCKSSS</uri>
   </author>
   <rights>MIT</rights>
   <generator uri="https://github.com/THEROCKSSS/hermes-skills-portfolio">scripts/generate_feed.py</generator>
+  <entry>
+    <title>Re-themes the site to Dusk with a persistent sidebar-filter catalog, adds a submission and review…</title>
+    <id>https://therocksss.github.io/hermes-skills-portfolio/changelog.html#commit-fde09ae</id>
+    <link rel="alternate" type="text/html" href="https://therocksss.github.io/hermes-skills-portfolio/changelog.html#commit-fde09ae"/>
+    <updated>2026-08-03T16:27:00Z</updated>
+    <published>2026-08-03T16:27:00Z</published>
+    <content type="text">Re-themes the site to Dusk with a persistent sidebar-filter catalog, adds a submission and review pipeline, and makes the stale-content-cache check blocking in CI. Catalog reaches 57 skills.</content>
+  </entry>
   <entry>
     <title>Fixes CI to check every real file instead of 4 hardcoded ones (2 already dead), deletes the dead…</title>
     <id>https://therocksss.github.io/hermes-skills-portfolio/changelog.html#commit-649bda9</id>

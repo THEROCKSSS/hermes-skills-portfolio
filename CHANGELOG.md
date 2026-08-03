@@ -2,6 +2,10 @@
 
 All notable changes to the Hermes Skills Portfolio. Generated from real git history and skills-index.json — no invented entries. The live, browsable version is at /changelog.html.
 
+## 2026-08-03
+
+- `fde09ae` Re-themes the site to Dusk with a persistent sidebar-filter catalog (picked from a 50-combination prototype), adds a submission and review pipeline with stated decline reasons, and makes the stale-content-cache check blocking in CI. Catalog reaches 57 skills with a new media domain.
+
 ## 2026-07-29
 
 - `649bda9` Fixes CI to check every real file instead of 4 hardcoded ones (2 already dead), deletes the dead files, adds a real site-to-docs sync script, and consolidates a fetch-with-fallback pattern that was duplicated in three files.
