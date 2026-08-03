@@ -1,23 +1,93 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Bundles — Hermes Skills</title>
   <meta name="description" content="Curated sets of Hermes Skills that solve one job together — copy every install command in a bundle at once." />
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/bundles.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Hermes Skills Portfolio" />
+  <meta property="og:title" content="Bundles — Hermes Skills" />
+  <meta property="og:description" content="Curated sets of Hermes Skills that solve one job together — copy every install command in a bundle at once." />
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/bundles.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Bundles — Hermes Skills" />
+  <meta name="twitter:description" content="Curated sets of Hermes Skills that solve one job together — copy every install command in a bundle at once." />
+  <link rel="sitemap" type="application/xml" href="./sitemap.xml" />
+  <!-- Structured data. The list below is bundles.json verbatim — same ids,
+       names, and one-liners the page renders at runtime. Bundles have no
+       per-bundle URL (they are accordion sections, not pages), so none is
+       claimed here. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": "https://therocksss.github.io/hermes-skills-portfolio/bundles.html#page",
+    "url": "https://therocksss.github.io/hermes-skills-portfolio/bundles.html",
+    "name": "Bundles — Hermes Skills",
+    "description": "Curated sets of skills from the real catalog that solve one job together. Every skill listed already exists in the catalog — a bundle is just a grouping, not a new skill.",
+    "inLanguage": "en",
+    "isPartOf": { "@id": "https://therocksss.github.io/hermes-skills-portfolio/#website" },
+    "mainEntity": {
+      "@type": "ItemList",
+      "name": "Hermes Skills bundles",
+      "numberOfItems": 6,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Self-Host Starter Kit",
+          "description": "Stand up your own privately-accessible services with HTTPS, uptime alerts, and a Git server — no cloud hosting bill."
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "API Developer Kit",
+          "description": "Build, test, and document an API end to end — contract tests, a CLI tester, SDK generation, and a working MCP server."
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Agent Automation Kit",
+          "description": "Wire up scheduled tasks, incoming webhooks, and push notifications so your agent can act on events, not just requests."
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Publish Your Own Skills Kit",
+          "description": "Everything this project itself used to go from a folder of skills to a public, sortable portfolio with a real README."
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Content & Docs Kit",
+          "description": "Turn structured data and markdown into finished documents — PDFs, slides, resumes, invoices, and a changelog."
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "Chat Bot Builder Kit",
+          "description": "Build a real Discord or Telegram bot with commands and events, wired to webhooks and kept configurable via env vars."
+        }
+      ]
+    }
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./css/tokens.css" />
   <link rel="stylesheet" href="./css/base.css" />
   <link rel="stylesheet" href="./css/bundles.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="nav">
+  <header class="nav is-solid" id="nav">
     <div class="nav-inner">
       <a class="nav-brand" href="./index.html">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
         Hermes Skills
       </a>
       <nav class="nav-links" aria-label="Sections">
@@ -28,20 +98,20 @@
       </nav>
       <div class="nav-actions">
         <button class="cmdk-trigger" id="cmdk-trigger" aria-haspopup="dialog" aria-controls="cmdk-modal">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <span class="cmdk-trigger-label">Search skills…</span>
           <kbd class="cmdk-trigger-kbd">&#8984;K</kbd>
         </button>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme (t)">
-          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
         <a class="github-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">GitHub</a>
       </div>
     </div>
   </header>
 
-  <main id="main">
+  <main id="main" tabindex="-1">
     <div class="wrap bundles-page">
       <header class="bundles-head reveal">
         <h1 class="bundles-title">Bundles</h1>
@@ -56,11 +126,20 @@
 
   <footer class="footer">
     <div class="footer-inner">
-      <span class="footer-word">Hermes Skills — by Owen</span>
-      <span class="footer-sep">&middot;</span>
-      <span>Install one, your agent can now do that for you.</span>
-      <span class="footer-sep">&middot;</span>
-      <span>MIT licensed</span>
+      <div class="footer-col">
+        <span class="footer-word">Hermes Skills</span>
+        <p class="footer-note">Install one, your agent can now do that for you.</p>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Install any skill</span>
+        <code class="footer-code mono">hermes skills install &lt;url&gt;</code>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Colophon</span>
+        <p class="footer-meta">By Owen &middot; MIT licensed &middot;
+          <a href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">Source on GitHub</a>
+        </p>
+      </div>
     </div>
   </footer>
 

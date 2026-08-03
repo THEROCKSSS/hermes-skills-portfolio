@@ -66,7 +66,7 @@ If the skill already has a `README.md`, polish it for standalone context. If not
 
 ## Install
 \`\`\`bash
-hermes skills install https://github.com/<user>/<skill-name>/blob/main/SKILL.md
+hermes skills install https://raw.githubusercontent.com/<user>/<skill-name>/main/SKILL.md
 \`\`\`
 
 ## How to use
@@ -114,7 +114,7 @@ curl -s -o /dev/null -w "%{http_code}" https://github.com/<user>/<skill-name>/bl
 
 ```
 Published: https://github.com/<user>/<skill-name>
-Install: hermes skills install https://github.com/<user>/<skill-name>/blob/main/SKILL.md
+Install: hermes skills install https://raw.githubusercontent.com/<user>/<skill-name>/main/SKILL.md
 ```
 
 ### Step 8: Clean up

@@ -9,7 +9,7 @@ The agent makes HTTP requests to your API endpoints, checks the response status 
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/http-api-tester/SKILL.md
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/http-api-tester/SKILL.md
 ```
 
 ## How to use

@@ -9,7 +9,7 @@ The agent configures an email provider (SMTP, Resend, SendGrid, Mailgun, or AWS 
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/email-send/SKILL.md
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/email-send/SKILL.md
 ```
 
 ## How to use

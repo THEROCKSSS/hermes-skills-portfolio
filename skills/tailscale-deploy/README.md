@@ -9,7 +9,7 @@ The agent deploys a web service — Docker container, local dev server, or anyth
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/tailscale-deploy/SKILL.md
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/tailscale-deploy/SKILL.md
 ```
 
 ## How to use

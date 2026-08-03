@@ -1,6 +1,6 @@
 # invoice-generator
 
-A public [Hermes](https://github.com/NousResearch/hermes) skill that turns
+A public [Hermes](https://github.com/THEROCKSSS/hermes-skills-portfolio) skill that turns
 structured line items into a clean, professional **PDF invoice** — with client
 details, itemized rows, tax, totals, and multi-currency support.
 

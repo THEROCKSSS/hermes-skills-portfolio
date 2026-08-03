@@ -9,7 +9,7 @@ The agent syncs site files from `site/` to `docs/` for GitHub Pages, enriches `s
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/portfolio-upkeep/SKILL.md
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/portfolio-upkeep/SKILL.md
 ```
 
 ## How to use

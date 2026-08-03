@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>media-id-mapping — Hermes Skill</title>
+  <meta name="description" content="What it does: Bridge a title&#x27;s identity across catalogues: TMDB ↔ IMDb ↔ TVDB ↔ MyAnimeList ↔ AniList ↔ Kitsu. How the agent uses it: An embed host, tracker, or API needs MAL/AniList/Kitsu/TVDB/IMDb ids and you hold TMDB ids.
+A mapped title plays the wrong show, or plays nothing while appearing...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/media-id-mapping/">
+  <meta property="og:title" content="media-id-mapping — Hermes Skill">
+  <meta property="og:description" content="What it does: Bridge a title&#x27;s identity across catalogues: TMDB ↔ IMDb ↔ TVDB ↔ MyAnimeList ↔ AniList ↔ Kitsu. How the agent uses it: An embed host, tracker, or API needs MAL/AniList/Kitsu/TVDB/IMDb ids and you hold TMDB ids.
+A mapped title plays the wrong show, or plays nothing while appearing...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/media-id-mapping/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Hermes Skills Portfolio">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="media-id-mapping — Hermes Skill">
+  <meta name="twitter:description" content="What it does: Bridge a title&#x27;s identity across catalogues: TMDB ↔ IMDb ↔ TVDB ↔ MyAnimeList ↔ AniList ↔ Kitsu. How the agent uses it: An embed host, tracker, or API needs MAL/AniList/Kitsu/TVDB/IMDb ids and you hold TMDB ids.
+A mapped title plays the wrong show, or plays nothing while appearing...">
+  <link rel="sitemap" type="application/xml" href="../../sitemap.xml">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "media-id-mapping",
+  "name": "media-id-mapping",
+  "description": "Use when a feature needs a title's id in a system other than the one you hold — TMDB to IMDb, TVDB, MyAnimeList, AniList or Kitsu — typically because an anime player or a ratings API speaks a different id system. Also use when a mapped title plays the wrong show, when a title \"is supported\" but plays nothing, or when season/episode numbers don't line up between two catalogues.",
+  "url": "https://therocksss.github.io/hermes-skills-portfolio/skills/media-id-mapping/",
+  "inLanguage": "en",
+  "license": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/LICENSE",
+  "isPartOf": {
+    "@type": "WebSite",
+    "@id": "https://therocksss.github.io/hermes-skills-portfolio/#website",
+    "name": "Hermes Skills Portfolio"
+  },
+  "dateModified": "2026-08-02",
+  "author": {
+    "@type": "Person",
+    "name": "Owen"
+  }
+}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/skill-page.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav is-solid" id="nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="../../index.html">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
+        Hermes Skills
+      </a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="../../index.html" data-nav="catalog">Catalog</a>
+        <a href="../../bundles.html" data-nav="bundles">Bundles</a>
+        <a href="../../changelog.html" data-nav="changelog">Changelog</a>
+        <a href="../../submit.html" data-nav="submit">Submit a skill</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="cmdk-trigger" id="cmdk-trigger" aria-haspopup="dialog" aria-controls="cmdk-modal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="cmdk-trigger-label">Search skills…</span>
+          <kbd class="cmdk-trigger-kbd">&#8984;K</kbd>
+        </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme (t)">
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a class="github-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="skill-main" tabindex="-1">
+    <div class="wrap">
+      <div class="skill-shell">
+        <p class="skill-back-link"><a href="../../index.html">&#8592; Back to catalog</a></p>
+
+        <header class="detail-header">
+          <div class="detail-titles">
+            <h1>media-id-mapping</h1>
+            <span class="tier-badge utility">Utility</span>
+          </div>
+          <p class="detail-desc">Use when a feature needs a title&#x27;s id in a system other than the one you hold — TMDB to IMDb, TVDB, MyAnimeList, AniList or Kitsu — typically because an anime player or a ratings API speaks a different id system. Also use when a mapped title plays the wrong show, when a title &quot;is supported&quot; but plays nothing, or when season/episode numbers don&#x27;t line up between two catalogues.</p>
+          <div class="detail-meta-row">
+            <span><strong>Category:</strong> Media &amp; Streaming</span>
+            <span><strong>Tier:</strong> Useful for specific workflows</span>
+            <span><strong>Source:</strong> Newly authored</span>
+            <span><strong>Updated:</strong> 2026-08-02</span>
+          </div>
+        </header>
+
+        <div class="detail-tabs" role="tablist" aria-label="Skill documentation">
+          <button class="detail-tab active" id="tab-btn-overview" data-tab="overview" role="tab" aria-selected="true" aria-controls="tab-overview">Overview</button>
+          <button class="detail-tab" id="tab-btn-skillmd" data-tab="skillmd" role="tab" aria-selected="false" aria-controls="tab-skillmd">SKILL.md</button>
+          <button class="detail-tab" id="tab-btn-readme" data-tab="readme" role="tab" aria-selected="false" aria-controls="tab-readme">README</button>
+        </div>
+
+        <div class="detail-tab-content active" id="tab-overview" role="tabpanel" aria-labelledby="tab-btn-overview" tabindex="0">
+          <section class="detail-section">
+            <h2>What it does</h2>
+            <p>Bridge a title&#x27;s identity across catalogues: TMDB ↔ IMDb ↔ TVDB ↔ MyAnimeList ↔ AniList ↔ Kitsu.</p>
+          </section>
+          <section class="detail-section">
+            <h2>How an agent uses it</h2>
+            <ul><li>An embed host, tracker, or API needs MAL/AniList/Kitsu/TVDB/IMDb ids and you hold TMDB ids.</li><li>A mapped title plays the wrong show, or plays nothing while appearing supported.</li><li>Season/episode numbers disagree between two catalogues.</li><li>You&#x27;re choosing a mapping dataset and need to know which ones actually bridge what.</li></ul>
+          </section>
+          <section class="detail-section">
+            <h2>What you get</h2>
+            <p>Install this skill and your Hermes agent can use when a feature needs a title&#x27;s id in a system other than the one you hold — tmdb to imdb, tvdb, myanimelist, anilist or kitsu — typically because an anime player or a ratings api speaks a different id system. also use when a mapped title plays the wrong show, when a title &quot;is supported&quot; but plays nothing, or when season/episode numbers don&#x27;t line up between two catalogues. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+          </section>
+          
+        <div class="install-block">
+          <h3>Install command</h3>
+          <div class="install-row">
+            <code id="install-cmd">hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/media-id-mapping/SKILL.md</code>
+            <button class="btn btn-outline btn-sm" id="copy-btn" type="button">Copy</button>
+          </div>
+        </div>
+        
+          <a class="detail-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/media-id-mapping/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub <span aria-hidden="true">&#8599;</span></a>
+          
+        </div>
+
+        <div class="detail-tab-content" id="tab-skillmd" role="tabpanel" aria-labelledby="tab-btn-skillmd" tabindex="0">
+          <pre class="skillmd-viewer">---
+name: media-id-mapping
+description: Use when a feature needs a title&#x27;s id in a system other than the one you hold — TMDB to IMDb, TVDB, MyAnimeList, AniList or Kitsu — typically because an anime player or a ratings API speaks a different id system. Also use when a mapped title plays the wrong show, when a title &quot;is supported&quot; but plays nothing, or when season/episode numbers don&#x27;t line up between two catalogues.
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [id-mapping, tmdb, imdb, myanimelist, anilist, anime]
+    related_skills: [streaming-provider-embeds, tmdb-metadata, movie-catalogue-site]
+---
+
+# media-id-mapping
+
+## Overview
+
+Bridge a title&#x27;s identity across catalogues: TMDB ↔ IMDb ↔ TVDB ↔ MyAnimeList ↔ AniList ↔ Kitsu. You need this the moment a consumer speaks a different id system than your metadata spine — an anime embed host keyed on MAL ids, a ratings API keyed on IMDb ids, a tracker keyed on AniList ids.
+
+This is where **silent failure** does its worst work. A wrong id does not 404. It plays a completely different show, at full quality, with no warning, and the viewer blames your site. The hard part is not even the id — it is the **episode number**, which does not carry over between systems and cannot be computed arithmetically.
+
+## The Invariant
+
+**Never guess an id.** Every ambiguous or partial case resolves to `null`, and the caller falls back to a route that does not need the mapping — or says plainly that it cannot play this title.
+
+A fallback is always available. A wrong show is not recoverable.
+
+## When to Use
+
+- An embed host, tracker, or API needs MAL/AniList/Kitsu/TVDB/IMDb ids and you hold TMDB ids.
+- A mapped title plays the wrong show, or plays nothing while appearing supported.
+- Season/episode numbers disagree between two catalogues.
+- You&#x27;re choosing a mapping dataset and need to know which ones actually bridge what.
+- You&#x27;re about to ship a derived/inferred id and need a way to prove it is right.
+
+## Workflow
+
+1. **Get the free ids first.** TMDB&#x27;s `/{movie,tv}/{id}?append_to_response=external_ids` already returns `imdb_id` and `tvdb_id`. No dataset needed for those — see The Easy Half.
+2. **Pick a dataset that carries *your* spine&#x27;s ids** (see Where Mapping Data Comes From). An excellent anime database that omits TMDB ids cannot bridge TMDB to anything.
+3. **Snapshot it at build time**, trimmed to the fields you need (see Build-Time, Not Runtime).
+4. **Write the resolver as a pure function** over an already-loaded snapshot, so it can be exercised with no async plumbing.
+5. **Handle the cour/offset problem explicitly** (see Episode Numbering).
+6. **Derive only where the data admits exactly one reading**, never where two are possible (see Derive, Then Verify).
+7. **Verify derived rows against the live consumer** and compare their hit rate to your existing baseline. Ship the verifier alongside the builder.
+8. **Track availability separately from existence** (see Availability Is Not Existence).
+9. **Return `null` loudly** — the caller must render an honest dead end, not an empty frame.
+
+## The Easy Half: IMDb and TVDB
+
+TMDB gives you these directly; there is no dataset, no matching, and no ambiguity:
+
+```js
+const details = await tmdbFetch(`/${mediaType}/${id}`, {
+  append_to_response: &#x27;external_ids,credits&#x27;,
+});
+const imdbId = details.external_ids?.imdb_id;   // &quot;tt0137523&quot;
+const tvdbId = details.external_ids?.tvdb_id;   // 81189
+```
+
+IMDb ids are what OMDb keys on for Rotten Tomatoes / Metacritic ratings (see `tmdb-metadata`). TVDB ids matter here for a second reason: they are a **secondary bridge** into anime datasets, because a meaningful minority of series carry a TVDB id in those datasets but no TMDB id.
+
+Movies have `imdb_id` on the detail response. TV series have it under `external_ids`, and individual *episodes* have their own — don&#x27;t reuse the series id for an episode lookup.
+
+## Where Mapping Data Comes From
+
+Datasets differ in what they bridge, and picking the wrong one wastes a day:
+
+| Dataset kind | Bridges | Use for |
+|---|---|---|
+| Cross-id list carrying your metadata API&#x27;s ids | TMDB/TVDB ↔ MAL/AniList/Kitsu, with `season` + `episode_offset` | **the actual bridge** |
+| Anime-only aggregators | MAL ↔ AniList ↔ Kitsu ↔ AniDB | enriching, not bridging |
+| Id caches / existence lists | which ids exist at all | validation only |
+
+The publicly maintained cross-id lists (e.g. the `Fribb/anime-lists` family, which the reference implementation snapshots from `anime-list-mini.json`) are the first category — they carry `mal_id`, `anilist_id`, `kitsu_id`, `anidb_id`, `themoviedb_id`, `thetvdb_id`, plus **`season`** and **`episode_offset`**, which are the two fields that actually matter.
+
+**Check the dataset carries your spine&#x27;s ids before adopting it.** This is the single most common wasted afternoon in this domain.
+
+## Episode Numbering Does Not Carry Over
+
+MAL files a long-running series as **one entry per cour** (a quarter-season broadcast block). So &quot;season 3, episode 13&quot; of a series may be a *different MAL entry starting again at episode 1* — not entry X at episode 38, and not entry Y at episode 13. Neither conversion is arithmetic; both come from the dataset&#x27;s `season` and `episode_offset` fields.
+
+Given rows shaped `[foreignId, season, episodeOffset, type]`:
+
+```js
+function pickSeriesRow(rows, season, episode) {
+  if (!Array.isArray(rows)) return null;
+  let best = null;
+  for (const row of rows) {
+    if (row[1] !== season) continue;
+    // A cour&#x27;s offset is how many episodes of this season came BEFORE it, so it
+    // must be strictly below the episode asked for. Among the cours that
+    // qualify, the latest-starting one contains this episode.
+    if (row[2] &gt;= episode) continue;
+    if (!best || row[2] &gt; best[2]) best = row;
+  }
+  return best;
+}
+
+const absoluteEpisode = episode - row[2];
+if (!Number.isInteger(absoluteEpisode) || absoluteEpisode &lt;= 0) return null;
+```
+
+### Verify the model, don&#x27;t inherit it
+
+Consumers map foreign ids onto **their own** catalogue&#x27;s grouping, which usually matches the source&#x27;s cour splits but not always.
+
+A worked case: one series appeared to prove a host merged cours — its season-3 entry served 22 episodes (both cours) while the second cour&#x27;s entry did not exist at all. That looks like a rule. Tested across 16 multi-cour seasons where the two models disagree, the **per-cour model won 10–0**. The merged case was a genuine per-title exception, not an arithmetic rule.
+
+Had that been &quot;fixed&quot; as a rule it would have broken every correctly-mapped multi-cour series. **Test a model against a sample before adopting it**, and leave per-title exceptions to the runtime fallback rather than special-casing them in the resolver.
+
+## Snapshot Strictness Rules
+
+Each of these exists to prevent a silent mis-play. Enforce them in the builder, and log how many rows each one dropped:
+
+1. **Never cross-read numbering systems.** TMDB-keyed rows read `season.tmdb` / `episode_offset.tmdb` only; TVDB-keyed rows read the `tvdb` variants only. These genuinely disagree in real datasets — in one snapshot, 38 rows had differing season numbers and 7 had differing offsets. Cross-reading mis-maps exactly those rows.
+2. **A row with an offset object but no value for your route is dropped, not defaulted to 0.** Defaulting turns &quot;S3E13 → episode 1&quot; into &quot;→ episode 13&quot;.
+3. **A `(series, season, offset)` slot claimed by several different foreign ids is dropped entirely.** There is no non-guessing way to choose.
+4. **A row enters the TVDB index only when it carries no TMDB id of its own**, and the resolver consults that index only when the TMDB route found nothing — so the TMDB route always wins and the two indexes can never contradict each other.
+5. Movies are a separate, simpler index: one entry, episode 1.
+
+## Derive, Then Verify
+
+Source datasets have holes. Some rows carry your spine&#x27;s series id but omit the season number, and a strict builder drops them — silently.
+
+Worked example: a major long-running series had its two *films* mapped and its **entire 148-episode run unmapped**, because its row omitted a season. The title looked supported and played nothing — the worst failure shape available, because it invites you to debug the player.
+
+**Recovery rule.** Derive a season only where the data admits exactly one reading: the series has *exactly one* non-film row in the whole dataset. One entry with no cour split means season 1, offset 0 is the only arrangement the data can describe. Two or more rows are genuinely ambiguous and stay dropped.
+
+That is a derivation, not a guess — and the difference is testable:
+
+```
+recovered rows:        47/63 resolve (74.6%)
+existing map baseline:            73.6%
+```
+
+Matching the baseline is the evidence. Derived ids that were *wrong* would resolve at a visibly different rate — near zero if the rule were broken, suspiciously high if it were selecting only easy cases. A distribution matching the population says the rule found real rows, not plausible noise.
+
+**Ship a repeatable verifier alongside the builder** so the next dataset refresh is re-checked rather than re-argued:
+
+```
+node scripts/verify-map.mjs              # deterministic sample of N entries
+node scripts/verify-map.mjs --id 11061   # one specific id
+node scripts/verify-map.mjs --n 200      # bigger sample
+```
+
+The verifier probes the **live consumer** — the thing that will actually serve these ids — with the embed-shaped headers that consumer requires (see `streaming-provider-embeds`), and it must use a control probe: a real id and a bogus one, so a total-failure result can&#x27;t be mistaken for a coverage number. Keep the referer configurable (`PROBE_REFERER`) rather than baking a deployment hostname into a file that may go public.
+
+## Availability Is Not Existence
+
+&quot;We carry this show&quot; and &quot;we carry it dubbed&quot; are different facts. Conflating them makes a track selector dishonest: it offers every track on every mapped title and plays nothing for the ones that exist in only one.
+
+Measured on one catalogue: of 8,732 titles, **5,155 were sub-only** — 59% of the titles where a dub button was being offered.
+
+If the consumer&#x27;s catalogue publishes per-track counts, harvest them during a walk you are already doing and store `[subCount, dubCount]` per id.
+
+**Unknown is not unavailable.** A title absent from the catalogue may still play via the id route, so missing data must leave every track enabled. Disabling on absent data removes a working option on a guess — the same sin as guessing an id, pointed the other way.
+
+```js
+export function availabilityFromMap(avail, id) {
+  const row = avail?.[id];
+  if (!Array.isArray(row)) return null;          // null = unknown, NOT unavailable
+  const sub = Number(row[0]) || 0;
+  const dub = Number(row[1]) || 0;
+  return { sub, dub, hasSub: sub &gt; 0, hasDub: dub &gt; 0 };
+}
+```
+
+## Build-Time, Not Runtime
+
+Mapping datasets are large (the upstream file in the reference case is ~5.7 MB of JSON) and their hosts rarely send CORS headers, so the browser cannot fetch them directly. Snapshot at build time, trimmed: drop every field the consumer doesn&#x27;t need, drop every row without a foreign id, and re-shape into per-id buckets. That took ~5.7 MB to roughly 190 kB in the reference implementation — small enough to commit and lazily load.
+
+Two placements, and the difference matters:
+
+- **Bundled import** (`import(&#x27;../data/map.json&#x27;)`) — the build *fails* if the file is missing. Right for data the app cannot work without. Bundlers resolve dynamic imports at build time, so even `import()` inside a `try/catch` hard-fails a missing file.
+- **Fetched from a static path at runtime** (`fetch(\`${import.meta.env.BASE_URL}map.json\`)`) — a missing file degrades to &quot;no mapping&quot; and the app still runs. Right for anything optional.
+
+Getting this backwards means an optional enrichment file can break your build.
+
+Memoise both the parsed result **and the in-flight promise**, so two components mounting at once share one request. On failure, clear the promise (so a later attempt can retry) and let the caller treat it exactly like an unmapped title.
+
+**Refresh is manual and that is the safe direction.** A stale snapshot means a genuinely new show fails to resolve and the caller falls back — not that it plays the wrong thing. Record a `meta.generated` timestamp in the output so &quot;why won&#x27;t this new show resolve&quot; has a one-line answer.
+
+## Deciding When a Mapping Is Even Wanted
+
+Only mention an *absent* mapping when it would make sense to have one. TMDB has no &quot;is this anime&quot; flag; the working heuristic — genre 16 (Animation) **combined with** Japanese original language — is the same filter `/discover` uses to build an anime rail:
+
+```js
+export function looksLikeAnime(details) {
+  const isAnimation = (details?.genres || []).some((g) =&gt; g.id === 16);
+  return isAnimation &amp;&amp; details?.original_language === &#x27;ja&#x27;;
+}
+```
+
+Genre alone pulls in every Western animated film. Use both, always, and use this only to decide whether &quot;no mapping for this title&quot; is worth saying out loud — a live-action film shouldn&#x27;t be told it has no anime mapping.
+
+## Common Pitfalls
+
+1. **Guessing an id from a title-string match.** Join on ids alone. Title matching across catalogues produces confident wrong answers on every remake, sequel, and localised title.
+2. **Treating episode numbering as arithmetic.** `episode - 12` is not a cour offset; the dataset&#x27;s field is.
+3. **Adopting a dataset that doesn&#x27;t carry your spine&#x27;s ids.** It cannot bridge, however complete it is.
+4. **Defaulting a missing offset to 0.** Silently shifts an entire season.
+5. **Special-casing a per-title exception as a rule.** Breaks every correctly-mapped series.
+6. **Shipping a derived id without a hit-rate comparison.** The comparison is the only evidence you have.
+7. **Disabling a track on unknown availability.** Removes a working option on a guess.
+8. **Bundling an optional file with a static import.** A missing optional artifact fails the build.
+9. **Probing the consumer without embed headers.** Everything looks like a miss (see `streaming-provider-embeds`).
+10. **No control case in the sweep.** A total failure and a coverage number are indistinguishable without one.
+
+## Limitations
+
+This skill does **not**:
+
+- Ship or maintain a mapping dataset. It tells you which kind to pick and how to snapshot it; the data is someone else&#x27;s, with their coverage and their licence.
+- Map anything by title, fuzzy match, or fingerprint. Ids only.
+- Cover per-episode ids beyond what the cour/offset model gives you.
+- Guarantee coverage. Real mappings are partial by nature — roughly 4,100 TV series and 1,300 films resolved in the reference snapshot, and everything else legitimately doesn&#x27;t.
+- Handle the embed/player side of using these ids — see `streaming-provider-embeds`.
+- Provide MAL/AniList *account* integration (OAuth, list sync). This is id resolution only.
+
+## Verification Checklist
+
+- [ ] The chosen dataset demonstrably carries your metadata API&#x27;s ids (grep one known title)
+- [ ] The resolver is a pure function over a loaded snapshot and is exercised without network
+- [ ] A multi-cour series resolves to the right entry **and** the right episode number, checked by hand against the catalogue
+- [ ] An ambiguous/absent row returns `null`, and the caller renders an honest dead end
+- [ ] Derived rows verified against the live consumer, with their hit rate compared to the baseline and both numbers recorded
+- [ ] The verifier run includes a control probe (real id vs bogus id) that visibly differ
+- [ ] Unknown availability leaves every track enabled
+- [ ] The build still succeeds with the optional artifact deleted
+- [ ] `meta.generated` is present in the snapshot output
+</pre>
+        </div>
+
+        <div class="detail-tab-content" id="tab-readme" role="tabpanel" aria-labelledby="tab-btn-readme" tabindex="0">
+          <pre class="skillmd-viewer"># media-id-mapping
+
+Bridge a title&#x27;s identity across catalogues — TMDB ↔ IMDb ↔ TVDB ↔ MyAnimeList ↔ AniList ↔ Kitsu — without ever guessing an id.
+
+## What it does
+
+You need this the moment a consumer speaks a different id system than your metadata spine: an anime embed host keyed on MAL ids, a ratings API keyed on IMDb ids, a tracker keyed on AniList ids.
+
+The agent picks a dataset that actually bridges what you hold, snapshots it at build time under strict rules, writes a pure resolver, and — crucially — verifies derived rows against the live consumer instead of reasoning about them.
+
+## The invariant
+
+**Never guess an id.** Every ambiguous or partial case resolves to `null` and the caller falls back to a route that doesn&#x27;t need the mapping, or says plainly that it can&#x27;t play this title.
+
+A wrong id does not 404. It plays a completely different show, at full quality, with no warning. A fallback is always available; a wrong show is not recoverable.
+
+## Install
+
+```bash
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/media-id-mapping/SKILL.md
+```
+
+## The easy half — no dataset needed
+
+```js
+const details = await tmdbFetch(`/${mediaType}/${id}`, { append_to_response: &#x27;external_ids&#x27; });
+details.external_ids?.imdb_id   // &quot;tt0137523&quot;  → OMDb ratings
+details.external_ids?.tvdb_id   // 81189        → secondary bridge into anime datasets
+```
+
+TVDB matters for a second reason: a meaningful minority of series carry a TVDB id in anime datasets but no TMDB id, so it&#x27;s a real fallback route.
+
+## Picking a dataset
+
+| Kind | Bridges | Use for |
+|---|---|---|
+| Cross-id list carrying your API&#x27;s ids | TMDB/TVDB ↔ MAL/AniList/Kitsu, with `season` + `episode_offset` | **the actual bridge** |
+| Anime-only aggregators | MAL ↔ AniList ↔ Kitsu ↔ AniDB | enriching, not bridging |
+| Id existence caches | which ids exist | validation only |
+
+**Check the dataset carries your spine&#x27;s ids before adopting it.** An excellent anime database that omits TMDB ids cannot bridge TMDB to anything, however complete it is otherwise. This is the most common wasted afternoon in this domain.
+
+## The hard part is the episode number
+
+MAL files a long-running series as **one entry per cour**. &quot;Season 3, episode 13&quot; may be a different entry starting again at episode 1 — not entry X at episode 38, and not entry Y at episode 13. Neither conversion is arithmetic.
+
+```js
+function pickSeriesRow(rows, season, episode) {
+  let best = null;
+  for (const row of rows || []) {
+    if (row[1] !== season) continue;
+    if (row[2] &gt;= episode) continue;              // offset must be strictly below
+    if (!best || row[2] &gt; best[2]) best = row;    // latest-starting qualifying cour
+  }
+  return best;
+}
+const absoluteEpisode = episode - row[2];
+```
+
+**Verify the model, don&#x27;t inherit it.** One series looked like proof that a host merged cours — season 3 served 22 episodes while the second cour&#x27;s entry didn&#x27;t exist. Tested across 16 multi-cour seasons where the two models disagree, the per-cour model won **10–0**. That one case was a per-title exception, not a rule; &quot;fixing&quot; it as a rule would have broken every correctly-mapped series.
+
+## Snapshot strictness rules
+
+Each prevents a silent mis-play. Log how many rows each drops:
+
+1. **Never cross-read numbering systems** — TMDB rows read the `tmdb` season/offset, TVDB rows read the `tvdb` ones. In one real snapshot 38 rows had differing seasons and 7 differing offsets.
+2. **A missing offset is dropped, not defaulted to 0.** Defaulting turns &quot;S3E13 → ep 1&quot; into &quot;→ ep 13&quot;.
+3. **A slot claimed by several foreign ids is dropped entirely.** No non-guessing way to choose.
+4. **TVDB index is consulted only when the TMDB route found nothing**, so the two can never contradict.
+
+## Derive, then verify
+
+Datasets have holes. One real case: a major long-running series had its two *films* mapped and its **entire 148-episode run unmapped** because the row omitted a season. The title looked supported and played nothing — the worst failure shape available, because it invites you to debug the player.
+
+Recovery rule: derive a season only where the data admits exactly one reading — the series has *exactly one* non-film row. Two or more rows are genuinely ambiguous and stay dropped.
+
+Then prove it:
+
+```
+recovered rows:        47/63 resolve (74.6%)
+existing map baseline:            73.6%
+```
+
+Matching the baseline is the evidence. Wrong ids would resolve at a visibly different rate — near zero if the rule were broken, suspiciously high if it were cherry-picking easy cases.
+
+Ship the verifier next to the builder so the next refresh is re-checked rather than re-argued, and give it a control probe (real id vs bogus id) so a total failure can&#x27;t be mistaken for a coverage number.
+
+## Availability is not existence
+
+&quot;We carry this show&quot; and &quot;we carry it dubbed&quot; are different facts. Measured on one catalogue: of 8,732 titles, **5,155 were sub-only** — 59% of the titles where a dub button was being offered.
+
+```js
+if (!Array.isArray(row)) return null;   // null = UNKNOWN, not unavailable
+```
+
+Unknown must leave every track enabled. Disabling on absent data removes a working option on a guess — the same sin as guessing an id, pointed the other way.
+
+## Build-time, not runtime
+
+Mapping datasets are large (~5.7 MB in the reference case) and their hosts rarely send CORS headers. Snapshot at build time, trimmed to per-id buckets — that got to ~190 kB, small enough to commit and lazily load.
+
+- **Bundled import** → the build *fails* if the file is missing. Right for data the app can&#x27;t work without. (Bundlers resolve dynamic imports at build time, so even `import()` in a try/catch hard-fails.)
+- **Runtime `fetch` from a static path** → a missing file degrades to &quot;no mapping&quot; and the app still runs. Right for anything optional.
+
+Getting this backwards means an optional enrichment file breaks your build. Memoise both the parsed result and the in-flight promise; clear the promise on failure so a retry is possible.
+
+Refresh is manual, and that&#x27;s the safe direction — a stale snapshot means a new show fails to resolve and falls back, not that it plays the wrong thing. Record `meta.generated` in the output.
+
+## Is it even anime?
+
+TMDB has no flag. The working heuristic is genre 16 (Animation) **combined with** Japanese original language — genre alone pulls in every Western animated film. Use it only to decide whether &quot;no mapping for this title&quot; is worth saying out loud.
+
+## Honest limitations
+
+- Ships no dataset. The data is someone else&#x27;s, with their coverage and their licence.
+- Maps by id only — no title matching, fuzzy matching, or fingerprinting.
+- Coverage is partial by nature. The reference snapshot resolved roughly 4,100 TV series and 1,300 films; everything else legitimately doesn&#x27;t map.
+- The embed/player side of using these ids belongs to `streaming-provider-embeds`.
+- No MAL/AniList *account* integration (OAuth, list sync) — this is id resolution only.
+- All measured figures here are dated observations from one reference implementation, not guarantees. Re-measure.
+
+## Part of
+
+[Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio) — empowering skills for the Hermes agent.
+</pre>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <span class="footer-word">Hermes Skills</span>
+        <p class="footer-note">Install one, your agent can now do that for you.</p>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Install any skill</span>
+        <code class="footer-code mono">hermes skills install &lt;url&gt;</code>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Colophon</span>
+        <p class="footer-meta">By Owen &middot; MIT licensed &middot;
+          <a href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">Source on GitHub</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/common.js"></script>
+  <script src="../../js/skill-page.js"></script>
+</body>
+</html>

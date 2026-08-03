@@ -19,7 +19,8 @@ SAMPLE_SKILL = {
     "description": "Set up a self-hosted Forgejo Git server with Docker.",
     "user_use": "You get a private Git server with repositories, issues, pull requests, and CI.",
     "agent_use": "- Deploy Forgejo with Docker Compose.\n- Verify the API and browser UI.\n- Configure backups.",
-    "install_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/forgejo-self-host/SKILL.md",
+    "install_url": "https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/forgejo-self-host/SKILL.md",
+    "source_url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/forgejo-self-host/SKILL.md",
     "path": "skills/forgejo-self-host",
     "source": "generalized",
     "source_attribution": {
@@ -70,6 +71,24 @@ class SharePageTests(unittest.TestCase):
         self.assertIn("README", page)
         self.assertNotIn("<script>alert(1)</script>", page)
         self.assertIn(html.escape("<script>alert(1)</script>"), page)
+
+    def test_install_command_uses_the_raw_url_not_the_blob_page(self):
+        """Regression: a github.com/blob URL serves text/html.
+
+        `hermes skills install <blob-url>` exits 0 and writes GitHub's page
+        markup into the skill body, so the failure is silent. The rendered
+        install command must always carry the raw.githubusercontent.com URL.
+        """
+        page = render_skill_page(SAMPLE_SKILL, CATEGORIES, base_url="https://example.com")
+        self.assertIn(
+            "hermes skills install https://raw.githubusercontent.com/", page
+        )
+        self.assertNotIn("hermes skills install https://github.com/", page)
+
+    def test_view_on_github_link_uses_the_human_blob_page(self):
+        """The install target and the human link are deliberately different URLs."""
+        page = render_skill_page(SAMPLE_SKILL, CATEGORIES, base_url="https://example.com")
+        self.assertIn(f'href="{SAMPLE_SKILL["source_url"]}"', page)
 
     def test_catalog_routes_disambiguate_duplicate_slugs_by_repository(self):
         left = catalog_route({"repo": "anthropics/skills", "slug": "brand-guidelines"})

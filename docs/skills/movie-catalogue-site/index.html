@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>movie-catalogue-site — Hermes Skill</title>
+  <meta name="description" content="What it does: Build the browsable half of a movie/TV catalogue: an app shell with home rails, search, category browse, a title detail page, and a watchlist route — on top of a metadata API and (optionally) third-party embed providers. How the agent uses it: The user wants a browsable catalogue...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/movie-catalogue-site/">
+  <meta property="og:title" content="movie-catalogue-site — Hermes Skill">
+  <meta property="og:description" content="What it does: Build the browsable half of a movie/TV catalogue: an app shell with home rails, search, category browse, a title detail page, and a watchlist route — on top of a metadata API and (optionally) third-party embed providers. How the agent uses it: The user wants a browsable catalogue...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/movie-catalogue-site/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Hermes Skills Portfolio">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="movie-catalogue-site — Hermes Skill">
+  <meta name="twitter:description" content="What it does: Build the browsable half of a movie/TV catalogue: an app shell with home rails, search, category browse, a title detail page, and a watchlist route — on top of a metadata API and (optionally) third-party embed providers. How the agent uses it: The user wants a browsable catalogue...">
+  <link rel="sitemap" type="application/xml" href="../../sitemap.xml">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "movie-catalogue-site",
+  "name": "movie-catalogue-site",
+  "description": "Use when the user wants to build a browsable movie/TV catalogue — a \"Netflix-like\" front-end, a media dashboard, a personal streaming site, a watchlist app with browse/search/detail pages — or says \"build me a movie site\", \"a page to browse films and shows\", \"my own TV catalogue\". Covers the app shell, routes, rails, filter state, empty states, and the deploy shape that owns the CSP. Not for the metadata API itself (tmdb-metadata) or the player (streaming-provider-embeds).",
+  "url": "https://therocksss.github.io/hermes-skills-portfolio/skills/movie-catalogue-site/",
+  "inLanguage": "en",
+  "license": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/LICENSE",
+  "isPartOf": {
+    "@type": "WebSite",
+    "@id": "https://therocksss.github.io/hermes-skills-portfolio/#website",
+    "name": "Hermes Skills Portfolio"
+  },
+  "dateModified": "2026-08-02",
+  "author": {
+    "@type": "Person",
+    "name": "Owen"
+  }
+}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/skill-page.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav is-solid" id="nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="../../index.html">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
+        Hermes Skills
+      </a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="../../index.html" data-nav="catalog">Catalog</a>
+        <a href="../../bundles.html" data-nav="bundles">Bundles</a>
+        <a href="../../changelog.html" data-nav="changelog">Changelog</a>
+        <a href="../../submit.html" data-nav="submit">Submit a skill</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="cmdk-trigger" id="cmdk-trigger" aria-haspopup="dialog" aria-controls="cmdk-modal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="cmdk-trigger-label">Search skills…</span>
+          <kbd class="cmdk-trigger-kbd">&#8984;K</kbd>
+        </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme (t)">
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a class="github-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="skill-main" tabindex="-1">
+    <div class="wrap">
+      <div class="skill-shell">
+        <p class="skill-back-link"><a href="../../index.html">&#8592; Back to catalog</a></p>
+
+        <header class="detail-header">
+          <div class="detail-titles">
+            <h1>movie-catalogue-site</h1>
+            <span class="tier-badge featured">Featured</span>
+          </div>
+          <p class="detail-desc">Use when the user wants to build a browsable movie/TV catalogue — a &quot;Netflix-like&quot; front-end, a media dashboard, a personal streaming site, a watchlist app with browse/search/detail pages — or says &quot;build me a movie site&quot;, &quot;a page to browse films and shows&quot;, &quot;my own TV catalogue&quot;. Covers the app shell, routes, rails, filter state, empty states, and the deploy shape that owns the CSP. Not for the metadata API itself (tmdb-metadata) or the player (streaming-provider-embeds).</p>
+          <div class="detail-meta-row">
+            <span><strong>Category:</strong> Media &amp; Streaming</span>
+            <span><strong>Tier:</strong> Highly useful within a category</span>
+            <span><strong>Source:</strong> Newly authored</span>
+            <span><strong>Updated:</strong> 2026-08-02</span>
+          </div>
+        </header>
+
+        <div class="detail-tabs" role="tablist" aria-label="Skill documentation">
+          <button class="detail-tab active" id="tab-btn-overview" data-tab="overview" role="tab" aria-selected="true" aria-controls="tab-overview">Overview</button>
+          <button class="detail-tab" id="tab-btn-skillmd" data-tab="skillmd" role="tab" aria-selected="false" aria-controls="tab-skillmd">SKILL.md</button>
+          <button class="detail-tab" id="tab-btn-readme" data-tab="readme" role="tab" aria-selected="false" aria-controls="tab-readme">README</button>
+        </div>
+
+        <div class="detail-tab-content active" id="tab-overview" role="tabpanel" aria-labelledby="tab-btn-overview" tabindex="0">
+          <section class="detail-section">
+            <h2>What it does</h2>
+            <p>Build the browsable half of a movie/TV catalogue: an app shell with home rails, search, category browse, a title detail page, and a watchlist route — on top of a metadata API and (optionally) third-party embed providers.</p>
+          </section>
+          <section class="detail-section">
+            <h2>How an agent uses it</h2>
+            <ul><li>The user wants a browsable catalogue of films/shows with posters, detail pages, and search.</li><li>An existing catalogue needs a new route, rail, or browse surface.</li><li>Playback, watchlist, or metadata work needs a place to live and the app shell doesn&#x27;t exist yet.</li><li>The user asks for &quot;a personal Netflix&quot;, &quot;a media browser&quot;, &quot;a site for my movie list&quot;.</li></ul>
+          </section>
+          <section class="detail-section">
+            <h2>What you get</h2>
+            <p>Install this skill and your Hermes agent can use when the user wants to build a browsable movie/tv catalogue — a &quot;netflix-like&quot; front-end, a media dashboard, a personal streaming site, a watchlist app with browse/search/detail pages — or says &quot;build me a movie site&quot;, &quot;a page to browse films and shows&quot;, &quot;my own tv catalogue&quot;. covers the app shell, routes, rails, filter state, empty states, and the deploy shape that owns the csp. not for the metadata api itself (tmdb-metadata) or the player (streaming-provider-embeds). No manual setup, no scripts to run &mdash; the agent handles it.</p>
+          </section>
+          
+        <div class="install-block">
+          <h3>Install command</h3>
+          <div class="install-row">
+            <code id="install-cmd">hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/movie-catalogue-site/SKILL.md</code>
+            <button class="btn btn-outline btn-sm" id="copy-btn" type="button">Copy</button>
+          </div>
+        </div>
+        
+          <a class="detail-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/movie-catalogue-site/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub <span aria-hidden="true">&#8599;</span></a>
+          
+        </div>
+
+        <div class="detail-tab-content" id="tab-skillmd" role="tabpanel" aria-labelledby="tab-btn-skillmd" tabindex="0">
+          <pre class="skillmd-viewer">---
+name: movie-catalogue-site
+description: Use when the user wants to build a browsable movie/TV catalogue — a &quot;Netflix-like&quot; front-end, a media dashboard, a personal streaming site, a watchlist app with browse/search/detail pages — or says &quot;build me a movie site&quot;, &quot;a page to browse films and shows&quot;, &quot;my own TV catalogue&quot;. Covers the app shell, routes, rails, filter state, empty states, and the deploy shape that owns the CSP. Not for the metadata API itself (tmdb-metadata) or the player (streaming-provider-embeds).
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [movie-catalogue, streaming-site, spa, react, vite, watchlist]
+    related_skills: [tmdb-metadata, streaming-provider-embeds, watchlist-sync, media-id-mapping, movie-night-calendar]
+---
+
+# movie-catalogue-site
+
+## Overview
+
+Build the browsable half of a movie/TV catalogue: an app shell with home rails, search, category browse, a title detail page, and a watchlist route — on top of a metadata API and (optionally) third-party embed providers. This skill owns the **application structure**: module boundaries, routing, filter state, loading/empty states, and the deploy shape. The metadata contracts live in `tmdb-metadata`, the player in `streaming-provider-embeds`, persistence in `watchlist-sync`.
+
+The stack that works and stays debuggable: a plain Vite + React SPA (no TypeScript, no component library, no state manager, no CSS framework), a generated REST layer over Postgres (PostgREST/Supabase) instead of a bespoke API server, and a reverse proxy that owns the security headers. Every layer you remove is one that can&#x27;t break between you and a rendered page.
+
+## When to Use
+
+- The user wants a browsable catalogue of films/shows with posters, detail pages, and search.
+- An existing catalogue needs a new route, rail, or browse surface.
+- Playback, watchlist, or metadata work needs a place to live and the app shell doesn&#x27;t exist yet.
+- The user asks for &quot;a personal Netflix&quot;, &quot;a media browser&quot;, &quot;a site for my movie list&quot;.
+
+Do **not** use it for: a media *server* that transcodes and serves your own files (that&#x27;s Jellyfin/Plex territory), or a plain flat list with no metadata lookups.
+
+## Workflow
+
+Build in this order. Each step&#x27;s output is the next step&#x27;s input; skipping ahead means debugging two unknowns at once.
+
+1. **Scaffold and prove one API call.** `npm create vite@latest -- --template react`, add `react-router-dom`, put the metadata key in `.env` as `VITE_TMDB_API_KEY`, and render one rail of real posters. Nothing else — no player, no database. Done when a live response paints artwork.
+2. **Fail loudly on missing config.** Throw at module load if a required key is absent (see Config below). A missing key otherwise produces 401s that the fetch layer reports as &quot;no results&quot;, and an empty search that says &quot;no matches&quot; is a lie.
+3. **Draw the module boundaries** (see Module Layout). One file per external boundary, so a third-party contract change lands in exactly one place.
+4. **Add the routes** (see Routes). Include a real 404 — not the shell over an empty body.
+5. **Build the title detail page.** One request with `append_to_response` rather than three. Cast, runtime, genres, certification, availability. This is the page every other surface links into, so it is the one worth over-building.
+6. **Add search and category browse**, with every active filter encoded in the query string (see Filter State).
+7. **Add the player** — `streaming-provider-embeds`. Add its origin to the proxy CSP in the *same change*, never a follow-up.
+8. **Add persistence** — `watchlist-sync`. Profiles, statuses, resume points.
+9. **Deploy behind a proxy that owns the CSP** (see Deploy). Bind-mount the build output so a rebuild is live without rebuilding a container.
+10. **Verify in a real browser**, not on a clean build. See Verification Checklist.
+
+## Module Layout
+
+```
+src/
+  main.jsx                 mounts App
+  App.jsx                  chrome (nav, footer) + AuthContext + ToastProvider + &lt;Routes&gt;
+  lib/
+    config.js              env reading; throws on a missing required key
+    tmdb.js                every metadata API call, and nothing else
+    omdb.js                the secondary ratings source
+    supabase.js            every persistence call (PostgREST fetches)
+    providers.js           embed URL construction + the trusted-origin allowlist
+    idMapping.js           cross-system ID resolution
+    watchProviders.js      streaming *availability* (not playback — see the naming note)
+  context/
+    AuthContext.jsx        which profile is active, and whether it may be edited
+  components/              MovieCard, Rail, FilterBar, EpisodePicker, Player, …
+  pages/                   Home, Search, Category, TitleDetail, Watchlist, Profiles, NotFound
+```
+
+**Keep the origin allowlist in the same file that builds the embed URLs.** Split them and they drift: you add a provider in one and forget the other, which is the black-box failure in `streaming-provider-embeds`.
+
+**Naming trap worth heading off in a comment.** &quot;Providers&quot; means two unrelated things in this domain — *playback embed sources* (where the iframe points) and *watch providers* (which streaming services carry a title, from the metadata API). The reference implementation keeps them in `lib/providers.js` and `lib/watchProviders.js` with a header comment on each pointing at the other. Do the same or you will spend an afternoon reading the wrong file.
+
+## Routes
+
+```
+/                        home — hero + rails (trending, popular, top rated, continue watching)
+/search?q=&amp;genre=&amp;year=  results; every filter in the query string
+/category/:key           browse one rail&#x27;s full list, paginated
+/title/:mediaType/:id    detail + player + episode picker
+/person/:id              filmography
+/watchlist               the list, with status facets
+/profiles                switch / log in
+*                        a real 404
+```
+
+`:mediaType` is attacker-controlled (it comes straight off the URL). Validate it against `[&#x27;movie&#x27;,&#x27;tv&#x27;]` at the boundary before it reaches any fetch — see Common Pitfalls.
+
+## Config
+
+```js
+// src/lib/config.js
+function required(name) {
+  const value = import.meta.env[name];
+  if (!value) {
+    throw new Error(
+      `${name} is not set. Copy .env.example to .env and fill it in, then ` +
+      `restart the dev server (Vite only reads .env at startup).`,
+    );
+  }
+  return value;
+}
+
+export const TMDB_API_KEY = required(&#x27;VITE_TMDB_API_KEY&#x27;);
+export const OMDB_API_KEY = required(&#x27;VITE_OMDB_API_KEY&#x27;);
+
+// Same-origin relative path, proxied to the REST layer by the front gate.
+// NOT a hardcoded `http://host:8124` — that breaks under HTTPS (mixed content)
+// and under any access path that only forwards one port.
+export const API_URL = &#x27;/api&#x27;;
+```
+
+Ship a tracked `.env.example` and gitignore `.env`. State plainly in the example file that Vite inlines every `VITE_*` value into the bundle at build time, so those keys are readable by anyone with devtools. That is normal for a browse-only metadata key and is *not* a leak — but a write-scoped or database credential must never go there.
+
+## Filter State Belongs in the URL
+
+Encode every active filter as a query parameter. Shareable and bookmarkable views come free, and the browser&#x27;s own back/forward restores them with no history code. Three rules that make it behave:
+
+- **Scope sticky persistence per page type.** A filter set on search must not leak into category browse even when the parameter names match.
+- **Persist only deliberate changes.** A filter that merely arrived in a shared URL should not become that visitor&#x27;s sticky default.
+- **Use `replace`, not `push`, when writing filters.** Otherwise adjusting four selects buries the page you came from under four history entries.
+
+## Loading, Empty, and Error States
+
+Three states look identical if you collapse them into one nullable variable: *haven&#x27;t asked yet*, *asked and the answer is nothing*, *asked and it failed*. Carry a separate `loaded` flag. Collapsing 1 and 2 is exactly why catalogue pages flash &quot;nothing available&quot; on every load before data arrives.
+
+- Skeleton cards while loading, sized like the real card so nothing reflows.
+- &quot;No listed way to watch this in your region&quot; is a real answer. An empty row is a bug report waiting to happen.
+- Never render a dead affordance. If a button can&#x27;t work here, say why in one line next to it rather than greying it out silently.
+
+## Deploy
+
+Static build behind a reverse proxy, plus the REST layer, plus one shared auth gate in front of both. Neither the static site nor the API publishes a host port of its own — every path goes through the gate.
+
+```nginx
+server {
+  listen 80;
+  root /usr/share/nginx/html;
+
+  add_header X-Content-Type-Options &quot;nosniff&quot; always;
+  add_header Referrer-Policy &quot;strict-origin-when-cross-origin&quot; always;
+  add_header Content-Security-Policy &quot;default-src &#x27;self&#x27;; base-uri &#x27;self&#x27;; object-src &#x27;none&#x27;; frame-ancestors &#x27;self&#x27;; form-action &#x27;self&#x27;; script-src &#x27;self&#x27;; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27;; img-src &#x27;self&#x27; data: blob: https://images.metadata.example.com; connect-src &#x27;self&#x27; https://api.metadata.example.com https://images.metadata.example.com https://ratings.example.com; media-src &#x27;self&#x27; blob:; worker-src &#x27;self&#x27; blob:; frame-src https://player.example.com https://*.player.example.com&quot; always;
+
+  location /app/assets/ { try_files $uri =404; }        # real assets 404 properly
+  location /app/        { try_files $uri $uri/ /app/index.html; }   # SPA fallback
+
+  location = / { return 301 $real_scheme://$http_host/app/; }
+}
+```
+
+Substitute the real hosts for the placeholders. In a TMDB-backed app they are `api.themoviedb.org` (connect), `image.tmdb.org` (img + connect if you read poster pixels), `www.omdbapi.com` (connect), and whichever embed hosts you integrated (frame) — see `tmdb-metadata` and `streaming-provider-embeds`.
+
+Four things in that block are load-bearing and each has cost someone an afternoon:
+
+- **`add_header` is not inherited into a location that declares its own.** The child list replaces the parent list entirely. Add one `add_header` inside a `location` and all the security headers silently vanish *for that location*.
+- **`always`**, or the headers are dropped on 301s and 404s.
+- **Assets location before the SPA fallback**, or a missing favicon silently serves the app shell with a 200.
+- **`return 301 $real_scheme://$http_host/…`**, not a bare `return 301 /app/;`. nginx builds the bare form&#x27;s `Location` from `$scheme://$host`, which drops the port and ignores the Host the client actually used — so every visitor gets bounced to `http://localhost/...` regardless of the domain they typed. Map `$http_x_forwarded_proto` to `$real_scheme` with a `$scheme` fallback.
+
+**Bind-mount the build output** rather than baking it into an image. A rebuild is then live without rebuilding any container, and only proxy config changes need a restart. It removes an entire class of &quot;why is my fix not deployed&quot;.
+
+## Common Pitfalls
+
+1. **Route params reaching a query string unvalidated.** `:mediaType` off the URL interpolated into a PostgREST filter is *filter-param injection* — not SQL injection (PostgREST parameterises), but an attacker can inject extra filters, operators, or `select=` columns. Validate against a closed list, and coerce every id with `Number.isInteger(n) &amp;&amp; n &gt; 0`.
+2. **Adding a provider without touching the proxy CSP.** Renders a black box with no catchable error, and your own failure detection then reports the *title* as unavailable — a lie that sends you debugging the wrong layer. Code change and CSP change ship together, always.
+3. **Two response shapes from one API.** List endpoints return `genre_ids: [28,12]`; detail endpoints return `genres: [{id,name}]`. Code that reads one silently renders nothing on the other. Normalise at the boundary — see `tmdb-metadata`.
+4. **A hardcoded API origin.** Breaks the moment the site is reached over HTTPS, a tunnel, or a different port. Use a same-origin relative path the gate proxies.
+5. **Cross-origin fetch without `credentials: &#x27;include&#x27;`.** The gate&#x27;s session cookie is silently not sent, and every API call 401s only in production.
+6. **Building stats from a resume-point column.** `last_position_seconds` is overwritten on every progress update — see `watchlist-sync` for why summing it produces a confidently wrong number.
+7. **`fullPage: true` screenshots for scroll-reveal content.** The capture expands the viewport virtually rather than scrolling, so `IntersectionObserver` reveals never fire and working content looks blank. Scroll in increments before asserting.
+
+## Limitations
+
+This skill does **not**:
+
+- Host, transcode, or serve video files. It builds a catalogue that *links out* or embeds third parties.
+- Supply the metadata API contracts — that is `tmdb-metadata`.
+- Integrate or debug an embed provider — that is `streaming-provider-embeds`.
+- Define the persistence schema or auth — that is `watchlist-sync`.
+- Provide a design system. It states structure and state rules only; pair it with a design skill for the visual layer.
+- Grant you any right to redistribute content. See the note in `streaming-provider-embeds`.
+
+## Verification Checklist
+
+- [ ] Home, search, a category, a title detail, and a bogus URL all render — the last as a real 404, not the shell over an empty body
+- [ ] A deep link (`/title/tv/1396`) works on a hard refresh, not just via in-app navigation
+- [ ] Missing `.env` throws a named error at boot instead of rendering an empty catalogue
+- [ ] Every filter is in the query string and survives back/forward
+- [ ] Loading, empty, and error states are visually distinct on at least one slow/failing route
+- [ ] The deployed CSP is applied in the verification run (re-attach it via route interception — `vite preview` sends none) and the console shows zero CSP violations
+- [ ] Security headers are present on a 404 and on the root 301, not just on 200s
+- [ ] A real browser loaded the page; a `curl` 200 does not prove it renders
+</pre>
+        </div>
+
+        <div class="detail-tab-content" id="tab-readme" role="tabpanel" aria-labelledby="tab-btn-readme" tabindex="0">
+          <pre class="skillmd-viewer"># movie-catalogue-site
+
+Build the browsable half of a movie/TV catalogue — home rails, search, category browse, title detail, watchlist — as a small, debuggable SPA over a metadata API.
+
+## What it does
+
+The agent scaffolds and structures the app: module boundaries that put each external contract in exactly one file, routes including a real 404, filter state encoded in the URL, honest loading/empty/error states, and a deploy shape where a reverse proxy owns the security headers.
+
+It deliberately keeps the stack small — Vite + React, plain JS, no component library, no state manager, no CSS framework, no bespoke API server. Every layer removed is one that can&#x27;t break between you and a rendered page.
+
+The metadata API, the player, and the watchlist each have their own skill. This one is the shell they plug into.
+
+## Install
+
+```bash
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/movie-catalogue-site/SKILL.md
+```
+
+## What you get
+
+```
+src/
+  main.jsx / App.jsx       chrome + auth context + routes
+  lib/
+    config.js              env reading; throws on a missing required key
+    tmdb.js                every metadata call, and nothing else
+    supabase.js            every persistence call
+    providers.js           embed URLs + trusted-origin allowlist (one file, never two)
+    watchProviders.js      streaming availability (different thing — see below)
+  pages/                   Home, Search, Category, TitleDetail, Watchlist, Profiles, NotFound
+  components/              MovieCard, Rail, FilterBar, EpisodePicker, Player
+deploy/
+  nginx.conf               SPA fallback + CSP (the CSP lives here, not in the app)
+  docker-compose.yml
+```
+
+## Routes
+
+```
+/                        home — hero + rails
+/search?q=&amp;genre=&amp;year=  results; every filter in the query string
+/category/:key           full paginated list for one rail
+/title/:mediaType/:id    detail + player + episode picker
+/person/:id              filmography
+/watchlist               the list, with status facets
+/profiles                switch / log in
+*                        a real 404
+```
+
+## Two things called &quot;providers&quot;
+
+This domain overloads the word, and mixing them up costs an afternoon:
+
+| File | Means | Example |
+|---|---|---|
+| `lib/providers.js` | **playback embed sources** — where the iframe points | the player host serving `/embed/movie/550` |
+| `lib/watchProviders.js` | **watch providers** — which services legitimately carry a title | Netflix, Hulu, Disney+ from `/watch/providers` |
+
+Put a header comment on each pointing at the other.
+
+## Fail loudly on missing config
+
+```js
+function required(name) {
+  const value = import.meta.env[name];
+  if (!value) {
+    throw new Error(`${name} is not set. Copy .env.example to .env and fill it in, ` +
+                    `then restart the dev server (Vite only reads .env at startup).`);
+  }
+  return value;
+}
+export const TMDB_API_KEY = required(&#x27;VITE_TMDB_API_KEY&#x27;);
+```
+
+Without this, a missing key produces 401s that the fetch layer reports as &quot;no results&quot; — and a search that says &quot;no matches&quot; when it means &quot;no credentials&quot; is a lie that hides for days.
+
+Ship a tracked `.env.example`, gitignore `.env`, and say in the example that Vite inlines every `VITE_*` value into the bundle: those keys are public on the deployed site. Fine for a browse-only metadata key, never for a database credential.
+
+## Filter state in the URL
+
+Encode every active filter as a query parameter — shareable, bookmarkable, and back/forward works with no history code. Three rules:
+
+- Scope sticky persistence per page type (a search filter must not leak into category browse).
+- Persist only deliberate changes — a filter that arrived in someone else&#x27;s shared link is not a preference.
+- Write filters with `replace`, not `push`, or four selects bury the page you came from.
+
+## Deploy: the proxy owns the CSP
+
+```nginx
+location /app/assets/ { try_files $uri =404; }              # assets 404 properly
+location /app/        { try_files $uri $uri/ /app/index.html; }  # SPA fallback
+location = /          { return 301 $real_scheme://$http_host/app/; }
+```
+
+Four load-bearing details:
+
+- **`add_header` is not inherited into a location that declares its own** — the child list replaces the parent list entirely, and your security headers vanish for that location.
+- **`always`**, or headers are dropped on 301s and 404s.
+- **Assets block before the SPA fallback**, or a missing favicon serves the app shell with a 200.
+- **`return 301 $real_scheme://$http_host/…`** — the bare `return 301 /app/;` form builds `Location` from `$scheme://$host`, drops the port, and bounces every visitor to whatever the config says instead of the domain they used.
+
+Bind-mount the build output instead of baking it into an image: a rebuild goes live without rebuilding a container.
+
+## Pitfalls
+
+- **Route params reaching a query string unvalidated.** `:mediaType` off the URL in a PostgREST filter is filter-param injection — extra filters, operators, or `select=` columns. Validate against a closed list; coerce ids with `Number.isInteger(n) &amp;&amp; n &gt; 0`.
+- **Adding a player without touching the CSP.** Black box, no catchable error, and your own failure detection blames the title. Code and CSP ship together.
+- **Two response shapes.** List endpoints give `genre_ids`, detail endpoints give `genres`. Normalise at the boundary.
+- **Hardcoded API origin.** Breaks under HTTPS (mixed content) and under any tunnel forwarding one port. Use a same-origin path the gate proxies.
+- **Cross-origin fetch without `credentials: &#x27;include&#x27;`.** The gate cookie is dropped and every write 401s in production only.
+- **`page.screenshot({ fullPage: true })` for reveal-on-scroll content.** It expands the viewport virtually rather than scrolling, so `IntersectionObserver` never fires and working content photographs blank.
+
+## Honest limitations
+
+- It does not host, transcode, or serve video. It builds a catalogue that links out or embeds third parties.
+- Metadata contracts, player integration, and persistence each live in their own skill (`tmdb-metadata`, `streaming-provider-embeds`, `watchlist-sync`).
+- It provides structure and state rules, not a visual design system.
+- Anything you embed from a third-party host is that host&#x27;s content under that host&#x27;s terms. This skill takes no position on, and grants no rights to, what those hosts serve.
+
+## Part of
+
+[Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio) — empowering skills for the Hermes agent.
+</pre>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <span class="footer-word">Hermes Skills</span>
+        <p class="footer-note">Install one, your agent can now do that for you.</p>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Install any skill</span>
+        <code class="footer-code mono">hermes skills install &lt;url&gt;</code>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Colophon</span>
+        <p class="footer-meta">By Owen &middot; MIT licensed &middot;
+          <a href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">Source on GitHub</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/common.js"></script>
+  <script src="../../js/skill-page.js"></script>
+</body>
+</html>

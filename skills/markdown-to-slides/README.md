@@ -66,7 +66,7 @@ exports in full.
 ## What you get
 
 - **One source of truth** — your deck is a diffable text file, not a binary.
-- **Themeable in minutes** — swap or brand a deck by overriding CSS variables.
+- **Themeable** — swap or brand a deck by overriding CSS variables.
 - **Portable output** — hand out PDFs, hand decks to collaborators as PPTX.
 - **Live preview** — watch mode hot-reloads as you write.
 

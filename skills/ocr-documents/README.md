@@ -9,7 +9,7 @@ The agent runs OCR (Tesseract or EasyOCR) on an image or scanned document and re
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/ocr-documents/SKILL.md
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/ocr-documents/SKILL.md
 ```
 
 ## How to use

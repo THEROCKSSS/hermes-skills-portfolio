@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>watchlist-sync — Hermes Skill</title>
+  <meta name="description" content="What it does: Per-profile watchlists, statuses, continue-watching, and resume points for a catalogue app — on Postgres plus a REST layer generated from the schema (PostgREST/Supabase), with **no bespoke API server** to write or maintain. How the agent uses it: Adding a watchlist, watch statuses,...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/watchlist-sync/">
+  <meta property="og:title" content="watchlist-sync — Hermes Skill">
+  <meta property="og:description" content="What it does: Per-profile watchlists, statuses, continue-watching, and resume points for a catalogue app — on Postgres plus a REST layer generated from the schema (PostgREST/Supabase), with **no bespoke API server** to write or maintain. How the agent uses it: Adding a watchlist, watch statuses,...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/watchlist-sync/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Hermes Skills Portfolio">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="watchlist-sync — Hermes Skill">
+  <meta name="twitter:description" content="What it does: Per-profile watchlists, statuses, continue-watching, and resume points for a catalogue app — on Postgres plus a REST layer generated from the schema (PostgREST/Supabase), with **no bespoke API server** to write or maintain. How the agent uses it: Adding a watchlist, watch statuses,...">
+  <link rel="sitemap" type="application/xml" href="../../sitemap.xml">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "watchlist-sync",
+  "name": "watchlist-sync",
+  "description": "Use when adding per-profile watchlists, watch statuses, continue-watching, or resume-position tracking to a media catalogue app — or when designing the Postgres/PostgREST schema, profile switching, PIN/password gates, or a watch-stats page behind one. Also use when a stats number looks plausible but wrong, when a login endpoint has no brute-force limit, or when a preference needs to be per-device rather than per-account.",
+  "url": "https://therocksss.github.io/hermes-skills-portfolio/skills/watchlist-sync/",
+  "inLanguage": "en",
+  "license": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/LICENSE",
+  "isPartOf": {
+    "@type": "WebSite",
+    "@id": "https://therocksss.github.io/hermes-skills-portfolio/#website",
+    "name": "Hermes Skills Portfolio"
+  },
+  "dateModified": "2026-08-02",
+  "author": {
+    "@type": "Person",
+    "name": "Owen"
+  }
+}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/skill-page.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav is-solid" id="nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="../../index.html">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
+        Hermes Skills
+      </a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="../../index.html" data-nav="catalog">Catalog</a>
+        <a href="../../bundles.html" data-nav="bundles">Bundles</a>
+        <a href="../../changelog.html" data-nav="changelog">Changelog</a>
+        <a href="../../submit.html" data-nav="submit">Submit a skill</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="cmdk-trigger" id="cmdk-trigger" aria-haspopup="dialog" aria-controls="cmdk-modal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="cmdk-trigger-label">Search skills…</span>
+          <kbd class="cmdk-trigger-kbd">&#8984;K</kbd>
+        </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme (t)">
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a class="github-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="skill-main" tabindex="-1">
+    <div class="wrap">
+      <div class="skill-shell">
+        <p class="skill-back-link"><a href="../../index.html">&#8592; Back to catalog</a></p>
+
+        <header class="detail-header">
+          <div class="detail-titles">
+            <h1>watchlist-sync</h1>
+            <span class="tier-badge utility">Utility</span>
+          </div>
+          <p class="detail-desc">Use when adding per-profile watchlists, watch statuses, continue-watching, or resume-position tracking to a media catalogue app — or when designing the Postgres/PostgREST schema, profile switching, PIN/password gates, or a watch-stats page behind one. Also use when a stats number looks plausible but wrong, when a login endpoint has no brute-force limit, or when a preference needs to be per-device rather than per-account.</p>
+          <div class="detail-meta-row">
+            <span><strong>Category:</strong> Media &amp; Streaming</span>
+            <span><strong>Tier:</strong> Useful for specific workflows</span>
+            <span><strong>Source:</strong> Newly authored</span>
+            <span><strong>Updated:</strong> 2026-08-02</span>
+          </div>
+        </header>
+
+        <div class="detail-tabs" role="tablist" aria-label="Skill documentation">
+          <button class="detail-tab active" id="tab-btn-overview" data-tab="overview" role="tab" aria-selected="true" aria-controls="tab-overview">Overview</button>
+          <button class="detail-tab" id="tab-btn-skillmd" data-tab="skillmd" role="tab" aria-selected="false" aria-controls="tab-skillmd">SKILL.md</button>
+          <button class="detail-tab" id="tab-btn-readme" data-tab="readme" role="tab" aria-selected="false" aria-controls="tab-readme">README</button>
+        </div>
+
+        <div class="detail-tab-content active" id="tab-overview" role="tabpanel" aria-labelledby="tab-btn-overview" tabindex="0">
+          <section class="detail-section">
+            <h2>What it does</h2>
+            <p>Per-profile watchlists, statuses, continue-watching, and resume points for a catalogue app — on Postgres plus a REST layer generated from the schema (PostgREST/Supabase), with **no bespoke API server** to write or maintain.</p>
+          </section>
+          <section class="detail-section">
+            <h2>How an agent uses it</h2>
+            <ul><li>Adding a watchlist, watch statuses, ratings, or notes to a catalogue app.</li><li>Adding &quot;Continue Watching&quot; or resume-where-you-left-off.</li><li>Designing profiles, profile switching, or a PIN/password gate.</li><li>Building a watch-stats page.</li></ul>
+          </section>
+          <section class="detail-section">
+            <h2>What you get</h2>
+            <p>Install this skill and your Hermes agent can use when adding per-profile watchlists, watch statuses, continue-watching, or resume-position tracking to a media catalogue app — or when designing the postgres/postgrest schema, profile switching, pin/password gates, or a watch-stats page behind one. also use when a stats number looks plausible but wrong, when a login endpoint has no brute-force limit, or when a preference needs to be per-device rather than per-account. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+          </section>
+          
+        <div class="install-block">
+          <h3>Install command</h3>
+          <div class="install-row">
+            <code id="install-cmd">hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/watchlist-sync/SKILL.md</code>
+            <button class="btn btn-outline btn-sm" id="copy-btn" type="button">Copy</button>
+          </div>
+        </div>
+        
+          <a class="detail-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/watchlist-sync/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub <span aria-hidden="true">&#8599;</span></a>
+          
+        </div>
+
+        <div class="detail-tab-content" id="tab-skillmd" role="tabpanel" aria-labelledby="tab-btn-skillmd" tabindex="0">
+          <pre class="skillmd-viewer">---
+name: watchlist-sync
+description: Use when adding per-profile watchlists, watch statuses, continue-watching, or resume-position tracking to a media catalogue app — or when designing the Postgres/PostgREST schema, profile switching, PIN/password gates, or a watch-stats page behind one. Also use when a stats number looks plausible but wrong, when a login endpoint has no brute-force limit, or when a preference needs to be per-device rather than per-account.
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [watchlist, postgrest, postgres, profiles, auth, playback-progress]
+    related_skills: [movie-catalogue-site, streaming-provider-embeds, movie-night-calendar, tmdb-metadata]
+---
+
+# watchlist-sync
+
+## Overview
+
+Per-profile watchlists, statuses, continue-watching, and resume points for a catalogue app — on Postgres plus a REST layer generated from the schema (PostgREST/Supabase), with **no bespoke API server** to write or maintain.
+
+The persistence itself is easy. What makes this skill worth having is the three places it goes quietly wrong: a credential table that is one `GRANT` away from being public, an auth function that is an unlimited guessing oracle, and a resume-position column that produces confidently wrong statistics when summed.
+
+## When to Use
+
+- Adding a watchlist, watch statuses, ratings, or notes to a catalogue app.
+- Adding &quot;Continue Watching&quot; or resume-where-you-left-off.
+- Designing profiles, profile switching, or a PIN/password gate.
+- Building a watch-stats page.
+- Reviewing an existing PostgREST schema for exposure.
+
+Do not use it for playback event capture itself (`streaming-provider-embeds`) or for the browse/detail UI (`movie-catalogue-site`).
+
+## Workflow
+
+1. **Write migration 001** — profiles, a shared titles cache, watchlist (see Schema). Numbered, forward-only SQL applied in order.
+2. **Expose a view, never the credential table** (see Never Expose the Credential Table).
+3. **Put credential comparison inside the database** as `SECURITY DEFINER` functions (see Auth as Database Functions).
+4. **Rate-limit those functions before shipping them**, not after (see Rate-Limit the Oracle). A grant of EXECUTE to an anonymous role is an unlimited guessing oracle otherwise.
+5. **Validate every value that reaches a PostgREST query string** at the client boundary (see Filter-Param Injection).
+6. **Add progress columns** and be explicit about what they mean (see The Resume-Point Trap).
+7. **Decide per-setting whether it is per-account or per-device**, and say which in the UI (see Per-Device vs Per-Account).
+8. **Ship the app tolerant of an unapplied migration** (see Migrations).
+9. **State the perimeter honestly** in the README (see Be Honest About the Perimeter).
+
+## Schema
+
+```sql
+CREATE TABLE profiles (
+  id            SERIAL PRIMARY KEY,
+  slug          TEXT UNIQUE NOT NULL,
+  display_name  TEXT NOT NULL,
+  username      TEXT UNIQUE,
+  password_hash TEXT,
+  pin_hash      TEXT,
+  avatar_color  TEXT DEFAULT &#x27;#8a7cff&#x27;,
+  is_default    BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Shared cache: anything ever added to any watchlist gets one row here.
+CREATE TABLE titles (
+  id           SERIAL PRIMARY KEY,
+  external_id  INTEGER NOT NULL,                 -- TMDB id
+  media_type   TEXT NOT NULL DEFAULT &#x27;movie&#x27;,    -- &#x27;movie&#x27; | &#x27;tv&#x27;
+  title        TEXT NOT NULL,
+  image        TEXT DEFAULT &#x27;&#x27;,
+  release_date TEXT DEFAULT &#x27;&#x27;,
+  rating       NUMERIC(3,1) DEFAULT 0,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE (external_id, media_type)
+);
+
+CREATE TABLE watchlist (
+  id                    SERIAL PRIMARY KEY,
+  profile_id            INTEGER NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  title_id              INTEGER NOT NULL REFERENCES titles(id)   ON DELETE CASCADE,
+  status                TEXT NOT NULL DEFAULT &#x27;not_watched&#x27;,
+  rating                INTEGER NOT NULL DEFAULT 0,
+  notes                 TEXT DEFAULT &#x27;&#x27;,
+  sort_order            INTEGER,                 -- NULL = never manually placed
+  added_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  last_watched_at       TIMESTAMPTZ,
+  last_season           INTEGER,
+  last_episode          INTEGER,
+  last_position_seconds INTEGER,
+  last_duration_seconds INTEGER,
+  UNIQUE (profile_id, title_id)
+);
+```
+
+`status` is a small closed set: `not_watched`, `planning`, `watching`, `watched`, `dropped`. Validate it client-side against the same list before it is written — a garbage status persists silently and then renders as an unmatched, uncountable filter.
+
+`UNIQUE (external_id, media_type)` matters: TMDB movie 1399 and TV 1399 are different titles.
+
+`sort_order` with `ORDER BY sort_order ASC NULLS LAST, added_at DESC` makes manual ordering **additive** — rows never dragged keep their existing newest-first order as a group, so an untouched list looks exactly as it did before the column existed. Persist a reorder by writing the whole ordered list&#x27;s indices, not by patching the moved row: positions are only meaningful relative to neighbours, and one-row writes leave gaps and ties that compound with every drag.
+
+## Never Expose the Credential Table
+
+The raw `profiles` row holds hashes. Expose a **view** with only public columns, grant the anonymous role access to that, and revoke it on the table.
+
+```sql
+CREATE VIEW profiles_public AS
+  SELECT id, slug, display_name, avatar_color, is_default, created_at FROM profiles;
+
+GRANT SELECT ON profiles_public TO anon;
+REVOKE SELECT ON profiles FROM anon;
+```
+
+A Postgres view runs with its owner&#x27;s privileges by default, which is exactly what lets `anon` read the view without ever holding `SELECT` on the table underneath.
+
+Every later table that grows a sensitive column follows the same pattern. **A new column on an exposed table inherits that table&#x27;s grants** — convenient, and precisely how a sensitive field gets published by accident. Check what a new column is exposed to before adding it.
+
+The same split works for write-only feedback tables (e.g. &quot;report a broken source&quot;): grant `INSERT` to `anon`, give it no `SELECT` policy at all, and expose only aggregate views that omit `profile_id`. Send `Prefer: return=minimal` on the insert so PostgREST never needs a SELECT grant just to echo the row back.
+
+## Auth as Database Functions
+
+Compare hashes **in the database**, never in the client:
+
+```sql
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+CREATE OR REPLACE FUNCTION verify_login(p_username TEXT, p_password TEXT)
+RETURNS TABLE (id INT, slug TEXT, display_name TEXT, avatar_color TEXT)
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+BEGIN
+  RETURN QUERY
+  SELECT p.id, p.slug, p.display_name, p.avatar_color
+  FROM profiles p
+  WHERE p.username = lower(trim(p_username))
+    AND p.password_hash IS NOT NULL
+    AND p.password_hash = crypt(p_password, p.password_hash);
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION verify_login(TEXT, TEXT) TO anon;
+```
+
+`SECURITY DEFINER` lets the function read a table the caller cannot; the hash never leaves the database. `SET search_path = public` is not optional — without it a caller-controlled search path can shadow the objects the function references.
+
+## Rate-Limit the Oracle
+
+A four-digit PIN is 10,000 combinations, and profile ids are enumerable through the public view. An unmetered `verify_pin` grant to `anon` is a complete takeover in minutes. Add a failure counter and **evaluate the lock before touching a hash**.
+
+```sql
+CREATE TABLE auth_attempts (
+  scope           TEXT        NOT NULL CHECK (scope IN (&#x27;pin&#x27;,&#x27;login&#x27;)),
+  identity        TEXT        NOT NULL,          -- truncate to 128 chars at the caller
+  failed_count    INTEGER     NOT NULL DEFAULT 0,
+  first_failed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  locked_until    TIMESTAMPTZ,
+  PRIMARY KEY (scope, identity)
+);
+-- No grants to anon. RLS on. service_role policy only. No view over it.
+```
+
+Five design points, each load-bearing:
+
+1. **The lock is evaluated first and short-circuits.** While locked, the response is a constant function of the submitted credential — a right PIN and a wrong PIN produce byte-identical responses, so a locked request carries zero bits about the secret. Check the credential first and the lock second and the oracle stays fully intact.
+2. **Count failures against the identity *as supplied*, resolved or not.** A username that never existed locks out exactly like a real one, so &quot;locked&quot; is not an existence oracle.
+3. **&quot;Locked&quot; may safely be distinguishable from &quot;wrong credential.&quot;** It tells the attacker only that they just made five failed attempts — a fact they already hold. A silent lock lies to the legitimate user staring at a PIN box that stopped working.
+4. **Run exactly one bcrypt on every path** — the real comparison when the identity resolves, a throwaway hash when it doesn&#x27;t. Short-circuiting inside the `WHERE` clause means &quot;no such username&quot; skips hashing and returns measurably faster than &quot;wrong password&quot;, leaking existence by timing. Split the lookup from the comparison; adding a dummy hash *after* comparing gives the resolving path two hashes and makes the gap worse.
+5. **Time-based, self-clearing locks.** Account lockout is inherently a denial-of-service lever; a permanent lock hands that lever to anyone. Track PIN and login scopes separately so a locked PIN never locks the owner out of full login.
+
+Raise a distinct SQLSTATE (`PT429`) so PostgREST maps it to HTTP 429 with a JSON `message` the client already renders.
+
+**Do not bolt the same counter onto signup.** There is no secret to guess there, the counter has no stable key (every abusive signup uses a fresh username), and a per-username lock lets anyone pre-lock a name a real person is about to register. Signup abuse is a *volume* problem — fix it with a reverse-proxy rate limit.
+
+## Filter-Param Injection
+
+Every value interpolated into a PostgREST **query string** needs validation at the client boundary. This is not SQL injection — PostgREST parameterises the SQL it generates — but an unvalidated value injects extra PostgREST filter syntax: additional `&amp;` params, `or=(...)`, a different operator than `eq.`, extra `select=` columns.
+
+```js
+export const MEDIA_TYPES = Object.freeze([&#x27;movie&#x27;, &#x27;tv&#x27;]);
+
+function safeMediaType(v) {
+  if (v !== &#x27;movie&#x27; &amp;&amp; v !== &#x27;tv&#x27;) throw new Error(`Invalid media type: ${JSON.stringify(v)}`);
+  return v;
+}
+
+function safeId(v, label) {
+  const n = Number(v);
+  if (!Number.isInteger(n) || n &lt;= 0) throw new Error(`Invalid ${label}: ${JSON.stringify(v)}`);
+  return n;
+}
+```
+
+`mediaType` comes straight off a `/title/:mediaType/:id` route, so it is fully attacker-controlled via a crafted URL. Impact may be low *today* if `anon` already holds those grants — but the moment real server-enforced auth lands, an injectable filter param silently undermines it. Validate in the data module, not in the page, so every caller inherits it.
+
+Cross-origin fetches need `credentials: &#x27;include&#x27;` or the browser silently drops your gate&#x27;s session cookie on every API call.
+
+## The Resume-Point Trap
+
+`last_position_seconds` is a **resume point for the most recent play**, overwritten on every progress update.
+
+It is *not* a running total, and not even a bound in either direction: seek back to minute 5 after watching 40 and it stores 5; skip to the credits and it stores the credits.
+
+So a &quot;hours watched&quot; statistic summed from that column is **wrong** — not approximate, wrong, and confidently so. It will also look plausible, which is why it survives review.
+
+If you build a stats page, either:
+
+- derive only what the data honestly supports — titles marked watched, distinct calendar days with recorded playback, longest streak, ratings given — and **label each number with what it actually counts**; or
+- add a per-session playback log (append-only start/stop rows), which is the schema change that makes duration answerable.
+
+Do not quietly ship the sum. State the absence and name the fix; a page that explains what it cannot tell you is more trustworthy than one that guesses.
+
+Related honesty: a status column records *what* happened, not *who* or *why*. &quot;On this profile&#x27;s list&quot; is not &quot;this person added it&quot; when the edit PIN is shareable, and &quot;dropped&quot; does not distinguish a deliberate choice from an automatic tidy-up. If you want to show either, store it.
+
+## Continue Watching and Auto-Tidy
+
+Scope the Continue Watching rail to `status = &#x27;watching&#x27;`, not to &quot;anything with a `last_watched_at`&quot;. The only rows carrying a timestamp without being `watching` are ones since marked `watched` or `dropped`, and resurfacing a finished or abandoned title as &quot;continue watching&quot; is wrong. Rows marked `watching` by hand but never played (`last_watched_at IS NULL`) still belong — sorted to the back:
+
+```
+order=last_watched_at.desc.nullslast,added_at.desc
+```
+
+A title left in `watching` with no activity for a long time can be auto-treated as dropped. Three rules keep that honest:
+
+- **Reading must never write.** Home is a surface anyone can land on while viewing another profile; filter stale rows out of the *display* there, and only write on the page that owns the list.
+- **A failed write is not a success.** Only rows whose PATCH actually resolved may be recoloured and announced. Swallowing a rejection and still showing the row as dropped survives while the change is silent — it does not survive a banner announcing it by name.
+- **&quot;Undo&quot; needs a column.** Store an opt-out flag (and a timestamp of when the rule fired), or the row is stale by the clock forever and the rule re-drops it on the very next visit. Both halves are needed to claim &quot;auto-tidied&quot;: the timestamp alone keeps claiming it after the owner restored and re-dropped by hand; `status = &#x27;dropped&#x27;` alone is the manual/automatic ambiguity the feature exists to remove.
+
+Define derived facets by what the columns actually say. &quot;In progress&quot; means the row carries something you could resume from — a position greater than zero, or a stored season/episode — which cuts across statuses. Print the criterion next to the chip so it is never read as a synonym for &quot;Watching&quot;. A position of `0` does not count: that&#x27;s what an embed reports before playback has moved at all.
+
+## Per-Device vs Per-Account
+
+Some settings genuinely have nowhere durable to live yet — a playback source default, a theme, a rail arrangement, a stale-watching threshold. `localStorage` is a legitimate home for them **if every surface that offers the setting says so out loud**.
+
+Key by profile inside one storage key holding a map, with `&#x27;guest&#x27;` for &quot;no profile selected&quot;, so two people sharing a browser don&#x27;t overwrite each other and the whole preference set can be inspected or cleared in one operation:
+
+```js
+const LS_PREFS = &#x27;app_profile_prefs&#x27;;   // { &quot;3&quot;: { provider: &quot;alpha&quot; }, &quot;guest&quot;: {...} }
+```
+
+Wrap reads and writes in try/catch — a locked-down browser throws on `localStorage` access, and private-mode quota failures must not take the page down; the choice just doesn&#x27;t survive the reload.
+
+Where a setting has no admin authentication to protect it, per-device is often the *more honest* option: a server-side threshold with no auth is a setting anyone who can reach the API changes for everybody, and the sentence &quot;one person tuned this for the whole install&quot; would be false the moment a second person opened the URL.
+
+## Migrations
+
+Numbered, forward-only SQL files applied in order. Two habits pay off:
+
+**Ship the app tolerant of an unapplied migration.** Probe for the column and degrade — hide the feature, or fall back to local storage and say so in the interface:
+
+```js
+// One tiny probe per session, memoised. A 400/404 means PostgREST parsed the
+// request and there is no such column — a permanent answer worth caching.
+// Anything else (offline, 500, proxy hiccup) is transient: drop the memo so
+// the next caller asks again rather than downgrading the schema for the whole
+// page&#x27;s life over one bad request.
+```
+
+Then a deploy that lands ahead of its migration is a missing feature, not a broken page.
+
+**`NOTIFY pgrst, &#x27;reload schema&#x27;;`** at the end of every migration, or PostgREST keeps serving the old schema cache and your new column 404s for no visible reason.
+
+## Be Honest About the Perimeter
+
+If the anonymous role holds broad write grants — the usual arrangement for a generated REST layer — then profile login is a **UI-level gate, not server-enforced authorisation**. Anyone who can reach the API directly can write.
+
+That is a legitimate design for a self-hosted personal site, but only if you say so, in the README and in the code comments. The real perimeter is whatever fronts the whole deployment: put a single shared gate in front of the app *and* the API so every access path — local, tunnel, public domain — passes the same check, and neither service publishes a host port of its own.
+
+An unlinked admin route is obscurity, not a gate. If you ship one, say that on the page itself.
+
+## Common Pitfalls
+
+1. **Granting `SELECT` on the table that holds hashes.** One line, total exposure.
+2. **Comparing credentials in the client.** The hash has to travel to do that.
+3. **Unmetered auth RPCs.** 10,000 PINs fall in minutes.
+4. **Checking the credential before the lock.** Leaves the oracle intact.
+5. **Summing `last_position_seconds`.** Confidently wrong hours-watched.
+6. **Unvalidated route params in a PostgREST filter.** Filter-param injection.
+7. **Forgetting `credentials: &#x27;include&#x27;`.** Works locally, 401s behind the gate.
+8. **Forgetting `NOTIFY pgrst`.** New column invisible until a restart.
+9. **A new column on an exposed table.** Inherits the table&#x27;s grants silently.
+10. **Reading a list mutating it.** Anyone viewing another profile&#x27;s page triggers writes they didn&#x27;t ask for.
+
+## Limitations
+
+This skill does **not**:
+
+- Provide real row-level authorisation. The described arrangement is a UI gate plus a shared front-door; per-profile server-enforced RLS with JWTs is a larger design it deliberately doesn&#x27;t fake.
+- Sync across devices beyond what the database itself gives you — there is no conflict resolution, no offline queue, no CRDT.
+- Import or export to Trakt, Letterboxd, MAL, or Simkl.
+- Answer &quot;how many hours have I watched&quot; from the schema above. That needs the playback-log change it names.
+- Capture playback events — that is `streaming-provider-embeds`.
+- Cover Supabase Auth, OAuth, or magic links; the auth here is deliberately a small in-database password/PIN check.
+
+## Verification Checklist
+
+- [ ] `GET /profiles` as the anon role is refused; `GET /profiles_public` returns no hash columns
+- [ ] A wrong password and a right password are both exercised **in the same test run** — a verify function that accepted everything would also pass the happy path
+- [ ] Six consecutive wrong PINs return 429, and the correct PIN also returns 429 while locked (proves the lock is evaluated first)
+- [ ] A locked PIN does not block username+password login for the same profile
+- [ ] A crafted `mediaType` in the URL throws at the data-module boundary instead of reaching a query string
+- [ ] A status change survives a reload, and a second profile cannot see the first&#x27;s credentials
+- [ ] Continue Watching excludes titles marked watched or dropped
+- [ ] Any stats number is labelled with what it counts, and nothing is summed from `last_position_seconds`
+- [ ] The app still renders with the newest migration unapplied
+</pre>
+        </div>
+
+        <div class="detail-tab-content" id="tab-readme" role="tabpanel" aria-labelledby="tab-btn-readme" tabindex="0">
+          <pre class="skillmd-viewer"># watchlist-sync
+
+Per-profile watchlists, watch statuses, continue-watching, and resume points for a media catalogue app — on Postgres plus a generated REST layer, with no bespoke API server.
+
+## What it does
+
+The agent designs and ships the persistence half of a catalogue app: schema, profile switching, a PIN/password gate that lives inside the database, and progress tracking.
+
+The storage itself is the easy part. This skill exists for the three places it goes quietly wrong:
+
+- a credential table one `GRANT` away from being public,
+- an auth function that is an unlimited guessing oracle,
+- a resume-position column that produces confidently wrong statistics when summed.
+
+## Install
+
+```bash
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/watchlist-sync/SKILL.md
+```
+
+## Schema
+
+```sql
+profiles      id, slug, display_name, username, password_hash, pin_hash, avatar_color, is_default
+titles        id, external_id, media_type, title, image, release_date, rating   -- UNIQUE(external_id, media_type)
+watchlist     id, profile_id, title_id, status, rating, notes, sort_order, added_at,
+              last_watched_at, last_season, last_episode,
+              last_position_seconds, last_duration_seconds                       -- UNIQUE(profile_id, title_id)
+auth_attempts scope, identity, failed_count, first_failed_at, locked_until       -- no anon grants, ever
+```
+
+`status` is a closed set: `not_watched`, `planning`, `watching`, `watched`, `dropped`. `UNIQUE(external_id, media_type)` matters — movie 1399 and TV 1399 are different titles.
+
+`sort_order` with `ORDER BY sort_order ASC NULLS LAST, added_at DESC` makes manual ordering additive: rows never dragged keep their newest-first order as a group, so an untouched list looks exactly as it did before the column existed.
+
+## Never expose the credential table
+
+```sql
+CREATE VIEW profiles_public AS
+  SELECT id, slug, display_name, avatar_color, is_default, created_at FROM profiles;
+GRANT SELECT ON profiles_public TO anon;
+REVOKE SELECT ON profiles FROM anon;
+```
+
+A Postgres view runs with its owner&#x27;s privileges, which is exactly what lets `anon` read the view without holding `SELECT` on the table underneath.
+
+**A new column on an exposed table inherits that table&#x27;s grants.** Convenient — and precisely how a sensitive field gets published by accident.
+
+## Auth inside the database
+
+```sql
+CREATE OR REPLACE FUNCTION verify_login(p_username TEXT, p_password TEXT)
+RETURNS TABLE (id INT, display_name TEXT)
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+BEGIN
+  RETURN QUERY SELECT p.id, p.display_name FROM profiles p
+   WHERE p.username = lower(trim(p_username))
+     AND p.password_hash IS NOT NULL
+     AND p.password_hash = crypt(p_password, p.password_hash);
+END; $$;
+```
+
+`SECURITY DEFINER` lets the function read a table the caller cannot — the hash never leaves the database. `SET search_path = public` is not optional.
+
+## Rate-limit it, or it&#x27;s a guessing oracle
+
+A four-digit PIN is 10,000 combinations and profile ids are enumerable through the public view. Five design points, each load-bearing:
+
+1. **Evaluate the lock first and short-circuit.** While locked, the response is a constant function of the submitted credential — a right PIN and a wrong PIN are byte-identical. Check the credential first and the oracle stays fully intact.
+2. **Count failures against the identity as supplied**, resolved or not, so &quot;locked&quot; never reveals whether a profile exists.
+3. **&quot;Locked&quot; may safely differ from &quot;wrong credential&quot;** — it tells the attacker only that they just failed five times, which they know. A silent lock lies to the legitimate user.
+4. **Run exactly one bcrypt on every path.** Short-circuiting in the `WHERE` clause makes &quot;no such user&quot; measurably faster than &quot;wrong password&quot; — existence by timing. Split lookup from comparison; adding a dummy hash *after* comparing makes the gap worse.
+5. **Time-based, self-clearing locks, scoped separately** for PIN and login, so a locked PIN never locks the owner out entirely.
+
+Raise SQLSTATE `PT429` so PostgREST returns HTTP 429 with a JSON message the client already renders.
+
+Do **not** bolt the same counter onto signup: there&#x27;s no secret to guess, the counter has no stable key, and a per-username lock lets anyone pre-lock a name someone is about to register. Signup abuse is a volume problem — fix it at the proxy.
+
+## Filter-param injection
+
+Values interpolated into a PostgREST **query string** need validation at the boundary. Not SQL injection — PostgREST parameterises — but an unvalidated value injects extra filters, operators, or `select=` columns.
+
+```js
+function safeId(v, label) {
+  const n = Number(v);
+  if (!Number.isInteger(n) || n &lt;= 0) throw new Error(`Invalid ${label}: ${JSON.stringify(v)}`);
+  return n;
+}
+```
+
+`mediaType` comes straight off `/title/:mediaType/:id`, so it&#x27;s fully attacker-controlled. Validate in the data module so every caller inherits it. And send `credentials: &#x27;include&#x27;` on cross-origin fetches or the gate&#x27;s session cookie is silently dropped.
+
+## The resume-point trap
+
+`last_position_seconds` is a **resume point for the most recent play**, overwritten on every update. It is not a total, and not even a bound: seek back to minute 5 after watching 40 and it stores 5; skip to the credits and it stores the credits.
+
+A &quot;hours watched&quot; statistic summed from it is **wrong** — not approximate, wrong, and confidently so. It also looks plausible, which is why it survives review.
+
+Either derive only what the data supports (titles marked watched, distinct days with recorded playback, longest streak, ratings given) and label each number with what it counts — or add an append-only playback log, which is the schema change that makes duration answerable. Don&#x27;t quietly ship the sum.
+
+## Continue Watching and auto-tidy
+
+Scope the rail to `status = &#x27;watching&#x27;`, ordered `last_watched_at.desc.nullslast,added_at.desc`. Anything carrying a timestamp without being `watching` has since been marked watched or dropped, and resurfacing it is wrong.
+
+Auto-tidying stale `watching` rows into `dropped` is fine if:
+
+- **reading never writes** (Home is a page anyone can land on while viewing another profile — filter the display there, write only on the page that owns the list),
+- **a failed PATCH is not reported as a success**,
+- **undo has a column** — an opt-out flag plus a fired-at timestamp, or the row is stale forever and the rule re-drops it next visit.
+
+## Per-device vs per-account
+
+Playback source defaults, themes, rail arrangement, thresholds — `localStorage` is a legitimate home if every surface offering the setting says so. Key by profile inside one map-shaped key (with `&#x27;guest&#x27;` for none), and wrap access in try/catch: locked-down browsers throw, and private-mode quota failures must not take the page down.
+
+Where there&#x27;s no admin auth, per-device is often the *more honest* option — a server-side setting with no auth is one anyone who reaches the API changes for everybody.
+
+## Migrations
+
+Numbered, forward-only. End every one with `NOTIFY pgrst, &#x27;reload schema&#x27;;` or PostgREST keeps serving the old cache and your new column 404s for no visible reason.
+
+Ship the app tolerant of an unapplied migration: probe for the column once per session, memoise a 400/404 as a permanent answer, drop the memo on anything transient. Then a deploy that lands ahead of its migration is a missing feature, not a broken page.
+
+## Be honest about the perimeter
+
+If `anon` holds broad write grants — the usual arrangement for a generated REST layer — profile login is a **UI gate, not server-enforced authorisation**. Anyone who can reach the API directly can write.
+
+That&#x27;s a legitimate design for a self-hosted personal site, but only if you say so. The real perimeter is a single shared gate in front of the app *and* the API, with neither publishing a host port of its own. An unlinked admin route is obscurity — if you ship one, say that on the page.
+
+## Honest limitations
+
+- No real row-level authorisation. It deliberately doesn&#x27;t fake per-profile server-enforced RLS with JWTs.
+- No cross-device conflict resolution, offline queue, or CRDT.
+- No Trakt / Letterboxd / MAL / Simkl import or export.
+- Cannot answer &quot;how many hours have I watched&quot; from this schema — it names the playback-log change that would.
+- Playback event capture belongs to `streaming-provider-embeds`.
+- Not a guide to Supabase Auth, OAuth, or magic links.
+
+## Part of
+
+[Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio) — empowering skills for the Hermes agent.
+</pre>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <span class="footer-word">Hermes Skills</span>
+        <p class="footer-note">Install one, your agent can now do that for you.</p>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Install any skill</span>
+        <code class="footer-code mono">hermes skills install &lt;url&gt;</code>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Colophon</span>
+        <p class="footer-meta">By Owen &middot; MIT licensed &middot;
+          <a href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">Source on GitHub</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/common.js"></script>
+  <script src="../../js/skill-page.js"></script>
+</body>
+</html>

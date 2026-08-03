@@ -1,32 +1,57 @@
 # docker-umbrella
 
 One Docker container in front of everything you run locally. Instead of remembering
-that the dashboard is on `:8080`, the docs on `:9000`, and the media server on
-`:8096`, you open one address — say `http://localhost:8080/` — and get a landing
-page that links to all of them, with each app proxied behind a clean path.
+that the dashboard is on `:9000`, the docs on `:9001`, and the media server on
+`:8096`, you open one address — say `http://localhost:8090/` — and get a landing
+page that links to all of them.
 
 This skill is the pattern for building that front-end: a stock `nginx:alpine`
 container that serves a themed index page and reverse-proxies your services, plus a
 `docker-compose.yml`, health checks, and theme switching. No custom image, no
 rebuild loop — edit the HTML or the config and it shows on reload.
 
+## The one decision that matters
+
+How each app is mounted, chosen **per app**:
+
+| Mount | Works with | Cost |
+|---|---|---|
+| **Link-only** — card links to the app's own port | Everything | Still a row of ports, but zero risk |
+| **Own-port proxy** — one nginx per app, proxying at `/` | Everything, including apps with hardcoded absolute paths | One port per app |
+| **Path-mounted** — `/dash/` on the hub's single port | Only apps you can tell they live under a prefix | Breaks silently otherwise |
+
+Path mounting is what people picture when they ask for this, and it is the one
+that fails. An app mounted at `/dash/` still emits `href="/assets/app.css"` — a
+root-relative link the browser resolves against the *hub's* root. That request
+misses the `/dash/` block and is answered by the landing page. With an SPA-style
+`try_files` fallback it returns **`200 text/html`**, so the stylesheet request
+receives HTML: the page renders completely unstyled while every `curl` check
+reports success.
+
+Path-mount only when the app has a `ROOT_URL` / `base href` / `--base-path`
+setting, or when you accept rewriting its HTML with `sub_filter`. Otherwise give
+it its own port.
+
 ## What you get
 
-- **One port.** Everything routes through the umbrella's published port.
-- **Path or subdomain routing.** `/dash/`, `/docs/`, `/media/` — or
-  `dash.example.com`, `docs.example.com` if you have DNS.
-- **A themed index.** A landing page that links every service, light/dark/custom.
-- **Health checks.** Each proxied service is checked; a dead backend fails the
-  container's healthcheck instead of silently 502-ing.
+- **One landing page.** A themed index linking every service, light/dark/custom.
+- **Routing that survives contact with real apps.** Own-port proxying by default,
+  path mounting where the app supports it.
+- **Health checks.** A dead hub fails its container healthcheck instead of
+  silently serving a stale page.
 - **Optional TLS.** Terminate HTTPS at the edge and proxy plain HTTP internally.
 
 ## Before you start
 
 - Docker Engine + Compose v2 (`docker compose version`).
-- A free host port for the umbrella. Check with `ss -ltnp | grep LISTEN`
+- A free host port for the hub — and it must be **different from every backend
+  port** you intend to proxy (see Pitfalls). Check with `ss -ltnp | grep LISTEN`
   (Linux/macOS) or `netstat -an | findstr LISTENING` (Windows).
-- Your services reachable from the host: either on the host network
-  (`host.docker.internal`) or in the same compose project.
+- `hub/index.html` and `default.conf` must exist **before** `docker compose up -d`.
+  Docker creates a *directory* in place of a missing bind-mount source, and nginx
+  then fails with `is a directory`.
+- Your services reachable from the container: published on the host (reach via
+  `host.docker.internal`) or on a shared compose network (reach by service name).
 
 This is for **web UIs, dashboards, doc sites, and media servers**. Databases,
 game servers, and long-running bots don't belong behind the proxy — link to them
@@ -35,7 +60,7 @@ from the landing page, don't route through it.
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/docker-umbrella/SKILL.md
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/docker-umbrella/SKILL.md
 ```
 
 Or clone and install from a local path:
@@ -51,36 +76,57 @@ hermes skills install ./hermes-skills-portfolio/skills/docker-umbrella/SKILL.md
 docker-umbrella/
 ├── docker-compose.yml   ← umbrella container + optional TLS sidecar
 ├── default.conf         ← nginx routes: landing + one block per service
+├── upgrade.conf         ← the $connection_upgrade map (websockets)
 └── hub/
-    └── index.html       ← themed landing page (cards link to each /path/)
+    └── index.html       ← themed landing page
 ```
 
 ## docker-compose.yml
 
 ```yaml
+name: umbrella
+
 services:
   umbrella:
     image: nginx:alpine
     container_name: umbrella
     ports:
-      - "8080:80"
+      # Must not collide with any backend port this proxies.
+      - "8090:80"
     volumes:
       - ./hub:/usr/share/nginx/html:ro
       - ./default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./upgrade.conf:/etc/nginx/conf.d/upgrade.conf:ro
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/index.html"]
+      test: ["CMD", "curl", "-fsS", "http://localhost/index.html"]
       interval: 30s
       timeout: 5s
       retries: 3
       start_period: 10s
-    # Linux Engine only. Docker Desktop resolves host.docker.internal already.
+    # Required on Linux Engine; harmless on Docker Desktop.
     extra_hosts:
       - "host.docker.internal:host-gateway"
 ```
 
+No `version:` key — Compose v2 warns that it is obsolete and ignores it.
+
 If your apps live in this same compose file, drop `host.docker.internal` and
-`proxy_pass` to the compose service name (e.g. `http://dashboard:8080`).
+`proxy_pass` to the compose service name (e.g. `http://dashboard:8080`). Service
+names only resolve between containers sharing a network.
+
+## upgrade.conf
+
+```nginx
+map $http_upgrade $connection_upgrade {
+  default upgrade;
+  ''      close;
+}
+```
+
+Hardcoding `proxy_set_header Connection "upgrade"` sends an upgrade header on
+every ordinary request, breaking keepalive. The map sends it only when the client
+actually asked to upgrade.
 
 ## default.conf
 
@@ -89,45 +135,78 @@ server {
   listen 80;
   server_name _;
 
-  # Landing page
+  # Landing page. `index`, NOT `try_files ... /index.html` — the SPA fallback
+  # turns every missing asset into a 200 and hides broken routes.
   location / {
     root /usr/share/nginx/html;
-    try_files $uri $uri/ /index.html;
+    index index.html;
   }
 
-  # Each service gets one block. Trailing slash on both sides rewrites
-  # /dash/foo -> host:8080/foo.
-  location /dash/ {
-    proxy_pass http://host.docker.internal:8080/;
+  # Path-mounted app that CAN be told it lives under /docs/
+  # (configure the app's own base-path setting to match).
+  location ^~ /docs/ {
+    proxy_pass http://host.docker.internal:9001/;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto $scheme;
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection "upgrade";
+    proxy_set_header Connection $connection_upgrade;
   }
 
-  location /docs/ {
+  # Path-mounted app that CANNOT — rewrite its root-relative links on the way out.
+  location ^~ /dash/ {
     proxy_pass http://host.docker.internal:9000/;
     proxy_set_header Host $host;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto $scheme;
-  }
 
-  location /media/ {
-    proxy_pass http://host.docker.internal:8096/;
-    proxy_set_header Host $host;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
+    # sub_filter cannot patch a compressed body.
+    proxy_set_header Accept-Encoding "";
+    sub_filter_once off;
+    sub_filter 'href="/' 'href="/dash/';
+    sub_filter 'src="/'  'src="/dash/';
   }
 }
 ```
 
-**Slash rule.** `location /dash/` + `proxy_pass http://host:8080/;` strips the
-prefix (`/dash/foo` → `host/foo`). Drop the trailing slash on `proxy_pass`
-(`http://host:8080`) to keep it (`/dash/foo` → `host/dash/foo`). Pick one
-convention and match it on both lines — then confirm with `curl -i`.
+`^~` stops a later regex `location` from winning. `sub_filter` only rewrites HTML
+bodies — absolute paths built by JavaScript at runtime still escape it, and those
+apps need their own port.
+
+**Slash rule.** `location /dash/` + `proxy_pass http://host:9000/;` strips the
+prefix. Drop the trailing slash on `proxy_pass` to keep it. Pick one and confirm
+with `curl -i`.
+
+## Own-port proxy (the safe default)
+
+For anything with hardcoded absolute paths — Forgejo, most media servers,
+anything with a `/login` redirect — give it a dedicated port and proxy at `/`:
+
+```nginx
+server {
+  listen 80;
+  server_name _;
+  client_max_body_size 0;
+
+  location / {
+    proxy_pass http://host.docker.internal:3000;   # no trailing slash
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $connection_upgrade;
+    proxy_read_timeout 3600s;
+    proxy_send_timeout 3600s;
+  }
+}
+```
+
+Nothing rewrites paths, so the app behaves exactly as it does direct. The hub
+links to it by port.
 
 ## hub/index.html (themed)
 
@@ -156,7 +235,7 @@ convention and match it on both lines — then confirm with `curl -i`.
   <div class="grid">
     <a class="card" href="/dash/"><strong>Dashboard</strong><br><small>/dash/</small></a>
     <a class="card" href="/docs/"><strong>Docs</strong><br><small>/docs/</small></a>
-    <a class="card" href="/media/"><strong>Media</strong><br><small>/media/</small></a>
+    <a class="card" href="http://localhost:8096/"><strong>Media</strong><br><small>own port</small></a>
   </div>
   <div class="switcher">
     <button onclick="setTheme('light')">Light</button>
@@ -172,29 +251,30 @@ convention and match it on both lines — then confirm with `curl -i`.
 </html>
 ```
 
-Theme tokens are defined once (`--bg`, `--fg`, `--accent`, `--card`) and every card
-inherits them. The switcher writes the choice to `localStorage`, so a refresh keeps
-it. Add a service: drop a `<a class="card">` in the grid and a `location /name/`
-block in `default.conf`.
+Theme tokens are defined once and every card inherits them. The switcher writes
+the choice to `localStorage`. Add a service: drop an `<a class="card">` in the
+grid, and a `location` block only if you are path-mounting it.
 
 ## Run it
 
 ```bash
+docker compose config     # validate, starts nothing
 docker compose up -d
-docker compose ps        # umbrella is "healthy"
-curl -i http://localhost:8080/        # landing: 200
-curl -i http://localhost:8080/dash/   # proxied app: 200
+docker compose ps         # umbrella is "healthy"
 ```
 
-Edit the HTML or config? No rebuild needed:
+Then verify by content, not status — see below.
+
+Edit the HTML or config? No rebuild needed, but test before reloading or a syntax
+error takes the hub down:
 
 ```bash
-docker exec umbrella nginx -s reload   # picks up default.conf changes
+docker exec umbrella nginx -t && docker exec umbrella nginx -s reload
 ```
 
 ## Optional TLS at the edge
 
-Terminate HTTPS once, in front of the plain-HTTP umbrella. With Caddy as a sidecar:
+Terminate HTTPS once, in front of the plain-HTTP umbrella:
 
 ```caddyfile
 # Caddyfile
@@ -208,49 +288,89 @@ dash.example.com {
   caddy:
     image: caddy:alpine
     container_name: umbrella-caddy
-    ports: ["443:443"]
+    ports:
+      - "443:443"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
+      - caddy_config:/config
     restart: unless-stopped
+
 volumes:
   caddy_data:
+  caddy_config:
 ```
 
-Caddy gets a cert automatically and proxies to the umbrella over the compose
-network. The umbrella itself only listens on `80`. Keep the two distinct — don't
-expose the same backend on both `80` and `443` without intending to.
+`caddy_data` holds the certificates — losing it means re-issuing and risking
+rate limits, so keep it a named volume. Caddy proxies to the umbrella over the
+compose network; the umbrella itself only listens on `80`.
+
+Behind TLS, make every nginx redirect scheme-aware —
+`return 301 $scheme://$http_host/foo/;`. A bare `return 301 /foo/;` emits
+`http://` and drops the user out of HTTPS.
 
 ## Verification checklist
 
+A `200` proves almost nothing here — the two worst failure modes both return
+`200` with the wrong body.
+
+```bash
+# The route serves the BACKEND's content, not the hub's landing page
+curl -s http://localhost:8090/dash/ | grep -q "<title>Dashboard" && echo OK
+
+# A path-mounted app's own asset has the right content-type.
+# "200 text/html" means the landing page answered a stylesheet request.
+curl -s -o /dev/null -w '%{http_code} %{content_type}\n' \
+  http://localhost:8090/dash/assets/app.css
+
+# A bogus path 404s (proves no try_files mask)
+curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8090/definitely-not-real
+```
+
+- [ ] `docker compose config` parses with no `version` obsolete warning.
 - [ ] `docker compose ps` shows `umbrella` as `healthy`.
-- [ ] The landing page renders and every card link returns 200.
-- [ ] Each `/<path>/` route returns 200 (not a 404 from a slash mismatch).
-- [ ] After stopping one backend, its healthcheck fails rather than silently 502-ing.
-- [ ] Hand the live URL to the user for a visual confirm — `curl` returning 200
-      does not prove the page renders in a browser.
+- [ ] The hub's published port appears in **no** `proxy_pass` line.
+- [ ] Each route returns the backend's content; each path-mounted asset returns
+      its real content-type.
+- [ ] A bogus path returns `404`, not `200`.
+- [ ] The landing page renders in a real browser with the devtools console clear
+      of 404s and MIME-type errors — `curl` returning 200 does not prove this.
 
 ## Pitfalls
 
-- **Port conflict.** A dead container holding the port blocks `up -d`
-  ("address already in use"). Free the port or pick another before binding.
+- **The hub proxying itself.** Publishing the umbrella on `8080:80` *and* writing
+  `proxy_pass http://host.docker.internal:8080/` points the route back at the
+  hub. `/dash/` returns `200` with the landing page and never reaches the app.
+  Keep the hub's port distinct from every backend port.
+- **Root-relative links break path mounts.** The dominant failure — assets
+  resolve against the hub root and are answered by the landing page. Fix with the
+  app's own base-path setting, `sub_filter`, or an own-port proxy.
+- **`try_files $uri $uri/ /index.html` masks every 404**, which is what makes the
+  above so hard to spot. Use `index index.html;` on a static hub.
+- **`nginx:alpine` ships both `curl` and `wget`** (verified on 1.31.3). The trap
+  is that `wget` is the BusyBox applet, not GNU wget — GNU-only flags fail, so a
+  healthcheck copied from a Debian example reports `unhealthy` while nginx serves
+  `200`. Older tags shipped no `curl` at all; pin the tag you tested.
+- **Missing bind-mount source becomes a directory.** `up -d` before creating
+  `default.conf` makes Docker create a directory of that name and nginx fails
+  with `is a directory`.
 - **`host.docker.internal` on Linux Engine.** Needs
-  `extra_hosts: ["host.docker.internal:host-gateway"]`. Docker Desktop resolves
-  it automatically; on a shared compose network, use the service name instead.
-- **Bind `0.0.0.0`, not `127.0.0.1`.** `"8080:80"` publishes on all interfaces;
-  `"127.0.0.1:8080:80"` locks out the LAN.
-- **`nginx:alpine` has no `wget`.** A `wget`-based healthcheck reports
-  `unhealthy` even when nginx serves 200. Use `curl -f`.
+  `extra_hosts: ["host.docker.internal:host-gateway"]`. Harmless on Docker
+  Desktop, so include it always.
 - **Stale container holds the name.** An exited container with the same
-  `container_name` blocks `up -d` ("Conflict ... already in use").
-  `docker rm -f umbrella`, then retry.
-- **Healthcheck on a redirecting root.** If `/` 302s, `curl -f` fails the check.
-  Point it at a known-200 asset (`/index.html`, `/healthz`).
-- **Hot config edits.** `docker compose up -d` alone won't reload a changed
-  `default.conf`. Run `docker exec umbrella nginx -s reload`.
+  `container_name` blocks `up -d`. `docker rm -f umbrella`, then retry.
+- **Healthcheck on a redirecting root.** If `/` 302s, `curl -f` fails. Point it
+  at a known-200 path.
+- **Scheme-downgrading redirects behind TLS.** Use `$scheme://$http_host`.
+- **`sub_filter` no-ops on compressed responses.** Send
+  `proxy_set_header Accept-Encoding "";` in any block that uses it.
+- **Bind `0.0.0.0` vs `127.0.0.1` deliberately.** `"8090:80"` publishes on all
+  interfaces; loopback-only is the right default for anything unauthenticated.
+- **Hot config edits.** `docker compose up -d` won't reload a changed
+  `default.conf`. Run `nginx -t && nginx -s reload`.
 
 ## Source
 
-Generalized from the internal `personal-docker-umbrella` and `docker-pages-umbrella`
-patterns, with all host-specific ports, IPs, and infrastructure coupling removed.
-Public under the Hermes Skills Portfolio by Alex.
+Generalized from the internal `personal-docker-umbrella` and
+`forgejo-pages-umbrella` patterns, with all host-specific ports, IPs, and
+infrastructure coupling removed. Public under the Hermes Skills Portfolio by Alex.

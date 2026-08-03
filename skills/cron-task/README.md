@@ -9,7 +9,7 @@ The agent creates a scheduled task — either agent-driven (runs a prompt) or sc
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/cron-task/SKILL.md
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/cron-task/SKILL.md
 ```
 
 ## How to use

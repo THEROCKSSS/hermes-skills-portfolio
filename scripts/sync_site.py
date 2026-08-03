@@ -14,10 +14,25 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 
+# Data files whose source of truth is the repo root. They must be mirrored into
+# site/ *before* site/ is copied into docs/, otherwise site/ keeps serving a
+# stale copy: the local dev server reads site/, so a drifted site/skills-index.json
+# means local testing shows different data than production. That is exactly how
+# the cached skill content drifted for 46 of 51 skills without anyone noticing.
+ROOT_OWNED_DATA = ("skills-index.json", "bundles.json", "pending-sources.json")
+
+
 def sync():
     site_dir = ROOT / "site"
     docs_dir = ROOT / "docs"
     copied = []
+
+    for name in ROOT_OWNED_DATA:
+        src = ROOT / name
+        if not src.exists():
+            continue
+        shutil.copyfile(src, site_dir / name)
+        copied.append(f"{name} (root -> site/)")
 
     for src in site_dir.rglob("*"):
         if src.is_dir():
@@ -30,10 +45,12 @@ def sync():
         shutil.copyfile(src, dest)
         copied.append(str(rel))
 
-    index_src = ROOT / "skills-index.json"
-    index_dest = docs_dir / "skills-index.json"
-    shutil.copyfile(index_src, index_dest)
-    copied.append("skills-index.json (root -> docs/)")
+    for name in ROOT_OWNED_DATA:
+        src = ROOT / name
+        if not src.exists():
+            continue
+        shutil.copyfile(src, docs_dir / name)
+        copied.append(f"{name} (root -> docs/)")
 
     print(f"Synced {len(copied)} file(s) from site/ to docs/:")
     for name in sorted(copied):

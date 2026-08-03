@@ -9,7 +9,7 @@ The agent creates QR codes from any data: URLs, WiFi credentials, vCards, or pla
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/qr-code-generator/SKILL.md
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/qr-code-generator/SKILL.md
 ```
 
 ## How to use

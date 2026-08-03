@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -10,22 +10,47 @@
   <meta property="og:description" content="What it does: The agent reads your project and writes a README that follows anti-AI-slop rules: no filler phrases, no invented metrics, no templated structure, honest about limitations, concrete examples, real voice. The result reads like a human wrote it because it follows the patterns that...">
   <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/hallmark-readme/">
   <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Hermes Skills Portfolio">
+  <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="hallmark-readme — Hermes Skill">
   <meta name="twitter:description" content="What it does: The agent reads your project and writes a README that follows anti-AI-slop rules: no filler phrases, no invented metrics, no templated structure, honest about limitations, concrete examples, real voice. The result reads like a human wrote it because it follows the patterns that...">
+  <link rel="sitemap" type="application/xml" href="../../sitemap.xml">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "hallmark-readme",
+  "name": "hallmark-readme",
+  "description": "Write a non-AI-slop README for any project — one that sounds like a human wrote it.",
+  "url": "https://therocksss.github.io/hermes-skills-portfolio/skills/hallmark-readme/",
+  "inLanguage": "en",
+  "license": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/LICENSE",
+  "isPartOf": {
+    "@type": "WebSite",
+    "@id": "https://therocksss.github.io/hermes-skills-portfolio/#website",
+    "name": "Hermes Skills Portfolio"
+  },
+  "dateModified": "2026-07-20",
+  "author": {
+    "@type": "Person",
+    "name": "Owen"
+  }
+}
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/skill-page.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="nav">
+  <header class="nav is-solid" id="nav">
     <div class="nav-inner">
       <a class="nav-brand" href="../../index.html">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
         Hermes Skills
       </a>
       <nav class="nav-links" aria-label="Sections">
@@ -36,20 +61,20 @@
       </nav>
       <div class="nav-actions">
         <button class="cmdk-trigger" id="cmdk-trigger" aria-haspopup="dialog" aria-controls="cmdk-modal">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <span class="cmdk-trigger-label">Search skills…</span>
           <kbd class="cmdk-trigger-kbd">&#8984;K</kbd>
         </button>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme (t)">
-          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
         <a class="github-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">GitHub</a>
       </div>
     </div>
   </header>
 
-  <main id="main" class="skill-main">
+  <main id="main" class="skill-main" tabindex="-1">
     <div class="wrap">
       <div class="skill-shell">
         <p class="skill-back-link"><a href="../../index.html">&#8592; Back to catalog</a></p>
@@ -68,30 +93,30 @@
           </div>
         </header>
 
-        <div class="detail-tabs" role="tablist">
-          <button class="detail-tab active" data-tab="overview" role="tab" aria-selected="true">Overview</button>
-          <button class="detail-tab" data-tab="skillmd" role="tab" aria-selected="false">SKILL.md</button>
-          <button class="detail-tab" data-tab="readme" role="tab" aria-selected="false">README</button>
+        <div class="detail-tabs" role="tablist" aria-label="Skill documentation">
+          <button class="detail-tab active" id="tab-btn-overview" data-tab="overview" role="tab" aria-selected="true" aria-controls="tab-overview">Overview</button>
+          <button class="detail-tab" id="tab-btn-skillmd" data-tab="skillmd" role="tab" aria-selected="false" aria-controls="tab-skillmd">SKILL.md</button>
+          <button class="detail-tab" id="tab-btn-readme" data-tab="readme" role="tab" aria-selected="false" aria-controls="tab-readme">README</button>
         </div>
 
-        <div class="detail-tab-content active" id="tab-overview" role="tabpanel">
+        <div class="detail-tab-content active" id="tab-overview" role="tabpanel" aria-labelledby="tab-btn-overview" tabindex="0">
           <section class="detail-section">
-            <h3>What it does</h3>
+            <h2>What it does</h2>
             <p>The agent reads your project and writes a README that follows anti-AI-slop rules: no filler phrases, no invented metrics, no templated structure, honest about limitations, concrete examples, real voice. The result reads like a human wrote it because it follows the patterns that distinguish human writing from LLM defaults.</p>
           </section>
           <section class="detail-section">
-            <h3>How an agent uses it</h3>
+            <h2>How an agent uses it</h2>
             <ul><li>The user asks for a README for their project.</li><li>The user wants to improve an existing README that reads as AI-generated.</li><li>The user says &quot;write a readme&quot;, &quot;make my readme better&quot;, or &quot;this readme sounds like AI wrote it&quot;.</li><li>Any time you&#x27;re about to write a README — default to this skill.</li></ul>
           </section>
           <section class="detail-section">
-            <h3>What you get</h3>
+            <h2>What you get</h2>
             <p>Install this skill and your Hermes agent can write a non-ai-slop readme for any project — one that sounds like a human wrote it. No manual setup, no scripts to run &mdash; the agent handles it.</p>
           </section>
           
         <div class="install-block">
-          <h4>Install command</h4>
+          <h3>Install command</h3>
           <div class="install-row">
-            <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/hallmark-readme/SKILL.md</code>
+            <code id="install-cmd">hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/hallmark-readme/SKILL.md</code>
             <button class="btn btn-outline btn-sm" id="copy-btn" type="button">Copy</button>
           </div>
         </div>
@@ -100,7 +125,7 @@
           
         </div>
 
-        <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
+        <div class="detail-tab-content" id="tab-skillmd" role="tabpanel" aria-labelledby="tab-btn-skillmd" tabindex="0">
           <pre class="skillmd-viewer">---
 name: hallmark-readme
 description: Use when a user asks for a project README, wants an existing README that reads as AI-generated fixed, or you are about to write a README for any project.
@@ -288,7 +313,7 @@ Read the README aloud. If any sentence sounds like it could appear in any other 
 </pre>
         </div>
 
-        <div class="detail-tab-content" id="tab-readme" role="tabpanel">
+        <div class="detail-tab-content" id="tab-readme" role="tabpanel" aria-labelledby="tab-btn-readme" tabindex="0">
           <pre class="skillmd-viewer"># hallmark-readme
 
 Write a README that doesn&#x27;t sound like an LLM generated it.
@@ -300,7 +325,7 @@ The agent reads your project and writes a README that follows anti-AI-slop rules
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/hallmark-readme/SKILL.md
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/hallmark-readme/SKILL.md
 ```
 
 ## How to use
@@ -381,11 +406,20 @@ The second one sounds like a person wrote it because it follows the rules: no fi
 
   <footer class="footer">
     <div class="footer-inner">
-      <span class="footer-word">Hermes Skills — by Owen</span>
-      <span class="footer-sep">&middot;</span>
-      <span>Install one, your agent can now do that for you.</span>
-      <span class="footer-sep">&middot;</span>
-      <span>MIT licensed</span>
+      <div class="footer-col">
+        <span class="footer-word">Hermes Skills</span>
+        <p class="footer-note">Install one, your agent can now do that for you.</p>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Install any skill</span>
+        <code class="footer-code mono">hermes skills install &lt;url&gt;</code>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Colophon</span>
+        <p class="footer-meta">By Owen &middot; MIT licensed &middot;
+          <a href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">Source on GitHub</a>
+        </p>
+      </div>
     </div>
   </footer>
 

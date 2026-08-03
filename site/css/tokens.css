@@ -1,56 +1,84 @@
-/* Hermes Skills Portfolio — design tokens
- * Locked by design.md. Every page imports this file and references tokens
- * by name — no inline OKLCH, no inline font-family, anywhere downstream.
+/* Hallmark · genre: atmospheric · theme: Dusk (custom) · mode: dark-primary
+ * paper oklch(19% 0.020 300) · accent oklch(76% 0.130 55) · display Plus Jakarta Sans
+ * axes: dark paper-band / rounded-sans display / warm-amber accent
+ *
+ * Hermes Skills Portfolio — design tokens.
+ * Locked by design.md. Every page imports this file and references tokens by
+ * name — no inline OKLCH, no inline font-family, anywhere downstream.
+ *
+ * Token NAMES are stable across re-themes on purpose (Cobalt -> Marquee -> Dusk):
+ * page CSS references them by name, so a re-skin is a values-only change.
  */
 
 :root,
-[data-theme="light"] {
-  color-scheme: light;
+[data-theme="dark"] {
+  color-scheme: dark;
 
-  /* Paper / surfaces — cool engineered near-white, never pure #fff */
-  --color-paper:    oklch(98.5% 0.004 250);
-  --color-paper-2:  oklch(96% 0.006 250);
-  --color-paper-3:  oklch(93% 0.008 250);
+  /* Paper / surfaces — soft warm-violet dark, never pure #000.
+   * Elevation on dark works by getting LIGHTER: paper is the canvas,
+   * paper-2 a resting card, paper-3 a lifted one. */
+  --color-paper:    oklch(19% 0.020 300);
+  --color-paper-2:  oklch(24% 0.026 300);
+  --color-paper-3:  oklch(29% 0.030 300);
 
-  /* Ink — cool charcoal, never pure #000 */
-  --color-ink:      oklch(24% 0.020 258);
-  --color-ink-2:    oklch(34% 0.018 257);
-  --color-ink-3:    oklch(50% 0.014 257);
-  --color-ink-4:    oklch(68% 0.010 255);
+  /* Ink — warm, to sit against the violet ground rather than fight it */
+  --color-ink:      oklch(94% 0.012 60);
+  --color-ink-2:    oklch(80% 0.020 50);
+  /* ink-3 / ink-4 are muted ROLES, not decoration: they carry facet counts,
+   * field labels ("Search", "Sort"), section titles and the kbd hint. Measured
+   * at their previous values they sat at 3.06:1 and 4.17:1 — under AA. Raised
+   * until measured >= 4.5:1 against their real composited backgrounds. */
+  --color-ink-3:    oklch(72% 0.026 45);
+  --color-ink-4:    oklch(63% 0.026 45);
 
-  /* Hairlines */
-  --color-rule:     oklch(90% 0.006 250);
-  --color-rule-2:   oklch(85% 0.008 250);
+  --color-rule:     oklch(34% 0.030 300);
+  --color-rule-2:   oklch(42% 0.034 300);
 
-  /* The one signal */
-  --color-accent:      oklch(58% 0.20 256);
-  --color-accent-ink:  oklch(99% 0.004 250);
-  --color-accent-soft: oklch(93% 0.03 256);
-  --color-focus:       oklch(58% 0.20 256);
+  /* The one signal — warm amber. Unlike a deep crimson, this sits at 76%
+   * lightness, so it CAN carry dark ink as a button fill (~7:1) instead of
+   * being restricted to marks and rules. */
+  --color-accent:      oklch(76% 0.130 55);
+  --color-accent-ink:  oklch(20% 0.020 300);
+  --color-accent-soft: oklch(34% 0.060 45);
+  --color-focus:       oklch(82% 0.120 60);
 
-  /* Dark graphite band + code card — Cobalt's one dark beat */
-  --color-graphite:    oklch(22% 0.016 260);
-  --color-graphite-2:  oklch(27% 0.018 260);
-  --color-graphite-ink:   oklch(94% 0.010 258);
-  --color-graphite-ink-2: oklch(78% 0.020 258);
-  --color-graphite-rule:  oklch(34% 0.018 260);
+  /* Primary CTA — the accent itself, with dark ink. */
+  --color-cta:       oklch(76% 0.130 55);
+  --color-cta-ink:   oklch(20% 0.020 300);
+  --color-cta-hover: oklch(83% 0.120 58);
 
-  /* Tier signal — core gets the one accent; others stay neutral ink */
+  /* Secondary CTA — translucent raise over whatever sits behind it */
+  --color-cta-2:       oklch(100% 0 0 / 0.10);
+  --color-cta-2-hover: oklch(100% 0 0 / 0.18);
+
+  /* Deep band for code cards */
+  --color-graphite:    oklch(14% 0.018 300);
+  --color-graphite-2:  oklch(18% 0.020 300);
+  --color-graphite-ink:   oklch(93% 0.012 60);
+  --color-graphite-ink-2: oklch(74% 0.020 50);
+  --color-graphite-rule:  oklch(28% 0.026 300);
+
+  /* Tier signal — core carries the one accent; others stay neutral */
   --tier-core-bg:      var(--color-accent-soft);
-  --tier-core-ink:     var(--color-accent);
-  --tier-featured-bg:  var(--color-paper-3);
+  --tier-core-ink:     oklch(88% 0.110 58);
+  --tier-featured-bg:  oklch(30% 0.030 300);
   --tier-featured-ink: var(--color-ink-2);
-  --tier-utility-bg:   var(--color-paper-2);
+  --tier-utility-bg:   oklch(25% 0.024 300);
   --tier-utility-ink:  var(--color-ink-3);
 
-  --color-success: var(--color-accent);
+  --color-success: oklch(78% 0.130 155);
 
-  --shadow-whisper:  0 1px 2px oklch(24% 0.02 258 / 0.06);
-  --shadow-hairline: 0 0 0 1px oklch(30% 0.02 258 / 0.07);
+  --shadow-whisper:  0 1px 2px oklch(0% 0 0 / 0.40);
+  --shadow-hairline: 0 0 0 1px oklch(100% 0 0 / 0.08);
+  --shadow-lift:     0 18px 44px oklch(0% 0 0 / 0.42), 0 0 0 1px oklch(100% 0 0 / 0.10);
+  --shadow-bloom:    0 20px 60px oklch(76% 0.130 55 / 0.16);
 
-  /* Type */
-  --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --scrim-bottom: linear-gradient(to top, oklch(19% 0.020 300) 0%, oklch(19% 0.020 300 / 0.72) 28%, oklch(19% 0.020 300 / 0) 68%);
+  --scrim-left:   linear-gradient(to right, oklch(19% 0.020 300 / 0.94) 0%, oklch(19% 0.020 300 / 0.62) 42%, oklch(19% 0.020 300 / 0) 82%);
+
+  /* Type — Dusk is a rounded-humanist voice, not a grotesk one */
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body:    'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
 
   --text-xs:  0.75rem;
@@ -62,6 +90,9 @@
   --text-3xl: 2.75rem;
   --text-display:   clamp(2.25rem, 1.7rem + 2vw, 3.5rem);
   --text-display-s: clamp(1.75rem, 1.45rem + 1.2vw, 2.25rem);
+  --text-billboard: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
+
+  --weight-body: 400;
 
   /* Space — 4pt scale, named by role */
   --space-3xs: 0.125rem;
@@ -75,8 +106,17 @@
   --space-3xl: 6rem;
   --space-4xl: 9rem;
 
-  --radius-control: 6px;
-  --radius-card:    10px;
+  /* Dusk is a soft theme — radii are generous, not tight */
+  --radius-control: 12px;
+  --radius-card:    18px;
+
+  /* Card + shell geometry */
+  --card-w:      15.5rem;
+  --card-w-sm:   11.5rem;
+  --poster-ratio: 16 / 9;
+  --sidebar-w:   16rem;
+  --gutter:      clamp(1rem, 4vw, 2.5rem);
+  --nav-h:       60px;
 
   --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in:     cubic-bezier(0.7, 0, 0.84, 0);
@@ -88,43 +128,61 @@
   --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
 }
 
-[data-theme="dark"] {
-  color-scheme: dark;
+/* Light is the deliberate inversion, not the native state of this theme.
+ * Kept because the site has always shipped a working toggle. */
+[data-theme="light"] {
+  color-scheme: light;
 
-  --color-paper:    oklch(15% 0.010 258);
-  --color-paper-2:  oklch(19% 0.012 258);
-  --color-paper-3:  oklch(23% 0.014 258);
+  --color-paper:    oklch(98% 0.008 85);
+  --color-paper-2:  oklch(95.5% 0.011 80);
+  --color-paper-3:  oklch(92.5% 0.014 78);
 
-  --color-ink:      oklch(93% 0.010 258);
-  --color-ink-2:    oklch(80% 0.014 257);
-  --color-ink-3:    oklch(62% 0.014 257);
-  --color-ink-4:    oklch(44% 0.012 256);
+  --color-ink:      oklch(24% 0.024 300);
+  --color-ink-2:    oklch(38% 0.022 295);
+  /* Same AA correction as dark. In light the ramp had to invert direction:
+   * ink-4 was LIGHTER than ink-3 (66% vs 52%) against a 98% paper, so the
+   * "most muted" role was also the least readable. Both are now darker, and
+   * ink-4 stays subordinate to ink-3 rather than lighter than it. */
+  --color-ink-3:    oklch(40% 0.020 290);
+  --color-ink-4:    oklch(47% 0.018 290);
 
-  --color-rule:     oklch(28% 0.010 258);
-  --color-rule-2:   oklch(34% 0.012 258);
+  --color-rule:     oklch(89% 0.012 80);
+  --color-rule-2:   oklch(83% 0.014 78);
 
-  --color-accent:      oklch(66% 0.17 256);
-  --color-accent-ink:  oklch(16% 0.020 258);
-  --color-accent-soft: oklch(26% 0.05 256);
-  --color-focus:       oklch(66% 0.17 256);
+  --color-accent:      oklch(52% 0.150 50);
+  --color-accent-ink:  oklch(99% 0.004 85);
+  --color-accent-soft: oklch(93% 0.045 60);
+  --color-focus:       oklch(52% 0.150 50);
 
-  --color-graphite:    oklch(11% 0.014 260);
-  --color-graphite-2:  oklch(15% 0.016 260);
-  --color-graphite-ink:   oklch(93% 0.010 258);
-  --color-graphite-ink-2: oklch(74% 0.018 258);
-  --color-graphite-rule:  oklch(24% 0.016 260);
+  --color-cta:       oklch(52% 0.150 50);
+  --color-cta-ink:   oklch(99% 0.004 85);
+  --color-cta-hover: oklch(45% 0.150 48);
+
+  --color-cta-2:       oklch(24% 0.024 300 / 0.09);
+  --color-cta-2-hover: oklch(24% 0.024 300 / 0.16);
+
+  --color-graphite:    oklch(22% 0.024 300);
+  --color-graphite-2:  oklch(27% 0.026 300);
+  --color-graphite-ink:   oklch(95% 0.010 60);
+  --color-graphite-ink-2: oklch(76% 0.018 50);
+  --color-graphite-rule:  oklch(34% 0.028 300);
 
   --tier-core-bg:      var(--color-accent-soft);
-  --tier-core-ink:     var(--color-accent);
+  --tier-core-ink:     oklch(44% 0.150 48);
   --tier-featured-bg:  var(--color-paper-3);
   --tier-featured-ink: var(--color-ink-2);
   --tier-utility-bg:   var(--color-paper-2);
   --tier-utility-ink:  var(--color-ink-3);
 
-  --color-success: var(--color-accent);
+  --color-success: oklch(48% 0.130 155);
 
-  --shadow-whisper:  0 1px 2px oklch(0% 0 0 / 0.35);
-  --shadow-hairline: 0 0 0 1px oklch(70% 0.02 258 / 0.10);
+  --shadow-whisper:  0 1px 2px oklch(24% 0.02 300 / 0.07);
+  --shadow-hairline: 0 0 0 1px oklch(30% 0.02 300 / 0.08);
+  --shadow-lift:     0 16px 36px oklch(24% 0.02 300 / 0.13), 0 0 0 1px oklch(24% 0.02 300 / 0.07);
+  --shadow-bloom:    0 18px 50px oklch(52% 0.150 50 / 0.14);
+
+  --scrim-bottom: linear-gradient(to top, oklch(98% 0.008 85) 0%, oklch(98% 0.008 85 / 0.72) 28%, oklch(98% 0.008 85 / 0) 68%);
+  --scrim-left:   linear-gradient(to right, oklch(98% 0.008 85 / 0.94) 0%, oklch(98% 0.008 85 / 0.62) 42%, oklch(98% 0.008 85 / 0) 82%);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -191,7 +191,7 @@ hermes config set auxiliary.compression.model llama3.2:3b
 
 ## Performance Tips
 
-- **Use GPU if available** — Ollama auto-detects NVIDIA/AMD GPUs and Apple Silicon. GPU inference is 5-10x faster than CPU.
+- **Use GPU if available** — Ollama auto-detects NVIDIA/AMD GPUs and Apple Silicon. GPU inference is substantially faster than CPU; measure on your own hardware, since the gap depends on the model, quantisation, and VRAM.
 - **Match model size to your RAM** — A model that doesn't fit in RAM will spill to disk and become extremely slow. Check `ollama ps` to see if the model is fully in memory.
 - **Use smaller models for simple tasks** — Don't use a 70B model for a one-sentence answer. Use 3B or 8B for quick tasks.
 - **Keep models loaded** — Ollama keeps models in memory for 5 minutes after last use by default. Increase this with `OLLAMA_KEEP_ALIVE` env var if you're making frequent requests.

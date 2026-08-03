@@ -11,7 +11,7 @@ This is a generator, not a hosted runner. The output is real files in your repo 
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/api-test-suite/SKILL.md
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/api-test-suite/SKILL.md
 ```
 
 ## Inputs

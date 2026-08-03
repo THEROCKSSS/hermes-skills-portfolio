@@ -12,22 +12,43 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Validate SKILL.md frontmatter
+        # Real YAML parse, not a grep for `name:`/`description:` lines. The grep
+        # version passed a file whose description contained an unquoted colon —
+        # something no YAML loader can read — because the lines were merely
+        # *present*. This also checks name matches the directory.
+        run: python3 scripts/check_content_quality.py frontmatter
+
+      - name: Run the test suite
+        # CI previously ran no tests at all.
+        run: python3 -m pytest tests/ -q
+
+      - name: Validate install URLs are installable
+        # A GitHub *blob* URL returns text/html, so `hermes skills install <blob>`
+        # writes GitHub's page markup into the skill body and still exits 0.
+        # Every install_url must be a raw.githubusercontent.com SKILL.md URL, and
+        # no markdown may document a blob URL as the install command.
+        run: python3 scripts/normalize_install_urls.py --check
+
+      - name: Validate generated artefacts are current
+        # sitemap and feed are both derived — from skills-index.json and from
+        # changelog-data.js respectively. Adding a skill or a changelog entry
+        # without regenerating leaves the published copies silently behind.
         run: |
           set -eu
-          missing=0
-          for skill_md in skills/*/SKILL.md; do
-            [ -f "$skill_md" ] || continue
-            name=$(grep -m1 '^name:' "$skill_md" | sed 's/^name:[[:space:]]*//')
-            desc=$(grep -m1 '^description:' "$skill_md" | sed 's/^description:[[:space:]]*//')
-            if [ -z "$name" ] || [ -z "$desc" ]; then
-              echo "FAIL: $skill_md missing required frontmatter (name, description)"
-              missing=$((missing+1))
-            fi
-          done
-          if [ "$missing" -gt 0 ]; then
-            exit 1
-          fi
-          echo "All SKILL.md files have required frontmatter."
+          python3 scripts/generate_sitemap.py --check
+          python3 scripts/generate_feed.py --check
+
+      - name: Validate no invented metrics in skill copy
+        # The project's own rule: no fabricated data points. Deterministic
+        # fabrications fail here; hype adjectives are advisory and reported by
+        # the weekly quality workflow instead.
+        run: python3 scripts/check_content_quality.py metrics
+
+      - name: Validate cached skill content is not stale
+        # skills-index.json caches skillmd_content/readme_content for the detail
+        # overlay. Editing a SKILL.md without refreshing the cache silently ships
+        # the old text (this drifted for 46 of 51 skills once).
+        run: python3 scripts/refresh_content_cache.py --check
 
       - name: Validate skills-index.json sync
         run: |

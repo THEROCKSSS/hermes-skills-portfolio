@@ -9,7 +9,7 @@ The agent creates a Discord bot using discord.js — sets up the project, regist
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/discord-bot-build/SKILL.md
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/discord-bot-build/SKILL.md
 ```
 
 ## How to use

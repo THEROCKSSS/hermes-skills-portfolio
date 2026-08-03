@@ -1,0 +1,501 @@
+name: Skill submission
+
+# ---------------------------------------------------------------------------
+# HUMAN APPROVAL GATE — read before changing anything in this file.
+#
+# Nothing here runs on its own. The only trigger is a maintainer applying the
+# `approved` or `rejected` label to a `skill-request` issue by hand. Opening an
+# issue does nothing. Commenting does nothing. Labels can only be applied by
+# accounts with write access, and the first step re-verifies that anyway.
+#
+# The approved path opens a DRAFT PULL REQUEST. It never pushes to main, never
+# merges, and never publishes. A human still reviews and merges.
+#
+# Every step is guarded: a malformed issue fails the run loudly (with a comment
+# on the issue and the `approved` label removed so it can be re-applied after a
+# fix) rather than opening a half-empty pull request.
+#
+# Prerequisite, one-time, by a maintainer: create the `approved` and `rejected`
+# labels on the repo. They do not exist yet — without them this workflow can
+# never fire. `skill-request` already exists.
+#
+# Known GitHub limitation, stated honestly: a pull request opened with the
+# built-in GITHUB_TOKEN does not trigger `on: pull_request` workflows, so CI
+# will not run on the draft PR by itself. The scaffold job therefore runs the
+# same checks CI would (install-URL, content-cache, pytest) before it pushes,
+# and the PR body tells the maintainer to close/reopen the PR to get a real CI
+# run. Do not read a green scaffold job as a green CI run.
+# ---------------------------------------------------------------------------
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: skill-submission-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+env:
+  # Never interpolate issue text straight into a shell script — a body
+  # containing `$(...)` would execute. Everything untrusted travels by env var.
+  ISSUE_BODY: ${{ github.event.issue.body }}
+  ISSUE_NUMBER: ${{ github.event.issue.number }}
+  ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+  # Label names as JSON, so the decline path can read the `decline:<reason>`
+  # a maintainer set and expand it into specific guidance.
+  ISSUE_LABELS: ${{ toJSON(github.event.issue.labels.*.name) }}
+  SENDER: ${{ github.event.sender.login }}
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  # =========================================================================
+  # APPROVED -> scaffold the skill and open a draft PR
+  # =========================================================================
+  scaffold:
+    name: Scaffold approved submission
+    if: >-
+      github.event.label.name == 'approved' &&
+      contains(github.event.issue.labels.*.name, 'skill-request')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify the approver has write access
+        # Defence in depth: applying a label already requires write access, but
+        # this makes the gate explicit and survives future permission changes.
+        run: |
+          set -euo pipefail
+          perm=$(gh api "repos/${GITHUB_REPOSITORY}/collaborators/${SENDER}/permission" \
+                   --jq '.permission' 2>/dev/null || echo "none")
+          echo "approver=${SENDER} permission=${perm}"
+          case "$perm" in
+            admin|maintain|write) ;;
+            *) echo "::error::${SENDER} does not have write access — refusing to scaffold."; exit 1 ;;
+          esac
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install --quiet pyyaml pytest
+
+      - name: Capture the issue body
+        run: |
+          set -euo pipefail
+          printf '%s' "$ISSUE_BODY" > issue-body.md
+          if [ ! -s issue-body.md ]; then
+            echo "::error::Issue #${ISSUE_NUMBER} has an empty body — nothing to parse."
+            exit 1
+          fi
+          echo "captured $(wc -c < issue-body.md) bytes"
+
+      - name: Validate the submission
+        id: validate
+        # --check-only parses the issue form, validates every field, checks the
+        # name against skills/ and skills-index.json, and exits non-zero on any
+        # problem. This is the step that stops a malformed issue from becoming
+        # a broken PR.
+        #
+        # Every value it puts in GITHUB_OUTPUT has already been validated
+        # against a strict allow-list (name matches ^[a-z0-9]+(-[a-z0-9]+)*$,
+        # category and tier are enum members), which is what makes it safe for
+        # the later steps to interpolate them into shell commands.
+        run: |
+          set -euo pipefail
+          python scripts/scaffold_skill.py \
+            --issue-body issue-body.md \
+            --issue-number "$ISSUE_NUMBER" \
+            --submitter "$ISSUE_AUTHOR" \
+            --check-only \
+            --report submission-report.json
+          python - <<'PY'
+          import json, os, pathlib
+          report = json.loads(pathlib.Path("submission-report.json").read_text(encoding="utf-8"))
+          sub = report["submission"]
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
+              out.write(f"name={sub['name']}\n")
+              out.write(f"category={sub['category']}\n")
+              out.write(f"tier={sub['tier']}\n")
+          pathlib.Path("submission.json").write_text(
+              json.dumps(sub, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+          print(f"validated: {sub['name']} ({sub['tier']} tier, {sub['category']})")
+          PY
+
+      - name: Scaffold the skill files
+        run: |
+          set -euo pipefail
+          python scripts/scaffold_skill.py \
+            --json submission.json \
+            --out-entry entry.json
+          test -f "skills/${{ steps.validate.outputs.name }}/SKILL.md"
+          test -f "skills/${{ steps.validate.outputs.name }}/README.md"
+          test -s entry.json
+
+      - name: Add the entry to skills-index.json
+        # The scaffolder deliberately never touches the index — that merge is
+        # this workflow's decision, and it is re-checked here so a race with
+        # another submission cannot silently produce a duplicate entry.
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib, sys
+          from datetime import datetime, timezone
+
+          entry = json.loads(pathlib.Path("entry.json").read_text(encoding="utf-8"))
+          index_path = pathlib.Path("skills-index.json")
+          index = json.loads(index_path.read_text(encoding="utf-8"))
+
+          if any(s.get("name") == entry["name"] for s in index["skills"]):
+              sys.exit(f"::error::{entry['name']} is already in skills-index.json")
+          category = entry["category"]
+          if category not in index.get("categories", {}):
+              sys.exit(f"::error::unknown category {category!r} — not in the index registry")
+          if "/blob/" in entry["install_url"]:
+              sys.exit("::error::install_url is a blob URL — it would install GitHub's HTML page")
+
+          index["skills"].append(entry)
+          index["categories"][category]["skill_count"] = sum(
+              1 for s in index["skills"] if s.get("category") == category)
+          index.setdefault("portfolio", {})["total_skills"] = len(index["skills"])
+          index["generated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+          index_path.write_text(
+              json.dumps(index, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+          print(f"added {entry['name']}; index now holds {len(index['skills'])} skills")
+          PY
+
+      - name: Regenerate derived files
+        # Order matters: cache the new markdown into the index, render
+        # everything that derives from the index, then mirror site/ into docs/.
+        #
+        # Every generator that reads skills-index.json belongs in this list — a
+        # new skill makes its output stale, and CI fails on stale output. The
+        # `[ -f ]` guard keeps this working while the generator set is still
+        # growing; the pytest run in the next step is the backstop that catches
+        # any generator added here later and forgotten.
+        run: |
+          set -euo pipefail
+          python scripts/refresh_content_cache.py
+          for generator in scripts/generate_skill_pages.py scripts/generate_sitemap.py; do
+            if [ -f "$generator" ]; then
+              echo "--- $generator"
+              python "$generator"
+            fi
+          done
+          python scripts/sync_site.py
+
+      - name: Run the same checks CI runs
+        # A GITHUB_TOKEN-authored PR does not trigger CI, so run its checks here
+        # instead of opening a PR that only looks green.
+        run: |
+          set -euo pipefail
+          python scripts/normalize_install_urls.py --check
+          python scripts/refresh_content_cache.py --check
+          python -m pytest tests/ -q
+
+      - name: Commit to a submission branch
+        id: branch
+        run: |
+          set -euo pipefail
+          name="${{ steps.validate.outputs.name }}"
+          branch="skill-submission/${name}-issue-${ISSUE_NUMBER}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add "skills/${name}" skills-index.json site docs
+          git commit -m "Add ${name} skill (${{ steps.validate.outputs.tier }} tier, ${{ steps.validate.outputs.category }})" \
+                     -m "Scaffolded from community skill request #${ISSUE_NUMBER}." \
+                     -m "Body sections are TODO placeholders for a maintainer to complete."
+          git push origin "$branch"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+
+      - name: Open the draft pull request
+        id: pr
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os, pathlib
+
+          report = json.loads(pathlib.Path("submission-report.json").read_text(encoding="utf-8"))
+          entry = json.loads(pathlib.Path("entry.json").read_text(encoding="utf-8"))
+          sub = report["submission"]
+          issue = os.environ["ISSUE_NUMBER"]
+          author = os.environ["ISSUE_AUTHOR"]
+
+          similar = report.get("similar_skills") or []
+          similar_md = "\n".join(
+              f"- `{s['name']}` ({s['category']}) — {s['description']}" for s in similar
+          ) or "- None found by the overlap check. Still worth a manual scan."
+
+          body = f"""Scaffolded from community skill request #{issue}, submitted by @{author}.
+
+          **This is a draft on purpose.** The submitter's own words are in place; the
+          sections only a maintainer can write honestly are `TODO(maintainer)` markers.
+          Do not merge until every one of them is replaced with real, runnable content.
+
+          ## What the automation produced
+
+          | Field | Value |
+          |---|---|
+          | Name | `{sub['name']}` |
+          | Category | `{sub['category']}` |
+          | Tier | `{sub['tier']}` |
+          | Source | `{entry['source']}` |
+          | Install URL | `{entry['install_url']}` |
+
+          Files changed: `skills/{sub['name']}/SKILL.md`, `skills/{sub['name']}/README.md`,
+          `skills-index.json`, plus the regenerated `site/` and `docs/` pages.
+
+          ## Closest existing skills — check for overlap
+
+          {similar_md}
+
+          ## Before merging
+
+          - [ ] Every `TODO(maintainer)` in `SKILL.md` and `README.md` is replaced with real content
+          - [ ] The workflow steps are runnable, not a description of steps
+          - [ ] Pitfalls and verification items are specific to this skill, not generic advice
+          - [ ] It is genuinely distinct from the skills listed above
+          - [ ] Tier and category still look right after reading the finished skill
+          - [ ] Re-run `python scripts/refresh_content_cache.py && python scripts/generate_skill_pages.py && python scripts/sync_site.py` after editing the markdown
+          - [ ] **Close and reopen this PR to trigger CI** — a PR opened by `GITHUB_TOKEN` does not start `on: pull_request` workflows
+
+          Closes #{issue}
+          """
+          pathlib.Path("pr-body.md").write_text(body, encoding="utf-8")
+          PY
+
+          name="${{ steps.validate.outputs.name }}"
+          url=$(gh pr create \
+            --draft \
+            --base "${{ github.event.repository.default_branch }}" \
+            --head "${{ steps.branch.outputs.branch }}" \
+            --title "Add ${name} skill (community, from #${ISSUE_NUMBER})" \
+            --body-file pr-body.md)
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Opened $url"
+
+      - name: Comment the PR link on the issue
+        run: |
+          set -euo pipefail
+          cat > issue-comment.md <<EOF
+          Approved — scaffolded into a draft pull request: ${{ steps.pr.outputs.url }}
+
+          The pull request contains \`skills/${{ steps.validate.outputs.name }}/SKILL.md\` and
+          \`README.md\` built from your answers, plus the \`skills-index.json\` entry
+          (\`${{ steps.validate.outputs.tier }}\` tier, \`${{ steps.validate.outputs.category }}\`).
+
+          It is a **draft**: the sections a maintainer has to write — the runnable workflow,
+          the skill-specific pitfalls, the verification checks — are \`TODO(maintainer)\`
+          placeholders rather than invented text. Nothing is published until that PR is
+          finished and merged, and this issue closes with it.
+
+          You are welcome to push commits to the branch \`${{ steps.branch.outputs.branch }}\`
+          if you want to fill those sections in yourself.
+          EOF
+          gh issue comment "$ISSUE_NUMBER" --body-file issue-comment.md
+
+      - name: Report the failure on the issue
+        if: failure()
+        # Loud, specific failure. The `approved` label comes back off so the
+        # maintainer can fix the issue and re-apply it to retry.
+        #
+        # The comment is assembled in Python, not by a shell heredoc: the error
+        # strings quote the submitter's own text back, and an unquoted heredoc
+        # would run any `$(...)` hidden in it.
+        run: |
+          set -uo pipefail
+          python - <<'PY'
+          import json, os, pathlib
+
+          errors = ["- (no validation report was produced — the run failed before or during parsing)"]
+          report_path = pathlib.Path("submission-report.json")
+          if report_path.exists():
+              try:
+                  report = json.loads(report_path.read_text(encoding="utf-8"))
+                  found = report.get("errors") or []
+                  errors = [f"- {e}" for e in found] or ["- (no field-level errors recorded)"]
+              except json.JSONDecodeError:
+                  errors = ["- (the validation report could not be read)"]
+
+          run_url = (f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}"
+                     f"/actions/runs/{os.environ['GITHUB_RUN_ID']}")
+
+          body = "\n".join([
+              "**Automated scaffolding failed — no pull request was opened.**",
+              "",
+              "What went wrong:",
+              "",
+              *errors,
+              "",
+              f"Full log: {run_url}",
+              "",
+              "The `approved` label has been removed. Fix the issue body (or the underlying",
+              "problem) and re-apply `approved` to retry. Common causes:",
+              "",
+              "- The issue was filed with the free-form template instead of the structured",
+              "  **Skill request** form, so the `### ` headings the parser needs are missing.",
+              "- The proposed name is not lowercase-kebab-case, or is already taken.",
+              "- `adapted` was chosen without an origin URL.",
+              "- A required field was left blank.",
+              "",
+          ])
+          pathlib.Path("failure-comment.md").write_text(body, encoding="utf-8")
+          PY
+          gh issue comment "$ISSUE_NUMBER" --body-file failure-comment.md || true
+          gh issue edit "$ISSUE_NUMBER" --remove-label approved || true
+
+  # =========================================================================
+  # REJECTED -> post a specific decline and close
+  # =========================================================================
+  decline:
+    name: Decline submission
+    if: >-
+      github.event.label.name == 'rejected' &&
+      contains(github.event.issue.labels.*.name, 'skill-request')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify the decliner has write access
+        run: |
+          set -euo pipefail
+          perm=$(gh api "repos/${GITHUB_REPOSITORY}/collaborators/${SENDER}/permission" \
+                   --jq '.permission' 2>/dev/null || echo "none")
+          case "$perm" in
+            admin|maintain|write) ;;
+            *) echo "::error::${SENDER} does not have write access — refusing to decline."; exit 1 ;;
+          esac
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install --quiet pyyaml
+
+      - name: Read what was actually proposed
+        # The decline has to name the specific proposal and the specific
+        # catalog skills it overlaps with. `|| true` because an unparseable
+        # issue is a perfectly normal thing to decline — the report still
+        # carries whichever fields did parse.
+        run: |
+          set -euo pipefail
+          printf '%s' "$ISSUE_BODY" > issue-body.md
+          python scripts/scaffold_skill.py \
+            --issue-body issue-body.md \
+            --issue-number "$ISSUE_NUMBER" \
+            --submitter "$ISSUE_AUTHOR" \
+            --check-only \
+            --report submission-report.json > /dev/null 2>&1 || true
+          test -f submission-report.json || echo '{"ok":false,"errors":[],"submission":null,"similar_skills":[]}' > submission-report.json
+
+      - name: Post the decline and close the issue
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os, pathlib
+
+          report = json.loads(pathlib.Path("submission-report.json").read_text(encoding="utf-8"))
+          sub = report.get("submission") or {}
+          raw = report.get("raw_fields") or {}
+          author = os.environ["ISSUE_AUTHOR"]
+
+          name = sub.get("name") or raw.get("name") or "this skill"
+          category = sub.get("category") or raw.get("category") or "unspecified"
+          tier = sub.get("tier") or raw.get("tier") or "unspecified"
+          description = (sub.get("description") or raw.get("description") or "").strip()
+          # Never present the proposal as its own nearest neighbour — that
+          # happens when a skill was scaffolded first and rejected afterwards.
+          similar = [s for s in (report.get("similar_skills") or []) if s["name"] != name]
+          errors = report.get("errors") or []
+
+          lines = [
+              f"Thanks for proposing `{name}`, @{author} — a maintainer read this and "
+              "decided not to take it into the catalog.",
+              "",
+              "**What was proposed**",
+              "",
+              f"- Name: `{name}`",
+              f"- Category / tier: `{category}` / `{tier}`",
+          ]
+          if description:
+              lines.append(f"- Description: {description}")
+          lines.append("")
+
+          if similar:
+              lines += [
+                  "**Closest skills already in the catalog**",
+                  "",
+                  *[f"- [`{s['name']}`](https://therocksss.github.io/hermes-skills-portfolio/"
+                    f"skills/{s['name']}/) ({s['category']}) — {s['description']}"
+                    for s in similar],
+                  "",
+                  "If your idea does something these genuinely cannot, say so concretely —"
+                  " the specific task they fail at is the argument that reopens this.",
+                  "",
+              ]
+          else:
+              lines += [
+                  "The overlap check found no close match in the catalog, so this was not "
+                  "declined as a duplicate.",
+                  "",
+              ]
+
+          if errors:
+              lines += [
+                  "**Problems the automated check found in the submission**",
+                  "",
+                  *[f"- {e}" for e in errors],
+                  "",
+              ]
+
+          # The specific reason the maintainer recorded, expanded into guidance.
+          # Shared with the pull-request path in skill-review.yml so the two
+          # cannot drift into saying different things about the same reason.
+          import sys
+          sys.path.insert(0, "scripts")
+          import review_reasons
+          reason = review_reasons.reason_from_labels(
+              json.loads(os.environ.get("ISSUE_LABELS", "[]"))
+          )
+          lines += ["**Why**", "", review_reasons.render(reason, subject=f"`{name}`"), ""]
+
+          lines += [
+              "**What the catalog's bar is**, from `CONTRIBUTING.md`:",
+              "",
+              "- Empowering — the agent plus the skill delivers a real outcome, not a "
+              "description of one.",
+              "- Self-contained — no dependency on private infrastructure or tools only "
+              "you have.",
+              "- Runnable — the instructions produce a working result. A tutorial, a "
+              "reference sheet, or a list of links does not qualify.",
+              "- Honest — no invented metrics, no fabricated examples.",
+              "- Attributed — adapted work names its origin and license.",
+              "",
+              "**This is not a permanent no.** Reopen or file a new request if you can "
+              "show a concrete task the existing skills cannot do, and a workflow with the "
+              "real commands in it. A worked example beats an explanation.",
+          ]
+
+          pathlib.Path("decline-comment.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+          PY
+
+          gh issue comment "$ISSUE_NUMBER" --body-file decline-comment.md
+          gh issue close "$ISSUE_NUMBER" --reason "not planned"
+
+      - name: Report the failure on the issue
+        if: failure()
+        run: |
+          set -euo pipefail
+          run_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          gh issue comment "$ISSUE_NUMBER" --body \
+            "The automated decline step failed, so this issue was left open on purpose. Log: ${run_url}"

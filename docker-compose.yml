@@ -1,0 +1,54 @@
+# Hermes Skills Portfolio — local container.
+#
+#   docker compose up -d --build     # serve on http://localhost:8098
+#   docker compose --profile checks run --rm checks   # run every gate, then exit
+#   docker compose down
+#
+# No `version:` key — Compose v2 warns on it and ignores it.
+name: hermes-skills-portfolio
+
+services:
+  site:
+    build:
+      context: .
+      target: serve
+    image: hermes-skills-portfolio:local
+    container_name: hermes-skills-portfolio
+    # 8098 chosen because 8093-8097 and 8099 are already taken on this host by
+    # the forgejo-pages cluster; check with `netstat -ano | findstr :8098`
+    # before changing it.
+    ports:
+      - "8098:80"
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx
+      - /var/run
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      # 127.0.0.1, not localhost — see the Dockerfile's HEALTHCHECK comment.
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  # The full gate suite, in a container, so "does it pass?" does not depend on
+  # anyone's local Python. Runs and exits; never left running.
+  checks:
+    build:
+      context: .
+      target: build
+    image: hermes-skills-portfolio-checks:local
+    profiles: ["checks"]
+    command: >-
+      sh -euc '
+        python -m pytest tests/ -q &&
+        python scripts/check_content_quality.py all --offline &&
+        python scripts/normalize_install_urls.py --check &&
+        python scripts/refresh_content_cache.py --check &&
+        python scripts/generate_sitemap.py --check &&
+        python scripts/generate_feed.py --check &&
+        echo "ALL GATES PASSED"
+      '

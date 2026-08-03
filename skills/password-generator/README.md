@@ -9,7 +9,7 @@ The agent generates cryptographically secure credentials using Python's `secrets
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/password-generator/SKILL.md
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/password-generator/SKILL.md
 ```
 
 ## How to use

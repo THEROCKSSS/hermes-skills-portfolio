@@ -9,7 +9,7 @@ The agent stores code snippets as markdown files with metadata (language, tags, 
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/snippet-manager/SKILL.md
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/snippet-manager/SKILL.md
 ```
 
 ## How to use

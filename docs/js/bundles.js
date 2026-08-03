@@ -31,7 +31,7 @@
         '<p class="bundle-oneliner">' + HC.escapeHtml(bundle.one_liner) + '</p>' +
         '<div class="bundle-count">' + members.length + ' skill' + (members.length === 1 ? "" : "s") + '</div>' +
       '</div>' +
-      '<svg class="bundle-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>';
+      '<svg class="bundle-chevron" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>';
 
     var body = document.createElement("div");
     body.className = "bundle-body";

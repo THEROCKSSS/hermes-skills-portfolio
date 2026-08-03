@@ -1,13 +1,65 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Submit a skill — Hermes Skills Portfolio</title>
   <meta name="description" content="How a new skill goes from a GitHub issue to a live entry in the Hermes Skills Portfolio catalog — the real process, stage by stage.">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/submit.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Hermes Skills Portfolio">
+  <meta property="og:title" content="Submit a skill — Hermes Skills Portfolio">
+  <meta property="og:description" content="How a new skill goes from a GitHub issue to a live entry in the Hermes Skills Portfolio catalog — the real process, stage by stage.">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/submit.html">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Submit a skill — Hermes Skills Portfolio">
+  <meta name="twitter:description" content="How a new skill goes from a GitHub issue to a live entry in the Hermes Skills Portfolio catalog — the real process, stage by stage.">
+  <link rel="sitemap" type="application/xml" href="sitemap.xml">
+  <!-- Structured data. The four steps are the four stages this page actually
+       documents, with their own copy — nothing added, no times or costs
+       invented for a process that does not state any. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "@id": "https://therocksss.github.io/hermes-skills-portfolio/submit.html#howto",
+    "name": "From request to release",
+    "description": "How a new skill goes from a GitHub issue to a live entry in the Hermes Skills Portfolio catalog — the real process, stage by stage.",
+    "inLanguage": "en",
+    "isPartOf": { "@id": "https://therocksss.github.io/hermes-skills-portfolio/#website" },
+    "step": [
+      {
+        "@type": "HowToStep",
+        "position": 1,
+        "name": "Open a request",
+        "text": "Open a Skill Request issue on GitHub. It asks for the skill name, a one-paragraph purpose, why it's empowering, a suggested category and tier, and any similar skills already in the catalog.",
+        "url": "https://github.com/THEROCKSSS/hermes-skills-portfolio/issues/new?template=skill_request.md"
+      },
+      {
+        "@type": "HowToStep",
+        "position": 2,
+        "name": "Review",
+        "text": "The repo owner reads the issue and checks it against the quality bar. This is a person reading and deciding, today — not an automated triage step."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 3,
+        "name": "Build",
+        "text": "If it's approved, the owner or a contributor writes the actual skill files — SKILL.md, README.md, and the skills-index.json entry — and opens a pull request."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 4,
+        "name": "Merge & live",
+        "text": "CI validates the frontmatter, checks that skills-index.json is in sync, and confirms the per-skill page exists. Once the owner merges, GitHub Pages rebuilds from the merged branch on its own and the skill is live in the catalog."
+      }
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/submit.css">
@@ -15,10 +67,10 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="nav">
+  <header class="nav is-solid" id="nav">
     <div class="nav-inner">
       <a class="nav-brand" href="./index.html">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
         Hermes Skills
       </a>
       <nav class="nav-links" aria-label="Sections">
@@ -29,20 +81,20 @@
       </nav>
       <div class="nav-actions">
         <button class="cmdk-trigger" id="cmdk-trigger" aria-haspopup="dialog" aria-controls="cmdk-modal">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <span class="cmdk-trigger-label">Search skills…</span>
           <kbd class="cmdk-trigger-kbd">&#8984;K</kbd>
         </button>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme (t)">
-          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
         <a class="github-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">GitHub</a>
       </div>
     </div>
   </header>
 
-  <main id="main" class="submit">
+  <main id="main" class="submit" tabindex="-1">
     <section class="submit-hero reveal">
       <h1>From request to release</h1>
       <p class="lede">Four stages, and today two of them are done by a person reading your issue — not a pipeline. Here is exactly what happens when you propose a skill for this catalog.</p>
@@ -132,11 +184,20 @@
 
   <footer class="footer">
     <div class="footer-inner">
-      <span class="footer-word">Hermes Skills — by Owen</span>
-      <span class="footer-sep">&middot;</span>
-      <span>Install one, your agent can now do that for you.</span>
-      <span class="footer-sep">&middot;</span>
-      <span>MIT licensed</span>
+      <div class="footer-col">
+        <span class="footer-word">Hermes Skills</span>
+        <p class="footer-note">Install one, your agent can now do that for you.</p>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Install any skill</span>
+        <code class="footer-code mono">hermes skills install &lt;url&gt;</code>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Colophon</span>
+        <p class="footer-meta">By Owen &middot; MIT licensed &middot;
+          <a href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">Source on GitHub</a>
+        </p>
+      </div>
     </div>
   </footer>
 

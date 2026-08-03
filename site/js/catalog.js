@@ -1,398 +1,386 @@
-// Hermes Skills Portfolio — Catalog page (Ecosystem Index macrostructure).
-// Rails (Featured/core, by-category, by-tier) + quickstart + full search/sort/filter
-// grid + skill detail overlay. Reads skills-index.json at render time — every count
-// on this page comes from that file, never invented. Uses HermesCommon for theme,
-// cmd-k, toast, copy, reveal — does not reimplement any of them.
+// Hermes Skills Portfolio — Catalog (Sidebar Filter macrostructure).
+//
+// Persistent facets drive a results grid. Every number and every string comes
+// from skills-index.json or the shared changelog data at render time — nothing
+// here is hardcoded or invented.
+//
+// The facet counts double as the distribution chart: each row draws a bar
+// proportional to its share, so the sidebar is both the filter and the "how is
+// this catalog shaped" view rather than restating the same numbers twice.
 (function () {
   "use strict";
 
   var HC = window.HermesCommon;
+  var TIER_LABELS = HC.TIER_LABELS;
+  var TIER_DESCS = {
+    core: "Broadly empowering — nearly any user benefits",
+    featured: "Strong fit for a common workflow",
+    utility: "Focused tool for a specific job"
+  };
+  var SOURCE_LABELS = { new: "Written for this catalog", generalized: "Generalized from internal use", adapted: "Adapted from an external source" };
+  var REPO = "https://github.com/THEROCKSSS/hermes-skills-portfolio";
+  var TIERS = ["core", "featured", "utility"];
 
   var indexData = null;
-  var currentSort = "tier-usage";
-  var currentCategory = "";
-  var currentTier = "";
-  var currentSearch = "";
-  var currentDetailSkill = null;
-
-  var TIER_ORDER = { core: 0, featured: 1, utility: 2 };
-  var TIER_LABELS = { core: "Core", featured: "Featured", utility: "Utility" };
-  var TIER_DESCS = {
-    core: "Broadly empowering — nearly any user benefits.",
-    featured: "Highly useful within a category.",
-    utility: "Useful for specific workflows.",
-  };
-  var SOURCE_LABELS = {
-    new: "Newly authored",
-    generalized: "Generalized from existing",
-    adapted: "Adapted with attribution",
-  };
+  var allSkills = [];
+  var state = { q: "", category: "", tier: "", list: "", sort: "tier" };
 
   function el(id) { return document.getElementById(id); }
-  function prefersReducedMotion() {
-    return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  function esc(s) { return HC.escapeHtml(s); }
+  function catName(k) { return (indexData.categories[k] || {}).name || k; }
+
+  // ---------- Facets ----------
+  function facetRowHtml(opts) {
+    var pct = opts.max ? (opts.count / opts.max) * 100 : 0;
+    return '<button class="facet-row" type="button" data-facet="' + esc(opts.group) + '" data-value="' + esc(opts.value) + '" ' +
+      'aria-pressed="' + (opts.active ? "true" : "false") + '" ' +
+      'title="' + esc(opts.label) + ': ' + opts.count + ' of ' + allSkills.length + ' skills">' +
+      '<span class="facet-bar" data-pct="' + pct.toFixed(1) + '"></span>' +
+      '<span class="facet-label">' + esc(opts.label) + '</span>' +
+      '<span class="facet-count">' + opts.count + '</span>' +
+    '</button>';
   }
 
-  // --- Usage / sorting / filtering (same rules as the previous single-page site) ---
-  function totalUsage(skill) {
-    var u = skill.usage || {};
-    return (u.hub_installs || 0) + (u.github_clones || 0) + (u.stars || 0) + (u.self_reported_users || 0);
+  function renderFacets() {
+    var catRows = Object.keys(indexData.categories).map(function (k) {
+      return { value: k, label: catName(k), count: allSkills.filter(function (s) { return s.category === k; }).length };
+    }).filter(function (r) { return r.count > 0; })
+      .sort(function (a, b) { return b.count - a.count; });
+
+    var tierRows = TIERS.map(function (t) {
+      return { value: t, label: TIER_LABELS[t], count: allSkills.filter(function (s) { return s.tier === t; }).length };
+    }).filter(function (r) { return r.count > 0; })
+      .sort(function (a, b) { return b.count - a.count; });
+
+    var catMax = Math.max.apply(null, catRows.map(function (r) { return r.count; }));
+    var tierMax = Math.max.apply(null, tierRows.map(function (r) { return r.count; }));
+
+    el("facet-category").innerHTML = catRows.map(function (r) {
+      return facetRowHtml({ group: "category", value: r.value, label: r.label, count: r.count, max: catMax, active: state.category === r.value });
+    }).join("");
+
+    el("facet-tier").innerHTML = tierRows.map(function (r) {
+      return facetRowHtml({ group: "tier", value: r.value, label: r.label, count: r.count, max: tierMax, active: state.tier === r.value });
+    }).join("");
+
+    // Personal lists — only offered when they actually contain something, so
+    // the sidebar never shows a filter that can only return nothing.
+    var mine = HC.getMyList().filter(existsInCatalog);
+    var recent = HC.getRecentlyViewed().filter(existsInCatalog);
+    var listRows = "";
+    if (mine.length) listRows += facetRowHtml({ group: "list", value: "mylist", label: "My List", count: mine.length, max: Math.max(mine.length, recent.length), active: state.list === "mylist" });
+    if (recent.length) listRows += facetRowHtml({ group: "list", value: "recent", label: "Recently viewed", count: recent.length, max: Math.max(mine.length, recent.length), active: state.list === "recent" });
+    el("facet-lists").innerHTML = listRows ||
+      '<p class="facet-note">Open a skill or save one and it will show up here.</p>';
+
+    // Table view of the same numbers, for anyone who wants them as data.
+    el("facet-table").querySelector("tbody").innerHTML =
+      catRows.concat(tierRows).map(function (r) {
+        return "<tr><td>" + esc(r.label) + "</td><td>" + r.count + "</td></tr>";
+      }).join("");
+
+    wireFacets();
+    growBars();
   }
-  function sortSkills(skills, mode) {
-    var arr = skills.slice();
-    switch (mode) {
-      case "tier-usage":
-        arr.sort(function (a, b) { var t = TIER_ORDER[a.tier] - TIER_ORDER[b.tier]; return t !== 0 ? t : totalUsage(b) - totalUsage(a); }); break;
-      case "usage":
-        arr.sort(function (a, b) { return totalUsage(b) - totalUsage(a); }); break;
-      case "recency":
-        arr.sort(function (a, b) { return (b.recency || "").localeCompare(a.recency || ""); }); break;
-      case "category":
-        arr.sort(function (a, b) { var c = (a.category || "").localeCompare(b.category || ""); return c !== 0 ? c : TIER_ORDER[a.tier] - TIER_ORDER[b.tier]; }); break;
-      case "alpha":
-        arr.sort(function (a, b) { return a.name.localeCompare(b.name); }); break;
-    }
-    return arr;
+
+  function existsInCatalog(name) {
+    return allSkills.some(function (s) { return s.name === name; });
   }
-  function filterSkills(skills) {
-    return skills.filter(function (s) {
-      if (currentCategory && s.category !== currentCategory) return false;
-      if (currentTier && s.tier !== currentTier) return false;
-      if (currentSearch) {
-        var q = currentSearch.toLowerCase();
-        var hay = (s.name + " " + s.description + " " + s.category + " " + s.tier + " " + (s.agent_use || "") + " " + (s.user_use || "")).toLowerCase();
-        if (hay.indexOf(q) === -1) return false;
-      }
-      return true;
+
+  function growBars() {
+    // Animate on reveal rather than on load so the growth is actually seen.
+    var bars = document.querySelectorAll(".facet-bar[data-pct]");
+    requestAnimationFrame(function () {
+      bars.forEach(function (b) { b.style.width = b.getAttribute("data-pct") + "%"; });
     });
   }
 
-  function findSkill(name) {
-    if (!indexData) return null;
-    for (var i = 0; i < indexData.skills.length; i++) {
-      if (indexData.skills[i].name === name) return indexData.skills[i];
-    }
-    return null;
-  }
-
-  // --- URL hash state ---
-  function readHashState() {
-    var hash = window.location.hash.substring(1);
-    if (!hash) return false;
-    if (hash.indexOf("skill/") === 0) {
-      var skillName = decodeURIComponent(hash.substring(6));
-      setTimeout(function () { openDetail(skillName); }, 0);
-      return true;
-    }
-    var params = new URLSearchParams(hash);
-    if (params.get("sort")) { currentSort = params.get("sort"); el("sort-select").value = currentSort; }
-    if (params.get("cat")) { currentCategory = params.get("cat"); el("category-filter").value = currentCategory; }
-    if (params.get("tier")) { currentTier = params.get("tier"); el("tier-filter").value = currentTier; }
-    if (params.get("q")) { currentSearch = params.get("q"); el("search-input").value = currentSearch; }
-    return false;
-  }
-  function writeHashState() {
-    if (currentDetailSkill) return;
-    var params = new URLSearchParams();
-    if (currentSort !== "tier-usage") params.set("sort", currentSort);
-    if (currentCategory) params.set("cat", currentCategory);
-    if (currentTier) params.set("tier", currentTier);
-    if (currentSearch) params.set("q", currentSearch);
-    var hash = params.toString();
-    if (hash) window.history.replaceState(null, "", "#" + hash);
-    else window.history.replaceState(null, "", window.location.pathname);
-  }
-
-  function discordBlurb(skill) {
-    return "**" + skill.name + "** — " + skill.category + " · " + TIER_LABELS[skill.tier] + "\n" +
-      skill.description + "\n" +
-      "Install: `hermes skills install " + skill.install_url + "`\n" +
-      HC.canonicalSkillUrl(skill.name);
-  }
-
-  // ============ HERO STATS ============
-  function renderHeroStats(data) {
-    var tierCount = { core: 0, featured: 0, utility: 0 };
-    data.skills.forEach(function (s) { if (tierCount[s.tier] !== undefined) tierCount[s.tier]++; });
-    el("stat-total").textContent = String(data.portfolio.total_skills);
-    el("stat-categories").textContent = String(Object.keys(data.categories).length);
-    el("stat-core").textContent = String(tierCount.core);
-  }
-
-  // ============ RAIL — Core skills (Featured) ============
-  function renderFeaturedRail(data) {
-    var track = el("rail-featured-track");
-    var core = data.skills.filter(function (s) { return s.tier === "core"; });
-    el("rail-featured-desc").textContent = core.length + " core skill" + (core.length === 1 ? "" : "s") + " — " + TIER_DESCS.core.toLowerCase();
-    track.innerHTML = "";
-    if (!core.length) { track.innerHTML = '<p class="rail-loading mono">No core-tier skills yet.</p>'; return; }
-    var frag = document.createDocumentFragment();
-    core.forEach(function (s) { frag.appendChild(makeRailCard(s, data.categories)); });
-    track.appendChild(frag);
-  }
-  function makeRailCard(skill, categories) {
-    var catName = categories[skill.category] ? categories[skill.category].name : skill.category;
-    var a = document.createElement("a");
-    a.className = "rail-card";
-    a.href = "#skill/" + encodeURIComponent(skill.name);
-    a.setAttribute("role", "listitem");
-    a.innerHTML =
-      '<span class="tier-badge ' + skill.tier + '">' + TIER_LABELS[skill.tier] + '</span>' +
-      '<span class="rail-card-name">' + HC.escapeHtml(skill.name) + '</span>' +
-      '<span class="rail-card-cat mono">' + HC.escapeHtml(catName) + '</span>' +
-      '<p class="rail-card-desc">' + HC.escapeHtml(skill.description) + '</p>';
-    return a;
-  }
-
-  // ============ BROWSE — by category ============
-  function renderCategoryGrid(data) {
-    var grid = el("category-grid");
-    grid.innerHTML = "";
-    var keys = Object.keys(data.categories).sort(function (a, b) {
-      return data.categories[b].skill_count - data.categories[a].skill_count;
-    });
-    var frag = document.createDocumentFragment();
-    keys.forEach(function (key) {
-      var cat = data.categories[key];
-      var card = document.createElement("button");
-      card.type = "button";
-      card.className = "browse-card";
-      card.setAttribute("role", "listitem");
-      card.innerHTML =
-        '<span class="browse-card-count mono">' + cat.skill_count + '</span>' +
-        '<span class="browse-card-name">' + HC.escapeHtml(cat.name) + '</span>' +
-        '<p class="browse-card-desc">' + HC.escapeHtml(cat.description) + '</p>';
-      card.addEventListener("click", function () {
-        currentCategory = key;
-        el("category-filter").value = key;
-        writeHashState();
-        renderGrid();
-        scrollToGrid();
+  function wireFacets() {
+    document.querySelectorAll(".facet-row").forEach(function (row) {
+      row.addEventListener("click", function () {
+        var group = row.getAttribute("data-facet");
+        var value = row.getAttribute("data-value");
+        state[group] = state[group] === value ? "" : value;
+        applyFilters();
+        renderFacets();
       });
-      frag.appendChild(card);
     });
-    grid.appendChild(frag);
   }
 
-  // ============ BROWSE — by tier ============
-  function renderTierGrid(data) {
-    var grid = el("tier-grid");
-    grid.innerHTML = "";
-    var tierCount = { core: 0, featured: 0, utility: 0 };
-    data.skills.forEach(function (s) { if (tierCount[s.tier] !== undefined) tierCount[s.tier]++; });
-    var frag = document.createDocumentFragment();
-    ["core", "featured", "utility"].forEach(function (tier) {
-      var card = document.createElement("button");
-      card.type = "button";
-      card.className = "browse-card tier-card " + tier;
-      card.setAttribute("role", "listitem");
-      card.innerHTML =
-        '<span class="browse-card-count mono">' + tierCount[tier] + '</span>' +
-        '<span class="browse-card-name">' + TIER_LABELS[tier] + '</span>' +
-        '<p class="browse-card-desc">' + TIER_DESCS[tier] + '</p>';
-      card.addEventListener("click", function () {
-        currentTier = tier;
-        el("tier-filter").value = tier;
-        writeHashState();
-        renderGrid();
-        scrollToGrid();
-      });
-      frag.appendChild(card);
-    });
-    grid.appendChild(frag);
-  }
-
-  function scrollToGrid() {
-    var target = el("all-skills");
-    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  // ============ QUICKSTART (graphite band) — the page's one real hero type-in ============
-  // Types a REAL skill's REAL install command (from skills-index.json) into the code
-  // element character-by-character. Runs once per page load, never on re-render.
-  var quickstartTypedIn = false;
-
-  function typeInText(node, text, opts) {
-    opts = opts || {};
-    var minMs = opts.minMs || 30;
-    var maxMs = opts.maxMs || 45;
-    var onDone = opts.onDone || function () {};
-    var i = 0;
-    node.textContent = "";
-    (function step() {
-      if (i >= text.length) { onDone(); return; }
-      i++;
-      node.textContent = text.slice(0, i);
-      setTimeout(step, minMs + Math.random() * (maxMs - minMs));
-    })();
-  }
-
-  function renderQuickstart(data) {
-    var example = data.skills.filter(function (s) { return s.tier === "core"; })[0] || data.skills[0];
-    if (!example) return;
-    var cmd = "hermes skills install " + example.install_url;
-    var codeEl = el("quickstart-install-cmd");
-    var btn = el("quickstart-copy-btn");
-
-    function wireCopy() {
-      btn.disabled = false;
-      btn.removeAttribute("aria-disabled");
-      btn.addEventListener("click", function () {
-        HC.copyToClipboard(cmd, btn, { restoreLabel: "Copy", toastMsg: "Install command copied" });
-      });
-    }
-
-    // Screen readers get the full, final string immediately regardless of the
-    // visual typing animation — they should never be read the command character by character.
-    codeEl.setAttribute("aria-label", cmd);
-
-    if (quickstartTypedIn || prefersReducedMotion()) {
-      quickstartTypedIn = true;
-      codeEl.textContent = cmd;
-      wireCopy();
+  // ---------- What's new ----------
+  function renderWhatsNew() {
+    var commits = (window.HermesChangelog && window.HermesChangelog.COMMITS) || [];
+    var list = el("whatsnew-list");
+    if (!commits.length) {
+      list.innerHTML = '<li class="whatsnew-empty">No changelog entries are available.</li>';
       return;
     }
-    quickstartTypedIn = true;
-    typeInText(codeEl, cmd, {
-      minMs: 30,
-      maxMs: 45,
-      onDone: function () {
-        var caret = document.createElement("span");
-        caret.className = "quickstart-caret";
-        caret.setAttribute("aria-hidden", "true");
-        codeEl.appendChild(caret);
-        wireCopy();
-      },
+    list.innerHTML = commits.slice(0, 5).map(function (c) {
+      return '<li class="whatsnew-item">' +
+        '<span class="whatsnew-subject">' + esc(c.text) + '</span>' +
+        '<time class="whatsnew-date" datetime="' + esc(c.date) + '">' + esc(c.date) + '</time>' +
+      '</li>';
+    }).join("");
+  }
+
+  // ---------- Results ----------
+  function currentResults() {
+    var out = state.q ? HC.searchSkills(allSkills, state.q) : allSkills.slice();
+    if (state.category) out = out.filter(function (s) { return s.category === state.category; });
+    if (state.tier) out = out.filter(function (s) { return s.tier === state.tier; });
+
+    if (state.list) {
+      var names = state.list === "mylist" ? HC.getMyList() : HC.getRecentlyViewed();
+      out = out.filter(function (s) { return names.indexOf(s.name) !== -1; });
+      // Personal lists carry their own meaningful order (most recent first).
+      out.sort(function (a, b) { return names.indexOf(a.name) - names.indexOf(b.name); });
+      return out;
+    }
+
+    if (!state.q) {
+      var order = { core: 0, featured: 1, utility: 2 };
+      if (state.sort === "name") out.sort(function (a, b) { return a.name.localeCompare(b.name); });
+      else if (state.sort === "category") out.sort(function (a, b) { return a.category.localeCompare(b.category) || a.name.localeCompare(b.name); });
+      else out.sort(function (a, b) { return order[a.tier] - order[b.tier] || a.name.localeCompare(b.name); });
+    }
+    return out;
+  }
+
+  function activeCount() {
+    return (state.q ? 1 : 0) + (state.category ? 1 : 0) + (state.tier ? 1 : 0) + (state.list ? 1 : 0);
+  }
+
+  function renderChips() {
+    var chips = [];
+    if (state.q) chips.push({ k: "q", label: 'Search: "' + state.q + '"' });
+    if (state.category) chips.push({ k: "category", label: "Category: " + catName(state.category) });
+    if (state.tier) chips.push({ k: "tier", label: "Tier: " + (TIER_LABELS[state.tier] || state.tier) });
+    if (state.list) chips.push({ k: "list", label: state.list === "mylist" ? "My List" : "Recently viewed" });
+
+    el("active-filters").innerHTML = chips.map(function (c) {
+      return '<button class="filter-chip" type="button" data-clear="' + c.k + '">' + esc(c.label) +
+        ' <span aria-hidden="true">&times;</span><span class="sr-only"> (remove filter)</span></button>';
+    }).join("");
+
+    el("active-filters").querySelectorAll(".filter-chip").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        var k = chip.getAttribute("data-clear");
+        state[k] = "";
+        if (k === "q") el("search-input").value = "";
+        applyFilters();
+        renderFacets();
+      });
     });
+
+    var count = activeCount();
+    el("side-toggle-count").textContent = count ? count + " active" : "";
   }
 
-  // ============ FILTER CHIPS ============
-  function renderFilterChips() {
-    var container = el("active-filters");
-    container.innerHTML = "";
-    if (currentCategory) {
-      var catName = (indexData.categories[currentCategory] || {}).name || currentCategory;
-      container.appendChild(makeChip("Category: " + catName, function () { currentCategory = ""; el("category-filter").value = ""; writeHashState(); renderGrid(); }));
-    }
-    if (currentTier) {
-      container.appendChild(makeChip("Tier: " + TIER_LABELS[currentTier], function () { currentTier = ""; el("tier-filter").value = ""; writeHashState(); renderGrid(); }));
-    }
-    if (currentSearch) {
-      container.appendChild(makeChip('Search: "' + currentSearch + '"', function () { currentSearch = ""; el("search-input").value = ""; writeHashState(); renderGrid(); }));
-    }
-    container.appendChild(makeShareViewButton());
-  }
-  function makeShareViewButton() {
-    var btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "btn btn-outline btn-sm share-view-btn";
-    btn.textContent = "Share view";
-    btn.addEventListener("click", function () {
-      HC.copyToClipboard(window.location.href, btn, { restoreLabel: "Share view", toastMsg: "View link copied" });
-    });
-    return btn;
-  }
-  function makeChip(label, onRemove) {
-    var chip = document.createElement("span"); chip.className = "filter-chip";
-    var text = document.createElement("span"); text.textContent = label;
-    var btn = document.createElement("button"); btn.type = "button"; btn.textContent = "×";
-    btn.setAttribute("aria-label", "Remove filter: " + label);
-    btn.addEventListener("click", function (e) { e.stopPropagation(); onRemove(); });
-    chip.appendChild(text); chip.appendChild(btn);
-    return chip;
-  }
-
-  // ============ MAIN GRID ============
-  function renderSkillCard(skill, categories) {
-    var catName = categories[skill.category] ? categories[skill.category].name : skill.category;
-    var sourceLabel = SOURCE_LABELS[skill.source] || skill.source;
-    var a = document.createElement("a");
-    a.className = "skill-card";
-    a.href = "#skill/" + encodeURIComponent(skill.name);
-    a.setAttribute("role", "listitem");
-    a.innerHTML =
-      '<div class="skill-card-head">' +
-        '<span class="skill-card-name">' + HC.highlightText(skill.name, currentSearch) + '</span>' +
-        '<span class="tier-badge ' + skill.tier + '">' + TIER_LABELS[skill.tier] + '</span>' +
-      '</div>' +
-      '<p class="skill-card-desc">' + HC.highlightText(skill.description, currentSearch) + '</p>' +
-      '<div class="skill-card-meta">' +
-        '<span class="mono">' + HC.escapeHtml(catName) + '</span>' +
-        '<span class="mono">' + HC.escapeHtml(sourceLabel) + '</span>' +
-      '</div>' +
-      '<span class="skill-card-cta">View details <span aria-hidden="true">→</span></span>';
-    return a;
-  }
-
-  function renderGrid() {
-    if (!indexData) return;
-    var skills = filterSkills(sortSkills(indexData.skills, currentSort));
+  function applyFilters() {
+    var results = currentResults();
     var grid = el("catalog-grid");
-    var noResults = el("no-results");
-    grid.innerHTML = "";
-    renderFilterChips();
-    writeHashState();
-    if (skills.length === 0) {
-      grid.hidden = true; noResults.hidden = false;
-      el("catalog-status").textContent = "0 skills match the current filters.";
-      return;
+    grid.innerHTML = results.map(HC.renderPoster).join("");
+    wirePosters(grid);
+
+    el("catalog-status").textContent = results.length === allSkills.length
+      ? "Showing all " + allSkills.length + " skills."
+      : "Showing " + results.length + " of " + allSkills.length + " skills.";
+
+    var none = el("no-results");
+    none.hidden = results.length > 0;
+    if (!results.length) {
+      var suggestion = state.q ? HC.didYouMean(allSkills, state.q) : null;
+      el("no-results-text").innerHTML = "No skills match those filters." +
+        (suggestion ? " Did you mean <strong>" + esc(suggestion) + "</strong>?" : "");
     }
-    grid.hidden = false; noResults.hidden = true;
-    el("catalog-status").textContent = skills.length + " skill" + (skills.length === 1 ? "" : "s") + " shown of " + indexData.skills.length + ".";
-    var frag = document.createDocumentFragment();
-    skills.forEach(function (s) { frag.appendChild(renderSkillCard(s, indexData.categories)); });
-    grid.appendChild(frag);
+    renderChips();
+    syncUrl();
   }
 
-  function populateCategoryFilter(categories) {
-    var sel = el("category-filter");
-    Object.keys(categories).sort().forEach(function (key) {
-      var opt = document.createElement("option");
-      opt.value = key;
-      opt.textContent = categories[key].name + " (" + categories[key].skill_count + ")";
-      sel.appendChild(opt);
+  function clearFilters() {
+    state.q = ""; state.category = ""; state.tier = ""; state.list = "";
+    el("search-input").value = "";
+    applyFilters();
+    renderFacets();
+  }
+
+  function syncUrl() {
+    var params = new URLSearchParams();
+    if (state.q) params.set("q", state.q);
+    if (state.category) params.set("category", state.category);
+    if (state.tier) params.set("tier", state.tier);
+    if (state.list) params.set("list", state.list);
+    var qs = params.toString();
+    history.replaceState(null, "", qs ? "?" + qs : location.pathname);
+  }
+
+  function readUrl() {
+    var params = new URLSearchParams(location.search);
+    state.q = params.get("q") || "";
+    state.category = params.get("category") || "";
+    state.tier = params.get("tier") || "";
+    state.list = params.get("list") || "";
+    el("search-input").value = state.q;
+  }
+
+  function wirePosters(root) {
+    root.querySelectorAll(".poster").forEach(function (card) {
+      var name = card.getAttribute("data-name");
+      card.addEventListener("click", function (e) {
+        if (e.target.closest(".poster-quick")) return;
+        openDetail(name);
+      });
+      card.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDetail(name); }
+      });
+    });
+    root.querySelectorAll(".poster-quick").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        HC.copyToClipboard(btn.getAttribute("data-copy"), null, { toastMsg: "Install command copied" });
+      });
     });
   }
 
-  // ============ DETAIL OVERLAY ============
-  function bulletize(text) {
-    if (!text) return "<p>See the SKILL.md tab for full usage instructions.</p>";
-    if (text.indexOf("- ") === 0 || text.indexOf("\n- ") !== -1) {
-      var lines = text.split("\n");
-      var listHtml = "<ul>"; var inList = false; var parts = [];
-      lines.forEach(function (line) {
-        line = line.trim();
-        if (line.indexOf("- ") === 0) { inList = true; listHtml += "<li>" + HC.escapeHtml(line.substring(2)) + "</li>"; }
-        else if (line) { if (inList) { listHtml += "</ul>"; inList = false; } parts.push("<p>" + HC.escapeHtml(line) + "</p>"); }
-      });
-      if (inList) listHtml += "</ul>";
-      return parts.join("") + listHtml;
+  // ---------- Markdown ----------
+  // A deliberately small renderer: headings, lists, tables, code fences, links,
+  // inline code, blockquotes, rules. Everything is escaped BEFORE any markup is
+  // introduced, so skill content can never inject HTML into the page.
+  function renderMarkdown(src) {
+    var text = String(src == null ? "" : src).replace(/\r\n/g, "\n");
+    var blocks = [];
+    // The token must survive the line.trim() below — a space-delimited marker
+    // gets its delimiters stripped and then never matches, which silently drops
+    // every code block and leaks the raw placeholder into the page.
+    text = text.replace(/```([a-zA-Z0-9_-]*)\n([\s\S]*?)```/g, function (m, lang, code) {
+      blocks.push('<div class="md-pre-wrap"><pre><code>' + HC.escapeHtml(code.replace(/\n$/, "")) + "</code></pre>" +
+        '<button class="md-copy" type="button">Copy</button></div>');
+      return "\n%%MDBLOCK" + (blocks.length - 1) + "%%\n";
+    });
+
+    var lines = text.split("\n");
+    var html = "";
+    var listType = null;
+    var inTable = false;
+
+    function closeList() { if (listType) { html += "</" + listType + ">"; listType = null; } }
+    function closeTable() { if (inTable) { html += "</tbody></table></div>"; inTable = false; } }
+
+    function inline(s) {
+      var out = HC.escapeHtml(s);
+      out = out.replace(/`([^`]+)`/g, "<code>$1</code>");
+      out = out.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+      // Links: http(s) only — never javascript: URLs.
+      out = out.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,
+        '<a href="$2" target="_blank" rel="noopener">$1</a>');
+      return out;
     }
-    return "<p>" + HC.escapeHtml(text) + "</p>";
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      var placeholder = /^%%MDBLOCK(\d+)%%$/.exec(line.trim());
+      if (placeholder) { closeList(); closeTable(); html += blocks[Number(placeholder[1])]; continue; }
+      if (!line.trim()) { closeList(); closeTable(); continue; }
+
+      var h = /^(#{1,6})\s+(.*)$/.exec(line);
+      if (h) {
+        closeList(); closeTable();
+        var lvl = Math.min(h[1].length, 4);
+        html += "<h" + lvl + ">" + inline(h[2]) + "</h" + lvl + ">";
+        continue;
+      }
+      if (/^\s*([-*_])\s*\1\s*\1[\s-*_]*$/.test(line)) { closeList(); closeTable(); html += "<hr>"; continue; }
+
+      if (line.indexOf("|") !== -1 && /^\s*\|?[-:\s|]+\|[-:\s|]*$/.test(lines[i + 1] || "")) {
+        closeList();
+        var headers = line.split("|").map(function (c) { return c.trim(); })
+          .filter(function (c, idx, arr) { return !(c === "" && (idx === 0 || idx === arr.length - 1)); });
+        html += '<div class="md-table-scroll"><table><thead><tr>' +
+          headers.map(function (c) { return "<th>" + inline(c) + "</th>"; }).join("") + "</tr></thead><tbody>";
+        inTable = true; i++;
+        continue;
+      }
+      if (inTable) {
+        if (line.indexOf("|") === -1) { closeTable(); }
+        else {
+          var cells = line.split("|").map(function (c) { return c.trim(); })
+            .filter(function (c, idx, arr) { return !(c === "" && (idx === 0 || idx === arr.length - 1)); });
+          html += "<tr>" + cells.map(function (c) { return "<td>" + inline(c) + "</td>"; }).join("") + "</tr>";
+          continue;
+        }
+      }
+
+      var ul = /^\s*[-*]\s+(.*)$/.exec(line);
+      var ol = /^\s*\d+[.)]\s+(.*)$/.exec(line);
+      if (ul || ol) {
+        var want = ul ? "ul" : "ol";
+        if (listType !== want) { closeList(); html += "<" + want + ">"; listType = want; }
+        html += "<li>" + inline((ul || ol)[1]) + "</li>";
+        continue;
+      }
+      closeList();
+
+      var bq = /^\s*>\s?(.*)$/.exec(line);
+      if (bq) { html += "<blockquote>" + inline(bq[1]) + "</blockquote>"; continue; }
+
+      html += "<p>" + inline(line) + "</p>";
+    }
+    closeList(); closeTable();
+    return html;
   }
 
-  function openDetail(skillName) {
-    var skill = findSkill(skillName);
+  function mountMarkdown(container, src) {
+    container.innerHTML = renderMarkdown(src);
+    container.querySelectorAll(".md-copy").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var code = btn.parentElement.querySelector("code");
+        HC.copyToClipboard(code ? code.textContent : "", btn, { restoreLabel: "Copy", toastMsg: "Code copied" });
+      });
+    });
+  }
+
+  // ---------- Detail overlay ----------
+  var lastFocused = null;
+
+  function relatedTo(skill) {
+    // Real relationships only: the skill's own declared related_skills when the
+    // target exists in this catalog, then same-category siblings to fill out.
+    var declared = [];
+    var fm = skill.frontmatter || {};
+    var meta = (fm.metadata && fm.metadata.hermes) || {};
+    (meta.related_skills || []).forEach(function (n) {
+      if (existsInCatalog(n)) declared.push(n);
+    });
+    var siblings = allSkills
+      .filter(function (s) { return s.category === skill.category && s.name !== skill.name && declared.indexOf(s.name) === -1; })
+      .slice(0, 4).map(function (s) { return s.name; });
+    return declared.concat(siblings).slice(0, 6);
+  }
+
+  function openDetail(name) {
+    var skill = allSkills.filter(function (s) { return s.name === name; })[0];
     if (!skill) return;
-    currentDetailSkill = skillName;
-    document.body.classList.add("detail-open");
+    lastFocused = document.activeElement;
+    HC.pushRecentlyViewed(name);
+
     var overlay = el("detail-overlay");
     overlay.hidden = false;
+    document.body.style.overflow = "hidden";
+    setBackgroundInert(true);
+    overlay.addEventListener("keydown", trapTab);
 
-    var catName = indexData.categories[skill.category] ? indexData.categories[skill.category].name : skill.category;
-    var sourceLabel = SOURCE_LABELS[skill.source] || skill.source;
     var installCmd = "hermes skills install " + skill.install_url;
 
     el("detail-name").textContent = skill.name;
     var tierBadge = el("detail-tier");
-    tierBadge.textContent = TIER_LABELS[skill.tier];
+    tierBadge.textContent = TIER_LABELS[skill.tier] || skill.tier;
     tierBadge.className = "tier-badge " + skill.tier;
     el("detail-desc").textContent = skill.description;
 
-    var metaHtml = '<span><strong>Category:</strong> ' + HC.escapeHtml(catName) + '</span>' +
-      '<span><strong>Tier:</strong> ' + TIER_DESCS[skill.tier] + '</span>' +
-      '<span><strong>Source:</strong> ' + HC.escapeHtml(sourceLabel) + '</span>';
-    if (skill.recency) metaHtml += '<span><strong>Updated:</strong> ' + HC.escapeHtml(skill.recency) + '</span>';
+    var metaHtml = "<span><strong>Category:</strong> " + esc(catName(skill.category)) + "</span>" +
+      "<span><strong>Tier:</strong> " + esc(TIER_DESCS[skill.tier] || skill.tier) + "</span>" +
+      "<span><strong>Source:</strong> " + esc(SOURCE_LABELS[skill.source] || skill.source) + "</span>";
+    if (skill.recency) metaHtml += "<span><strong>Updated:</strong> " + esc(skill.recency) + "</span>";
     el("detail-meta").innerHTML = metaHtml;
 
     el("detail-user-use").textContent = skill.user_use || skill.description;
@@ -402,173 +390,204 @@
     var installBtn = el("detail-copy-btn");
     installBtn.onclick = function () { HC.copyToClipboard(installCmd, installBtn, { restoreLabel: "Copy", toastMsg: "Install command copied" }); };
 
-    el("detail-skillmd-link").href = skill.install_url;
+    // install_url is the raw URL the CLI fetches; source_url is the GitHub blob
+    // page a human should land on. Never point this link at install_url.
+    el("detail-skillmd-link").href = skill.source_url || skill.install_url;
 
     var sourceLink = el("detail-source-link");
     var originUrl = skill.source_attribution && skill.source_attribution.origin_url;
     if (originUrl) { sourceLink.href = originUrl; sourceLink.hidden = false; }
     else { sourceLink.hidden = true; }
 
-    el("detail-skillmd-content").textContent = skill.skillmd_content || "SKILL.md content not available.";
-    el("detail-readme-content").textContent = skill.readme_content || "README.md content not available.";
+    el("detail-report-link").href = REPO + "/issues/new?title=" +
+      encodeURIComponent("[" + skill.name + "] ") +
+      "&body=" + encodeURIComponent("Skill: " + skill.name + "\nPage: " + HC.canonicalSkillUrl(skill.name) + "\n\nWhat went wrong:\n");
 
-    var link = HC.canonicalSkillUrl(skill.name);
-    var copyLinkBtn = el("detail-copy-link-btn");
-    copyLinkBtn.textContent = "Copy link";
-    copyLinkBtn.classList.remove("is-success");
-    copyLinkBtn.onclick = function () { HC.copyToClipboard(link, copyLinkBtn, { restoreLabel: "Copy link", toastMsg: "Skill link copied" }); };
+    var related = relatedTo(skill);
+    var relSection = el("detail-related-section");
+    if (related.length) {
+      relSection.hidden = false;
+      el("detail-related").innerHTML = related.map(function (n) {
+        return '<button class="related-chip" type="button" data-name="' + esc(n) + '">' + esc(n) + "</button>";
+      }).join("");
+      el("detail-related").querySelectorAll(".related-chip").forEach(function (chip) {
+        chip.addEventListener("click", function () { openDetail(chip.getAttribute("data-name")); });
+      });
+    } else { relSection.hidden = true; }
 
-    var blurb = discordBlurb(skill);
-    var copyDiscordBtn = el("detail-copy-discord-btn");
-    copyDiscordBtn.textContent = "Copy Discord blurb";
-    copyDiscordBtn.classList.remove("is-success");
-    copyDiscordBtn.onclick = function () { HC.copyToClipboard(blurb, copyDiscordBtn, { restoreLabel: "Copy Discord blurb", toastMsg: "Discord blurb copied" }); };
-    var preview = el("detail-discord-preview");
-    preview.textContent = blurb;
-    preview.hidden = false;
+    syncMyListBtn(skill.name);
+    mountMarkdown(el("detail-skillmd-content"), skill.skillmd_content || "SKILL.md content is not available.");
+    mountMarkdown(el("detail-readme-content"), skill.readme_content || "README.md content is not available.");
 
-    switchDetailTab("overview");
-    window.history.replaceState(null, "", "#skill/" + encodeURIComponent(skillName));
-    overlay.scrollTop = 0;
+    wireShare(skill);
+    switchTab("overview");
+    location.hash = "skill/" + encodeURIComponent(skill.name);
     el("detail-close").focus();
+    renderFacets(); // "Recently viewed" may have just gained its first entry
+  }
+
+  function syncMyListBtn(name) {
+    var btn = el("detail-mylist-btn");
+    var saved = HC.isInMyList(name);
+    btn.setAttribute("aria-pressed", String(saved));
+    el("detail-mylist-label").textContent = saved ? "In My List" : "Add to My List";
+    btn.onclick = function () {
+      var nowSaved = HC.toggleMyList(name);
+      syncMyListBtn(name);
+      HC.showToast(nowSaved ? "Saved to My List (this browser)" : "Removed from My List");
+      renderFacets();
+      if (state.list) applyFilters();
+    };
+  }
+
+  function wireShare(skill) {
+    var url = HC.canonicalSkillUrl(skill.name);
+    el("detail-copy-link-btn").onclick = function () {
+      HC.copyToClipboard(url, el("detail-copy-link-btn"), { restoreLabel: "Copy link", toastMsg: "Link copied" });
+    };
+    var blurb = "**" + skill.name + "** — " + skill.description + "\n" +
+      "Install: `hermes skills install " + skill.install_url + "`\n" + url;
+    el("detail-copy-discord-btn").onclick = function () {
+      var pre = el("detail-discord-preview");
+      pre.hidden = false; pre.textContent = blurb;
+      HC.copyToClipboard(blurb, el("detail-copy-discord-btn"), { restoreLabel: "Copy Discord blurb", toastMsg: "Discord blurb copied" });
+    };
+  }
+
+  function bulletize(text) {
+    if (!text) return "&mdash;";
+    var items = String(text).split("\n").map(function (l) { return l.replace(/^-\s*/, "").trim(); }).filter(Boolean);
+    if (!items.length) return "&mdash;";
+    return "<ul>" + items.map(function (i) { return "<li>" + esc(i) + "</li>"; }).join("") + "</ul>";
+  }
+
+  function switchTab(tab) {
+    document.querySelectorAll(".detail-tab").forEach(function (b) {
+      var on = b.getAttribute("data-tab") === tab;
+      b.classList.toggle("active", on);
+      b.setAttribute("aria-selected", String(on));
+    });
+    document.querySelectorAll(".detail-tab-content").forEach(function (c) {
+      c.classList.toggle("active", c.id === "tab-" + tab);
+    });
+  }
+
+  // The overlay is a modal dialog, so everything behind it must leave the tab
+  // order — otherwise focus walks out of the dialog and lands on the footer
+  // while the dialog is still open. `inert` also hides the background from
+  // assistive tech, which aria-modal alone does not guarantee.
+  // #cmdk-modal is included because the palette is now built at init (so its
+  // aria-controls target exists), which puts its focusable input in the tab
+  // order behind the dialog unless it is inerted too.
+  var INERT_SELECTORS = ["#nav", "#main", ".footer", "#back-to-top", "#cmdk-modal"];
+  function setBackgroundInert(on) {
+    INERT_SELECTORS.forEach(function (sel) {
+      var node = document.querySelector(sel);
+      if (!node) return;
+      if (on) { node.setAttribute("inert", ""); }
+      else { node.removeAttribute("inert"); }
+    });
+  }
+
+  // inert alone stops focus reaching the background, but past the dialog's last
+  // control Tab still walks out into the browser chrome and wraps to <body>.
+  // Cycling explicitly keeps focus inside for as long as the dialog is open.
+  var FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),' +
+    'select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+
+  function trapTab(e) {
+    if (e.key !== "Tab") return;
+    var overlay = el("detail-overlay");
+    var items = Array.prototype.filter.call(
+      overlay.querySelectorAll(FOCUSABLE),
+      function (n) { return n.offsetParent !== null || n === document.activeElement; }
+    );
+    if (!items.length) return;
+    var first = items[0];
+    var last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   }
 
   function closeDetail() {
-    document.body.classList.remove("detail-open");
+    el("detail-overlay").removeEventListener("keydown", trapTab);
     el("detail-overlay").hidden = true;
-    currentDetailSkill = null;
-    var params = new URLSearchParams();
-    if (currentSort !== "tier-usage") params.set("sort", currentSort);
-    if (currentCategory) params.set("cat", currentCategory);
-    if (currentTier) params.set("tier", currentTier);
-    if (currentSearch) params.set("q", currentSearch);
-    var hash = params.toString();
-    if (hash) window.history.replaceState(null, "", "#" + hash);
-    else window.history.replaceState(null, "", window.location.pathname);
+    document.body.style.overflow = "";
+    setBackgroundInert(false);
+    if (location.hash.indexOf("#skill/") === 0) {
+      history.replaceState(null, "", location.pathname + location.search);
+    }
+    if (lastFocused && lastFocused.focus) lastFocused.focus();
   }
 
-  function switchDetailTab(tabName) {
-    document.querySelectorAll(".detail-tab").forEach(function (t) {
-      var active = t.getAttribute("data-tab") === tabName;
-      t.classList.toggle("active", active);
-      t.setAttribute("aria-selected", String(active));
-    });
-    document.querySelectorAll(".detail-tab-content").forEach(function (c) { c.classList.remove("active"); });
-    el("tab-" + tabName).classList.add("active");
-  }
-
-  function setupDetailEvents() {
-    el("detail-close").addEventListener("click", closeDetail);
-    el("detail-overlay").addEventListener("click", function (e) { if (e.target === this) closeDetail(); });
-    document.querySelectorAll(".detail-tab").forEach(function (tab) {
-      tab.addEventListener("click", function () { switchDetailTab(tab.getAttribute("data-tab")); });
-    });
-  }
-
-  // ============ CONTROLS ============
-  function setControlsEnabled(enabled) {
-    ["sort-select", "category-filter", "tier-filter", "search-input"].forEach(function (id) {
-      var node = el(id);
-      node.disabled = !enabled;
-      if (enabled) node.removeAttribute("aria-disabled"); else node.setAttribute("aria-disabled", "true");
-    });
-  }
-
-  function setupControls() {
-    el("sort-select").addEventListener("change", function (e) { currentSort = e.target.value; renderGrid(); });
-    el("category-filter").addEventListener("change", function (e) { currentCategory = e.target.value; renderGrid(); });
-    el("tier-filter").addEventListener("change", function (e) { currentTier = e.target.value; renderGrid(); });
-    var searchTimer = null;
-    el("search-input").addEventListener("input", function (e) {
-      currentSearch = e.target.value;
-      if (searchTimer) clearTimeout(searchTimer);
-      searchTimer = setTimeout(renderGrid, 150);
-    });
-    el("catalog-controls").addEventListener("submit", function (e) { e.preventDefault(); });
-    el("clear-filters-btn").addEventListener("click", function () {
-      currentSort = "tier-usage"; currentCategory = ""; currentTier = ""; currentSearch = "";
-      el("sort-select").value = "tier-usage";
-      el("category-filter").value = "";
-      el("tier-filter").value = "";
-      el("search-input").value = "";
-      renderGrid();
-    });
-  }
-
-  function setupBackToTop() {
-    var btn = el("back-to-top");
-    window.addEventListener("scroll", function () { btn.hidden = window.scrollY < 600; }, { passive: true });
-    btn.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
-  }
-
-  function setupKeyboard() {
-    document.addEventListener("keydown", function (e) {
-      var typing = e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "TEXTAREA";
-      if (e.key === "Escape") { if (currentDetailSkill) closeDetail(); return; }
-      if (typing) return;
-      if (e.key === "r" || e.key === "R") {
-        if (!indexData || !indexData.skills.length) return;
-        var pick = indexData.skills[Math.floor(Math.random() * indexData.skills.length)];
-        window.location.hash = "skill/" + encodeURIComponent(pick.name);
-      }
-    });
-  }
-
-  function showLoadError() {
-    el("catalog-status").textContent = "Could not load skills-index.json.";
-    el("hero-heading").textContent = "Skills your Hermes agent can just install.";
-    el("rail-featured-track").innerHTML = '<p class="rail-loading mono">Could not load skill data.</p>';
-    el("category-grid").innerHTML = '<p class="rail-loading mono">Could not load skill data.</p>';
-    el("tier-grid").innerHTML = '<p class="rail-loading mono">Could not load skill data.</p>';
-  }
-
-  // ============ HERO REVEAL ============
-  // The page's one hero *type-in* lives on the quickstart install command (see
-  // renderQuickstart / typeInText below) — design.md allows exactly one. The H1
-  // uses the shared .reveal fade+rise utility instead ("everywhere else: reveal or none").
-  function initHeroReveal() {
-    var heading = el("hero-heading");
-    heading.classList.add("reveal");
-    if (prefersReducedMotion()) { heading.classList.add("is-in"); return; }
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () { heading.classList.add("is-in"); });
-    });
-  }
-
+  // ---------- Boot ----------
   function init() {
-    setControlsEnabled(false);
-    initHeroReveal();
-    el("hero-search-btn").addEventListener("click", function () {
-      var trigger = el("cmdk-trigger");
-      if (trigger) trigger.click();
-    });
-    setupDetailEvents();
-    setupBackToTop();
-    setupKeyboard();
+    el("catalog-grid").innerHTML = HC.skeletonPosters(8);
 
     HC.loadIndex(function (data) {
-      if (!data) { showLoadError(); return; }
+      if (!data || !data.skills) {
+        el("catalog-status").textContent = "Could not load skills-index.json.";
+        el("catalog-grid").innerHTML = "";
+        return;
+      }
       indexData = data;
-      var totalDesc = el("catalog-total-desc");
-      if (totalDesc) totalDesc.textContent = "All " + data.skills.length + " skills — sort, filter, or search to narrow it down.";
-      renderHeroStats(data);
-      renderFeaturedRail(data);
-      renderCategoryGrid(data);
-      renderTierGrid(data);
-      renderQuickstart(data);
-      populateCategoryFilter(data.categories || {});
-      setupControls();
-      setControlsEnabled(true);
-      var openedDetail = readHashState();
-      renderGrid();
-      if (!openedDetail) { /* grid already reflects hash state */ }
-      window.addEventListener("hashchange", function () {
-        var isSkill = readHashState();
-        if (!isSkill) renderGrid();
-      });
+      allSkills = data.skills;
+
       HC.initCmdk(data);
+      readUrl();
+
+      // Viewport-agnostic wording: the facets are a left rail on desktop but sit
+      // behind a disclosure on phones, so "on the left" would be wrong there.
+      el("masthead-sub").textContent =
+        allSkills.length + " skills across " + Object.keys(data.categories).length +
+        " categories. Filter by category or tier, or press ⌘K to search.";
+      // The masthead shows the generic shape, not one skill's URL: the label
+      // says every skill installs the same way, and a full raw URL only ever
+      // renders clipped here. The real per-skill command lives on every card
+      // and in the detail overlay, where it can be copied.
+
+      renderFacets();
+      renderWhatsNew();
+      applyFilters();
       HC.initReveal(document);
+
+      if (location.hash.indexOf("#skill/") === 0) {
+        openDetail(decodeURIComponent(location.hash.slice("#skill/".length)));
+      }
     });
+
+    var searchInput = el("search-input");
+    var debounce = null;
+    searchInput.addEventListener("input", function () {
+      clearTimeout(debounce);
+      debounce = setTimeout(function () { state.q = searchInput.value.trim(); applyFilters(); }, 140);
+    });
+    el("sort-select").addEventListener("change", function (e) { state.sort = e.target.value; applyFilters(); });
+    el("clear-filters-btn").addEventListener("click", clearFilters);
+    el("clear-filters-btn-2").addEventListener("click", clearFilters);
+
+    // Sidebar disclosure (mobile only — the button is display:none above 60rem)
+    var toggle = el("side-toggle");
+    toggle.addEventListener("click", function () {
+      var open = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!open));
+      el("side-body").classList.toggle("is-open", !open);
+    });
+
+    el("detail-close").addEventListener("click", closeDetail);
+    el("detail-overlay").addEventListener("click", function (e) {
+      if (e.target === el("detail-overlay")) closeDetail();
+    });
+    document.querySelectorAll(".detail-tab").forEach(function (b) {
+      b.addEventListener("click", function () { switchTab(b.getAttribute("data-tab")); });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !el("detail-overlay").hidden) closeDetail();
+    });
+
+    var btt = el("back-to-top");
+    window.addEventListener("scroll", function () { btt.hidden = window.scrollY < 600; }, { passive: true });
+    btt.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);

@@ -1,8 +1,8 @@
-/* Hallmark · pre-emit critique: P5 H4 E5 S4 R5 V4
- * macrostructure: Docs Detail (Cobalt's docs-home / detail-page affinity) · genre: modern-minimal
- * theme: Cobalt (locked by design.md) · mode: light-default (dark toggle)
- * Per-skill static reference page — typography + hairlines only, no enrichment,
- * no dark graphite band (content/reference page, not a marketing surface).
+/* Hallmark · pre-emit critique: P5 H4 E5 S5 R5 V5
+ * macrostructure: Docs Detail · genre: atmospheric
+ * theme: Marquee (locked by design.md) · mode: dark-primary (light toggle)
+ * Per-skill static reference page — typography + hairlines only, no billboard,
+ * no rails (a reference page, not a browsing surface).
  * Reuses the same component language as the catalog's detail overlay
  * (.detail-header / .detail-tabs / .detail-section / .install-block / .skillmd-viewer)
  * so the static page and the in-catalog overlay read as one component, not two.
@@ -54,13 +54,13 @@
 .detail-tab-content { display: none; }
 .detail-tab-content.active { display: block; }
 .detail-section { margin-bottom: var(--space-lg); }
-.detail-section h3 { font-size: var(--text-md); margin-bottom: var(--space-xs); }
+.detail-section h2 { font-size: var(--text-md); margin-bottom: var(--space-xs); }
 .detail-section ul { margin: 0; padding-left: 1.2em; color: var(--color-ink-2); }
 .detail-section li { margin-bottom: var(--space-2xs); }
 
 /* ============ INSTALL BLOCK ============ */
 .install-block { margin-bottom: var(--space-lg); }
-.install-block h4 { font-size: var(--text-sm); color: var(--color-ink-3); margin-bottom: var(--space-xs); font-weight: 600; }
+.install-block h3 { font-size: var(--text-sm); color: var(--color-ink-3); margin-bottom: var(--space-xs); font-weight: 600; }
 .install-row { display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; }
 .install-row code {
   flex: 1 1 auto; min-width: 0; background: var(--color-graphite); color: var(--color-graphite-ink);

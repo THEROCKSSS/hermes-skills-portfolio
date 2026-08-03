@@ -9,7 +9,7 @@ The agent extracts a single skill from a skills monorepo, generates a self-conta
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/skill-publish/SKILL.md
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/skill-publish/SKILL.md
 ```
 
 ## How to use
@@ -52,5 +52,5 @@ Agent:
   6. Returns: "Published at https://github.com/your-user/hallmark-readme"
 
 The skill is now installable from its own repo:
-  hermes skills install https://github.com/your-user/hallmark-readme/blob/main/SKILL.md
+  hermes skills install https://raw.githubusercontent.com/your-user/hallmark-readme/main/SKILL.md
 ```

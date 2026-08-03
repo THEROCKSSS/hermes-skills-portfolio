@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>tmdb-metadata — Hermes Skill</title>
+  <meta name="description" content="What it does: Wire TMDB as the metadata spine of a catalogue app — titles, artwork, cast, genres, episodes, certifications, streaming availability — with OMDb as the secondary source for IMDb / Rotten Tomatoes / Metacritic ratings. How the agent uses it: Adding browse rails, search, a detail...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/tmdb-metadata/">
+  <meta property="og:title" content="tmdb-metadata — Hermes Skill">
+  <meta property="og:description" content="What it does: Wire TMDB as the metadata spine of a catalogue app — titles, artwork, cast, genres, episodes, certifications, streaming availability — with OMDb as the secondary source for IMDb / Rotten Tomatoes / Metacritic ratings. How the agent uses it: Adding browse rails, search, a detail...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/tmdb-metadata/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Hermes Skills Portfolio">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="tmdb-metadata — Hermes Skill">
+  <meta name="twitter:description" content="What it does: Wire TMDB as the metadata spine of a catalogue app — titles, artwork, cast, genres, episodes, certifications, streaming availability — with OMDb as the secondary source for IMDb / Rotten Tomatoes / Metacritic ratings. How the agent uses it: Adding browse rails, search, a detail...">
+  <link rel="sitemap" type="application/xml" href="../../sitemap.xml">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "tmdb-metadata",
+  "name": "tmdb-metadata",
+  "description": "Use when wiring TMDB (and OMDb) into an app — browse rails, search, title detail, posters/backdrops, cast, episodes, certifications, streaming availability, IMDb/Rotten Tomatoes/Metacritic ratings — or when a TMDB-backed feature misbehaves, such as a filter that appears to do nothing, an empty search that should have matched, a genre chip that renders blank, a missing runtime, or a poster that taints a canvas.",
+  "url": "https://therocksss.github.io/hermes-skills-portfolio/skills/tmdb-metadata/",
+  "inLanguage": "en",
+  "license": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/LICENSE",
+  "isPartOf": {
+    "@type": "WebSite",
+    "@id": "https://therocksss.github.io/hermes-skills-portfolio/#website",
+    "name": "Hermes Skills Portfolio"
+  },
+  "dateModified": "2026-08-02",
+  "author": {
+    "@type": "Person",
+    "name": "Owen"
+  }
+}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/skill-page.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav is-solid" id="nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="../../index.html">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
+        Hermes Skills
+      </a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="../../index.html" data-nav="catalog">Catalog</a>
+        <a href="../../bundles.html" data-nav="bundles">Bundles</a>
+        <a href="../../changelog.html" data-nav="changelog">Changelog</a>
+        <a href="../../submit.html" data-nav="submit">Submit a skill</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="cmdk-trigger" id="cmdk-trigger" aria-haspopup="dialog" aria-controls="cmdk-modal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="cmdk-trigger-label">Search skills…</span>
+          <kbd class="cmdk-trigger-kbd">&#8984;K</kbd>
+        </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme (t)">
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a class="github-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="skill-main" tabindex="-1">
+    <div class="wrap">
+      <div class="skill-shell">
+        <p class="skill-back-link"><a href="../../index.html">&#8592; Back to catalog</a></p>
+
+        <header class="detail-header">
+          <div class="detail-titles">
+            <h1>tmdb-metadata</h1>
+            <span class="tier-badge featured">Featured</span>
+          </div>
+          <p class="detail-desc">Use when wiring TMDB (and OMDb) into an app — browse rails, search, title detail, posters/backdrops, cast, episodes, certifications, streaming availability, IMDb/Rotten Tomatoes/Metacritic ratings — or when a TMDB-backed feature misbehaves, such as a filter that appears to do nothing, an empty search that should have matched, a genre chip that renders blank, a missing runtime, or a poster that taints a canvas.</p>
+          <div class="detail-meta-row">
+            <span><strong>Category:</strong> Media &amp; Streaming</span>
+            <span><strong>Tier:</strong> Highly useful within a category</span>
+            <span><strong>Source:</strong> Newly authored</span>
+            <span><strong>Updated:</strong> 2026-08-02</span>
+          </div>
+        </header>
+
+        <div class="detail-tabs" role="tablist" aria-label="Skill documentation">
+          <button class="detail-tab active" id="tab-btn-overview" data-tab="overview" role="tab" aria-selected="true" aria-controls="tab-overview">Overview</button>
+          <button class="detail-tab" id="tab-btn-skillmd" data-tab="skillmd" role="tab" aria-selected="false" aria-controls="tab-skillmd">SKILL.md</button>
+          <button class="detail-tab" id="tab-btn-readme" data-tab="readme" role="tab" aria-selected="false" aria-controls="tab-readme">README</button>
+        </div>
+
+        <div class="detail-tab-content active" id="tab-overview" role="tabpanel" aria-labelledby="tab-btn-overview" tabindex="0">
+          <section class="detail-section">
+            <h2>What it does</h2>
+            <p>Wire TMDB as the metadata spine of a catalogue app — titles, artwork, cast, genres, episodes, certifications, streaming availability — with OMDb as the secondary source for IMDb / Rotten Tomatoes / Metacritic ratings.</p>
+          </section>
+          <section class="detail-section">
+            <h2>How an agent uses it</h2>
+            <ul><li>Adding browse rails, search, a detail page, an episode list, or a cast list to an app.</li><li>Adding ratings from IMDb/RT/Metacritic (that&#x27;s OMDb, keyed by IMDb id, which comes from TMDB).</li><li>Adding &quot;where can I watch this&quot; availability.</li><li>Debugging: a filter that changes nothing, a search returning too few results, blank genre chips, runtime: null, a SecurityError from a canvas read of a poster.</li></ul>
+          </section>
+          <section class="detail-section">
+            <h2>What you get</h2>
+            <p>Install this skill and your Hermes agent can use when wiring tmdb (and omdb) into an app — browse rails, search, title detail, posters/backdrops, cast, episodes, certifications, streaming availability, imdb/rotten tomatoes/metacritic ratings — or when a tmdb-backed feature misbehaves, such as a filter that appears to do nothing, an empty search that should have matched, a genre chip that renders blank, a missing runtime, or a poster that taints a canvas. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+          </section>
+          
+        <div class="install-block">
+          <h3>Install command</h3>
+          <div class="install-row">
+            <code id="install-cmd">hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/tmdb-metadata/SKILL.md</code>
+            <button class="btn btn-outline btn-sm" id="copy-btn" type="button">Copy</button>
+          </div>
+        </div>
+        
+          <a class="detail-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/tmdb-metadata/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub <span aria-hidden="true">&#8599;</span></a>
+          
+        </div>
+
+        <div class="detail-tab-content" id="tab-skillmd" role="tabpanel" aria-labelledby="tab-btn-skillmd" tabindex="0">
+          <pre class="skillmd-viewer">---
+name: tmdb-metadata
+description: Use when wiring TMDB (and OMDb) into an app — browse rails, search, title detail, posters/backdrops, cast, episodes, certifications, streaming availability, IMDb/Rotten Tomatoes/Metacritic ratings — or when a TMDB-backed feature misbehaves, such as a filter that appears to do nothing, an empty search that should have matched, a genre chip that renders blank, a missing runtime, or a poster that taints a canvas.
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [tmdb, omdb, movie-metadata, api-integration, posters, ratings]
+    related_skills: [movie-catalogue-site, streaming-provider-embeds, media-id-mapping, http-api-tester]
+---
+
+# tmdb-metadata
+
+## Overview
+
+Wire TMDB as the metadata spine of a catalogue app — titles, artwork, cast, genres, episodes, certifications, streaming availability — with OMDb as the secondary source for IMDb / Rotten Tomatoes / Metacritic ratings. A free TMDB v3 key is the only credential the browse half of such an app strictly needs.
+
+TMDB is well-behaved but has three sharp edges that fail *silently*: two different response shapes for the same field, filter parameters that are accepted and ignored on the wrong endpoint, and community-maintained data with real holes. Each one renders a plausible-looking wrong page rather than an error.
+
+## When to Use
+
+- Adding browse rails, search, a detail page, an episode list, or a cast list to an app.
+- Adding ratings from IMDb/RT/Metacritic (that&#x27;s OMDb, keyed by IMDb id, which comes from TMDB).
+- Adding &quot;where can I watch this&quot; availability.
+- Debugging: a filter that changes nothing, a search returning too few results, blank genre chips, `runtime: null`, a `SecurityError` from a canvas read of a poster.
+
+Do not use it for playback (`streaming-provider-embeds`) or for anime/MAL id bridging (`media-id-mapping`).
+
+## Workflow
+
+1. **Get a free v3 API key** at &lt;https://www.themoviedb.org/settings/api&gt;. Put it in `.env` as `VITE_TMDB_API_KEY` (or your framework&#x27;s equivalent) and throw at module load if it is absent.
+2. **Write one fetch wrapper** and route every call through it (see Fetch Wrapper). Nothing else in the app builds a TMDB URL.
+3. **Build browse rails** from the list endpoints, then **search**, then **detail** — in that order, each proven against a live response before the next.
+4. **Normalise the genre shape at the boundary** the first time you render a genre, not later (see Two Response Shapes).
+5. **Use `/discover` for browsing-by-criteria and `/search` for browsing-by-name.** They are not interchangeable — see Search Ignores Filters.
+6. **Add OMDb only after `external_ids` is landing an `imdb_id`.** OMDb is keyed on IMDb id; without one there is nothing to ask.
+7. **Render every absence deliberately.** Missing data is normal here; substituting a plausible value is the failure mode.
+
+## Endpoint Set
+
+| Purpose | Endpoint | Notes |
+|---|---|---|
+| Rails / browse | `/trending/{all,movie,tv}/{day,week}`, `/movie/popular`, `/movie/top_rated`, `/tv/popular`, `/tv/top_rated`, `/tv/airing_today` | list shape — carries `genre_ids`, not `genres` |
+| Search | `/search/multi` | mixed movie + tv + person; filter to the types you want |
+| Filtered browse | `/discover/{movie,tv}` | the only endpoints that honour filter params |
+| Detail | `/{movie,tv}/{id}` | full shape — `genres`, `runtime`, and `external_ids` when appended |
+| Episodes | `/tv/{id}/season/{n}` | per-season episode list with per-episode runtimes |
+| Cast + crew | `/{movie,tv}/{id}/credits` | |
+| Filmography | `/person/{id}/combined_credits` | |
+| Certification | `/movie/{id}/release_dates`, `/tv/{id}/content_ratings` | region-scoped, different shapes per type |
+| Availability | `/{movie,tv}/{id}/watch/providers` | keyed by region code |
+| Service catalogue | `/watch/providers/{movie,tv}?watch_region=XX` | for a &quot;filter by service&quot; picker |
+
+Append `?append_to_response=external_ids,credits` to a detail request to collapse three round-trips into one.
+
+## Fetch Wrapper
+
+```js
+const BASE = &#x27;https://api.themoviedb.org/3&#x27;;
+
+async function tmdbFetch(path, params = {}) {
+  const url = new URL(BASE + path);
+  url.searchParams.set(&#x27;api_key&#x27;, TMDB_API_KEY);
+  url.searchParams.set(&#x27;language&#x27;, &#x27;en-US&#x27;);
+  Object.entries(params).forEach(([k, v]) =&gt; {
+    if (v !== undefined &amp;&amp; v !== null &amp;&amp; v !== &#x27;&#x27;) url.searchParams.set(k, v);
+  });
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`TMDB ${path} failed: ${res.status}`);
+  return res.json();
+}
+```
+
+Dropping empty-string params matters: `with_genres=` is not &quot;no filter&quot;, it is a malformed filter.
+
+## Two Response Shapes, One Field Difference
+
+List endpoints return `genre_ids: [28, 12]`. Detail endpoints return `genres: [{id, name}]`. Code that reads one silently renders nothing on the other — no error, just an absent row.
+
+```js
+export function genreNames(item, limit = 3) {
+  if (!item) return [];
+  const fromDetail = Array.isArray(item.genres) ? item.genres.map((g) =&gt; g?.id) : null;
+  const ids = fromDetail || (Array.isArray(item.genre_ids) ? item.genre_ids : []);
+  const out = [];
+  for (const id of ids) {
+    const name = GENRE_NAMES[id];
+    if (name &amp;&amp; !out.includes(name)) out.push(name);   // unknown ids dropped, not printed as &quot;18&quot;
+    if (out.length &gt;= limit) break;
+  }
+  return out;
+}
+```
+
+Genre ids are stable and few enough to hold as a static map rather than fetching `/genre/*/list` every session. Movie-only and TV-only ids share one namespace and do not collide, so a single lookup covers both — TV adds `10759 Action &amp; Adventure`, `10762 Kids`, `10763 News`, `10764 Reality`, `10765 Sci-Fi &amp; Fantasy`, `10766 Soap`, `10767 Talk`, `10768 War &amp; Politics` alongside the movie set.
+
+Derive any picker options from the same map rather than typing a second literal; two literals drift the day one is edited.
+
+## Search Ignores Filters
+
+The trap that costs a day: `with_watch_providers`, `with_genres` and friends are **accepted and ignored** by `/search/*`. No error, no warning.
+
+Measured live against the API (2026-07-30, one reference implementation): `/search/multi?query=Rick and Morty` returned `total_results: 2` both with and without `with_watch_providers`, while the same parameter on `/discover/tv` moved `228,046 → 3,449`.
+
+Consequences:
+
+- **Filter search results client-side.** Fetch, then narrow in the browser.
+- **Use `/discover` when the user browses by criteria** rather than by name. That is what it is for, and it filters server-side.
+- **A page is 20 results.** Offer several filters against a 20-row pool and two selections empty it — which reads as &quot;nothing matches&quot; but means &quot;we didn&#x27;t ask for enough&quot;. Fetch two or three pages and merge, cap deliberately, treat later pages as best-effort, and de-duplicate on `type:id` (the index shifts between requests and repeats rows).
+
+## Images
+
+```
+https://image.tmdb.org/t/p/{size}{path}
+```
+
+Poster sizes `w185 w342 w500`; backdrop sizes `w780 w1280 original`. Request the size you will display — a `w1280` backdrop in a 185px rail is pure waste. Return `null` for a null path so callers can omit the element rather than render a broken image.
+
+`image.tmdb.org` sends `Access-Control-Allow-Origin: *`, so canvas pixel reads work **with** `crossOrigin=&quot;anonymous&quot;` and throw `SecurityError` from `getImageData` without it. If you derive an accent colour from the poster, handle the block path: one `SecurityError` should set a session flag that skips the decode for every later title, so a CDN policy change degrades to your default accent rather than a half-applied palette.
+
+## OMDb for IMDb / RT / Metacritic
+
+TMDB does not carry Rotten Tomatoes or Metacritic. OMDb does, keyed by IMDb id — which TMDB gives you in `external_ids`.
+
+```js
+export async function fetchOmdbByImdbId(imdbId) {
+  if (!imdbId) return null;
+  const url = new URL(&#x27;https://www.omdbapi.com/&#x27;);
+  url.searchParams.set(&#x27;apikey&#x27;, OMDB_API_KEY);
+  url.searchParams.set(&#x27;i&#x27;, imdbId);
+  url.searchParams.set(&#x27;plot&#x27;, &#x27;short&#x27;);
+  const res = await fetch(url);
+  const data = await res.json();
+  return data.Response === &#x27;True&#x27; ? data : null;   // OMDb signals failure in the body, not the status
+}
+
+export function parseRatings(omdb) {
+  if (!omdb) return { imdb: null, rt: null, metacritic: null };
+  const ratings = omdb.Ratings || [];
+  return {
+    imdb: omdb.imdbRating &amp;&amp; omdb.imdbRating !== &#x27;N/A&#x27; ? omdb.imdbRating : null,
+    rt: ratings.find((r) =&gt; r.Source === &#x27;Rotten Tomatoes&#x27;)?.Value || null,
+    metacritic: (ratings.find((r) =&gt; r.Source === &#x27;Metacritic&#x27;)?.Value || omdb.Metascore) ?? null,
+  };
+}
+```
+
+Three OMDb facts worth knowing before you rely on it:
+
+- **It reports failure in the body.** `Response: &quot;False&quot;` arrives with HTTP 200. Checking `res.ok` alone treats an error as data.
+- **`&quot;N/A&quot;` is a real value it returns.** Filter it explicitly or it renders as a rating.
+- **The free tier is 1,000 requests/day**, and `thewdb` is OMDb&#x27;s shared public demo key — it works, but it is rate-limited across every project using it, and a 401 silently removes your ratings row. Get your own.
+
+## Availability (`/watch/providers`)
+
+Returns a map keyed by **region code**, each holding tiers: `flatrate` (subscription), `free`, `ads`, `rent`, `buy` — plus a `link` to an aggregator page for that title in that region.
+
+- **Label the region you are reporting.** The same title is subscription in one country and purchase-only in another. An unlabelled availability row is a claim about the wrong country for most visitors.
+- **No prices. Ever.** The payload carries services, not amounts. &quot;Cheapest&quot; is not derivable. If you want a primary call-to-action, order by *tier* — free, ads, subscription, rent, buy — and say in the interface that this is a ranking by kind of offer, not a price comparison.
+- **The `link` is not a deep link to the service.** It opens the aggregator&#x27;s page for the title. Say so rather than implying otherwise.
+- **Filtering a grid by service is client-side** (see Search Ignores Filters), which means one request per row. So: fetch nothing until the filter is engaged; narrow on type/year/genre/rating first (those are free — already in the response you hold); cache per `type:id:region` for the session; bound concurrency to about five at a time; and treat a failed lookup as **unknown, not unavailable** — silently dropping it shrinks the result set for a reason the viewer cannot see.
+- For a service picker, `/watch/providers/{movie,tv}?watch_region=XX` returns the region&#x27;s catalogue with `display_priorities[region]`. Sort by that rather than hand-writing a per-country list, and cap the picker — the raw list runs to hundreds of entries per region, mostly regional channel add-ons.
+
+## Keys and Exposure
+
+A browse-only metadata key in a client bundle is readable by anyone with devtools. That is the normal arrangement for this API tier and is not a leak — but:
+
+- **Never put a write-scoped or account key in the client.** Read-only only.
+- Rate limits are per key, so a public deployment shares yours.
+- Write access (rating a title as a user) belongs behind your own backend, not in the bundle.
+
+## Missing Data Is Normal
+
+TMDB is community-maintained. Expect routinely: `runtime: null` on individual episodes even when the series carries an average; no `backdrop_path`; a poster and nothing else; no availability for a valid region; an obscure title with zero votes.
+
+**Render the absence deliberately.** Do not substitute the series average for a missing episode runtime — that prints a confident number the data never said. Show the episode without a duration instead.
+
+## Common Pitfalls
+
+1. **Reading `genre_ids` on a detail response** (or `genres` on a list response). Silent blank.
+2. **Passing filters to `/search/*`** and concluding the filter is broken. Wrong endpoint.
+3. **Trusting `res.ok` on OMDb.** Failure is in the body.
+4. **Rendering `&quot;N/A&quot;`** from OMDb as a score.
+5. **Canvas reads without `crossOrigin=&quot;anonymous&quot;`** — `SecurityError`, and the whole tint feature dies on the first poster.
+6. **Fetching `/genre/*/list` per session** to restate a list that changes about never.
+7. **One availability request per row on page load.** Gate it behind the filter actually being used.
+8. **Assuming a certification exists.** Region-scoped, frequently absent, and shaped differently for movie (`release_dates`) vs TV (`content_ratings`).
+9. **Empty-string params.** `with_genres=` is malformed, not absent — drop empty values in the wrapper.
+
+## Limitations
+
+This skill does **not**:
+
+- Supply an API key, negotiate rate limits, or cover TMDB&#x27;s v4 account/write endpoints.
+- Cover playback or embed providers — see `streaming-provider-embeds`.
+- Bridge TMDB ids to MyAnimeList/AniList/Kitsu — see `media-id-mapping`.
+- Cache server-side. Everything here is session-scoped, client-side caching; a Redis/edge layer is a separate design.
+- Guarantee any measured figure quoted above still holds. Those are dated observations against a live third-party API, not contract.
+- Provide legal streaming rights of any kind. `/watch/providers` reports where a title is licensed; it does not license anything to you.
+
+## Verification Checklist
+
+- [ ] A rail, a search, and a detail page all render from live responses
+- [ ] Genre chips render on **both** a list card and a detail page (proves the shape normalisation)
+- [ ] A `/discover` filter visibly changes `total_results`; the same param on `/search` visibly does not (control case in the same run)
+- [ ] A title with no backdrop and an episode with `runtime: null` both render without an invented value
+- [ ] OMDb returns a rating for a title with an `imdb_id`, and a title without one skips the request entirely rather than sending `i=undefined`
+- [ ] Availability is labelled with the region it describes, shows no prices, and says &quot;no listed way to watch&quot; rather than rendering an empty row
+- [ ] Missing `TMDB_API_KEY` throws a named error at boot instead of producing an empty catalogue
+</pre>
+        </div>
+
+        <div class="detail-tab-content" id="tab-readme" role="tabpanel" aria-labelledby="tab-btn-readme" tabindex="0">
+          <pre class="skillmd-viewer"># tmdb-metadata
+
+Wire TMDB into an app as the metadata spine — titles, artwork, cast, genres, episodes, certifications, availability — with OMDb for IMDb / Rotten Tomatoes / Metacritic ratings.
+
+## What it does
+
+The agent builds the metadata layer: one fetch wrapper, the endpoint set that actually covers a catalogue app, and the boundary normalisation that keeps TMDB&#x27;s two response shapes from silently rendering nothing.
+
+It exists mostly because of three sharp edges that fail *quietly*: the same field arrives under two different names depending on the endpoint, filter parameters are accepted and ignored on `/search/*`, and the data is community-maintained with real holes. All three produce a plausible-looking wrong page rather than an error.
+
+## Install
+
+```bash
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/tmdb-metadata/SKILL.md
+```
+
+## Endpoints that cover a catalogue app
+
+| Purpose | Endpoint |
+|---|---|
+| Rails / browse | `/trending/{all,movie,tv}/{day,week}`, `/movie/popular`, `/tv/top_rated`, `/tv/airing_today` |
+| Search | `/search/multi` |
+| Filtered browse | `/discover/{movie,tv}` — the only endpoints that honour filter params |
+| Detail | `/{movie,tv}/{id}?append_to_response=external_ids,credits` |
+| Episodes | `/tv/{id}/season/{n}` |
+| Cast + crew | `/{movie,tv}/{id}/credits` |
+| Certification | `/movie/{id}/release_dates`, `/tv/{id}/content_ratings` |
+| Availability | `/{movie,tv}/{id}/watch/providers` |
+| Service catalogue | `/watch/providers/{movie,tv}?watch_region=XX` |
+
+Keys: free TMDB v3 key from &lt;https://www.themoviedb.org/settings/api&gt;, free OMDb key from &lt;https://www.omdbapi.com/apikey.aspx&gt;. Both go in `.env` as `VITE_TMDB_API_KEY` / `VITE_OMDB_API_KEY` (or your framework&#x27;s equivalent).
+
+## The three silent failures
+
+### 1. Two response shapes
+
+List endpoints return `genre_ids: [28, 12]`. Detail endpoints return `genres: [{id, name}]`. Read the wrong one and the row renders blank with no error.
+
+```js
+const ids = Array.isArray(item.genres) ? item.genres.map((g) =&gt; g?.id) : item.genre_ids;
+```
+
+Normalise at the boundary the first time you render a genre. Hold the id→name map statically — genre ids are stable and small, and movie/TV ids share one non-colliding namespace.
+
+### 2. `/search/*` accepts and ignores filters
+
+Measured live (2026-07-30, one reference implementation): `/search/multi?query=Rick and Morty` returned `total_results: 2` with and without `with_watch_providers`, while the same param on `/discover/tv` moved `228,046 → 3,449`.
+
+So: `/discover` when the user browses **by criteria**, `/search` when they browse **by name**, and any filtering of search results happens client-side. A page is 20 results — offer several filters against that pool and two selections empty it, which reads as &quot;nothing matches&quot; but means &quot;we didn&#x27;t ask for enough&quot;. Fetch a couple of pages, merge, de-duplicate on `type:id`.
+
+### 3. Missing data is normal
+
+`runtime: null` on individual episodes, no `backdrop_path`, no availability for a valid region, zero votes on obscure titles. Render the absence — do not substitute the series average for a missing episode runtime. That prints a confident number the data never said.
+
+## OMDb notes
+
+```js
+const res = await fetch(url);
+const data = await res.json();
+return data.Response === &#x27;True&#x27; ? data : null;   // failure arrives with HTTP 200
+```
+
+- OMDb reports failure **in the body**, not the status. `res.ok` alone treats an error as data.
+- `&quot;N/A&quot;` is a real value it returns — filter it or it renders as a score.
+- Free tier is 1,000 requests/day. `thewdb` is OMDb&#x27;s shared public demo key: it works, it is rate-limited across every project using it, and a 401 silently drops your ratings row. Get your own.
+
+## Images
+
+```
+https://image.tmdb.org/t/p/{size}{path}
+```
+
+Posters `w185 w342 w500`, backdrops `w780 w1280 original`. Request the size you display. `image.tmdb.org` sends `Access-Control-Allow-Origin: *`, so canvas pixel reads work with `crossOrigin=&quot;anonymous&quot;` — and throw `SecurityError` without it. If you derive a poster accent colour, make one `SecurityError` set a session flag that skips the decode for every later title, so a CDN policy change degrades to a default rather than a half-applied palette.
+
+## Availability, honestly
+
+`/watch/providers` returns tiers per region: `flatrate`, `free`, `ads`, `rent`, `buy`, plus a `link` to an aggregator page.
+
+- **Label the region.** The same title is subscription in one country and purchase-only in another.
+- **No prices.** The payload has services, not amounts — &quot;cheapest&quot; is not derivable. Rank by tier and say that&#x27;s what you&#x27;re doing.
+- **The `link` is not a deep link into the service.** It opens the aggregator&#x27;s title page.
+- **Filtering a grid by service is client-side**, so: nothing fetched until the filter is engaged, narrow on free fields first, cache per `type:id:region`, cap concurrency around five, and treat a failed lookup as **unknown, not unavailable**.
+
+## Key exposure
+
+A browse-only key in a client bundle is readable by anyone with devtools. That&#x27;s normal for this tier and not a leak — but never put a write-scoped or account key there, and remember rate limits are per key, so a public deployment shares yours.
+
+## Honest limitations
+
+- Does not supply keys, raise rate limits, or cover TMDB v4 account/write endpoints.
+- Does not cover playback or embed providers (`streaming-provider-embeds`) or MAL/AniList id bridging (`media-id-mapping`).
+- Caching described here is session-scoped and client-side; a server/edge cache is a separate design.
+- The measured figures quoted above are dated observations against a live third-party API, not a contract — re-measure before relying on them.
+- `/watch/providers` reports where a title is licensed. It licenses nothing to you.
+
+## Part of
+
+[Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio) — empowering skills for the Hermes agent.
+</pre>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <span class="footer-word">Hermes Skills</span>
+        <p class="footer-note">Install one, your agent can now do that for you.</p>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Install any skill</span>
+        <code class="footer-code mono">hermes skills install &lt;url&gt;</code>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Colophon</span>
+        <p class="footer-meta">By Owen &middot; MIT licensed &middot;
+          <a href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">Source on GitHub</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/common.js"></script>
+  <script src="../../js/skill-page.js"></script>
+</body>
+</html>

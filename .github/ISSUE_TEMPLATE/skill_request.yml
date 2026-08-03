@@ -1,0 +1,162 @@
+# Structured skill request.
+#
+# The field LABELS below are the parsing contract: GitHub renders this form as
+# "### <label>" headings, and scripts/scaffold_skill.py maps those headings back
+# to submission fields (LABEL_TO_FIELD). Renaming a label without updating that
+# map breaks .github/workflows/skill-submission.yml — which is designed to fail
+# loudly rather than open a half-empty pull request, but still fails.
+#
+# Dropdown options are written "<slug> — <explanation>"; the parser keeps the
+# slug and discards the explanation, so the slug must stay a real category /
+# tier value from skills-index.json.
+
+name: Skill request
+description: Propose a new skill for the catalog. A maintainer reviews every request by hand.
+title: "[SKILL] "
+labels: ["skill-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing a skill.
+
+        **Before you file this**, search the catalog — a near-duplicate is the most common
+        reason a request is declined. Browse it at
+        <https://therocksss.github.io/hermes-skills-portfolio/> or read `skills-index.json`.
+
+        **What happens next:** a maintainer reads this issue and decides. If it is approved,
+        automation scaffolds `skills/<name>/SKILL.md` + `README.md` from these answers and
+        opens a draft pull request for review — nothing is published without a human merging it.
+
+  - type: input
+    id: skill_name
+    attributes:
+      label: Proposed skill name
+      description: >-
+        lowercase-kebab-case only — letters, digits and single hyphens. This becomes the
+        directory name, the frontmatter `name`, and the URL slug, so it cannot be changed
+        casually later. Good: `log-triage`. Bad: `LogTriage`, `log_triage`, `Log Triage`.
+      placeholder: log-triage
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Where it belongs in the catalog. These are the six real categories in `skills-index.json`.
+      options:
+        - "devops — Deploy, host, and operate services"
+        - "frontend — Build distinctive, non-generic UIs"
+        - "backend — APIs, tests, and server-side architecture"
+        - "utility — General-purpose capabilities for everyday workflows"
+        - "meta — Skills about skills: portfolios, publishing, catalogs"
+        - "integrations — Connect agents to external platforms and services"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: tier
+    attributes:
+      label: Tier
+      description: >-
+        Your honest assessment of reach. The maintainer may adjust it — over-claiming
+        `core` does not help a request.
+      options:
+        - "core — Broadly empowering, nearly any user benefits"
+        - "featured — Highly useful within a category"
+        - "utility — Useful for specific workflows"
+    validations:
+      required: true
+
+  - type: input
+    id: description
+    attributes:
+      label: One-line description
+      description: >-
+        One sentence, no marketing language: what does the agent + this skill actually
+        deliver? This becomes the catalog card text.
+      placeholder: Read a crash log and report the distinct errors that matter, with counts and timestamps.
+    validations:
+      required: true
+
+  - type: textarea
+    id: when_to_use
+    attributes:
+      label: When to use it
+      description: >-
+        Trigger conditions only — one per line, no workflow summary. What is the user
+        doing or saying when an agent should reach for this? These lines become the
+        `When to Use` section and the frontmatter `description`.
+      placeholder: |
+        - The user hands over a log file and asks what went wrong
+        - The user says "why did this crash" or "read these logs"
+        - A CI job failed and the raw output is too long to read by hand
+    validations:
+      required: true
+
+  - type: textarea
+    id: what_it_does
+    attributes:
+      label: What the agent does
+      description: >-
+        A paragraph in plain language: the steps the agent takes and what it produces.
+        Be concrete about the output — a file, a report, a running service.
+      placeholder: >-
+        The agent reads the log, groups repeated lines into distinct error signatures,
+        and reports each with a count, first/last timestamp, and surrounding context.
+    validations:
+      required: true
+
+  - type: textarea
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      description: >-
+        Anything that must already exist for the skill to work — installed tools, an
+        account, a running service, a credential. Leave blank if there are none.
+      placeholder: |
+        - Docker Engine and Compose v2
+        - A readable log file on disk
+    validations:
+      required: false
+
+  - type: dropdown
+    id: origin
+    attributes:
+      label: Original or adapted
+      description: >-
+        Adapted skills are welcome, but attribution is not optional — the catalog records
+        the original author and links back to the source.
+      options:
+        - "original — I wrote this from scratch"
+        - "adapted — reworked from an existing public skill or repo"
+    validations:
+      required: true
+
+  - type: input
+    id: origin_url
+    attributes:
+      label: Origin URL
+      description: >-
+        **Required if you chose "adapted"** — the URL of the skill or repo you reworked.
+        Leave blank for original work.
+      placeholder: https://github.com/someone/their-repo/blob/main/skills/thing/SKILL.md
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the existing catalog and this is not a duplicate of a published skill.
+          required: true
+        - label: This skill produces a working result — it is not a tutorial, a reference doc, or a list of links.
+          required: true
+        - label: It has no dependency on private infrastructure, internal tools, or credentials only I hold.
+          required: true
+        - label: If adapted, I have given the origin URL above and the original license permits reuse.
+          required: true
+        - label: I understand contributions are published under the MIT License.
+          required: true

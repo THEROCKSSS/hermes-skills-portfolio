@@ -1,0 +1,160 @@
+name: Skill review
+
+# The review states that skill-submission.yml does NOT handle.
+#
+#   skill-submission.yml  ->  `approved` on an issue  (scaffolds a draft PR)
+#                             `rejected` on an issue  (declines and closes)
+#   this file             ->  `rejected` on a PULL REQUEST
+#                             `needs-info` / `changes-requested` on either
+#
+# Every path is human-triggered by a maintainer applying a label. Nothing here
+# runs on push, on a schedule, or on a comment, so a contributor can never
+# trigger it against their own submission.
+#
+# `pull_request_target` is used deliberately: a `pull_request` run from a fork
+# gets a read-only token and cannot comment. This workflow NEVER checks out or
+# executes the PR's code — it only reads labels and posts text — so the usual
+# pull_request_target hazard does not apply here.
+
+on:
+  issues:
+    types: [labeled]
+  pull_request_target:
+    types: [labeled]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: skill-review-${{ github.event.issue.number || github.event.pull_request.number }}
+  cancel-in-progress: false
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  LABEL: ${{ github.event.label.name }}
+  SENDER: ${{ github.event.sender.login }}
+  NUMBER: ${{ github.event.issue.number || github.event.pull_request.number }}
+  AUTHOR: ${{ github.event.issue.user.login || github.event.pull_request.user.login }}
+  IS_PR: ${{ github.event.pull_request != null }}
+
+jobs:
+  review:
+    name: Post review outcome
+    # `rejected` on an issue is skill-submission.yml's job — skipped here so a
+    # contributor never receives two different decline comments.
+    if: >-
+      github.event.label.name == 'needs-info' ||
+      github.event.label.name == 'changes-requested' ||
+      (github.event.label.name == 'rejected' && github.event.pull_request != null)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify the reviewer has write access
+        run: |
+          set -euo pipefail
+          perm=$(gh api "repos/${GITHUB_REPOSITORY}/collaborators/${SENDER}/permission" \
+                   --jq '.permission' 2>/dev/null || echo "none")
+          case "$perm" in
+            admin|maintain|write) ;;
+            *) echo "::error::${SENDER} does not have write access — refusing to post a review outcome."; exit 1 ;;
+          esac
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Collect the labels actually on this item
+        run: |
+          set -euo pipefail
+          if [ "$IS_PR" = "true" ]; then
+            gh api "repos/${GITHUB_REPOSITORY}/pulls/${NUMBER}" --jq '[.labels[].name] | join("\n")' > labels.txt
+          else
+            gh api "repos/${GITHUB_REPOSITORY}/issues/${NUMBER}" --jq '[.labels[].name] | join("\n")' > labels.txt
+          fi
+          echo "labels on #${NUMBER}:"; cat labels.txt
+
+      - name: Build the comment
+        # Body is written by Python and passed to gh as a file — never
+        # interpolated into a shell string, so no submitted text is ever
+        # evaluated by the shell.
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os, pathlib, sys
+          sys.path.insert(0, "scripts")
+          import review_reasons
+
+          label = os.environ["LABEL"]
+          author = os.environ["AUTHOR"]
+          is_pr = os.environ["IS_PR"] == "true"
+          kind = "pull request" if is_pr else "proposal"
+          labels = [l for l in pathlib.Path("labels.txt").read_text(encoding="utf-8").splitlines() if l]
+
+          if label == "needs-info":
+              body = (
+                  f"Thanks @{author} — a maintainer read this {kind} and needs "
+                  "a bit more before they can decide.\n\n"
+                  "**It is not declined.** It stays open and nothing is lost.\n\n"
+                  "Most often the missing piece is one of:\n\n"
+                  "- **Concrete triggers** — when should an agent reach for this, "
+                  "and when should it deliberately not?\n"
+                  "- **A real workflow** — the ordered steps and actual commands, "
+                  "not a summary of them.\n"
+                  "- **Verification** — how does the agent know it worked?\n"
+                  "- **Provenance** — if this is adapted from someone else's work, "
+                  "the origin URL and its licence.\n\n"
+                  "Reply on this thread with whatever applies and a maintainer "
+                  "will pick it back up. If a specific question was left in a "
+                  "separate comment, that one takes precedence over this list."
+              )
+          elif label == "changes-requested":
+              body = (
+                  f"Thanks @{author} — this {kind} is close. A maintainer wants "
+                  "specific changes before it goes in.\n\n"
+                  "**It is not declined**, and you do not need to open a new one. "
+                  "Push to the same branch (or edit the issue) and it will be "
+                  "re-reviewed in place.\n\n"
+                  "The requested changes are in the review comments on this "
+                  "thread. If any of them is unclear, say so — an unclear review "
+                  "note is the reviewer's problem to fix, not yours to guess at."
+              )
+          else:  # rejected, on a pull request
+              reason = review_reasons.reason_from_labels(labels)
+              body = (
+                  f"Thanks for the pull request, @{author} — a maintainer read it "
+                  "and decided not to merge it.\n\n"
+                  + review_reasons.render(reason, subject="this skill")
+                  + "\nThe branch and the diff stay here, so nothing you wrote is "
+                  "lost. If you disagree with the call, reply on this thread — "
+                  "a decline is a judgement, and judgements can be argued with."
+              )
+
+          body += (
+              "\n\n---\n"
+              "<sub>Posted by the skill-review workflow after a maintainer "
+              "applied the `" + label + "` label. Review criteria: "
+              "[REVIEW.md](../blob/main/REVIEW.md).</sub>\n"
+          )
+          pathlib.Path("comment.md").write_text(body, encoding="utf-8")
+          print(body)
+          PY
+
+      - name: Post it
+        run: |
+          set -euo pipefail
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${NUMBER}/comments" \
+            -f body="$(cat comment.md)" > /dev/null
+          echo "commented on #${NUMBER}"
+
+      - name: Close it if this was a decline
+        # needs-info and changes-requested deliberately leave the thread OPEN —
+        # they are requests, not verdicts.
+        if: env.LABEL == 'rejected'
+        run: |
+          set -euo pipefail
+          gh pr close "${NUMBER}" --repo "${GITHUB_REPOSITORY}" --comment "" 2>/dev/null \
+            || gh issue close "${NUMBER}" --repo "${GITHUB_REPOSITORY}"
+          echo "closed #${NUMBER}"

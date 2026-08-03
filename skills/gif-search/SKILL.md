@@ -24,7 +24,7 @@ Search and download animated GIFs from Tenor's API. The agent finds GIFs by keyw
 
 ## Prerequisites
 
-A Tenor API key. Get one free at https://tenor.com/developer/keyregistration
+A Tenor API key. Get one free at https://developers.google.com/tenor/guides/quickstart
 
 ```bash
 # Store the key as an environment variable
@@ -138,7 +138,7 @@ def categories() -> list:
 
 ## Common Pitfalls
 
-1. **No API key** — Without a Tenor API key, all requests fail. Get one at https://tenor.com/developer/keyregistration (free).
+1. **No API key** — Without a Tenor API key, all requests fail. Get one at https://developers.google.com/tenor/guides/quickstart (free).
 2. **Content filter** — Tenor returns NSFW content by default if no filter is set. Use `contentfilter=medium` or `contentfilter=high` to keep results safe.
 3. **Rate limits** — Tenor's free tier allows ~100 requests per minute. For normal use this is plenty.
 4. **GIF size** — Full GIFs can be 5-20 MB. If you need smaller files, use the `tinygif` or `nanogif` media format instead of `gif`.

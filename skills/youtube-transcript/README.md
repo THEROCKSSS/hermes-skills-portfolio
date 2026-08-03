@@ -9,7 +9,7 @@ The agent fetches the caption track from a YouTube video and returns it as plain
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/youtube-transcript/SKILL.md
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/youtube-transcript/SKILL.md
 ```
 
 ## How to use

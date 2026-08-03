@@ -65,7 +65,12 @@
           },
           "install_url": {
             "type": "string",
-            "description": "Direct URL to the SKILL.md file for `hermes skills install`."
+            "pattern": "^https://raw\\.githubusercontent\\.com/.+/SKILL\\.md$",
+            "description": "Raw URL the CLI fetches for `hermes skills install`. MUST be raw.githubusercontent.com — a github.com/blob URL serves text/html and installs the web page instead of the skill."
+          },
+          "source_url": {
+            "type": "string",
+            "description": "Human-facing github.com/blob page for the same SKILL.md. Used for 'View SKILL.md on GitHub' links, never as an install target."
           },
           "path": {
             "type": "string",

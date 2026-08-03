@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>streaming-provider-embeds — Hermes Skill</title>
+  <meta name="description" content="What it does: Integrate third-party embed hosts that serve a player for a title id. How the agent uses it: Adding a player to a catalogue app, or adding a second/third source with a switcher.
+An embed shows a black box, an endless spinner, or plays nothing.
+Progress/resume tracking doesn&#x27;t fire,...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/streaming-provider-embeds/">
+  <meta property="og:title" content="streaming-provider-embeds — Hermes Skill">
+  <meta property="og:description" content="What it does: Integrate third-party embed hosts that serve a player for a title id. How the agent uses it: Adding a player to a catalogue app, or adding a second/third source with a switcher.
+An embed shows a black box, an endless spinner, or plays nothing.
+Progress/resume tracking doesn&#x27;t fire,...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/streaming-provider-embeds/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Hermes Skills Portfolio">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="streaming-provider-embeds — Hermes Skill">
+  <meta name="twitter:description" content="What it does: Integrate third-party embed hosts that serve a player for a title id. How the agent uses it: Adding a player to a catalogue app, or adding a second/third source with a switcher.
+An embed shows a black box, an endless spinner, or plays nothing.
+Progress/resume tracking doesn&#x27;t fire,...">
+  <link rel="sitemap" type="application/xml" href="../../sitemap.xml">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "streaming-provider-embeds",
+  "name": "streaming-provider-embeds",
+  "description": "Use when integrating, switching, or debugging a third-party video embed in a catalogue app — the iframe shows a black box, plays nothing, hangs on a spinner, refuses to play with a sandbox attribute, or reports no progress; or when onboarding a new embed host and you need its URL pattern, postMessage contract, and failure signals captured rather than guessed.",
+  "url": "https://therocksss.github.io/hermes-skills-portfolio/skills/streaming-provider-embeds/",
+  "inLanguage": "en",
+  "license": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/LICENSE",
+  "isPartOf": {
+    "@type": "WebSite",
+    "@id": "https://therocksss.github.io/hermes-skills-portfolio/#website",
+    "name": "Hermes Skills Portfolio"
+  },
+  "dateModified": "2026-08-02",
+  "author": {
+    "@type": "Person",
+    "name": "Owen"
+  }
+}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/skill-page.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav is-solid" id="nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="../../index.html">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
+        Hermes Skills
+      </a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="../../index.html" data-nav="catalog">Catalog</a>
+        <a href="../../bundles.html" data-nav="bundles">Bundles</a>
+        <a href="../../changelog.html" data-nav="changelog">Changelog</a>
+        <a href="../../submit.html" data-nav="submit">Submit a skill</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="cmdk-trigger" id="cmdk-trigger" aria-haspopup="dialog" aria-controls="cmdk-modal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="cmdk-trigger-label">Search skills…</span>
+          <kbd class="cmdk-trigger-kbd">&#8984;K</kbd>
+        </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme (t)">
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a class="github-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="skill-main" tabindex="-1">
+    <div class="wrap">
+      <div class="skill-shell">
+        <p class="skill-back-link"><a href="../../index.html">&#8592; Back to catalog</a></p>
+
+        <header class="detail-header">
+          <div class="detail-titles">
+            <h1>streaming-provider-embeds</h1>
+            <span class="tier-badge featured">Featured</span>
+          </div>
+          <p class="detail-desc">Use when integrating, switching, or debugging a third-party video embed in a catalogue app — the iframe shows a black box, plays nothing, hangs on a spinner, refuses to play with a sandbox attribute, or reports no progress; or when onboarding a new embed host and you need its URL pattern, postMessage contract, and failure signals captured rather than guessed.</p>
+          <div class="detail-meta-row">
+            <span><strong>Category:</strong> Media &amp; Streaming</span>
+            <span><strong>Tier:</strong> Highly useful within a category</span>
+            <span><strong>Source:</strong> Newly authored</span>
+            <span><strong>Updated:</strong> 2026-08-02</span>
+          </div>
+        </header>
+
+        <div class="detail-tabs" role="tablist" aria-label="Skill documentation">
+          <button class="detail-tab active" id="tab-btn-overview" data-tab="overview" role="tab" aria-selected="true" aria-controls="tab-overview">Overview</button>
+          <button class="detail-tab" id="tab-btn-skillmd" data-tab="skillmd" role="tab" aria-selected="false" aria-controls="tab-skillmd">SKILL.md</button>
+          <button class="detail-tab" id="tab-btn-readme" data-tab="readme" role="tab" aria-selected="false" aria-controls="tab-readme">README</button>
+        </div>
+
+        <div class="detail-tab-content active" id="tab-overview" role="tabpanel" aria-labelledby="tab-btn-overview" tabindex="0">
+          <section class="detail-section">
+            <h2>What it does</h2>
+            <p>Integrate third-party embed hosts that serve a player for a title id.</p>
+          </section>
+          <section class="detail-section">
+            <h2>How an agent uses it</h2>
+            <ul><li>Adding a player to a catalogue app, or adding a second/third source with a switcher.</li><li>An embed shows a black box, an endless spinner, or plays nothing.</li><li>Progress/resume tracking doesn&#x27;t fire, or saves undefined/0.</li><li>Onboarding a host with thin, wrong, or client-rendered documentation.</li></ul>
+          </section>
+          <section class="detail-section">
+            <h2>What you get</h2>
+            <p>Install this skill and your Hermes agent can use when integrating, switching, or debugging a third-party video embed in a catalogue app — the iframe shows a black box, plays nothing, hangs on a spinner, refuses to play with a sandbox attribute, or reports no progress; or when onboarding a new embed host and you need its url pattern, postmessage contract, and failure signals captured rather than guessed. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+          </section>
+          
+        <div class="install-block">
+          <h3>Install command</h3>
+          <div class="install-row">
+            <code id="install-cmd">hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/streaming-provider-embeds/SKILL.md</code>
+            <button class="btn btn-outline btn-sm" id="copy-btn" type="button">Copy</button>
+          </div>
+        </div>
+        
+          <a class="detail-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/streaming-provider-embeds/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub <span aria-hidden="true">&#8599;</span></a>
+          
+        </div>
+
+        <div class="detail-tab-content" id="tab-skillmd" role="tabpanel" aria-labelledby="tab-btn-skillmd" tabindex="0">
+          <pre class="skillmd-viewer">---
+name: streaming-provider-embeds
+description: Use when integrating, switching, or debugging a third-party video embed in a catalogue app — the iframe shows a black box, plays nothing, hangs on a spinner, refuses to play with a sandbox attribute, or reports no progress; or when onboarding a new embed host and you need its URL pattern, postMessage contract, and failure signals captured rather than guessed.
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [iframe-embed, video-player, csp, postmessage, black-box-debugging]
+    related_skills: [movie-catalogue-site, media-id-mapping, tmdb-metadata, watchlist-sync]
+---
+
+# streaming-provider-embeds
+
+## Overview
+
+Integrate third-party embed hosts that serve a player for a title id. You do not control them, cannot read inside their frame, and they change without notice — so every contract you hold is **captured on a date**, not documentation.
+
+The whole domain is one problem wearing different hats: **a wrong answer here does not error.** A blocked iframe renders a plain black rectangle. A refusing host returns HTTP 200 with an error page. A wrong id plays a *different show* at full quality with no warning. An unavailable dub plays nothing, identical to the provider being down.
+
+So the discipline throughout is: **make failure observable, or refuse to act.**
+
+### Before you integrate anything — the honest framing
+
+Third-party embed hosts are not licensed sources and this skill does not pretend otherwise. They aggregate streams whose provenance you cannot verify, they are frequently blocked by DNS/ISP/hosting providers, they serve popup and redirect ads, they change or disappear without notice, and embedding one may breach the terms of your host, your CDN, or your jurisdiction&#x27;s copyright law. If your goal is &quot;where can I legally watch this&quot;, the answer is the metadata API&#x27;s availability endpoint (see `tmdb-metadata`), not an embed. Integrate an embed only with that understood, and never describe such a source in your UI as licensed, official, or authorised.
+
+## When to Use
+
+- Adding a player to a catalogue app, or adding a second/third source with a switcher.
+- An embed shows a black box, an endless spinner, or plays nothing.
+- Progress/resume tracking doesn&#x27;t fire, or saves `undefined`/`0`.
+- Onboarding a host with thin, wrong, or client-rendered documentation.
+- Deciding whether a documented parameter is actually consumed.
+
+## Workflow
+
+1. **Control probe the host before writing any app code** (see The Control Probe). Establish what a hit and a miss each look like.
+2. **Check the host&#x27;s own framing policy** — `X-Frame-Options`, its own CSP — and follow redirects, recording every host in the chain.
+3. **Allowlist every host in that chain in your proxy&#x27;s `frame-src`, in the same change as the code.** Not a follow-up commit.
+4. **Build the embed URL in one module**, next to the trusted-origin allowlist (see URL Construction).
+5. **Capture the postMessage contract live** for a full session before parsing anything (see postMessage Capture).
+6. **Add the origin to the allowlist only if it sends something worth parsing.**
+7. **Add explicit failure detection** — an error event if published, plus a conservative silence watchdog (see Detecting Failure).
+8. **Sweep a sample of real ids to measure coverage** and report the number with its sample size.
+9. **Confirm a real video plays in a real browser.** An iframe whose `src` resolves is not a video that plays.
+
+## The Control Probe
+
+Before concluding anything about a host, request **two** things: an id you believe is real, and one that certainly is not (`99999999`).
+
+If both responses look the same, your probe is broken and every measurement after it is meaningless. This catches, in one step: being blocked before you reach the routing layer, an SPA shell that returns 200 for everything, and your own malformed request.
+
+**Worked example from a real integration.** A bare `curl` of one host returned an identical 3,545-byte body for a real id, a second real id, and a bogus one. That looked like a dead provider. It was a `410` error page: the host refuses requests without an embed-shaped `Referer`. With the headers added, real ids returned a real player and the bogus id returned a distinguishable `404`.
+
+```bash
+curl -sS -o /dev/null -w &#x27;%{http_code} %{size_download}\n&#x27; \
+  -H &quot;Referer: https://localhost/&quot; \
+  -H &quot;Sec-Fetch-Dest: iframe&quot; \
+  -H &quot;Sec-Fetch-Mode: navigate&quot; \
+  -H &quot;Sec-Fetch-Site: cross-site&quot; \
+  -A &quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36&quot; \
+  &quot;https://provider.example.com/embed/550&quot;
+```
+
+A `410`/`403` from a bare curl means **your request was malformed**, not that the title is missing. Do not record it as a coverage miss. Note that hosts typically check only that a plausible cross-site `Referer` is *present*, not which origin it names — so keep it configurable (`PROBE_REFERER`) and default it to something neutral rather than baking your deployment&#x27;s hostname into a file that may go public.
+
+## The Five Traps
+
+### 1. CSP `frame-src` renders a black box
+
+The most expensive failure in this domain. Adding a provider to your code without adding its origin to `frame-src` means the browser refuses to load the frame. The result is **a plain black rectangle** — no exception, no `onerror`, nothing your app can observe. Your own failure detection then reports the *title* as unavailable, which is false and sends you debugging the wrong layer entirely.
+
+```
+frame-src https://provider.example.com https://*.provider.example.com;
+```
+
+Console-only symptom:
+
+```
+Refused to frame &#x27;https://provider.example.com/&#x27; because it violates the following
+Content Security Policy directive: &quot;frame-src ...&quot;
+```
+
+**Rule: the CSP entry and the provider list are one change, never two.** Put a comment in the proxy config naming the module the list mirrors.
+
+### 2. Direct access is often disabled
+
+Several hosts serve embeds only when the request looks like an iframe navigation from a site. A plain fetch gets an error page regardless of whether the title exists. Use the header set from the control probe above.
+
+### 3. The host refuses framing outright
+
+Some hosts set their own `X-Frame-Options: sameorigin`. No CSP change on your side helps — the provider has decided.
+
+```bash
+curl -sS -D - -o /dev/null &quot;https://provider.example.com/embed/550&quot; \
+  | grep -iE &quot;^(x-frame|content-security|location)&quot;
+```
+
+Verify against a policy-free page before blaming your own CSP. A real observed case: a host answered its own embed with `X-Frame-Options: sameorigin`, producing `Refused to display &#x27;…&#x27; in a frame because it set &#x27;X-Frame-Options&#x27; to &#x27;sameorigin&#x27;` — nothing in the app could fix it.
+
+### 4. CSP re-checks after every redirect
+
+A host may 301 to a different origin, and CSP evaluates the **final** URL. Allowlisting only the URL you wrote still fails.
+
+Found live, not theoretically: an embed URL answered with a 301 to a different host, and listing only the first host blocked playback with `Framing &#x27;https://other-host/&#x27; violates … &quot;frame-src …&quot;`. Both hosts had to be listed. `curl -L -o /dev/null -w &#x27;%{num_redirects} %{url_effective}\n&#x27;` tells you what to allowlist.
+
+### 5. `sandbox` is detectable
+
+Adding a `sandbox` attribute as an ad mitigation is detected by some hosts *by the attribute&#x27;s mere presence*, regardless of which tokens you grant. They then refuse to play — one observed host showed an explicit &quot;Iframe Sandbox Detected&quot; error, another hung on a spinner forever. A never-loading player is worse than the popup you were preventing.
+
+The workable mitigation is a **click-catch overlay**: a transparent layer over the frame that absorbs the first interaction and shows a &quot;tap to play&quot; affordance, so a click-triggered popup fires on your overlay instead of inside the frame. It costs one extra tap, touches nothing about the iframe, and re-arms on every new `src`.
+
+```jsx
+&lt;div className=&quot;player&quot;&gt;
+  &lt;iframe
+    key={src}
+    src={src}
+    title=&quot;Player&quot;
+    allow=&quot;autoplay; fullscreen; encrypted-media; picture-in-picture&quot;
+    allowFullScreen
+    loading=&quot;lazy&quot;
+  /&gt;
+  {overlayActive &amp;&amp; (
+    &lt;button className=&quot;player__click-catch&quot; onClick={() =&gt; setOverlayActive(false)}&gt;
+      Tap again to play
+    &lt;/button&gt;
+  )}
+&lt;/div&gt;
+```
+
+`key={src}` is deliberate: changing the key remounts the frame, which is the only way to make a URL-parameter seek take effect.
+
+## URL Construction and the Origin Allowlist
+
+One module owns both, so they cannot drift:
+
+```js
+export const PROVIDERS = [
+  { key: &#x27;alpha&#x27;, label: &#x27;Alpha&#x27; },
+  { key: &#x27;beta&#x27;,  label: &#x27;Beta&#x27; },
+  { key: &#x27;gamma&#x27;, label: &#x27;Gamma&#x27;, animeOnly: true },  // no plain movie/TV route at all
+];
+
+export function buildEmbedUrl(provider, { mediaType, tmdbId, season, episode, startAtSeconds }) {
+  if (provider === &#x27;gamma&#x27;) {
+    // Anime-only host keyed on a foreign id system. Without a *resolved*
+    // mapping there is nothing to build — return null so the caller can show
+    // an honest &quot;no source&quot; panel instead of mounting a frame that can only 404.
+    if (!isResolvedMapping(arguments[1].anime)) return null;
+    ...
+  }
+  return mediaType === &#x27;tv&#x27;
+    ? `https://beta.example.com/tv/${tmdbId}/${season}/${episode}`
+    : `https://beta.example.com/movie/${tmdbId}`;
+}
+
+// Full origins (scheme + host + port) exactly as `event.origin` reports them.
+export const TRUSTED_EMBED_ORIGINS = Object.freeze([
+  &#x27;https://alpha.example.com&#x27;,
+  &#x27;https://beta.example.com&#x27;,
+]);
+
+export function isTrustedEmbedOrigin(origin) {
+  return typeof origin === &#x27;string&#x27; &amp;&amp; TRUSTED_EMBED_ORIGINS.includes(origin);
+}
+```
+
+`Array.includes` is exact element matching — correct. A **string** `includes` is not: `origin.includes(&#x27;beta.example.com&#x27;)` accepts `https://beta.example.com.attacker.com` and `https://evil.example.com/?beta.example.com`. This has been a real vulnerability in a shipped app; keep the array form.
+
+**Only allowlist an origin you gain something from.** An origin that publishes no player events buys you nothing and widens what you trust.
+
+**Return `null`, never a guessed URL.** A `null` src is what lets the caller render &quot;no source for this title, here&#x27;s why, pick another&quot; instead of an empty black box that looks like a player loading forever.
+
+## Capability Table, Not Boolean Soup
+
+Two abilities are separate and no host has both by accident. Collapsing them into one `supportsSkipIntro` flag hides which half is missing.
+
+```js
+const PROVIDER_CAPABILITIES = Object.freeze({
+  alpha: { reportsPosition: true,  canSeekByUrl: false },
+  beta:  { reportsPosition: false, canSeekByUrl: true  },
+  gamma: { reportsPosition: true,  canSeekByUrl: true  },
+});
+```
+
+- `reportsPosition` — does the embed tell you where playback is? Without it you cannot know whether the viewer is inside the intro, and you must refuse to guess.
+- `canSeekByUrl` — can it be told to *start* at an offset, so remounting the frame is a real skip rather than a restart?
+
+Record the **evidence** for every entry in a comment. A wrong flag here ships a button that silently does nothing. Derive any UI copy about which sources support a feature from this table, never from a hardcoded string that goes stale the day a host gains a parameter.
+
+## postMessage Capture
+
+Player events are how you get real progress and end-of-playback. Never assume a documented contract exists — watch for it:
+
+```js
+window.addEventListener(&#x27;message&#x27;, (e) =&gt; {
+  let d = e.data;
+  if (typeof d === &#x27;string&#x27;) { try { d = JSON.parse(d); } catch { /* keep raw */ } }
+  console.log(e.origin, d);
+});
+```
+
+Load a real embed, let it run, and record what actually arrives. **Documentation is a hypothesis.** In one measured comparison, one host published a full lifecycle contract and delivered it; another&#x27;s docs implied events, and a live capture of 76 messages across a full session found every one to be third-party analytics chatter with no playback field at all — so that origin was deliberately left *out* of the allowlist, and the app degraded to a runtime timer instead.
+
+Payload shapes differ in ways that bite:
+
+- Position may be `time` **or** `currentTime`. Reading the wrong field silently saves a resume point of `undefined` or `0`.
+- The payload may be a JSON *string*, not an object.
+- The real event may be nested (`data.data.event`).
+
+Handle every shape defensively:
+
+```js
+function handleMessage(event) {
+  if (!isTrustedEmbedOrigin(event.origin)) return;
+  sawAnyMessageRef.current = true;         // set BEFORE parsing — see below
+  let data = event.data;
+  if (typeof data === &#x27;string&#x27;) { try { data = JSON.parse(data); } catch { return; } }
+  if (!data || typeof data !== &#x27;object&#x27;) return;
+  const inner = data.data &amp;&amp; typeof data.data === &#x27;object&#x27; ? data.data : data;
+  const evt = inner.event ?? data.event;
+  const position = typeof inner.time === &#x27;number&#x27; ? inner.time : inner.currentTime ?? data.currentTime;
+  ...
+}
+```
+
+Throttle progress writes to roughly once every 15 seconds, and flush unthrottled on `visibilitychange` and `pagehide` — that last save is the one that makes resume feel right.
+
+Also: **fire &quot;mark as watching&quot; on frame load, not on the first postMessage.** Some hosts only message on specific interactions, so a viewer who presses play and walks away would otherwise never register as watching at all.
+
+## Detecting Failure You Cannot See
+
+Same-origin policy means you cannot read the frame, and CORS usually blocks pre-probing the URL from the browser. Two signals remain.
+
+**An explicit error event**, if the host publishes one. Cheap and exact.
+
+**Silence.** A host&#x27;s error page is typically static HTML with no scripts, so it posts *nothing*. A working player loads scripts that post *something* — even chrome chatter — long before playback starts. Measured on one host: a real id produced 1 message before playback began (a fullscreen-bridge call); a bogus id produced 0. That difference is the entire signal.
+
+So the watchdog is **any message from the trusted origin proves the player loaded** — set the flag before parsing, because the useful evidence is often a message your parser would discard. Key it on recognised *playback* events instead and it fires whenever playback simply hasn&#x27;t started (autoplay blocked, buffering, paused), yanking a working video away from the viewer.
+
+```js
+const SILENT_FAILURE_MS = 20 * 1000;   // must cover iframe load + player boot on a slow connection
+
+useEffect(() =&gt; {
+  if (!src || !onSourceError) return undefined;
+  const timer = setTimeout(() =&gt; {
+    if (!sawAnyMessageRef.current) onSourceError(&#x27;silent&#x27;);
+  }, SILENT_FAILURE_MS);
+  return () =&gt; clearTimeout(timer);
+}, [src, onSourceError]);
+```
+
+Be conservative: fire at most once per source, use a generous window, and escalate to a fallback route rather than straight to an error.
+
+## Manual Switching Beats Auto-Detection
+
+A cross-origin iframe cannot be reliably probed for &quot;does this host carry this title&quot;, so **let the viewer pick a source and remember the choice** — per title, with a per-profile default underneath it.
+
+Precedence goes one way only: a source explicitly chosen *on this title* always beats the profile default. The default answers &quot;where does a title I&#x27;ve never opened start&quot;; the moment someone answers that for a specific title by hand, that is the more specific statement of intent and outranks the blanket preference forever. Changing the default must never retroactively move a title someone already chose a source for.
+
+Exclude anime-only or otherwise partial hosts from being settable as a *global* default — as a starting point one would hand `buildEmbedUrl` a null URL on every ordinary title, and the honest &quot;no source&quot; panel would be the first thing anyone saw.
+
+Announce an automatic switch only when one genuinely happened. Copy that claims a fallback the URL builder doesn&#x27;t have is worse than silence.
+
+## Coverage Sweeps
+
+Measure rather than assume. Sample real ids drawn from your own catalogue or mapping so every row genuinely resolves, make the sample **deterministic** (seeded shuffle) so later runs are comparable, rate-limit and bound concurrency, and keep the sweep script in the repo so the next refresh is re-measurable rather than re-argued.
+
+Report the number as measured, with the sample size: &quot;103/140 (73.6%)&quot; is useful and checkable; &quot;good coverage&quot; is neither, and &quot;we carry everything&quot; is a claim you will be held to.
+
+## Common Pitfalls
+
+1. **Provider added to the app, not to `frame-src`.** Black box. The single most expensive mistake here.
+2. **Substring origin checks.** `origin.includes(&#x27;alpha.example.com&#x27;)` accepts `https://alpha.example.com.attacker.net`.
+3. **Watchdog keyed on playback events.** Fires on a paused or buffering player and pulls a working video.
+4. **Reading the wrong position field.** `time` vs `currentTime` — saves `undefined`, silently.
+5. **Assuming a documented parameter is consumed.** Many are accepted and ignored. Confirm by diffing responses with and without it: a changed body size, a changed hash of an encrypted payload, or a different downstream request all count. No change means the parameter is decorative.
+6. **Reading client-rendered docs with `curl`.** You get a &quot;Loading…&quot; shell. Open them in a real browser, and read the **raw HTML** — withdrawn parameters are often left commented out, invisible to a screenshot, and a clear signal not to use them.
+7. **Adding `sandbox` to stop ads.** Detected by presence; kills playback.
+8. **Trusting an origin that only emits analytics.** Widens your trust boundary for nothing.
+9. **Shipping a seek/skip button on a host that never reports position.** A dead affordance the viewer can&#x27;t diagnose.
+10. **Letting the embed&#x27;s own &quot;next episode&quot; control stay enabled** while your app also tracks episode state. The video advances inside the frame, your picker and progress badge don&#x27;t, and everything downstream disagrees with what&#x27;s playing. Pass the host&#x27;s disable parameter explicitly rather than relying on its documented default.
+
+## Limitations
+
+This skill does **not**:
+
+- Endorse, license, or vouch for any embed host, or grant any right to the content they serve. See the framing note at the top.
+- Name specific hosts. They change, disappear, and get blocked; the *method* — control probe, capture live, allowlist the origin, detect failure explicitly — is what transfers.
+- Make playback verifiable in headless CI. Headless browsers lack the codecs for most commercial streams; you can verify the URL built, the response returned, and the messages posted, but a person has to watch a video play.
+- Bypass a host&#x27;s `X-Frame-Options`. If they refuse framing, that is their decision.
+- Cover DRM, HLS/DASH, or hosting your own streams — that is a media-server problem, not an embed problem.
+- Handle id mapping to foreign systems (MAL/AniList) — see `media-id-mapping`.
+
+## Verification Checklist
+
+- [ ] Control probe run: a real id and a bogus id produce **visibly different** responses
+- [ ] `X-Frame-Options` and any host-side CSP checked with `curl -D -`
+- [ ] Redirect chain followed; every final host is in `frame-src`
+- [ ] The CSP change shipped in the same commit as the provider code
+- [ ] postMessage captured live for a full session; the parser matches what actually arrived, not the docs
+- [ ] The origin allowlist uses exact array matching, and a deliberately wrong origin is ignored in a test
+- [ ] A bogus/unmapped title renders an honest &quot;no source&quot; panel, not an empty frame
+- [ ] The silence watchdog does **not** fire on a paused player (test it paused past the deadline)
+- [ ] Coverage measured on a deterministic sample, reported as `n/N (x%)`
+- [ ] A human confirmed a real video plays in a real browser
+</pre>
+        </div>
+
+        <div class="detail-tab-content" id="tab-readme" role="tabpanel" aria-labelledby="tab-btn-readme" tabindex="0">
+          <pre class="skillmd-viewer"># streaming-provider-embeds
+
+Integrate and debug third-party video embeds in a catalogue app — the URL contract, the CSP that makes or breaks them, the postMessage capture, and the failure modes that render as a black box instead of an error.
+
+## What it does
+
+The agent onboards an embed host the way you&#x27;d onboard any undocumented third party: probe it with a control case, capture its real contract live, allowlist exactly what you need, and build explicit failure detection — because in this domain a wrong answer never throws. It renders a black rectangle, or plays a different show at full quality.
+
+It also covers the five traps that make a working embed look dead (and a dead one look working), and the capability table that stops you shipping a seek button on a host that never reports position.
+
+## Read this before integrating anything
+
+Third-party embed hosts are **not licensed sources** and this skill does not pretend otherwise. They aggregate streams whose provenance you cannot verify, they&#x27;re frequently blocked at DNS/ISP/hosting level, they serve popup and redirect ads, they change or vanish without notice, and embedding one may breach your host&#x27;s terms, your CDN&#x27;s terms, or your jurisdiction&#x27;s copyright law.
+
+If the question is &quot;where can I legally watch this&quot;, the answer is the metadata API&#x27;s availability endpoint (see `tmdb-metadata`), not an embed. Integrate one only with that understood — and never label such a source in your UI as licensed, official, or authorised.
+
+## Install
+
+```bash
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/streaming-provider-embeds/SKILL.md
+```
+
+## The control probe — do this first
+
+Request an id you believe is real **and** one that certainly isn&#x27;t (`99999999`). If both look the same, your probe is broken and every measurement after it is meaningless.
+
+```bash
+curl -sS -o /dev/null -w &#x27;%{http_code} %{size_download}\n&#x27; \
+  -H &quot;Referer: https://localhost/&quot; \
+  -H &quot;Sec-Fetch-Dest: iframe&quot; -H &quot;Sec-Fetch-Mode: navigate&quot; -H &quot;Sec-Fetch-Site: cross-site&quot; \
+  -A &quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/131.0.0.0 Safari/537.36&quot; \
+  &quot;https://provider.example.com/embed/550&quot;
+```
+
+Real case: a bare `curl` returned an identical 3,545-byte body for a real id, a second real id, and a bogus one — which looked like a dead provider. It was a `410`: the host refuses requests without an embed-shaped `Referer`. With headers, real ids returned a player and the bogus id returned a distinguishable 404.
+
+A `410`/`403` from a bare curl means **your request was malformed**, not that the title is missing.
+
+## The five traps
+
+| # | Trap | Symptom | Fix |
+|---|---|---|---|
+| 1 | Missing `frame-src` entry | **Plain black box**, console-only CSP error | CSP entry and provider list are one change, never two |
+| 2 | Direct access disabled | Error page for every id, real or not | Send embed-shaped headers when probing |
+| 3 | Host sets `X-Frame-Options` | &quot;Refused to display … &#x27;sameorigin&#x27;&quot; | Nothing on your side fixes it — check before integrating |
+| 4 | CSP re-checks after redirects | Console names a host you never wrote | Follow redirects; allowlist every host in the chain |
+| 5 | `sandbox` attribute detected | &quot;Sandbox Detected&quot; error, or an endless spinner | Use a click-catch overlay instead |
+
+Trap 1 is the expensive one: a blocked frame is indistinguishable from a dead provider, so your own failure detection reports the *title* as unavailable — a lie that sends you debugging the wrong layer.
+
+Trap 5&#x27;s mitigation, which works:
+
+```jsx
+&lt;iframe key={src} src={src} allow=&quot;autoplay; fullscreen; encrypted-media; picture-in-picture&quot; allowFullScreen /&gt;
+{overlayActive &amp;&amp; (
+  &lt;button className=&quot;player__click-catch&quot; onClick={() =&gt; setOverlayActive(false)}&gt;Tap again to play&lt;/button&gt;
+)}
+```
+
+A transparent layer absorbs the first click so a click-triggered popup fires on your overlay, not inside the frame. Re-arm it on every new `src`.
+
+## Origin allowlisting
+
+```js
+export const TRUSTED_EMBED_ORIGINS = Object.freeze([&#x27;https://alpha.example.com&#x27;]);
+export const isTrustedEmbedOrigin = (o) =&gt; typeof o === &#x27;string&#x27; &amp;&amp; TRUSTED_EMBED_ORIGINS.includes(o);
+```
+
+`Array.includes` is exact element matching — correct. A **string** `includes` is not: `origin.includes(&#x27;alpha.example.com&#x27;)` accepts `https://alpha.example.com.attacker.com`. This has been a real vulnerability in a shipped app.
+
+Keep the allowlist in the same file that builds the embed URLs, or the two drift and you get trap 1. And only allowlist an origin you gain something from — one that emits nothing but analytics widens your trust boundary for free.
+
+## Capture the contract, don&#x27;t trust the docs
+
+```js
+window.addEventListener(&#x27;message&#x27;, (e) =&gt; {
+  let d = e.data;
+  if (typeof d === &#x27;string&#x27;) { try { d = JSON.parse(d); } catch {} }
+  console.log(e.origin, d);
+});
+```
+
+In one measured comparison, one host published a full lifecycle contract and delivered it; another&#x27;s docs implied events, and a live capture of 76 messages across a full session found every one to be third-party analytics chatter with no playback field at all — so that origin was deliberately left out of the allowlist.
+
+Shapes that bite: position arrives as `time` **or** `currentTime` (read the wrong one and you save `undefined`), the payload may be a JSON *string*, and the real event may be nested at `data.data.event`. Handle all three.
+
+Also: mark a title &quot;watching&quot; on **frame load**, not on the first message. Some hosts only message on specific interactions, so a viewer who presses play and walks away would never register at all.
+
+## Detecting failure you cannot see
+
+You can&#x27;t read a cross-origin frame and CORS blocks pre-probing. Two signals remain: an explicit error event, and **silence**.
+
+A host&#x27;s error page is static HTML with no scripts, so it posts nothing. A working player posts *something* — even chrome chatter — long before playback starts. Measured on one host: real id → 1 message before playback, bogus id → 0. That difference is the whole signal.
+
+```js
+sawAnyMessageRef.current = true;   // set BEFORE parsing — the useful evidence is often a message your parser discards
+
+const timer = setTimeout(() =&gt; {
+  if (!sawAnyMessageRef.current) onSourceError(&#x27;silent&#x27;);
+}, 20_000);                         // must cover iframe load + player boot on a slow connection
+```
+
+Key it on recognised *playback* events instead and it fires whenever playback simply hasn&#x27;t started — autoplay blocked, buffering, paused — yanking a working video away from the viewer.
+
+## Capability table
+
+```js
+const PROVIDER_CAPABILITIES = Object.freeze({
+  alpha: { reportsPosition: true,  canSeekByUrl: false },
+  beta:  { reportsPosition: false, canSeekByUrl: true  },
+});
+```
+
+Two abilities, kept apart so you can see which half is missing: does it tell you where playback is, and can it be told to start at an offset? Record the evidence for each entry in a comment — a wrong flag ships a button that silently does nothing. Derive UI copy from the table, never from a hardcoded string.
+
+## Manual switching, remembered
+
+A cross-origin iframe can&#x27;t be probed for &quot;does this host carry this title&quot;, so let the viewer pick and remember it: per title, with a per-profile default underneath. Precedence goes one way — an explicit per-title choice always outranks the default, and changing the default never retroactively moves a title someone already chose for.
+
+## Coverage sweeps
+
+Sample real ids from your own catalogue, make the sample deterministic (seeded shuffle), bound concurrency, keep the script in the repo. Report `103/140 (73.6%)` — useful and checkable. &quot;Good coverage&quot; is neither, and &quot;we carry everything&quot; is a claim you&#x27;ll be held to.
+
+## Honest limitations
+
+- Names no specific hosts — they change, disappear, and get blocked. The method transfers; a host list wouldn&#x27;t.
+- Endorses and licenses nothing. See the framing note above.
+- Cannot make playback verifiable in headless CI: headless browsers lack the codecs. You can verify the URL built, the response returned, and the messages posted — a person has to watch a video play.
+- Cannot bypass a host&#x27;s `X-Frame-Options`.
+- Does not cover DRM, HLS/DASH, or serving your own streams.
+- Does not handle id mapping to MAL/AniList — see `media-id-mapping`.
+
+## Part of
+
+[Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio) — empowering skills for the Hermes agent.
+</pre>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <span class="footer-word">Hermes Skills</span>
+        <p class="footer-note">Install one, your agent can now do that for you.</p>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Install any skill</span>
+        <code class="footer-code mono">hermes skills install &lt;url&gt;</code>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Colophon</span>
+        <p class="footer-meta">By Owen &middot; MIT licensed &middot;
+          <a href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">Source on GitHub</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/common.js"></script>
+  <script src="../../js/skill-page.js"></script>
+</body>
+</html>

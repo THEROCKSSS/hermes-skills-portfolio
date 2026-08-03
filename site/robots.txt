@@ -1,0 +1,6 @@
+# Hermes Skills Portfolio — https://github.com/THEROCKSSS/hermes-skills-portfolio
+# The whole site is a public catalog; there is nothing here to keep out of an index.
+User-agent: *
+Allow: /
+
+Sitemap: https://therocksss.github.io/hermes-skills-portfolio/sitemap.xml

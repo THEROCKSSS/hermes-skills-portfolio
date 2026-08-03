@@ -15,7 +15,7 @@ metadata:
 ## Overview
 
 Author beautiful presentations from plain Markdown — no drag-and-drop editors, no
-locked-in proprietary formats. This skill covers three best-in-class engines
+locked-in proprietary formats. This skill covers three widely used engines
 (reveal.js, Marp, Slidev), their slide-delimiter syntax, theming, live preview,
 and one-command export to PDF or PowerPoint.
 

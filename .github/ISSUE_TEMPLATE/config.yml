@@ -1,0 +1,15 @@
+# Blank issues stay enabled: the three templates cover the common cases, but a
+# question that fits none of them should not be forced into the wrong form.
+# Only issues carrying the `skill-request` label enter the submission pipeline.
+blank_issues_enabled: true
+
+contact_links:
+  - name: Browse the catalog first
+    url: https://therocksss.github.io/hermes-skills-portfolio/
+    about: Dozens of skills are already published. A near-duplicate is the most common reason a request is declined.
+  - name: How a submission becomes a catalog entry
+    url: https://therocksss.github.io/hermes-skills-portfolio/submit.html
+    about: The stages from issue to live entry, and which of them a human still reviews by hand.
+  - name: Contribution guide
+    url: https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/CONTRIBUTING.md
+    about: The quality bar, the category and tier definitions, and the pull-request process.

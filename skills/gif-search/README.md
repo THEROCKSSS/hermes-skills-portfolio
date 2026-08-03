@@ -9,7 +9,7 @@ The agent searches Tenor's GIF library by keyword, shows you the top results, an
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/gif-search/SKILL.md
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/gif-search/SKILL.md
 ```
 
 ## How to use
@@ -26,7 +26,7 @@ The agent:
 
 ## Prerequisites
 
-- A free Tenor API key from https://tenor.com/developer/keyregistration
+- A free Tenor API key from https://developers.google.com/tenor/guides/quickstart
 - Set as `TENOR_API_KEY` environment variable
 
 ## Example

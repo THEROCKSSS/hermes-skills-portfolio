@@ -1,10 +1,14 @@
 ---
-name: Skill Request
-about: Suggest a new skill for the portfolio
+name: Skill Request (free-form)
+about: Fallback for a rough idea. Prefer the structured "Skill request" form — only that one can be scaffolded automatically.
 title: "[SKILL] "
 labels: enhancement, skill-request
 assignees: []
 ---
+
+> **Use the structured [Skill request](?template=skill_request.yml) form instead if you can.**
+> Approved requests filed through that form are scaffolded into a pull request automatically.
+> An issue filed here has to be rewritten by hand before it can be approved.
 
 ## Skill name
 

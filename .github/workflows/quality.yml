@@ -1,0 +1,132 @@
+# Content quality — the half of correctness ci.yml does not cover.
+#
+# ci.yml runs on every push and answers "is the catalog structurally valid?".
+# This runs on a schedule and answers "is the catalog any *good*?" — prose that
+# invents metrics, links that have rotted, skills nobody has touched, two
+# entries that quietly describe the same thing, a tier that no longer matches
+# what the description says.
+#
+# Deliberately separate from ci.yml: a rotted third-party link is not a reason
+# to block a pull request, and a weekly report is the right cadence for
+# curation work. Nothing here pushes a commit or opens an issue — every finding
+# lands in the job summary for a human to act on.
+#
+# Every step appends its own markdown report to the job summary automatically:
+# the checker writes to $GITHUB_STEP_SUMMARY when that variable is set.
+name: Content Quality
+
+on:
+  schedule:
+    # Mondays, 07:00 UTC — a review queue waiting at the start of the week.
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+    inputs:
+      stale_months:
+        description: "Months before a skill is reported as stale"
+        required: false
+        default: "6"
+
+permissions:
+  contents: read
+
+jobs:
+  # ------------------------------------------------------------------ #
+  # Deterministic. No network, no heuristic that can drift. These block.
+  # ------------------------------------------------------------------ #
+  deterministic:
+    name: Deterministic checks (blocking)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # No pip install anywhere in this workflow. The checker falls back to a
+      # stdlib frontmatter parser when PyYAML is absent, and the two paths are
+      # held to identical behaviour by tests/test_content_quality.py.
+      - name: Unit tests
+        run: python -m pytest tests/test_content_quality.py -q
+
+      - name: Frontmatter revalidation
+        run: python scripts/check_content_quality.py frontmatter
+
+      # --show-suppressed prints what the lint chose *not* to report and why,
+      # so the suppression rules stay auditable instead of being taken on faith.
+      - name: Invented-metric lint
+        run: python scripts/check_content_quality.py metrics --show-suppressed
+
+      - name: Tier consistency
+        run: python scripts/check_content_quality.py tiers
+
+  # ------------------------------------------------------------------ #
+  # Network-dependent and heuristic. These report; they do not block.
+  # ------------------------------------------------------------------ #
+  advisory:
+    name: Advisory checks (report only)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The staleness check reads `git log -1` per skill directory; the
+          # default shallow clone would report every skill as historyless.
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # Keyed by run id so each sweep writes a fresh entry, with the previous
+      # week's results restored as a warm start for URLs that have not changed.
+      - name: Restore link-check cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/link-cache.json
+          key: link-cache-${{ github.run_id }}
+          restore-keys: |
+            link-cache-
+
+      # continue-on-error, because "unverifiable" is the normal outcome for a
+      # CI runner hitting Cloudflare, and a weekly red X nobody can fix teaches
+      # everyone to ignore the report. The findings still reach the summary.
+      - name: Broken-link check
+        id: links
+        continue-on-error: true
+        run: |
+          python scripts/check_content_quality.py links \
+            --workers 12 \
+            --timeout 15 \
+            --cache "${RUNNER_TEMP}/link-cache.json" \
+            --cache-ttl-days 7
+
+      - name: Staleness report
+        id: staleness
+        continue-on-error: true
+        run: |
+          python scripts/check_content_quality.py staleness \
+            --months "${{ github.event.inputs.stale_months || '6' }}"
+
+      - name: Duplicate-content detector
+        id: duplicates
+        continue-on-error: true
+        run: python scripts/check_content_quality.py duplicates
+
+      - name: Record advisory outcomes
+        if: always()
+        run: |
+          {
+            echo ""
+            echo "## Advisory step outcomes"
+            echo ""
+            echo "| Step | Outcome |"
+            echo "|---|---|"
+            echo "| Broken-link check | \`${{ steps.links.outcome }}\` |"
+            echo "| Staleness report | \`${{ steps.staleness.outcome }}\` |"
+            echo "| Duplicate-content detector | \`${{ steps.duplicates.outcome }}\` |"
+            echo ""
+            echo "A failed link step means at least one URL returned a definitive 404/410"
+            echo "to a GET. 403/429/timeout is recorded as *unverifiable* and never fails —"
+            echo "plenty of hosts block CI runners outright. This job is advisory: none of"
+            echo "these outcomes block anything, and nothing here is auto-fixed or committed."
+          } >> "${GITHUB_STEP_SUMMARY}"

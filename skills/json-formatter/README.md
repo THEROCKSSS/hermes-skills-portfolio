@@ -9,7 +9,7 @@ The agent takes messy or minified JSON and makes it clean: pretty-prints with in
 ## Install
 
 ```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/json-formatter/SKILL.md
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/json-formatter/SKILL.md
 ```
 
 ## How to use

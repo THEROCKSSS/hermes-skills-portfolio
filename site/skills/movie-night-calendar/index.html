@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>movie-night-calendar — Hermes Skill</title>
+  <meta name="description" content="What it does: A shared calendar bolted onto a catalogue app: a month grid, one row per scheduled screening, each carrying a host profile, a real title picked from the metadata API, a date and optional time, a description, and an optional chat/voice link. How the agent uses it: A catalogue app...">
+  <link rel="canonical" href="https://therocksss.github.io/hermes-skills-portfolio/skills/movie-night-calendar/">
+  <meta property="og:title" content="movie-night-calendar — Hermes Skill">
+  <meta property="og:description" content="What it does: A shared calendar bolted onto a catalogue app: a month grid, one row per scheduled screening, each carrying a host profile, a real title picked from the metadata API, a date and optional time, a description, and an optional chat/voice link. How the agent uses it: A catalogue app...">
+  <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/movie-night-calendar/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Hermes Skills Portfolio">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="movie-night-calendar — Hermes Skill">
+  <meta name="twitter:description" content="What it does: A shared calendar bolted onto a catalogue app: a month grid, one row per scheduled screening, each carrying a host profile, a real title picked from the metadata API, a date and optional time, a description, and an optional chat/voice link. How the agent uses it: A catalogue app...">
+  <link rel="sitemap" type="application/xml" href="../../sitemap.xml">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "movie-night-calendar",
+  "name": "movie-night-calendar",
+  "description": "Use when a media catalogue app needs shared scheduling — a movie-night calendar, watch-party planner, a month grid of events with a host and a title attached, an upcoming-event badge, or a \"who's picking this Friday\" feature. Also use when calendar dates render one day off, when past events need distinguishing from upcoming, or when deciding who may delete an event.",
+  "url": "https://therocksss.github.io/hermes-skills-portfolio/skills/movie-night-calendar/",
+  "inLanguage": "en",
+  "license": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/LICENSE",
+  "isPartOf": {
+    "@type": "WebSite",
+    "@id": "https://therocksss.github.io/hermes-skills-portfolio/#website",
+    "name": "Hermes Skills Portfolio"
+  },
+  "dateModified": "2026-08-02",
+  "author": {
+    "@type": "Person",
+    "name": "Owen"
+  }
+}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/skill-page.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav is-solid" id="nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="../../index.html">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
+        Hermes Skills
+      </a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="../../index.html" data-nav="catalog">Catalog</a>
+        <a href="../../bundles.html" data-nav="bundles">Bundles</a>
+        <a href="../../changelog.html" data-nav="changelog">Changelog</a>
+        <a href="../../submit.html" data-nav="submit">Submit a skill</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="cmdk-trigger" id="cmdk-trigger" aria-haspopup="dialog" aria-controls="cmdk-modal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="cmdk-trigger-label">Search skills…</span>
+          <kbd class="cmdk-trigger-kbd">&#8984;K</kbd>
+        </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme (t)">
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a class="github-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="skill-main" tabindex="-1">
+    <div class="wrap">
+      <div class="skill-shell">
+        <p class="skill-back-link"><a href="../../index.html">&#8592; Back to catalog</a></p>
+
+        <header class="detail-header">
+          <div class="detail-titles">
+            <h1>movie-night-calendar</h1>
+            <span class="tier-badge utility">Utility</span>
+          </div>
+          <p class="detail-desc">Use when a media catalogue app needs shared scheduling — a movie-night calendar, watch-party planner, a month grid of events with a host and a title attached, an upcoming-event badge, or a &quot;who&#x27;s picking this Friday&quot; feature. Also use when calendar dates render one day off, when past events need distinguishing from upcoming, or when deciding who may delete an event.</p>
+          <div class="detail-meta-row">
+            <span><strong>Category:</strong> Media &amp; Streaming</span>
+            <span><strong>Tier:</strong> Useful for specific workflows</span>
+            <span><strong>Source:</strong> Newly authored</span>
+            <span><strong>Updated:</strong> 2026-08-02</span>
+          </div>
+        </header>
+
+        <div class="detail-tabs" role="tablist" aria-label="Skill documentation">
+          <button class="detail-tab active" id="tab-btn-overview" data-tab="overview" role="tab" aria-selected="true" aria-controls="tab-overview">Overview</button>
+          <button class="detail-tab" id="tab-btn-skillmd" data-tab="skillmd" role="tab" aria-selected="false" aria-controls="tab-skillmd">SKILL.md</button>
+          <button class="detail-tab" id="tab-btn-readme" data-tab="readme" role="tab" aria-selected="false" aria-controls="tab-readme">README</button>
+        </div>
+
+        <div class="detail-tab-content active" id="tab-overview" role="tabpanel" aria-labelledby="tab-btn-overview" tabindex="0">
+          <section class="detail-section">
+            <h2>What it does</h2>
+            <p>A shared calendar bolted onto a catalogue app: a month grid, one row per scheduled screening, each carrying a host profile, a real title picked from the metadata API, a date and optional time, a description, and an optional chat/voice link.</p>
+          </section>
+          <section class="detail-section">
+            <h2>How an agent uses it</h2>
+            <ul><li>A catalogue app needs &quot;movie night on Friday&quot; scheduling shared between profiles.</li><li>A watch-party planner, screening schedule, or club calendar over an existing title catalogue.</li><li>Debugging a calendar that renders events one day early or late.</li><li>Deciding who may create, edit, or delete an event.</li></ul>
+          </section>
+          <section class="detail-section">
+            <h2>What you get</h2>
+            <p>Install this skill and your Hermes agent can use when a media catalogue app needs shared scheduling — a movie-night calendar, watch-party planner, a month grid of events with a host and a title attached, an upcoming-event badge, or a &quot;who&#x27;s picking this friday&quot; feature. also use when calendar dates render one day off, when past events need distinguishing from upcoming, or when deciding who may delete an event. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+          </section>
+          
+        <div class="install-block">
+          <h3>Install command</h3>
+          <div class="install-row">
+            <code id="install-cmd">hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/movie-night-calendar/SKILL.md</code>
+            <button class="btn btn-outline btn-sm" id="copy-btn" type="button">Copy</button>
+          </div>
+        </div>
+        
+          <a class="detail-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/movie-night-calendar/SKILL.md" target="_blank" rel="noopener">View SKILL.md on GitHub <span aria-hidden="true">&#8599;</span></a>
+          
+        </div>
+
+        <div class="detail-tab-content" id="tab-skillmd" role="tabpanel" aria-labelledby="tab-btn-skillmd" tabindex="0">
+          <pre class="skillmd-viewer">---
+name: movie-night-calendar
+description: Use when a media catalogue app needs shared scheduling — a movie-night calendar, watch-party planner, a month grid of events with a host and a title attached, an upcoming-event badge, or a &quot;who&#x27;s picking this Friday&quot; feature. Also use when calendar dates render one day off, when past events need distinguishing from upcoming, or when deciding who may delete an event.
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [calendar, scheduling, movie-night, watch-party, postgrest]
+    related_skills: [watchlist-sync, movie-catalogue-site, tmdb-metadata]
+---
+
+# movie-night-calendar
+
+## Overview
+
+A shared calendar bolted onto a catalogue app: a month grid, one row per scheduled screening, each carrying a host profile, a real title picked from the metadata API, a date and optional time, a description, and an optional chat/voice link. Plus the small things that make it feel finished — a day panel, a past/upcoming distinction, and an &quot;there&#x27;s something coming up&quot; badge in the nav.
+
+It is a small feature with two disproportionate traps: **JavaScript date parsing that silently shifts the day**, and **permissions on a table anyone can reach**.
+
+## When to Use
+
+- A catalogue app needs &quot;movie night on Friday&quot; scheduling shared between profiles.
+- A watch-party planner, screening schedule, or club calendar over an existing title catalogue.
+- Debugging a calendar that renders events one day early or late.
+- Deciding who may create, edit, or delete an event.
+
+Do not use it for personal reminders with no shared audience (a `notes` field on the watchlist row is enough), or for release-date calendars sourced from the metadata API — those are a `/discover` query with date filters, not stored events.
+
+## Workflow
+
+1. **Add the table and its grants** (see Schema). One migration, following the same exposed-view discipline as `watchlist-sync`.
+2. **Load the month&#x27;s events once**, ordered by date, and render the grid from that array — not one request per cell.
+3. **Build the month grid** with the leading blanks maths (see Rendering the Month).
+4. **Parse every date string with an explicit local-midnight suffix** (see The Off-By-One-Day Trap). Do this before anything else, or you will chase a rendering bug that is a parsing bug.
+5. **Add the day panel**: click a cell, see that day&#x27;s events, create from there with the date pre-filled.
+6. **Attach a real title** by searching the metadata API in the create form and storing the id and poster alongside the free-text title (see Attaching a Title).
+7. **Decide and enforce who can delete** (see Permissions), and say the rule in the UI.
+8. **Add the upcoming badge** as a bounded range query (see Upcoming Badge).
+
+## Schema
+
+```sql
+CREATE TABLE movie_nights (
+  id              SERIAL PRIMARY KEY,
+  host_profile_id INTEGER NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  title           TEXT NOT NULL,          -- denormalised on purpose, see below
+  external_id     INTEGER,                -- TMDB id, nullable: not every night is a catalogued title
+  media_type      TEXT CHECK (media_type IN (&#x27;movie&#x27;,&#x27;tv&#x27;)),
+  poster_url      TEXT DEFAULT &#x27;&#x27;,
+  event_date      DATE NOT NULL,
+  event_time      TEXT DEFAULT &#x27;&#x27;,        -- free text; see the timezone note
+  description     TEXT DEFAULT &#x27;&#x27;,
+  chat_url        TEXT DEFAULT &#x27;&#x27;,        -- Discord/Matrix/Jitsi invite
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX movie_nights_date_idx ON movie_nights (event_date);
+ALTER TABLE movie_nights ENABLE ROW LEVEL SECURITY;
+NOTIFY pgrst, &#x27;reload schema&#x27;;
+```
+
+Three deliberate choices:
+
+- **`title` and `poster_url` are denormalised.** An event must still read correctly when the catalogue row is gone, and a scheduled night is a historical record — it should not silently retitle itself if the metadata changes.
+- **`event_date` is a `DATE`, not a `TIMESTAMPTZ`.** A movie night is a calendar day, not an instant. Storing an instant forces a timezone decision on a value that doesn&#x27;t have one and reintroduces the off-by-one below at the database layer.
+- **`event_time` is free text.** Storing `&quot;8pm-ish&quot;` honestly beats storing `20:00:00+00` and then rendering it in a timezone nobody agreed on. If you need a real instant, add a separate nullable `starts_at TIMESTAMPTZ` and say in the UI which timezone it is displayed in.
+
+## The Off-By-One-Day Trap
+
+This is the bug this skill exists for.
+
+```js
+new Date(&#x27;2026-08-02&#x27;)             // parsed as UTC midnight → renders as Aug 1 west of UTC
+new Date(&#x27;2026-08-02T00:00:00&#x27;)    // parsed as LOCAL midnight → correct
+```
+
+A bare `YYYY-MM-DD` string is parsed by the ECMAScript spec as **UTC**, while a date-time string without an offset is parsed as **local**. So every event silently shifts a day for anyone in a negative-offset timezone — and looks perfect on the developer&#x27;s machine if they happen to be east of UTC.
+
+Two rules, applied everywhere:
+
+```js
+// Read: always append the time component.
+const dateObj = new Date(dateStr + &#x27;T00:00:00&#x27;);
+
+// Write: never use toISOString().slice(0,10) — that converts to UTC first
+// and shifts the day back for anyone in a negative offset.
+function fmtDate(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, &#x27;0&#x27;);
+  const day = String(d.getDate()).padStart(2, &#x27;0&#x27;);
+  return `${y}-${m}-${day}`;
+}
+```
+
+Compare against a *normalised* today, or every event dated today counts as past from 00:00:01 onward:
+
+```js
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+const isPast = new Date(dateStr + &#x27;T00:00:00&#x27;) &lt; today;
+```
+
+## Rendering the Month
+
+Fetch once, filter in memory:
+
+```js
+const events = await api(&#x27;/movie_nights?order=event_date.asc&#x27;);
+```
+
+Then the grid maths, which is three lines and easy to get subtly wrong:
+
+```js
+const firstDay    = new Date(year, month, 1).getDay();      // 0=Sun leading blanks
+const daysInMonth = new Date(year, month + 1, 0).getDate(); // day 0 of next month = last of this
+```
+
+`new Date(y, m + 1, 0)` is the idiomatic &quot;days in month&quot; and handles leap years for free. Emit `firstDay` empty cells before day 1, then one cell per day carrying:
+
+- the day number,
+- up to ~3 event rows (title plus a dot in the host&#x27;s avatar colour), then a `+N more` line,
+- `today` and `past` classes,
+- a `data-date` attribute and a click handler opening the day panel.
+
+Cap the events shown per cell. A day with nine events must not stretch the row and break the grid.
+
+**Escape every interpolated string.** These are user-authored titles and descriptions going into `innerHTML`. The one-liner that actually works:
+
+```js
+function escapeHtml(str) {
+  const div = document.createElement(&#x27;div&#x27;);
+  div.textContent = str;
+  return div.innerHTML;
+}
+```
+
+And render `chat_url` links with `target=&quot;_blank&quot; rel=&quot;noopener&quot;` — a user-supplied URL opened without `noopener` hands the opened page a reference to your window.
+
+## Attaching a Title
+
+The create form searches the metadata API (see `tmdb-metadata`) and stores the chosen result&#x27;s id, display title, and poster path together. Store all three:
+
+- the **id** so the event can deep-link into your own title page,
+- the **title** so the event reads correctly without a lookup,
+- the **poster** so the grid and day panel render without a metadata request per event.
+
+Keep `external_id` nullable. Not every movie night is a catalogued title — &quot;board games&quot; or &quot;whatever we feel like&quot; is a legitimate entry, and a `NOT NULL` id turns that into a lie or a blocked flow.
+
+Pre-fill the date from whichever day cell was clicked, and default it to today when the panel was opened without one.
+
+## Permissions
+
+A generated REST layer over Postgres gives `anon` whatever you grant, so decide this explicitly rather than inheriting it:
+
+- **Host may delete their own event.** Compare `event.host_profile_id` against the active profile.
+- **An admin/editor may delete any.** Whatever your app&#x27;s edit gate is.
+- **Nobody else sees a delete button.**
+
+Be honest that this is a **UI-level gate** if `anon` holds a broad `DELETE` grant — anyone reaching the API directly can delete anything. That&#x27;s a legitimate design for a self-hosted site behind a single shared front door (see `watchlist-sync`), but the README has to say so. If you want it enforced, the delete has to move behind a `SECURITY DEFINER` function that checks the caller, or behind real RLS with a JWT.
+
+Past events are worth treating differently: hide &quot;create&quot; and edit affordances on a past date, but keep delete available for tidy-up. A calendar you cannot clean up fills with dead weeks.
+
+## Upcoming Badge
+
+A bounded range query, not a full table scan on every page load:
+
+```js
+const today = new Date(); today.setHours(0, 0, 0, 0);
+const week  = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+const rows  = await api(`/movie_nights?event_date=gte.${fmtDate(today)}&amp;event_date=lte.${fmtDate(week)}`);
+badge.hidden = !(rows &amp;&amp; rows.length);
+```
+
+Refresh it after any create or delete, or the badge disagrees with the calendar until the next reload.
+
+Failure must hide the badge, not break the nav — wrap it and swallow.
+
+## Empty States
+
+- **A month with no events** says so in words (&quot;No movie nights this month&quot; — plus &quot;create one from any day&quot; only when the viewer can actually create). Never a blank grid area.
+- **A day panel with no events** says &quot;No movie nights planned&quot;, not an empty list.
+- **A failed load** is distinct from an empty month. Same three-state rule as everywhere else: haven&#x27;t asked, asked and empty, asked and failed.
+
+## Common Pitfalls
+
+1. **`new Date(&#x27;2026-08-02&#x27;)`.** UTC-parsed; shifts a day west of UTC. The single most likely bug in this feature.
+2. **`toISOString().slice(0,10)` to write a date.** Same bug, other direction.
+3. **Comparing against an unnormalised `new Date()`.** Today&#x27;s events read as past all afternoon.
+4. **`getMonth()` off-by-one.** It is 0-indexed; `getDate()` is not.
+5. **Unbounded events per cell.** One busy day breaks the grid.
+6. **Unescaped titles/descriptions in `innerHTML`.** User-authored strings.
+7. **`target=&quot;_blank&quot;` without `rel=&quot;noopener&quot;`** on a user-supplied chat URL.
+8. **A stale badge** after create/delete.
+9. **`NOT NULL` on the title id.** Blocks legitimate non-catalogue nights.
+10. **Storing a time as a UTC timestamp** and rendering it without saying which timezone.
+
+## Limitations
+
+This skill does **not**:
+
+- Send invitations, reminders, emails, or push notifications. It stores a link; delivery is a separate system.
+- Do recurrence (every Friday), RSVPs, attendance tracking, or voting on what to watch. Each is a real feature with its own schema; this is a single-row event.
+- Export to iCal/Google Calendar. `event_date` + `event_time` as stored is not a precise enough instant for an `.ics` without the `starts_at` addition it names.
+- Sync playback between viewers. A watch-*party* with synchronised players is a different problem entirely, and the embed hosts in `streaming-provider-embeds` publish no seek command you can rely on.
+- Enforce permissions server-side by itself. It describes the UI gate honestly and names the two ways to make it real.
+- Handle timezones for a distributed group. It deliberately stores a calendar day and free-text time rather than pretending to.
+
+## Verification Checklist
+
+- [ ] An event created for today renders on today&#x27;s cell with the machine&#x27;s timezone set to something **west of UTC** (this is the test that catches the parsing bug)
+- [ ] Month navigation across a year boundary and into February of a leap year both render the right number of days
+- [ ] A day with more than three events shows `+N more` and does not stretch the row
+- [ ] A title containing `&lt;script&gt;` renders as text
+- [ ] The delete button appears only for the host and the editor, and the rule is stated in the UI
+- [ ] Creating and deleting an event both update the upcoming badge without a reload
+- [ ] An empty month and a failed load render differently
+- [ ] A past date offers delete but not create
+</pre>
+        </div>
+
+        <div class="detail-tab-content" id="tab-readme" role="tabpanel" aria-labelledby="tab-btn-readme" tabindex="0">
+          <pre class="skillmd-viewer"># movie-night-calendar
+
+A shared scheduling calendar for a media catalogue app — a month grid of screenings, each with a host, a real title from the metadata API, a date, and a chat link.
+
+## What it does
+
+The agent adds the table, the month grid, the day panel, the create flow that searches your metadata API for a real title, the past/upcoming distinction, and the &quot;something&#x27;s coming up&quot; badge in the nav.
+
+It is a small feature with two disproportionate traps: **JavaScript date parsing that silently shifts the day**, and **permissions on a table anyone can reach**. Most of this skill is those two.
+
+## Install
+
+```bash
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/movie-night-calendar/SKILL.md
+```
+
+## Schema
+
+```sql
+CREATE TABLE movie_nights (
+  id              SERIAL PRIMARY KEY,
+  host_profile_id INTEGER NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  title           TEXT NOT NULL,       -- denormalised: an event must read correctly forever
+  external_id     INTEGER,             -- nullable: not every night is a catalogued title
+  media_type      TEXT CHECK (media_type IN (&#x27;movie&#x27;,&#x27;tv&#x27;)),
+  poster_url      TEXT DEFAULT &#x27;&#x27;,
+  event_date      DATE NOT NULL,       -- a calendar day, NOT a timestamptz
+  event_time      TEXT DEFAULT &#x27;&#x27;,     -- free text; &quot;8pm-ish&quot; beats a fake instant
+  description     TEXT DEFAULT &#x27;&#x27;,
+  chat_url        TEXT DEFAULT &#x27;&#x27;,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX movie_nights_date_idx ON movie_nights (event_date);
+NOTIFY pgrst, &#x27;reload schema&#x27;;
+```
+
+`event_date` is a `DATE` on purpose. A movie night is a calendar day, not an instant — storing a timestamp forces a timezone decision on a value that doesn&#x27;t have one, and drags the off-by-one below into the database layer too.
+
+## The off-by-one-day trap
+
+```js
+new Date(&#x27;2026-08-02&#x27;)             // parsed as UTC midnight → renders as Aug 1 west of UTC
+new Date(&#x27;2026-08-02T00:00:00&#x27;)    // parsed as LOCAL midnight → correct
+```
+
+Per spec, a bare `YYYY-MM-DD` is UTC and a date-time without an offset is local. So every event silently shifts a day for anyone in a negative-offset timezone — and looks perfect on a developer&#x27;s machine east of UTC.
+
+```js
+// Read: always append the time component.
+const d = new Date(dateStr + &#x27;T00:00:00&#x27;);
+
+// Write: never toISOString().slice(0,10) — it converts to UTC first.
+function fmtDate(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,&#x27;0&#x27;)}-${String(d.getDate()).padStart(2,&#x27;0&#x27;)}`;
+}
+
+// Compare against a normalised today, or today&#x27;s events read as past all afternoon.
+const today = new Date(); today.setHours(0,0,0,0);
+```
+
+## Month grid maths
+
+```js
+const firstDay    = new Date(year, month, 1).getDay();       // leading blank cells
+const daysInMonth = new Date(year, month + 1, 0).getDate();  // day 0 of next month
+```
+
+`new Date(y, m+1, 0)` handles leap years for free. Fetch the month&#x27;s events **once** and filter in memory — never one request per cell.
+
+Per cell: the day number, up to ~3 event rows (title + a dot in the host&#x27;s avatar colour), a `+N more` line, `today`/`past` classes, and a click handler opening the day panel. Cap the rows or one busy day stretches the grid.
+
+Escape everything — these are user-authored strings going into `innerHTML`:
+
+```js
+function escapeHtml(str) {
+  const div = document.createElement(&#x27;div&#x27;);
+  div.textContent = str;
+  return div.innerHTML;
+}
+```
+
+And render `chat_url` with `target=&quot;_blank&quot; rel=&quot;noopener&quot;`. A user-supplied URL opened without `noopener` hands the opened page a reference to your window.
+
+## Attaching a title
+
+The create form searches your metadata API and stores three things together: the **id** (so the event deep-links into your own title page), the **title** (so it reads correctly without a lookup), and the **poster** (so the grid renders without a request per event).
+
+Keep the id nullable. &quot;Board games&quot; or &quot;whatever we feel like&quot; is a legitimate entry, and `NOT NULL` turns that into a blocked flow.
+
+## Permissions
+
+Decide explicitly rather than inheriting whatever `anon` was granted:
+
+- host may delete their own event,
+- an admin/editor may delete any,
+- nobody else sees a delete button.
+
+If `anon` holds a broad `DELETE` grant, **say in the README that this is a UI gate**, not enforcement — anyone reaching the API directly can delete anything. Legitimate for a self-hosted site behind one shared front door; not legitimate to leave unstated. To make it real, move the delete behind a `SECURITY DEFINER` function that checks the caller, or behind RLS with a JWT.
+
+Past dates: hide create, keep delete. A calendar you can&#x27;t clean up fills with dead weeks.
+
+## Upcoming badge
+
+```js
+const rows = await api(`/movie_nights?event_date=gte.${fmtDate(today)}&amp;event_date=lte.${fmtDate(week)}`);
+badge.hidden = !(rows &amp;&amp; rows.length);
+```
+
+A bounded range query, refreshed after every create and delete — otherwise the badge disagrees with the calendar until the next reload. A failure hides the badge; it must not break the nav.
+
+## Empty states
+
+A month with no events says so in words, and only offers &quot;create one from any day&quot; when the viewer can actually create. A day panel with no events says &quot;No movie nights planned&quot;. A failed load is visually distinct from an empty month — same three-state rule as everywhere: haven&#x27;t asked, asked and empty, asked and failed.
+
+## Honest limitations
+
+- Sends no invitations, reminders, emails, or push notifications. It stores a link; delivery is a separate system.
+- No recurrence, RSVPs, attendance, or voting on what to watch — each is its own schema.
+- No iCal/Google Calendar export: a calendar day plus free-text time isn&#x27;t a precise enough instant for an `.ics`.
+- No synchronised playback. Watch-party sync is a different problem, and the embed hosts in `streaming-provider-embeds` publish no seek command you can rely on.
+- Does not enforce permissions server-side by itself — it describes the UI gate honestly and names the two ways to make it real.
+- Does not solve timezones for a distributed group; it stores a calendar day and free text rather than pretending to.
+
+## Part of
+
+[Hermes Skills Portfolio](https://github.com/THEROCKSSS/hermes-skills-portfolio) — empowering skills for the Hermes agent.
+</pre>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <span class="footer-word">Hermes Skills</span>
+        <p class="footer-note">Install one, your agent can now do that for you.</p>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Install any skill</span>
+        <code class="footer-code mono">hermes skills install &lt;url&gt;</code>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Colophon</span>
+        <p class="footer-meta">By Owen &middot; MIT licensed &middot;
+          <a href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">Source on GitHub</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/common.js"></script>
+  <script src="../../js/skill-page.js"></script>
+</body>
+</html>

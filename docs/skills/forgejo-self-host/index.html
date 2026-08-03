@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -10,22 +10,47 @@
   <meta property="og:description" content="What it does: The agent deploys a Forgejo instance using Docker Compose, creates an admin account, sets up an access token, and shows you how to push code. Forgejo is a lightweight self-hosted Git server (soft fork of Gitea) with a web UI, issues, pull requests, wiki, and Actions CI. It runs on...">
   <meta property="og:url" content="https://therocksss.github.io/hermes-skills-portfolio/skills/forgejo-self-host/">
   <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Hermes Skills Portfolio">
+  <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="forgejo-self-host — Hermes Skill">
   <meta name="twitter:description" content="What it does: The agent deploys a Forgejo instance using Docker Compose, creates an admin account, sets up an access token, and shows you how to push code. Forgejo is a lightweight self-hosted Git server (soft fork of Gitea) with a web UI, issues, pull requests, wiki, and Actions CI. It runs on...">
+  <link rel="sitemap" type="application/xml" href="../../sitemap.xml">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "forgejo-self-host",
+  "name": "forgejo-self-host",
+  "description": "Set up a self-hosted Forgejo Git server with Docker — repos, issues, pull requests, and Actions CI.",
+  "url": "https://therocksss.github.io/hermes-skills-portfolio/skills/forgejo-self-host/",
+  "inLanguage": "en",
+  "license": "https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/LICENSE",
+  "isPartOf": {
+    "@type": "WebSite",
+    "@id": "https://therocksss.github.io/hermes-skills-portfolio/#website",
+    "name": "Hermes Skills Portfolio"
+  },
+  "dateModified": "2026-07-20",
+  "author": {
+    "@type": "Person",
+    "name": "Owen"
+  }
+}
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/skill-page.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="nav">
+  <header class="nav is-solid" id="nav">
     <div class="nav-inner">
       <a class="nav-brand" href="../../index.html">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 14l4-4 4 4 8-8"/><path d="M4 20h16"/></svg>
         Hermes Skills
       </a>
       <nav class="nav-links" aria-label="Sections">
@@ -36,20 +61,20 @@
       </nav>
       <div class="nav-actions">
         <button class="cmdk-trigger" id="cmdk-trigger" aria-haspopup="dialog" aria-controls="cmdk-modal">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <span class="cmdk-trigger-label">Search skills…</span>
           <kbd class="cmdk-trigger-kbd">&#8984;K</kbd>
         </button>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme (t)">
-          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
         <a class="github-link" href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">GitHub</a>
       </div>
     </div>
   </header>
 
-  <main id="main" class="skill-main">
+  <main id="main" class="skill-main" tabindex="-1">
     <div class="wrap">
       <div class="skill-shell">
         <p class="skill-back-link"><a href="../../index.html">&#8592; Back to catalog</a></p>
@@ -59,7 +84,7 @@
             <h1>forgejo-self-host</h1>
             <span class="tier-badge core">Core</span>
           </div>
-          <p class="detail-desc">Set up a self-hosted Forgejo Git server with Docker — repos, issues, PRs, and CI in minutes.</p>
+          <p class="detail-desc">Set up a self-hosted Forgejo Git server with Docker — repos, issues, pull requests, and Actions CI.</p>
           <div class="detail-meta-row">
             <span><strong>Category:</strong> DevOps &amp; Infrastructure</span>
             <span><strong>Tier:</strong> Broadly empowering, nearly any user benefits</span>
@@ -68,30 +93,30 @@
           </div>
         </header>
 
-        <div class="detail-tabs" role="tablist">
-          <button class="detail-tab active" data-tab="overview" role="tab" aria-selected="true">Overview</button>
-          <button class="detail-tab" data-tab="skillmd" role="tab" aria-selected="false">SKILL.md</button>
-          <button class="detail-tab" data-tab="readme" role="tab" aria-selected="false">README</button>
+        <div class="detail-tabs" role="tablist" aria-label="Skill documentation">
+          <button class="detail-tab active" id="tab-btn-overview" data-tab="overview" role="tab" aria-selected="true" aria-controls="tab-overview">Overview</button>
+          <button class="detail-tab" id="tab-btn-skillmd" data-tab="skillmd" role="tab" aria-selected="false" aria-controls="tab-skillmd">SKILL.md</button>
+          <button class="detail-tab" id="tab-btn-readme" data-tab="readme" role="tab" aria-selected="false" aria-controls="tab-readme">README</button>
         </div>
 
-        <div class="detail-tab-content active" id="tab-overview" role="tabpanel">
+        <div class="detail-tab-content active" id="tab-overview" role="tabpanel" aria-labelledby="tab-btn-overview" tabindex="0">
           <section class="detail-section">
-            <h3>What it does</h3>
+            <h2>What it does</h2>
             <p>The agent deploys a Forgejo instance using Docker Compose, creates an admin account, sets up an access token, and shows you how to push code. Forgejo is a lightweight self-hosted Git server (soft fork of Gitea) with a web UI, issues, pull requests, wiki, and Actions CI. It runs on your machine and holds your repos privately.</p>
           </section>
           <section class="detail-section">
-            <h3>How an agent uses it</h3>
+            <h2>How an agent uses it</h2>
             <ul><li>The user wants their own private Git server instead of GitHub/GitLab.</li><li>The user wants to host repos locally for development or backup.</li><li>The user wants CI/CD without relying on external services.</li><li>The user says &quot;set up Forgejo&quot;, &quot;self-host my git&quot;, or &quot;I want a local GitHub&quot;.</li></ul>
           </section>
           <section class="detail-section">
-            <h3>What you get</h3>
-            <p>Install this skill and your Hermes agent can set up a self-hosted forgejo git server with docker — repos, issues, prs, and ci in minutes. No manual setup, no scripts to run &mdash; the agent handles it.</p>
+            <h2>What you get</h2>
+            <p>Install this skill and your Hermes agent can set up a self-hosted forgejo git server with docker — repos, issues, pull requests, and actions ci. No manual setup, no scripts to run &mdash; the agent handles it.</p>
           </section>
           
         <div class="install-block">
-          <h4>Install command</h4>
+          <h3>Install command</h3>
           <div class="install-row">
-            <code id="install-cmd">hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/forgejo-self-host/SKILL.md</code>
+            <code id="install-cmd">hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/forgejo-self-host/SKILL.md</code>
             <button class="btn btn-outline btn-sm" id="copy-btn" type="button">Copy</button>
           </div>
         </div>
@@ -100,278 +125,468 @@
           
         </div>
 
-        <div class="detail-tab-content" id="tab-skillmd" role="tabpanel">
-          <pre class="skillmd-viewer">---
-name: forgejo-self-host
-description: &quot;Use when the user wants a self-hosted, private Git server (repos, issues, pull requests, CI, wiki) running locally via Docker instead of relying on GitHub or GitLab.&quot;
-version: 1.0.0
-author: Hermes Agent
-license: MIT
-metadata:
-  hermes:
-    tags: [forgejo, self-hosted-git, docker-compose, ci-cd, gitea-fork]
-    related_skills: [caddy-reverse-proxy, git-backup, github-actions-ci]
----
-
-# forgejo-self-host
-
-## Overview
-
-Deploy a self-hosted Forgejo instance using Docker. Forgejo is a lightweight, self-hosted Git server (a soft fork of Gitea) with repos, issues, pull requests, Actions CI, and a wiki. This skill gets it running on the user&#x27;s machine in minutes.
-
-## When to Use
-
-- The user wants their own private Git server instead of GitHub/GitLab.
-- The user wants to host repos locally for development or backup.
-- The user wants CI/CD without relying on external services.
-- The user says &quot;set up Forgejo&quot;, &quot;self-host my git&quot;, or &quot;I want a local GitHub&quot;.
-
-## Prerequisites
-
-- **Docker** and **Docker Compose** installed. Check with `docker --version` and `docker compose version`.
-- A free port (default: 3000 for web, 2222 for SSH git).
-
-## Workflow
-
-### Step 1: Create the Forgejo deployment
-
-Create a directory and a `docker-compose.yml`:
-
-```yaml
-version: &quot;3&quot;
-services:
-  forgejo:
-    image: codeberg.org/forgejo/forgejo:latest
-    container_name: forgejo
-    environment:
-      - USER_UID=1000
-      - USER_GID=1000
-      - FORGEJO__database__DB_TYPE=sqlite3
-    restart: always
-    volumes:
-      - forgejo-data:/data
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-    ports:
-      - &quot;3000:3000&quot;
-      - &quot;2222:22&quot;
-
-volumes:
-  forgejo-data:
-```
-
-### Step 2: Start Forgejo
-
-```bash
-docker compose up -d
-```
-
-Wait 10-20 seconds for first boot, then verify:
-
-```bash
-curl -s http://localhost:3000/api/v1/version
-# Should return: {&quot;version&quot;:&quot;1.22.0&quot;} or similar
-```
-
-### Step 3: Initial admin setup
-
-Open `http://localhost:3000` in a browser. The first user registered becomes the site admin.
-
-For headless/automated setup, use the API:
-
-```bash
-# Create admin user via CLI (inside the container)
-docker exec -u git forgejo forgejo admin user create \
-  --username &lt;admin-name&gt; \
-  --email &lt;admin-email&gt; \
-  --password &lt;password&gt; \
-  --admin \
-  --must-change-password=false
-```
-
-### Step 4: Create an access token
-
-Log in as the admin, go to Settings → Applications → Generate New Token.
-
-Or via API:
-
-```bash
-curl -s -X POST &quot;http://localhost:3000/api/v1/users/&lt;admin-name&gt;/tokens&quot; \
-  -u &quot;&lt;admin-name&gt;:&lt;password&gt;&quot; \
-  -H &quot;Content-Type: application/json&quot; \
-  -d &#x27;{&quot;name&quot;:&quot;api-access&quot;,&quot;scopes&quot;:[&quot;write:repository&quot;,&quot;write:issue&quot;,&quot;read:user&quot;]}&#x27;
-```
-
-Store the returned `sha1` token — it won&#x27;t be shown again.
-
-### Step 5: Create your first repo
-
-Via web UI: click &quot;+&quot; → New Repository.
-
-Via API:
-
-```bash
-curl -s -X POST &quot;http://localhost:3000/api/v1/user/repos&quot; \
-  -H &quot;Authorization: token &lt;token&gt;&quot; \
-  -H &quot;Content-Type: application/json&quot; \
-  -d &#x27;{&quot;name&quot;:&quot;my-project&quot;,&quot;description&quot;:&quot;My project&quot;,&quot;private&quot;:false}&#x27;
-```
-
-### Step 6: Push code to Forgejo
-
-```bash
-cd my-project
-git init
-git add -A
-git commit -m &quot;Initial commit&quot;
-
-# Using HTTPS with token
-git remote add forgejo http://&lt;admin-name&gt;:&lt;token&gt;@localhost:3000/&lt;admin-name&gt;/my-project.git
-git push -u forgejo main
-```
-
-### Step 7: (Optional) Set up CI with Forgejo Actions
-
-Forgejo Actions provides CI/CD similar to GitHub Actions.
-
-1. **Add a runner:**
-
-```bash
-# Download the runner
-docker run -d --name forgejo-runner \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v forgejo-runner-data:/data \
-  codeberg.org/forgejo/runner:latest \
-  forgejo-runner register --no-interactive \
-    --instance http://host.docker.internal:3000 \
-    --token &lt;runner-registration-token&gt; \
-    --name local-runner
-
-# Start the runner
-docker start forgejo-runner
-```
-
-Get the registration token from: Site Administration → Actions → Runners → Register New Runner.
-
-2. **Add a workflow to a repo:**
-
-Create `.forgejo/workflows/ci.yml`:
-
-```yaml
-name: CI
-on: push
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo &quot;CI is running&quot;
-```
-
-## SSH Git Access
-
-Forgejo exposes SSH on port 2222 by default. To use SSH instead of HTTPS:
-
-```bash
-git remote add forgejo ssh://git@localhost:2222/&lt;admin-name&gt;/my-project.git
-```
-
-Add to `~/.ssh/config` for cleaner URLs:
-
-```
-Host localhost
-  HostName localhost
-  Port 2222
-  User git
-```
-
-## Backup
-
-The Forgejo data volume contains all repos, users, and config. Back it up with:
-
-```bash
-docker run --rm -v forgejo-data:/data -v $(pwd):/backup ubuntu \
-  tar czf /backup/forgejo-backup-$(date +%Y%m%d).tar.gz /data
-```
-
-## Common Pitfalls
-
-1. **Port 3000 in use** — If another service uses port 3000, change the port mapping in docker-compose.yml (e.g., `&quot;3001:3000&quot;`) and access Forgejo at `http://localhost:3001`.
-2. **Default branch is `main` for new repos** — Created via the web UI or API, new repos default to `main` (not `master`). Push to `main`.
-3. **Admin password via CLI sets must_change_password** — On some Forgejo builds, creating a user via CLI sets a &quot;must change password&quot; flag that locks the user out of admin APIs. If this happens, change the password once via the web UI to clear the flag.
-4. **Runner can&#x27;t connect** — The runner needs to reach Forgejo. If running in Docker, use `http://host.docker.internal:3000` (not `localhost:3000` — that&#x27;s the runner&#x27;s own localhost).
-5. **SQLite is fine for small setups** — For single-user or small-team use, SQLite is sufficient. Switch to PostgreSQL only if you have many concurrent users.
-6. **HTTPS/TLS** — Forgejo serves HTTP by default. For HTTPS, put it behind a reverse proxy (Caddy, nginx, Traefik) with TLS termination.
-
-## Verification Checklist
-
-- [ ] `curl -s http://localhost:3000/api/v1/version` returns a version string
-- [ ] Admin login succeeds via the web UI at `http://localhost:3000`
-- [ ] A test repo pushes successfully over the configured remote (HTTPS token or SSH on port 2222)
-- [ ] If Actions was configured: the runner shows as connected under Site Administration → Actions → Runners, and the sample `.forgejo/workflows/ci.yml` run succeeds
+        <div class="detail-tab-content" id="tab-skillmd" role="tabpanel" aria-labelledby="tab-btn-skillmd" tabindex="0">
+          <pre class="skillmd-viewer">---
+name: forgejo-self-host
+description: &quot;Use when the user wants a self-hosted, private Git server (repos, issues, pull requests, CI, wiki) running locally via Docker instead of relying on GitHub or GitLab.&quot;
+version: 1.1.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [forgejo, self-hosted-git, docker-compose, ci-cd, gitea-fork]
+    related_skills: [caddy-reverse-proxy, git-backup, github-actions-ci]
+---
+
+# forgejo-self-host
+
+## Overview
+
+Deploy a self-hosted Forgejo instance using Docker. Forgejo is a lightweight,
+self-hosted Git server (a soft fork of Gitea) with repos, issues, pull requests,
+Actions CI, and a wiki.
+
+The whole skill turns on one decision: **configure the instance from environment
+variables and skip the web install wizard**, rather than booting a blank
+container and clicking through it. A container booted without that configuration
+comes up in *install mode*, where the entire HTTP API is unreachable and the
+admin CLI refuses to run — which is the failure most first-time setups hit.
+
+## When to Use
+
+- The user wants their own private Git server instead of GitHub/GitLab.
+- The user wants to host repos locally for development or backup.
+- The user wants CI/CD without relying on external services.
+- The user says &quot;set up Forgejo&quot;, &quot;self-host my git&quot;, or &quot;I want a local GitHub&quot;.
+
+## Prerequisites
+
+- **Docker Engine + Compose v2.** Check with `docker --version` and
+  `docker compose version` (the space-separated v2 form, not `docker-compose`).
+- **On Windows: Docker Desktop with the WSL2 backend.** The Linux-host tricks in
+  most Forgejo guides (`/etc/timezone` bind mounts, `$(pwd)` in `docker run`) do
+  not work there — see Pitfalls 2 and 9.
+- **Two free host ports** — one for HTTP, one for SSH. Defaults below are `3000`
+  and `2222`. Port `3000` collides with a lot of things (Grafana, Next.js, Rails,
+  many dev servers), so check first:
+  - Linux/macOS: `ss -ltnp | grep -E &#x27;:(3000|2222)\b&#x27;`
+  - Windows: `netstat -an | findstr /R /C:&quot;:3000 &quot; /C:&quot;:2222 &quot;`
+  If either is taken, change the **left** side of the port mapping and change
+  `ROOT_URL` / `SSH_PORT` to match — see Pitfall 4.
+- **A named Docker volume, not a host bind mount**, for `/data`. Forgejo runs as
+  uid 1000 inside the container; a Windows or macOS bind mount will not carry
+  that ownership and the container fails to write its repositories.
+
+## Workflow
+
+### Step 1: Create the Forgejo deployment
+
+Create a directory and a `docker-compose.yml`:
+
+```yaml
+name: forgejo
+
+services:
+  forgejo:
+    # Forgejo publishes NO `latest` tag — pin a major line.
+    image: codeberg.org/forgejo/forgejo:15
+    container_name: forgejo
+    restart: unless-stopped
+    environment:
+      USER_UID: &quot;1000&quot;
+      USER_GID: &quot;1000&quot;
+      TZ: &quot;UTC&quot;
+      # Skip the web install wizard. Without this the container boots into
+      # install mode and the API + admin CLI are both unusable.
+      FORGEJO__security__INSTALL_LOCK: &quot;true&quot;
+      FORGEJO__database__DB_TYPE: sqlite3
+      FORGEJO__database__PATH: /data/gitea/gitea.db
+      # ROOT_URL must be the URL a BROWSER uses. Every generated link,
+      # redirect, clone URL and OAuth callback is built from it.
+      FORGEJO__server__DOMAIN: localhost
+      FORGEJO__server__ROOT_URL: http://localhost:3000/
+      # SSH_PORT is the PUBLISHED port (what users connect to).
+      # SSH_LISTEN_PORT is the IN-CONTAINER port. They differ on purpose.
+      FORGEJO__server__SSH_DOMAIN: localhost
+      FORGEJO__server__SSH_PORT: &quot;2222&quot;
+      FORGEJO__server__SSH_LISTEN_PORT: &quot;22&quot;
+    volumes:
+      - forgejo-data:/data
+    ports:
+      - &quot;3000:3000&quot;
+      - &quot;2222:22&quot;
+
+volumes:
+  forgejo-data:
+```
+
+Do **not** add a `version:` key — Compose v2 warns `the attribute &#x27;version&#x27; is
+obsolete, it will be ignored`. Do **not** bind-mount `/etc/timezone` or
+`/etc/localtime` (Pitfall 2); the `TZ` variable above replaces both portably.
+
+Validate before starting — this parses the file and starts nothing:
+
+```bash
+docker compose -f docker-compose.yml config
+```
+
+### Step 2: Start Forgejo
+
+```bash
+docker compose up -d
+```
+
+First boot takes roughly 10-30 seconds to create the SQLite schema. Wait for the
+health endpoint rather than guessing:
+
+```bash
+# /api/healthz needs no auth and works even on a private instance
+curl -s http://localhost:3000/api/healthz
+```
+
+A configured instance returns `&quot;status&quot;: &quot;pass&quot;` with a `database:ping` check.
+
+Now confirm it is **not** stuck in install mode — this is the check that matters:
+
+```bash
+curl -s http://localhost:3000/ | grep -qi &#x27;&lt;title&gt;Installation&#x27; \
+  &amp;&amp; echo &quot;STILL IN INSTALL MODE — INSTALL_LOCK not applied&quot; \
+  || echo &quot;installed OK&quot;
+```
+
+`/api/healthz` returns `200` *even in install mode*, so it proves the process is
+alive, not that setup succeeded. The title check is what distinguishes them.
+
+### Step 3: Create the admin user and its API token
+
+With `INSTALL_LOCK=true` there is no wizard and no &quot;first registered user becomes
+admin&quot; step — you create the admin directly. One command creates the user *and*
+prints an API token:
+
+```bash
+docker exec -u git forgejo forgejo admin user create \
+  --username &lt;admin-name&gt; \
+  --email &lt;admin-email&gt; \
+  --password &#x27;&lt;password&gt;&#x27; \
+  --admin \
+  --must-change-password=false \
+  --access-token \
+  --access-token-name cli \
+  --access-token-scopes &quot;write:repository,write:issue,write:user&quot;
+```
+
+It prints `New user &#x27;&lt;admin-name&gt;&#x27; has been successfully created!` followed by
+`Access token was successfully created... &lt;token&gt;`. **Store that token now** — it
+is not shown again.
+
+`-u git` is required: the Forgejo process and everything under `/data` are owned
+by the `git` user, and the CLI must run as that user.
+
+Need another token later:
+
+```bash
+docker exec -u git forgejo forgejo admin user generate-access-token \
+  --username &lt;admin-name&gt; --token-name ci \
+  --scopes &quot;write:repository,write:issue,write:user&quot;
+```
+
+**Scope note:** `POST /api/v1/user/repos` (Step 4) requires **`write:user`**, not
+`write:repository`. A token scoped only to repositories is rejected with
+`token does not have at least one of required scope(s): [write:user]`.
+
+### Step 4: Create your first repo
+
+Via web UI: log in at `http://localhost:3000`, click &quot;+&quot; → New Repository.
+
+Via API — returns `201 Created`:
+
+```bash
+curl -s -o /dev/null -w &#x27;%{http_code}\n&#x27; \
+  -X POST &quot;http://localhost:3000/api/v1/user/repos&quot; \
+  -H &quot;Authorization: token &lt;token&gt;&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#x27;{&quot;name&quot;:&quot;my-project&quot;,&quot;description&quot;:&quot;My project&quot;,&quot;private&quot;:false,&quot;auto_init&quot;:true}&#x27;
+```
+
+### Step 5: Push code to Forgejo
+
+```bash
+cd my-project
+git init
+git add -A
+git commit -m &quot;Initial commit&quot;
+
+# HTTPS with a token
+git remote add forgejo http://&lt;admin-name&gt;:&lt;token&gt;@localhost:3000/&lt;admin-name&gt;/my-project.git
+git push -u forgejo main
+```
+
+Embedding the token in the remote URL writes it to `.git/config` in plaintext.
+For anything long-lived use a credential helper or the SSH remote below instead.
+
+### Step 6: (Optional) Set up CI with Forgejo Actions
+
+Get a registration token from Site Administration → Actions → Runners → Register
+New Runner.
+
+Register once (a one-shot container that exits), then run the daemon:
+
+```bash
+# 1. Register — this writes .runner into the volume, then exits.
+docker run --rm \
+  -v forgejo-runner-data:/data \
+  -w /data \
+  codeberg.org/forgejo/runner:latest \
+  forgejo-runner register --no-interactive \
+    --instance http://host.docker.internal:3000 \
+    --token &lt;runner-registration-token&gt; \
+    --name local-runner
+
+# 2. Run the daemon — this is the long-lived container.
+docker run -d --name forgejo-runner --restart unless-stopped \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v forgejo-runner-data:/data \
+  -w /data \
+  --add-host host.docker.internal:host-gateway \
+  codeberg.org/forgejo/runner:latest \
+  forgejo-runner daemon
+```
+
+`register` and `daemon` are two different commands. Running `register` with
+`-d` and then `docker start` re-runs *registration* every boot and never starts a
+daemon — the runner will never appear as online.
+
+Then add `.forgejo/workflows/ci.yml` to a repo:
+
+```yaml
+name: CI
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo &quot;CI is running&quot;
+```
+
+## SSH Git Access
+
+The container listens on `22` internally and is published on `2222`. Because
+Step 1 sets `SSH_PORT: &quot;2222&quot;`, the UI and API hand out clone URLs carrying the
+published port:
+
+```
+ssh://git@localhost:2222/&lt;admin-name&gt;/my-project.git
+```
+
+```bash
+git remote add forgejo ssh://git@localhost:2222/&lt;admin-name&gt;/my-project.git
+```
+
+Add your public key first under Settings → SSH / GPG Keys, or the push fails with
+`Permission denied (publickey)`.
+
+Optional `~/.ssh/config` entry — scope it to a dedicated alias rather than
+`Host localhost`, which would hijack every other SSH connection to localhost:
+
+```
+Host forgejo-local
+  HostName localhost
+  Port 2222
+  User git
+```
+
+Then the remote becomes `forgejo-local:&lt;admin-name&gt;/my-project.git`.
+
+## Backup
+
+Use Forgejo&#x27;s own dump command. It quiesces the database and produces a single
+consistent archive — `tar`-ing a live SQLite file can capture a torn write:
+
+```bash
+docker exec -u git forgejo forgejo dump --type tar.gz --file /data/backup.tar.gz
+docker cp forgejo:/data/backup.tar.gz ./forgejo-backup-$(date +%Y%m%d).tar.gz
+docker exec -u git forgejo rm /data/backup.tar.gz
+```
+
+If you must snapshot the raw volume instead, stop the container first, and note
+the Windows path caveat in Pitfall 9:
+
+```bash
+docker compose stop forgejo
+MSYS_NO_PATHCONV=1 docker run --rm -v forgejo-data:/data -v &quot;$(pwd)&quot;:/backup \
+  alpine tar czf /backup/forgejo-volume-$(date +%Y%m%d).tar.gz /data
+docker compose start forgejo
+```
+
+## Common Pitfalls
+
+1. **`:latest` does not exist.** `codeberg.org/forgejo/forgejo:latest` fails the
+   pull with `manifest unknown` — Forgejo publishes no `latest` tag. Use a major
+   line (`:15`) or an exact version (`:15.0.3`). Pinning also matters because a
+   major upgrade migrates the database irreversibly; there is no downgrade path
+   once it runs.
+2. **Do not bind-mount `/etc/timezone` and `/etc/localtime`.** Nearly every
+   Forgejo guide copies these two lines from a Linux-host example. On Windows the
+   daemon fails the container with
+   `Error response from daemon: mkdir C:\Program Files\Git\etc\timezone: Access is denied`,
+   because there is no such host path. Set `TZ` instead — it works on every host.
+3. **Boot without `INSTALL_LOCK` and the instance is inert.** The container
+   serves the *install wizard at `/`* (not at `/install`, which 404s), and every
+   other route is swallowed by the installer: `/api/v1/version` returns a `404`
+   HTML page, and `forgejo admin user create` aborts with
+   `[F] Unable to load config file for a installed Forgejo instance`. Setting
+   `FORGEJO__security__INSTALL_LOCK=true` plus the database settings skips it.
+4. **`ROOT_URL` is the single most common misconfiguration.** It is not
+   cosmetic — redirects after login, asset URLs, clone URLs, webhook payloads and
+   OAuth callbacks are all generated from it. If you remap the host port to
+   `3001`, or front the instance with a reverse proxy at
+   `https://git.example.com/`, `ROOT_URL` must be changed to exactly that
+   browser-facing URL. Left at `http://localhost:3000/` behind a proxy, users log
+   in and get bounced to `localhost:3000`, and assets fail to load.
+5. **`SSH_PORT` vs `SSH_LISTEN_PORT`.** `SSH_LISTEN_PORT` is where sshd listens
+   inside the container (`22`); `SSH_PORT` is the port that goes into the clone
+   URLs the UI shows. Publishing `2222:22` while leaving `SSH_PORT` at its `22`
+   default makes the UI advertise `git@host:&lt;repo&gt;.git`, which clients try on
+   port 22 and fail. Set `SSH_PORT` to the published port.
+6. **Anonymous API access may be disabled.** On an instance with
+   `REQUIRE_SIGNIN_VIEW = true` (the common choice for a private server),
+   `curl http://localhost:3000/api/v1/version` returns
+   `403 {&quot;message&quot;:&quot;Only signed in user is allowed to call APIs.&quot;}` — the server
+   is perfectly healthy. Use `/api/healthz` for unauthenticated liveness, or send
+   the token with the request.
+7. **SQLite is fine for one person; switch on concurrency, not size.** SQLite
+   holds a single writer lock, so concurrent CI runners plus web users produce
+   `database is locked` errors. Move to PostgreSQL when you add runners or users,
+   by swapping the `FORGEJO__database__*` variables — but do it on a fresh
+   instance or via `forgejo dump`/restore; changing `DB_TYPE` on a running
+   instance does not migrate existing data.
+8. **Runner can&#x27;t reach the instance.** Inside the runner container `localhost`
+   is the runner itself. Use `http://host.docker.internal:3000` (adding
+   `--add-host host.docker.internal:host-gateway` on Linux Engine), or put both
+   containers on one Compose network and use the service name.
+9. **Windows/Git Bash mangles POSIX paths in `docker` arguments.** Any argument
+   starting with `/` is rewritten to a Windows path by MSYS, so
+   `-v $(pwd):/backup` silently mounts somewhere unexpected and the backup file
+   never appears where you asked for it. Prefix the command with
+   `MSYS_NO_PATHCONV=1`, or write the source as `&quot;/$(pwd)&quot;` with a leading slash.
+   PowerShell and Linux/macOS shells are unaffected.
+10. **`--must-change-password` defaults to forcing a reset.** An admin created
+    without `--must-change-password=false` must change its password at first web
+    login, and API calls before that can be rejected. Pass the flag explicitly.
+11. **Port 3000 collides constantly.** If you remap to `3001:3000`, change
+    `ROOT_URL` to `http://localhost:3001/` in the same edit — remapping the port
+    alone leaves every generated link pointing at 3000.
+
+## Verification Checklist
+
+- [ ] `docker compose -f docker-compose.yml config` parses with no `version` obsolete warning
+- [ ] `docker compose ps` shows the container `running`
+- [ ] `curl -s http://localhost:3000/api/healthz` reports `&quot;status&quot;: &quot;pass&quot;` including `database:ping`
+- [ ] `curl -s http://localhost:3000/ | grep -i &#x27;&lt;title&gt;Installation&#x27;` returns **nothing** — the instance is past the install wizard, not merely alive
+- [ ] `forgejo admin user create` printed both the user confirmation and an access token
+- [ ] The token creates a repo: `POST /api/v1/user/repos` returns `201` (not `403 ... [write:user]`)
+- [ ] `GET /api/v1/repos/&lt;user&gt;/&lt;repo&gt;` shows a `clone_url` and an `ssh_url` whose host and port match how you actually reach the server — not `localhost:3000` when you browse it at another address
+- [ ] Admin login succeeds in a real browser, and a page reload keeps you logged in (a wrong `ROOT_URL` shows up here as a redirect bounce)
+- [ ] A test repo pushes over the configured remote (HTTPS token or SSH on the published port)
+- [ ] If Actions was configured: the runner shows **online** under Site Administration → Actions → Runners, and a sample workflow run succeeds
 </pre>
         </div>
 
-        <div class="detail-tab-content" id="tab-readme" role="tabpanel">
-          <pre class="skillmd-viewer"># forgejo-self-host
-
-Set up a self-hosted Forgejo Git server with Docker — repos, issues, pull requests, and CI in minutes.
-
-## What it does
-
-The agent deploys a Forgejo instance using Docker Compose, creates an admin account, sets up an access token, and shows you how to push code. Forgejo is a lightweight self-hosted Git server (soft fork of Gitea) with a web UI, issues, pull requests, wiki, and Actions CI. It runs on your machine and holds your repos privately.
-
-## Install
-
-```bash
-hermes skills install https://github.com/THEROCKSSS/hermes-skills-portfolio/blob/main/skills/forgejo-self-host/SKILL.md
-```
-
-## How to use
-
-```
-&quot;Set up Forgejo on my machine&quot;
-```
-
-The agent:
-1. Generates a `docker-compose.yml` for Forgejo + SQLite
-2. Runs `docker compose up -d`
-3. Verifies the instance is reachable at `http://localhost:3000`
-4. Creates an admin user and access token
-5. Shows you how to create repos and push code
-
-## Prerequisites
-
-- Docker and Docker Compose
-- A free port (default: 3000 for web, 2222 for SSH git)
-
-## What you get
-
-| Component | Default | Notes |
-|---|---|---|
-| Web UI | `http://localhost:3000` | Repos, issues, PRs, wiki, settings |
-| SSH git | `localhost:2222` | Clone/push via SSH |
-| API | `http://localhost:3000/api/v1` | REST API, token-authenticated |
-| CI | Forgejo Actions | Optional, needs a runner container |
-| Storage | Docker volume `forgejo-data` | SQLite by default, PostgreSQL for scale |
-
-## Example
-
-```
-User: &quot;I want a local Git server for my projects.&quot;
-
-Agent:
-  1. Creates docker-compose.yml with Forgejo + SQLite
-  2. docker compose up -d → Forgejo starts on port 3000
-  3. Creates admin user via CLI
-  4. Generates access token via API
-  5. Creates first repo: curl POST /api/v1/user/repos
-  6. Returns: &quot;Forgejo is running at http://localhost:3000. Your first repo is at http://localhost:3000/your-user/my-project&quot;
-
-User pushes code:
-  git remote add forgejo http://your-user:token@localhost:3000/your-user/my-project.git
-  git push -u forgejo main
-```
+        <div class="detail-tab-content" id="tab-readme" role="tabpanel" aria-labelledby="tab-btn-readme" tabindex="0">
+          <pre class="skillmd-viewer"># forgejo-self-host
+
+Set up a self-hosted Forgejo Git server with Docker — repos, issues, pull requests, and CI.
+
+## What it does
+
+The agent deploys a Forgejo instance using Docker Compose, creates an admin account and an API token, and shows you how to push code. Forgejo is a lightweight self-hosted Git server (soft fork of Gitea) with a web UI, issues, pull requests, wiki, and Actions CI. It runs on your machine and holds your repos privately.
+
+The skill configures the instance entirely from environment variables so it comes up ready to use. A Forgejo container started without that configuration boots into its **web install wizard**, and in that state the HTTP API returns 404 and the admin CLI refuses to run — the setup looks healthy while nothing works. Avoiding that is most of what this skill does.
+
+## Install
+
+```bash
+hermes skills install https://raw.githubusercontent.com/THEROCKSSS/hermes-skills-portfolio/main/skills/forgejo-self-host/SKILL.md
+```
+
+## How to use
+
+```
+&quot;Set up Forgejo on my machine&quot;
+```
+
+The agent:
+1. Generates a `docker-compose.yml` for Forgejo + SQLite, with the install wizard pre-locked
+2. Validates it with `docker compose config`, then runs `docker compose up -d`
+3. Verifies the instance is past install mode — not merely responding
+4. Creates an admin user and an API token in one command
+5. Shows you how to create repos and push code
+
+## Prerequisites
+
+- Docker Engine + Compose v2 (`docker compose version`)
+- On Windows: Docker Desktop with the WSL2 backend
+- Two free host ports (defaults: `3000` web, `2222` SSH) — `3000` collides often, check it first
+- A named Docker volume for `/data` (not a host bind mount — Forgejo runs as uid 1000)
+
+## What you get
+
+| Component | Default | Notes |
+|---|---|---|
+| Web UI | `http://localhost:3000` | Repos, issues, PRs, wiki, settings |
+| SSH git | `localhost:2222` | Published port; `SSH_PORT` must match it or clone URLs are wrong |
+| API | `http://localhost:3000/api/v1` | Token-authenticated; may 403 anonymously on a private instance |
+| Health | `http://localhost:3000/api/healthz` | No auth required — but returns 200 in install mode too |
+| CI | Forgejo Actions | Optional, needs a runner container |
+| Storage | Docker volume `forgejo-data` | SQLite by default; PostgreSQL once you add concurrency |
+
+## Image tags
+
+Forgejo publishes **no `latest` tag** — `codeberg.org/forgejo/forgejo:latest` fails to pull with `manifest unknown`. Pin a major line (`:15`) or an exact version (`:15.0.3`). Major upgrades migrate the database irreversibly, so pinning is not just tidiness.
+
+## Three settings that decide whether it works
+
+| Variable | Why it matters |
+|---|---|
+| `FORGEJO__security__INSTALL_LOCK` | `true` skips the web install wizard. Without it the container serves the installer at `/`, `/api/v1/version` 404s, and the admin CLI aborts with &quot;Unable to load config file for a installed Forgejo instance&quot;. |
+| `FORGEJO__server__ROOT_URL` | Every generated link, login redirect, clone URL and webhook payload is built from it. Must be the URL a **browser** uses. Behind a reverse proxy or on a remapped port, leaving it at `http://localhost:3000/` bounces users to a dead address after login. |
+| `FORGEJO__server__SSH_PORT` | The port written into the SSH clone URLs the UI shows. It is the **published** port (`2222`), not the in-container listen port (`SSH_LISTEN_PORT`, `22`). Mismatched, users copy a clone URL that tries port 22 and fails. |
+
+## Example
+
+```
+User: &quot;I want a local Git server for my projects.&quot;
+
+Agent:
+  1. Writes docker-compose.yml (Forgejo + SQLite, INSTALL_LOCK set, ROOT_URL and SSH_PORT matched to the published ports)
+  2. docker compose config  → validates, then docker compose up -d
+  3. Confirms /api/healthz reports &quot;status&quot;: &quot;pass&quot; AND that / is not the install wizard
+  4. docker exec -u git forgejo forgejo admin user create ... --access-token
+     → creates the admin and prints its API token in one step
+  5. Creates the first repo: POST /api/v1/user/repos → 201
+  6. Returns: &quot;Forgejo is running at http://localhost:3000. Your first repo is at
+     http://localhost:3000/your-user/my-project&quot;
+
+User pushes code:
+  git remote add forgejo http://your-user:token@localhost:3000/your-user/my-project.git
+  git push -u forgejo main
+```
+
+## Verifying it actually worked
+
+`curl http://localhost:3000/api/healthz` returning `200` is **not** proof of a working install — it returns `200` while the instance is still sitting on the install wizard. The distinguishing check:
+
+```bash
+curl -s http://localhost:3000/ | grep -qi &#x27;&lt;title&gt;Installation&#x27; \
+  &amp;&amp; echo &quot;STILL IN INSTALL MODE&quot; || echo &quot;installed OK&quot;
+```
+
+Full checklist is in `SKILL.md`.
+
+## Windows note
+
+Git Bash rewrites any `docker` argument starting with `/` into a Windows path. `-v $(pwd):/backup` therefore mounts somewhere unintended and backups silently land nowhere. Prefix with `MSYS_NO_PATHCONV=1` or write the source as `&quot;/$(pwd)&quot;`. Guides that bind-mount `/etc/timezone` and `/etc/localtime` fail outright on Windows — use the `TZ` environment variable instead.
 </pre>
         </div>
       </div>
@@ -380,11 +595,20 @@ User pushes code:
 
   <footer class="footer">
     <div class="footer-inner">
-      <span class="footer-word">Hermes Skills — by Owen</span>
-      <span class="footer-sep">&middot;</span>
-      <span>Install one, your agent can now do that for you.</span>
-      <span class="footer-sep">&middot;</span>
-      <span>MIT licensed</span>
+      <div class="footer-col">
+        <span class="footer-word">Hermes Skills</span>
+        <p class="footer-note">Install one, your agent can now do that for you.</p>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Install any skill</span>
+        <code class="footer-code mono">hermes skills install &lt;url&gt;</code>
+      </div>
+      <div class="footer-col">
+        <span class="footer-label mono">Colophon</span>
+        <p class="footer-meta">By Owen &middot; MIT licensed &middot;
+          <a href="https://github.com/THEROCKSSS/hermes-skills-portfolio" target="_blank" rel="noopener">Source on GitHub</a>
+        </p>
+      </div>
     </div>
   </footer>
 
