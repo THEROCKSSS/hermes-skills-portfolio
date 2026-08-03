@@ -25,12 +25,23 @@ INDEX_PATH = REPO_ROOT / "skills-index.json"
 
 
 def _read(path: Path) -> str | None:
+    """Read a skill file as LF text, whatever the checkout did to it.
+
+    This used to pass newline="" to keep each file's own line endings, on the
+    theory that normalizing would create phantom diffs. It creates them: the
+    cache is committed JSON, git stores these files with LF, and a Windows
+    checkout with core.autocrlf=true hands back CRLF. Caching that wrote CRLF
+    into skills-index.json, which then disagreed with every Linux checkout --
+    green on the authoring machine, 20 stale fields on CI, with no actual
+    content difference behind any of them.
+
+    Normalizing here makes the cached value depend only on the file's content,
+    so --check gives the same answer on every platform.
+    """
     if not path.exists():
         return None
-    # newline="" keeps the file's own line endings, so a CRLF README doesn't
-    # get silently normalized into the JSON and show up as a phantom diff.
     with open(path, "r", encoding="utf-8", newline="") as fh:
-        return fh.read()
+        return fh.read().replace("\r\n", "\n").replace("\r", "\n")
 
 
 def collect(index: dict) -> tuple[list[str], list[str]]:
