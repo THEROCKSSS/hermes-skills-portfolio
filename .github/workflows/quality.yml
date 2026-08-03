@@ -43,9 +43,16 @@ jobs:
         with:
           python-version: "3.11"
 
-      # No pip install anywhere in this workflow. The checker falls back to a
-      # stdlib frontmatter parser when PyYAML is absent, and the two paths are
-      # held to identical behaviour by tests/test_content_quality.py.
+      # pytest only, never PyYAML. Leaving PyYAML out is the point of this
+      # workflow: the checker falls back to a stdlib frontmatter parser when it
+      # is absent, and that fallback is only genuinely exercised if nothing here
+      # installs the real thing. ci.yml installs PyYAML and covers the other
+      # path; tests/test_content_quality.py holds the two to identical
+      # behaviour. pytest itself is not on the runner image and must be
+      # installed, or the step below dies with "No module named pytest".
+      - name: Install test runner
+        run: python -m pip install --quiet pytest
+
       - name: Unit tests
         run: python -m pytest tests/test_content_quality.py -q
 

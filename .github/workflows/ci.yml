@@ -11,6 +11,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # pytest is not on the runner image, so the test step below failed with
+      # "No module named pytest" the first time it ran. PyYAML is installed here
+      # on purpose: this workflow exercises the real parser, while quality.yml
+      # deliberately omits it to exercise the stdlib fallback. Both paths get
+      # covered, which is what tests/test_content_quality.py assumes.
+      - name: Install dependencies
+        run: python -m pip install --quiet pyyaml pytest
+
       - name: Validate SKILL.md frontmatter
         # Real YAML parse, not a grep for `name:`/`description:` lines. The grep
         # version passed a file whose description contained an unquoted colon —
